@@ -1,0 +1,19 @@
+[% INCLUDE header.tt %]
+<div id="content">
+  [% INCLUDE post.tt 
+     standalone = 1  %]
+  
+  <a name="comments"></a>
+  
+  <div id="comments">
+    [% INCLUDE comments_header.tt %]
+    [% IF article.comments %]
+    <ul>
+      [% FOREACH comment = article.comments %]
+      <li>[% INCLUDE comment.tt %]</li>
+      [% END %]
+    </ul>
+    [% END %]
+  </div>
+</div>
+[% INCLUDE footer.tt %]

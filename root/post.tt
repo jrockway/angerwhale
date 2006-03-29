@@ -1,0 +1,46 @@
+
+<div class="post">
+  <div class="post_title">
+    <h2> [% article.title %]</h2>
+    [% INCLUDE tags.tt %]  
+    <div class="post_date">
+      <p>[% article.creation_time %]</p>
+    </div>
+  </div>
+  
+  <div class="article_body">
+    [% article.text %]
+  </div>
+
+  [% IF !standalone %]
+  <div class="post_links">
+    <a href="[% article.uri %]#comments">
+      [% INCLUDE comment_count.tt count = article.comment_count %]</a> |
+    
+    <a href="[% article.uri %]">Read more...</a>
+  </div>
+  [% END %]
+
+  <div class="post_extrainfo">
+
+    [% IF article.modification_time != article.creation_time %]
+    [% SET foo = 1 %]
+    <p>Last modified: [% article.modification_time %] </p>
+    [% END %]
+    
+    [% IF article.categories %]
+    [% SET foo = 1 %]
+    <p>Posted in: 
+      [% FOREACH category = article.categories %]
+      <a href="/categories/[% category %]">[% category %]</a>
+      [% END %]
+    </p>
+    [% END %]
+
+    [% IF foo != 1 %]
+    <br />
+    [% END %]
+
+  </div>
+</div>
+

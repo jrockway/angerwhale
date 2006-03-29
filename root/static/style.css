@@ -1,0 +1,46 @@
+.header h1 {text-align: center; margin: 0; padding: 0;}
+.header p {text-align: center; margin: 0; padding: 0;}
+.header { margin-bottom: 1.5em; }
+
+.post {text-align: justify; margin-bottom: 1em;}
+.post_title {text-align: right; margin: 0 0% 1em 3px;}
+.post_title h2 {padding: 0px; margin: 0; margin-bottom: 2px;}
+.post_date p {padding: 3px; margin: 0; font-size: 85%; 
+	     /*font-style: italic;*/ border-top: 1px solid black; }
+.taglist {float: left; margin: 0; padding: 0; margin-top: 3px; margin-left: 3px;}
+.taglist p {float: left; font-size: 85%; margin: 0; padding: 0; margin-right: .5em;}
+.tag_plus {float: left; margin: 0;}
+
+/*.article_body :first-child :first-line {font-size: 250%; padding: 0; margin: 0; float: left;}*/
+
+.post_links  {float: right; text-align: right; margin: 0em 0% 0em 0%; font-size: 85%;}
+.post_extrainfo { margin-top: 1em; margin-bottom: 0em;}
+.post_extrainfo p {margin: 0em 0em 0em 0em; font-size: 85%; font-style: italic; }
+
+#content {margin-left: 12em; margin-right: 10%;}
+#sidebar {width: 10em; float: left; text-align: justify;}
+
+#comments ul {list-style: none;}
+.comment {margin-bottom: .6em; margin-top: .3em;} 
+.comment .comment_header {font-size: 85%;}/* background-color: #ddeedd; border: 1px solid #ccffcc;}*/
+.comment p {margin-top: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0;}
+.comment .title {font-weight: bold; padding: 0;}
+.comment .comment_body {margin-top: .5em; margin-bottom: .5em;}
+
+.comments_header {background-color: #eeffee; border: 1px solid #ddffdd;}
+		 		    
+.comments_header p {padding: 0; margin: 0; text-align: center; font-size: 85%; font-weight: bold;}
+.comments_header .comment_count p {float: right;}
+
+a {color: blue; }
+a.visited { color: blue; }
+
+#sidebar_navigation {font-size: 85%; font-weight: bold; text-align: center;}
+#sidebar_navigation p {padding: 0; margin: 0;}		 
+#sidebar ul {list-style: none; margin: 0em 0em .5em 1em; padding: 0;}
+#sidebar h3 {margin: 0; padding: 0; margin-top: .5em;}
+
+#sidebar_categories {font-size: 85%;}
+#sidebar_tags {font-size: 85%;}
+
+.box {padding: 3px; background-color: #eeffee; border: 1px solid #ddffdd;}

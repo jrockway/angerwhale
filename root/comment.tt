@@ -1,0 +1,32 @@
+<div class="comment">
+  <div class="comment_header">
+    <p class="title">[% comment.title %]</p>
+    <p class="info">Written by
+      <span class="author">[% comment.author.fullname %]</span>
+      <span class="keyid">([% comment.author.id %])</span>
+      on
+      <span class="date">[% comment.creation_time %]</span>
+    </p>
+    <p class="id">#<a href="[% comment.uri %]">[% comment.id %]</a></p>
+  </div>
+  <div class="comment_body">
+    [% comment.text %]
+  </div>
+  [% IF readonly != 1 %]
+  <div class="comment_footer">
+    [ [% IF comment.parent.uri != article.uri %]
+      	 <a href="[% comment.parent.uri %]">Parent</a> | 
+      [% END %]
+      <a href="[% comment.post_uri %]">Reply</a> ]
+  </div>
+  [% IF comment.comments %]
+  <div class="comment_children">
+    <ul>
+      [% FOREACH child = comment.comments %]
+      <li> [% INCLUDE comment.tt comment = child %] </li>
+      [% END %]
+    </ul>
+  </div>
+  [% END %]
+  [% END %]
+</div>

@@ -1,0 +1,10 @@
+[% INCLUDE header.tt %]
+[% SET readonly = 0 %]
+<div id="content">
+<div id="comments">
+     [% INCLUDE comments_header.tt %]
+     <br />
+     [% INCLUDE comment.tt %]
+</div>
+</div>
+[% INCLUDE footer.tt %]

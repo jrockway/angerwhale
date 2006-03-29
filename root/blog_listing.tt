@@ -1,0 +1,23 @@
+[% INCLUDE header.tt %]
+<div id="content">
+  [% IF message %] <div id="message"><p>[% message %]</p></div>[% END %]
+  [% FOREACH article = articles %]
+  [% INCLUDE post.tt %]
+  [% END %]
+</div>
+<div id="nav_footer">
+     <p>
+	[% IF previous > 0 %]	
+	<a href="?offset=0">&lt;</a>
+	<a href="?offset=[% previous_offset %]">[% previous %] newer 
+	   [% INCLUDE article_count.tt number = previous %]</a>
+	[% END %]
+     	[% IF previous > 0 && next > 0 %]|[% END %] 
+	[% IF next > 0 %]
+	   <a href="?offset=[% next_offset %]">[% next %] older
+	   [% INCLUDE article_count.tt number = next %]</a>
+	   <a href="?offset=[% final_offset %]">&gt;</a>
+	[% END %]
+     </p>
+</div>
+[% INCLUDE footer.tt %]

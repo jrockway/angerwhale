@@ -1,0 +1,4 @@
+[% IF count == 0 %]
+0 comments[% ELSIF count == 1 %]
+1 comment[% ELSE %]
+[% count %] comments[% END %]

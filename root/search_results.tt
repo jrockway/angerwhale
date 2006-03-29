@@ -1,0 +1,21 @@
+[% INCLUDE header.tt %]
+<div id="content" class="search_results">
+  <h2>[% title %]</h2>
+  
+    <p>[% article_count %] 
+      [% IF article_count == 1 %] 
+      article
+      [% ELSE %]
+      articles
+      [% END %]
+      to display.</p>
+    <table id="article_list">
+      [% FOREACH item = articles %]
+      <tr>
+	<td><a href="[% item.uri %]">[% item.title %]</a></td>
+	<td class="creation_time">[% item.creation_time %]</td>
+	<td>[% item.summary %]</td>
+      [% END %]
+    </table>
+</div>
+[% INCLUDE footer.tt %]
