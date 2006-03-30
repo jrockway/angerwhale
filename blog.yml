@@ -1,8 +1,9 @@
 ---
 View::HTML:
  RECURSION: 1
+Model::Filesystem:
+ base: /Users/jon/blog_data
 name: Blog
-base: /Users/jon/blog_data
 blog_title: Jonathan Rockway's Blog
 sidebar_blurb:  This is Jon's weblog, as you may have guessed by the title.  It's 100% pure perl!
 sidebar_picture: /static/jon.jpg

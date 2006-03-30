@@ -4,17 +4,18 @@ use warnings;
 use base 'Catalyst::Model';
 use NEXT;
 use Carp;
-use Data::Dumper;
 use Blog::Model::Filesystem::Article;
 use File::ExtAttr qw(getfattr);
+use Storable qw(dclone);
+use YAML;
+
+
 
 sub new {
     my ($self, $c) = @_;
     $self = $self->NEXT::new(@_);
-
-    my $base = $self->config->{base} 
-	  = $c->config->{base};
-
+    
+    my $base = $self->{base};
     # die if base isn't readable or isn't a directory
     die "$base is not a valid data directory"
       if (!-r $base || !-d $base);
@@ -25,7 +26,7 @@ sub new {
 sub get_article {
     my $self	 = shift;
     my $article	 = shift;
-    my $base     = $self->config->{base};
+    my $base     = $self->{base};
 
     die "article name contains weird characters"
       if $article =~ m{/};
@@ -67,21 +68,21 @@ sub _ls {
 
 sub get_articles {
     my $self = shift;
-    my $base = $self->config->{base};
+    my $base = $self->{base};
 
     return _ls($self, $base);
 }
 
 sub get_categories {
     my $self = shift;
-    my $base = $self->config->{base};
+    my $base = $self->{base};
 
     my @categories;
     opendir my $dir, $base or die "cannot open $base: $!";
     while(my $file = readdir($dir)){
 	my $filename = "$base/$file";
 	next if $file =~ /^_/;
-	next if $file =~ /^\./;
+	next if $file =~ /^[.]/;
 	
 	push @categories, $file if (-d $filename && -r $filename);
     }
@@ -90,16 +91,20 @@ sub get_categories {
 
 sub get_tags {
     my $self = shift;
-    my $dirname = $self->config->{base};
+    my $dirname = $self->{base};
     
     my %tag_count;
     opendir my $dir, $dirname or die "cannot open $dirname: $!";
     while(my $filename = readdir($dir)){
+	next if $filename =~ /^[.]/;
+	next if $filename =~ /^_/;
 	$filename = "$dirname/$filename";
+
 	my $attrs = getfattr($filename, "user.tags");
 	next if !defined $attrs;
+	warn "$filename: $attrs\n";
 	my @attrs = split /;/, $attrs;
-	map {$tag_count{$_}++} @attrs;
+	map {$tag_count{lc $_}++} @attrs;
     }
 
     return sort keys %tag_count;

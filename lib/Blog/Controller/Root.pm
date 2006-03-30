@@ -33,7 +33,7 @@ Root Controller for this Catalyst based application.
 sub auto : Private {
     my ($self, $c) = @_;
     
-    $c->stash->{root} = Blog::Model::Filesystem->new($c);
+    $c->stash->{root} = $c->model('Filesystem');
 }
 
 sub blog : Path('') {

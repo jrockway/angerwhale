@@ -9,7 +9,8 @@ use warnings;
 
 use File::Slurp;
 use File::ExtAttr qw(getfattr setfattr);
-use File::CreationTime;
+
+require File::CreationTime; # don't want its imports today
 
 use Text::WikiFormat;
 use Data::GUID;
