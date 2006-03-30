@@ -22,6 +22,18 @@ requires (Catalyst => '5.66',
 	  Catalyst::Plugin::Prototype => '1.320',
 	  Catalyst::Plugin::ConfigLoader => '0.040',
 	  Catalyst::Plugin::DefaultEnd => '0.050',
+	  
+	  # we want to be able to support any PGP standard,
+	  # so these "optional" modules are mandatory for us
+	  Crypt::IDEA => 0,
+	  Digest::MD5 => 0,
+	  Crypt::DES_EDE3 => 0,
+	  Digest::SHA1 => 0,
+	  Crypt::Rijndael => 0,
+	  Crypt::RIPEMD160 => 0,
+	  Crypt::CAST5_PP => 0,
+	  Crypt::Blowfish => 0,
+	  Crypt::Twofish => '2.00',
 	 );
 
 catalyst;
