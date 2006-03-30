@@ -36,9 +36,9 @@ sub auto : Private {
     my $sid = $c->request->cookie("sid");
     if(defined $sid){
 	$c->log->debug("got session cookie $sid");
-	my $uid = $c->model("NonceStore")->unstore_session($sid);
-	$c->stash->{user} = $c->model("UserStore")->get_user_by_id($uid);
-	$c->log->debug("got user ". $c->stash->{user}->id);
+	my $uid = $c->model("NonceStore")->unstore_session($sid->value);
+	$c->stash->{user} = $c->model("UserStore")->get_user_by_nice_id($uid);
+	$c->log->debug("got user $uid, ". $c->stash->{user}->id);
     }
     
     $c->stash->{root} = $c->model('Filesystem');

@@ -71,7 +71,7 @@ sub process : Local {
 	$c->response->body("You cheating scum!  You are NOT $nice_key_id!");
     }
     else {
-	my $user = $c->model("UserStore")->get_user_by_id($key_id);
+	my $user = $c->model("UserStore")->get_user_by_real_id($key_id);
 	my $session_id = $c->model('NonceStore')->store_session($user);
 	
 	warn "made it back to login.pl";
@@ -80,7 +80,7 @@ sub process : Local {
 	
 	$c->response->body("Passed!  You are ". $user->id. ", and your ".
 			   "session id is $session_id.");
-	#$c->response->cookie(name => "sid", value => $session_id);
+	$c->response->cookies->{sid} = {value => "$session_id"};
     }
 }
 

@@ -7,23 +7,26 @@ package Blog::User;
 use strict;
 use warnings;
 use Crypt::OpenPGP::Keyserver;
+use Carp qw(cluck);
 
 # id is Crypt::OpenPGP's format, i.e. the hex value packed into
 # 'H*'.  ($id = pack 'H*', hex "cafebabe") for 0xcafebabe
 sub new {
     my ($class, $id, $key) = @_;
     my $self = {};
-    
+    cluck "new, id = $id";
+
     $self->{id} = $id || die "specify id";
+    $self->{niceid} = unpack('H*', $id);
     
-    if($key){
-	$self->{key} = $key;
-    }
-    else {
-	$self->{key} = _refresh_key($id);
-    }
-    
-    die "no key" if !$self->{key};
+#    if($key){
+#	$self->{key} = $key;
+#    }
+#    else {
+#	$self->{key} = _refresh_key($id);
+#    }
+#    
+#    die "no key" if !$self->{key};
     
     return bless $self, $class;
 }
@@ -47,7 +50,7 @@ sub fullname {
 
 sub id {
     my $self = shift;
-    return unpack('H*', $self->{id});
+    return $self->{niceid};
 }
 
 sub photo {

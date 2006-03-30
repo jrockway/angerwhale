@@ -27,15 +27,21 @@ sub create_user_by_id {
     return $user;
 }
 
-# retrieves by real uid (but filename is based on "nice id")
-sub get_user_by_id {
+sub get_user_by_nice_id {
+    my $self = shift;
+    my $nice_id = shift;
+    my $real_id = pack('H*', $nice_id);
+
+    return $self->get_user_by_real_id($real_id);
+}
+sub get_user_by_real_id {
     my $self = shift;
     my $real_id = shift;
     my $nice_id = unpack('H*', $real_id);
     my $dir = $self->{users};
     
     # create a user if one does not exist
-    return $self->create_user_by_id($real_id) if !-e "$dir/$nice_id";
+    return $self->create_user_by_id($real_id) if !-r "$dir/$nice_id";
     
     # load the YAML!
     my $user_obj = LoadFile("$dir/$nice_id");
@@ -52,6 +58,7 @@ sub store_user {
     my $dir = $self->{users};
     my $uid = $user->id;
     
+    warn "$uid dump";
     DumpFile("$dir/$uid", $user);
 }
 

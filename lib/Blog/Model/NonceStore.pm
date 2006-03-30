@@ -90,8 +90,9 @@ sub unstore_session {
     my $self = shift;
     my $sid = shift;
     my $dir = $self->{sessions};
-    
-    my $file = LoadFile("$dir/$sid");
+    $sid =~ s/[^0-9]//g;
+
+    my $file = LoadFile("$dir/established/$sid");
     return $file->{uid};
 }
 
