@@ -1,0 +1,32 @@
+abstract: Catalyst-based database-less weblog software
+author: Jonathan Rockway
+license: gpl
+distribution_type: module
+generated_by: Module::Install version 0.610
+license: perl
+name: Blog
+no_index:
+  directory:
+    - inc
+    - t
+requires:
+  Carp: 0
+  Catalyst: 5.66
+  Catalyst::Plugin::ConfigLoader: 0.040
+  Catalyst::Plugin::DefaultEnd: 0.050
+  Catalyst::Plugin::Prototype: 1.320
+  Catalyst::Plugin::Static::Simple: 0.140
+  Crypt::OpenPGP: 1.03
+  Crypt::Random: 1.25
+  Data::GUID: 0.04
+  DateTime: 0.30
+  File::CreationTime: 2.01
+  File::ExtAttr: 0.04
+  File::Slurp: 9999.12
+  NEXT: 0.60
+  Text::WikiFormat: 0.77
+  URI::Escape: 3.28
+  YAML: 0.58
+  overload: 1.02
+  version: 0.580
+version: 0.01
