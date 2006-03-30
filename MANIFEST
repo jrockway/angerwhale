@@ -4,7 +4,6 @@ Makefile.PL
 README
 blog.yml
 config
-lib
 lib/Blog
 lib/Blog/Controller
 lib/Blog/Controller/Articles.pm
@@ -23,7 +22,6 @@ lib/Blog/User.pm
 lib/Blog/View
 lib/Blog/View/HTML.pm
 lib/Blog.pm
-root
 root/ajax_tags.tt
 root/article.tt
 root/article_count.tt
@@ -47,13 +45,11 @@ root/static/bg.jpg
 root/static/prototype.js
 root/static/style.css
 root/tags.tt
-script
 script/blog_cgi.pl
 script/blog_create.pl
 script/blog_fastcgi.pl
 script/blog_server.pl
 script/blog_test.pl
-t
 t/01app.t
 t/02pod.t
 t/03podcoverage.t

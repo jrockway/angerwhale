@@ -63,15 +63,18 @@ sub set_tag {
     my @tags = @_;  
     map {s{(?:\s|[_;,!.])}{}g;} @tags;
     
-    my $mytags = $self->tags;
+    my %tags;
+    @tags = (@tags, $self->tags);
+    
     foreach my $tag (@tags){
 	next if $tag =~ /^\s*$/;
-	next if $mytags =~ /\b$tag\b/;
-	$mytags .= ";$tag";
+	$tags{$tag} = 1;
     }
 
-    setfattr($self->{path}, "user.tags", $mytags);
+    my $mytags = join ';', sort keys %tags;
+    warn "my tags are $mytags";
     
+    setfattr($self->{path}, "user.tags", $mytags);
     return $self->tags;
 }
 
