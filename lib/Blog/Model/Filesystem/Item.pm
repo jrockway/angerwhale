@@ -16,7 +16,7 @@ use Text::WikiFormat;
 use Data::GUID;
 
 use Blog::DateFormat;
-use Blog::User;
+use Blog::User::Anonymous;
 
 use overload (q{<=>} => "compare",
 	      q{cmp} => "compare",
@@ -178,7 +178,7 @@ sub author {
     my $self = shift;
     my $id = getfattr($self->{path}, "user.author");
     
-    return Blog::User->new({id => $id});
+    return Blog::User::Anonymous->new();
 }
 
 sub raw_text {

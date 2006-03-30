@@ -1,15 +1,23 @@
 [% WRAPPER page.tt %]
+[% USE CGI %]
 <h2>Login</h2>
 <p>Please authenticate yourself to this weblog by signing the
 following message with your PGP key.  You can do this automatically by
   running the following command on your nearest UNIX machine. </p>
 
 <p><code>
-    $ curl [% c.request.uri %]/simple | gpg --armour --sign
+    $ curl [% c.request.uri %]/nonce | gpg --armour --sign
 </code></p>
 
 <p>
   and pasting the result into this window.
 </p>
+
+[% action = 'login/process' %]
+[% CGI.start_form(action => c.request.base _ action) %]
+   [% CGI.textarea(rows => 25, cols=>80, name=>"login", default=>nonce) %]
+   [% CGI.submit %]
+[% CGI.end_form %]
+
 
 [% END %]

@@ -1,4 +1,7 @@
 <div id="sidebar"> 
+  [% IF user.id %]
+  Logged in as <b>0x[% user.id %]</b>.
+  [% END %]
 
   [% IF c.config.sidebar_picture %]
   <img id="sidebar_picture" src="[% c.config.sidebar_picture %]" alt="me"/>

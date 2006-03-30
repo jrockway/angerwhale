@@ -6,10 +6,6 @@ use NEXT;
 use Carp;
 use Blog::Model::Filesystem::Article;
 use File::ExtAttr qw(getfattr);
-use Storable qw(dclone);
-use YAML;
-
-
 
 sub new {
     my ($self, $c) = @_;
