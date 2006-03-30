@@ -1,5 +1,4 @@
-[% INCLUDE header.tt %]
-<div id="content">
+[% WRAPPER page.tt %]
   [% INCLUDE post.tt 
      standalone = 1  %]
   
@@ -16,4 +15,4 @@
     [% END %]
   </div>
 </div>
-[% INCLUDE footer.tt %]
+[% END %]

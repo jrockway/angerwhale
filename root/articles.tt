@@ -1,4 +1,4 @@
-[% INCLUDE header %]
+[% WRAPPER page.tt %]
 <div id="article_list">
     <p>[% article_count %] articles to display.</p>
     <ul class="articles">
@@ -7,4 +7,4 @@
       [% END %]
     </ul>
 </div>
-[% INCLUDE footer %]
+[% END %]

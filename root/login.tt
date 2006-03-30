@@ -1,0 +1,15 @@
+[% WRAPPER page.tt %]
+<h2>Login</h2>
+<p>Please authenticate yourself to this weblog by signing the
+following message with your PGP key.  You can do this automatically by
+  running the following command on your nearest UNIX machine. </p>
+
+<p><code>
+    $ curl [% c.request.uri %]/simple | gpg --armour --sign
+</code></p>
+
+<p>
+  and pasting the result into this window.
+</p>
+
+[% END %]

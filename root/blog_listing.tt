@@ -1,5 +1,4 @@
-[% INCLUDE header.tt %]
-<div id="content">
+[% WRAPPER page.tt %]
   [% IF message %] <div id="message"><p>[% message %]</p></div>[% END %]
   [% FOREACH article = articles %]
   [% INCLUDE post.tt %]
@@ -20,4 +19,4 @@
 	[% END %]
      </p>
 </div>
-[% INCLUDE footer.tt %]
+[% END %]

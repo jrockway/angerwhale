@@ -1,19 +1,18 @@
-[% INCLUDE header.tt %]
+[% WRAPPER page.tt %]
 [% USE CGI %]
-<div id="content">
-     <h2>Respond to [% article.title %]</h2>
-     [% IF comment != article %]
-     [% INCLUDE comment.tt readonly = 1 %]
-     [% END %]
-     <div id="post_box">
-     [% CGI.start_form({Action => action}) %]
-     	<p>Title: 
-	[% CGI.textfield({ Name => "title", Length => "80", 
-	   		   Default => post_title}) %]</p>
-	<p> [% CGI.textarea({ Name=>"body", Rows=>"25", Cols=>"80"}) %]</p>
-	<br />
-	[% CGI.submit("Preview") %]
-	[% CGI.submit("Post") %]
-     </form>
+<h2>Respond to [% article.title %]</h2>
+[% IF comment != article %]
+[% INCLUDE comment.tt readonly = 1 %]
+[% END %]
+<div id="post_box">
+  [% CGI.start_form({Action => action}) %]
+  <p>Title: 
+    [% CGI.textfield({ Name => "title", Length => "80", 
+    Default => post_title}) %]</p>
+  <p> [% CGI.textarea({ Name=>"body", Rows=>"25", Cols=>"80"}) %]</p>
+  <br />
+  [% CGI.submit("Preview") %]
+  [% CGI.submit("Post") %]
+</form>
 </div>
-[% INCLUDE footer.tt %]
+[% END %]

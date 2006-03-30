@@ -72,8 +72,7 @@ sub set_tag {
     }
 
     my $mytags = join ';', sort keys %tags;
-    warn "my tags are $mytags";
-    
+        
     setfattr($self->{path}, "user.tags", $mytags);
     return $self->tags;
 }

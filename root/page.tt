@@ -14,4 +14,9 @@
     
     [% INCLUDE sidebar.tt %]
     
-    
+    <div id="content">
+      [% content %]
+    </div>
+  </body>
+</html>
+
