@@ -44,3 +44,6 @@ a.visited { color: blue; }
 #sidebar_tags {font-size: 85%;}
 
 .box {padding: 3px; background-color: #eeffee; border: 1px solid #ddffdd;}
+
+#information {font-size: 70%;}
+.logged_in_as {font-style: italic;}

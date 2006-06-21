@@ -7,6 +7,7 @@ package Blog::Model::Filesystem::Article;
 use strict;
 use warnings;
 use base qw(Blog::Model::Filesystem::Item);
+use CGI qw(escape);
 
 sub categories {
     my $self = shift;
@@ -35,7 +36,9 @@ sub categories {
 
 sub uri {
     my $self = shift;
-    return "/articles/".$self->name;
+    my $name = $self->name;
+    $name = escape($name);
+    return "/articles/$name";
 }
 
 

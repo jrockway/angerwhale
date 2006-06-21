@@ -35,12 +35,18 @@ sub auto : Private {
 
     my $sid = $c->request->cookie("sid");
     if(defined $sid){
-	$c->log->debug("got session cookie $sid");
-	my $uid = $c->model("NonceStore")->unstore_session($sid->value);
-	$c->stash->{user} = $c->model("UserStore")->get_user_by_nice_id($uid);
-	$c->log->debug("got user $uid, ". $c->stash->{user}->id);
+	eval {
+	    $sid = $sid->value;
+	    $c->log->debug("got session cookie $sid");
+	    my $uid = $c->model('NonceStore')->unstore_session($sid);
+	    $c->stash->{user} = $c->model("UserStore")->
+	      get_user_by_nice_id($uid);
+	    $c->log->debug("got user $uid, ". $c->stash->{user}->nice_id);
+	};
+	if ($@){
+	    $c->log->debug("Failed to restore session $sid: $@");
+	}
     }
-    
     $c->stash->{root} = $c->model('Filesystem');
 }
 

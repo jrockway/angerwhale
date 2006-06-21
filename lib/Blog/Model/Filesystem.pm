@@ -6,11 +6,13 @@ use NEXT;
 use Carp;
 use Blog::Model::Filesystem::Article;
 use File::ExtAttr qw(getfattr);
+use Crypt::OpenPGP;
 
 sub new {
     my ($self, $c) = @_;
     $self = $self->NEXT::new(@_);
     
+    $self->{context} = $c;
     my $base = $self->{base};
     # die if base isn't readable or isn't a directory
     die "$base is not a valid data directory"
@@ -44,7 +46,6 @@ sub _ls {
     my @articles;
     while(my $article = readdir $dir){
 	my $entry = "$base/$article";
-	next if $article =~ m{^_}; # files starting with _ are ignored
 	next if $article =~ m{^[.]}; # hidden files are also ignored
 	next if !-r $entry;
 	next if -d $entry;
@@ -77,7 +78,6 @@ sub get_categories {
     opendir my $dir, $base or die "cannot open $base: $!";
     while(my $file = readdir($dir)){
 	my $filename = "$base/$file";
-	next if $file =~ /^_/;
 	next if $file =~ /^[.]/;
 	
 	push @categories, $file if (-d $filename && -r $filename);
@@ -93,7 +93,6 @@ sub get_tags {
     opendir my $dir, $dirname or die "cannot open $dirname: $!";
     while(my $filename = readdir($dir)){
 	next if $filename =~ /^[.]/;
-	next if $filename =~ /^_/;
 	$filename = "$dirname/$filename";
 
 	my $attrs = getfattr($filename, "user.tags");

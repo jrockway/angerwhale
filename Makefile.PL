@@ -26,7 +26,7 @@ requires (Catalyst => '5.66',
 	  
 	  # we want to be able to support any PGP standard,
 	  # so these "optional" modules are mandatory for us
-	  Crypt::IDEA => 0,
+#	  Crypt::IDEA => 0,
 	  Digest::MD5 => 0,
 	  Crypt::DES_EDE3 => 0,
 	  Digest::SHA1 => 0,

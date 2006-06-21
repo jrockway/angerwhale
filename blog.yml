@@ -1,15 +1,11 @@
----
-View::HTML:
- RECURSION: 1
-
 Model::Filesystem:
- base: /Users/jrock/blog_data
+ base: /home/jon/tmp/blog_data
 Model::NonceStore:
- sessions: /Users/jrock/blog_data/_sessions
+ sessions: /home/jon/tmp/blog_data/.sessions
 Model::UserStore:
- users: /Users/jrock/blog_data/_users
+ users: /home/jon/tmp/blog_data/.users
 
 name: Blog
-blog_title: Jonathan Rockway's Blog
-sidebar_blurb:  This is Jon's weblog, as you may have guessed by the title.  It's 100% pure perl!
+blog_title: Test Weblog
+sidebar_blurb: This is a test weblog, 98% devoid of actual content.  Note the similiarity to real, non-test weblogs.
 sidebar_picture: /static/jon.jpg

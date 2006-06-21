@@ -59,13 +59,15 @@ sub post : Local('post'){
     my ( $self, $c ) = @_;
 
     my $method = $c->request->method;
-    $c->forward('find_by_path');
 
+    # find what we're replying to
+    $c->forward('find_by_path');
     my $article = $c->stash->{article};
     my $comment = $c->stash->{comment};
-
-    my $object  = $comment;
+    my $object = $comment;
     $object = $article if !defined $comment;
+
+    # object is the object we're replying to
 
     if($method eq "POST"){
 	my $title = $c->request->param("title");
@@ -73,7 +75,10 @@ sub post : Local('post'){
 
 	$title =~ s/[><&]//g;
 
-	$object->add_comment($title, $body);
+	my $user = $c->stash->{user};
+	my $id   = $user->nice_id if ($user && $user->can('nice_id'));
+
+	$object->add_comment($title, $body, $id);
 	$c->response->redirect($c->stash->{article}->uri);
     }
     

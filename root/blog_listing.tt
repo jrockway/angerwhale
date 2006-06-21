@@ -1,10 +1,10 @@
 [% WRAPPER page.tt %]
-  [% IF message %] <div id="message"><p>[% message %]</p></div>[% END %]
-  [% FOREACH article = articles %]
-  [% INCLUDE post.tt %]
-  [% END %]
-</div>
+  [% IF message %]<div id="message"><p>[% message %]</p></div>[% END %]
+
+  [% FOREACH article = articles %][% INCLUDE post.tt %][% END %]
+
 <div id="nav_footer">
+     [% IF defined(previous) && defined(next) %]
      <p>
 	[% IF previous > 0 %]	
 	<a href="?offset=0">&lt;</a>
@@ -18,5 +18,6 @@
 	   <a href="?offset=[% final_offset %]">&gt;</a>
 	[% END %]
      </p>
+     [% END %]
 </div>
 [% END %]

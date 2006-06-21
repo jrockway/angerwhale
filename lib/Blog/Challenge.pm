@@ -4,6 +4,8 @@
 # $Id: $
 
 package Blog::Challenge;
+use strict;
+use warnings;
 use Crypt::Random qw(makerandom);
 use DateTime;
 use YAML;

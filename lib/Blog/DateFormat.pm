@@ -4,7 +4,10 @@
 # $Id: $
 
 package Blog::DateFormat;
+use strict;
+use warnings;
 use base qw(DateTime);
+use utf8;
 
 my @daynames = qw(日 月 火 水 木 金 土);
 

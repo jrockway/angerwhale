@@ -3,7 +3,7 @@
     <p class="title">[% comment.title %]</p>
     <p class="info">Written by
       <span class="author">[% comment.author.fullname %]</span>
-      <span class="keyid">([% comment.author.id %])</span>
+      <span class="keyid">([% comment.author.nice_id %])</span>
       on
       <span class="date">[% comment.creation_time %]</span>
     </p>

@@ -1,7 +1,5 @@
+[% USE CGI %]
 <div id="sidebar"> 
-  [% IF user.id %]
-  Logged in as <b>0x[% user.id %]</b>.
-  [% END %]
 
   [% IF c.config.sidebar_picture %]
   <img id="sidebar_picture" src="[% c.config.sidebar_picture %]" alt="me"/>
@@ -35,7 +33,8 @@
     <h3>Categories</h3>
     <ul>
       [% FOREACH category = root.get_categories %]
-      <li><a href="/categories/[% category %]">[% category %]</a></li>
+      <li><a href="/categories/[% CGI.escape(category) %]">
+      	     [% category %]</a></li>
       [% END %]
     </ul>
   </div>
@@ -46,7 +45,7 @@
     <h3>Tags</h3>
     <ul>
       [% FOREACH tag = root.get_tags %]
-      <li><a href="/tags/[% tag %]">[% tag %]</a></li>
+      <li><a href="/tags/[% CGI.escape(tag) %]">[% tag %]</a></li>
       [% END %]
     </ul>
   </div>

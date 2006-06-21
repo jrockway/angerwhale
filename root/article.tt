@@ -2,8 +2,6 @@
   [% INCLUDE post.tt 
      standalone = 1  %]
   
-  <a name="comments"></a>
-  
   <div id="comments">
     [% INCLUDE comments_header.tt %]
     [% IF article.comments %]
@@ -14,5 +12,4 @@
     </ul>
     [% END %]
   </div>
-</div>
 [% END %]

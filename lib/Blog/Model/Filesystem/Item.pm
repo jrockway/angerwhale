@@ -6,15 +6,11 @@
 package Blog::Model::Filesystem::Item;
 use strict;
 use warnings;
-
 use File::Slurp;
 use File::ExtAttr qw(getfattr setfattr);
-
 require File::CreationTime; # don't want its imports today
-
 use Text::WikiFormat;
 use Data::GUID;
-
 use Blog::DateFormat;
 use Blog::User::Anonymous;
 
@@ -24,7 +20,7 @@ use overload (q{<=>} => "compare",
 
 # arguments are passed in a hash ref
 # base: top directory containing this item (and its friends)
-# path: full path to this itme
+# path: full path to this item
 
 sub new {
     my ($class, $args) = @_;
@@ -106,8 +102,19 @@ sub tags {
 sub name {
     my $self = shift;
     my $base = $self->{base};
-    $self->{path} =~ m{([^/]+)$};
-    my $name = $1;
+    my $name;
+
+    # use the title attribute if it exists
+    eval {
+	$name = getfattr($self->{path}, "user.title");
+    };
+    
+    # otherwise the filename is more than adequate
+    if(!$name){
+	$self->{path} =~ m{([^/]+)$};
+	$name = $1;
+    }
+    
     return $name;
 }
 
@@ -168,16 +175,23 @@ sub summary {
     $summary =~ s/\s+/$SPACE/g;
     
     my @words = split /\s+/, $summary;
-    @words = @words[0..9];
-    $summary = join $SPACE, @words;
-    $summary .= "...";
+    if(@words > 10){
+	@words = @words[0..9];
+	$summary = join $SPACE, @words;
+	$summary .= "…"; # utf-8 elipsis
+    }
     return $summary;
 }
 
 sub author {
     my $self = shift;
     my $id = getfattr($self->{path}, "user.author");
-    
+    my $c = $self->{base_obj}->{context};
+
+    if(defined $id){
+	my $user = $c->model('UserStore')->get_user_by_nice_id($id);
+	return $user if $user;
+    }
     return Blog::User::Anonymous->new();
 }
 
@@ -186,18 +200,24 @@ sub raw_text {
     return scalar read_file( $self->{path} );
 }
 
+### XXX: this needs some work.  not as good as it could be.
 sub text {
     my $self = shift;
     my $text = $self->raw_text;
+
+    $text =~ s/&/&amp;/g;
+    $text =~ s/>/&gt;/g;
+    $text =~ s/</&lt;/g;
     
     return Text::WikiFormat::format($text,
 				    {
-				     newline => "",
-				     paragraph	=> [ '<p>', "</p>\n", ' ',],
+				     newline   => "",
+				     paragraph => 
+				     [ '<p>', "</p>\n", ' ',],
 				    },
 				    {
-				     implicit_links=>0,
-				     extended=>1
+				     implicit_links => 0,
+				     extended       => 1,
 				    }); 
 }
 
@@ -218,7 +238,7 @@ sub path_to_top {
 
 sub comment_dir {
     my $self = shift;
-    my $base = $self->{base}. "/_comments/";
+    my $base = $self->{base}. "/.comments/";
     
     return $base. join '/', $self->path_to_top;
 }
@@ -236,8 +256,8 @@ sub comments {
     my $self = shift;
     my $comment_dir = $self->comment_dir;
 
-    if(!-e $self->{base}. "/_comments"){
-	mkdir $self->{base}. "/_comments" 
+    if(!-e $self->{base}. "/.comments"){
+	mkdir $self->{base}. "/.comments" 
 	  or die "unable to create root commentdir: $!";
     }
     if(!-e $comment_dir){
@@ -270,32 +290,49 @@ sub add_comment {
     my $self = shift;
     my $title = shift;
     my $body = shift;
-
-    $title =~ s{/}{}g;
-    $title =~ s/^[.]+//;
-    
+    my $user = shift;
+        
     die "no data" if (!$title || !$body);
     
     my $comment_dir = $self->comment_dir;
     die "no comment dir $comment_dir" 
       if !-d $comment_dir;
 
-    my $desired = "$comment_dir/$title";
-    if(-e $desired){ # make names unique
-	$desired .= " [". int(rand(10000)). "]";
+    my $safe_title = $title;
+    $safe_title =~ s{/}{}g;
+    $safe_title =~ s/^[.]+//g;
+    
+    my $filename = "$comment_dir/$safe_title";
+    while(-e $filename){ # make names unique
+	$filename .= " [". int(rand(10000)). "]";
     }
-
-    open my $comment, '>', $desired
-      or die "unable to open $desired: $!";
+    
+    open my $comment, '>', $filename
+      or die "unable to open $filename: $!";
     eval {
 	print {$comment} $body or die "io error: $!";
 	print {$comment} "\n" or die "io error: $!";
 	close $comment;
     };
     if($@){
-	unlink "$desired";
+	unlink $filename;
 	close $comment;
 	die $@; # propagate the message up
+    }
+
+    # finally, attribute the comment to someone, if possible
+    if($user) {
+	setfattr($filename, "user.author", $user);
+    }
+
+    # and if the safe title and real title don't match, set 
+    # the title attribute
+    
+    $filename =~ m{/([^/]+)$}; # take into account the [##] that we added
+    $safe_title = $1;
+
+    if($title ne $safe_title){
+	setfattr($filename, "user.title", $title);
     }
 
     return;

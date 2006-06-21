@@ -4,6 +4,10 @@
 # $Id: $
 
 package Blog::Signature;
+
+use strict;
+use warnings;
+
 use Crypt::OpenPGP;
 use Crypt::OpenPGP::Message;
 use Crypt::OpenPGP::KeyServer;

@@ -20,7 +20,11 @@ Catalyst Controller.
 =head1 METHODS
 
 =cut
-  
+
+sub check_tag_access : Private {
+    die "I hate you.";
+}
+
 sub do_tag : LocalRegex('do_tag/.+') {
     my ($self, $c) = @_;
 
@@ -28,8 +32,8 @@ sub do_tag : LocalRegex('do_tag/.+') {
     $uri =~ m{tag/(.+)};
     my $article_name = $1;
     my $tags = $c->request->param("value");
-    my @tags = split /(?:\s|[_;,!.])+/, $tags;
-
+    my @tags = split /\W+/, $tags;
+    
     my $article;
     eval {
 	$article = $c->stash->{root}->get_article($article_name);
@@ -44,15 +48,14 @@ sub do_tag : LocalRegex('do_tag/.+') {
     if(!$tags){
 	# get a list for the InPlaceEditor
 	@tags = $article->tags;
-	my $string = join " ", @tags;
-	$string =~ s/^\s+//g;
-	$string =~ s/\s+$//g;
-	$c->response->body($string);
+	$c->stash->{tags} = "@tags";
+	$c->stash->{template} = "tags_as_text.tt";
     }
     else {
 	# actually do the tagging, and return HTML
 	$c->stash->{template} = "ajax_tags.tt";
-	$c->stash->{tags} = [$article->set_tag(@tags)];
+	$article->set_tag(@tags);
+	$c->stash->{article} = $article;
     }
 }
 

@@ -1,4 +1,4 @@
-
+[% USE CGI %]
 <div class="post">
   <div class="post_title">
     <h2> [% article.title %]</h2>
@@ -32,7 +32,7 @@
     [% SET foo = 1 %]
     <p>Posted in: 
       [% FOREACH category = article.categories %]
-      <a href="/categories/[% category %]">[% category %]</a>
+      <a href="/categories/[% CGI.escape(category) %]">[% category %]</a>
       [% END %]
     </p>
     [% END %]

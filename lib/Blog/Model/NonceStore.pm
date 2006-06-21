@@ -75,7 +75,7 @@ sub verify_nonce {
 sub store_session {
     my $self = shift;
     my $user = shift;
-    my $uid  = $user->id;
+    my $uid  = $user->nice_id;
 
     my $sid  = makerandom(Size => 256);
     my $dir  = $self->{sessions} . "/established";
@@ -92,8 +92,13 @@ sub unstore_session {
     my $dir = $self->{sessions};
     $sid =~ s/[^0-9]//g;
 
-    my $file = LoadFile("$dir/established/$sid");
-    return $file->{uid};
+    my $file;
+    eval {
+	$file = LoadFile("$dir/established/$sid");
+    };
+    
+    return $file->{uid} if $file;
+    die "No such session $sid ($@)";
 }
 
 =head1 NAME

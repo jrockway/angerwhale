@@ -71,14 +71,13 @@ sub process : Local {
 	$c->response->body("You cheating scum!  You are NOT $nice_key_id!");
     }
     else {
-	my $user = $c->model("UserStore")->get_user_by_real_id($key_id);
+	my $user = $c->model('UserStore')->get_user_by_real_id($key_id);
 	my $session_id = $c->model('NonceStore')->store_session($user);
+	$c->model('UserStore')->refresh_user($user);
 	
-	warn "made it back to login.pl";
-	$c->log->info("successful login for ". $user->id);
+	$c->log->info("successful login for ". $user->nice_id);
 	$c->log->debug("new session $session_id created");
-	
-	$c->response->body("Passed!  You are ". $user->id. ", and your ".
+	$c->response->body("Passed!  You are ". $user->nice_id. ", and your ".
 			   "session id is $session_id.");
 	$c->response->cookies->{sid} = {value => "$session_id"};
     }

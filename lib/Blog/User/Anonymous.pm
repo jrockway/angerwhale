@@ -4,7 +4,8 @@
 # $Id: $
 
 package Blog::User::Anonymous;
-use Blog::User;
+use strict;
+use warnings;
 use base qw(Blog::User);
 
 sub new {
@@ -12,6 +13,10 @@ sub new {
     my $self = {};
     
     return bless $self, $class;
+}
+
+sub nice_id {
+    return 0;
 }
 
 sub id {
@@ -23,7 +28,7 @@ sub fullname {
 }
 
 sub email {
-    return "example@example.com";
+    return q{};
 }
 
 			

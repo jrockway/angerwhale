@@ -1,7 +1,13 @@
 package Blog::View::HTML;
 
 use strict;
-use base 'Catalyst::View::TT';
+#use base 'Catalyst::View::TT';
+use base 'Catalyst::View::TT::ForceUTF8';
+
+__PACKAGE__->config( STRICT_CONTENT_TYPE => 1,
+		     RECURSION => 1,
+		    );
+		     
 
 =head1 NAME
 
