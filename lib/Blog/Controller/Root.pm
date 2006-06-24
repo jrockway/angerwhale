@@ -4,10 +4,6 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 
-#
-# Sets the actions in this controller to be registered with no prefix
-# so they function identically to actions created in MyApp.pm
-#
 __PACKAGE__->config->{namespace} = '';
 
 =head1 NAME
@@ -48,6 +44,18 @@ sub auto : Private {
 	}
     }
     $c->stash->{root} = $c->model('Filesystem');
+
+    
+    # not implemented yet, sort of
+    
+    # # update type information
+    # my $uri = $c->request->uri->path;
+    # if($uri =~ /(.*)[.]([a-zA-Z]+)$/){
+    #	 $c->stash->{requsted_type} = $2;
+    #    $c->request->uri($1);
+    # }
+    
+    return 1;
 }
 
 sub blog : Path('') {

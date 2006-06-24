@@ -209,16 +209,16 @@ sub text {
     $text =~ s/>/&gt;/g;
     $text =~ s/</&lt;/g;
     
-    return Text::WikiFormat::format($text,
-				    {
-				     newline   => "",
-				     paragraph => 
-				     [ '<p>', "</p>\n", ' ',],
-				    },
-				    {
-				     implicit_links => 0,
-				     extended       => 1,
-				    }); 
+    return Text::WikiFormat::format($text);#,
+				    #{
+				    # newline   => "",
+				    # paragraph => 
+				    # [ '<p>', "</p>\n", ' ',],
+				    #},
+				    #{
+				    # implicit_links => 0,
+				    # extended       => 1,
+				    #}); 
 }
 
 # hierarchy

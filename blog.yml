@@ -5,7 +5,7 @@ Model::NonceStore:
 Model::UserStore:
  users: /home/jon/tmp/blog_data/.users
 
-name: Blog
+name: Weblog.
 blog_title: Test Weblog
-sidebar_blurb: This is a test weblog, 98% devoid of actual content.  Note the similiarity to real, non-test weblogs.
+sidebar_blurb: "This is a test weblog, 98% devoid of actual content.  Note the similiarity to real, non-test weblogs."
 sidebar_picture: /static/jon.jpg

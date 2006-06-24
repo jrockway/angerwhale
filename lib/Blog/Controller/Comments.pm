@@ -58,6 +58,7 @@ sub default : Private {
 sub post : Local('post'){
     my ( $self, $c ) = @_;
 
+    my $preview = $c->request->param('Preview');
     my $method = $c->request->method;
 
     # find what we're replying to

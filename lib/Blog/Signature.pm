@@ -75,6 +75,8 @@ sub get_signed_data {
     return $self->{decoded_data}->{data}. "\n"; # newline keeps YAML happy
 }
 
+# cut-n-pasted from Crypt::OpenPGP, then modified slightly :(
+# let me use this space to comment that Crypt::OpenPGP's API is bad
 sub verify {
     my $self = shift;
     my $pgp = $self->{pgp};

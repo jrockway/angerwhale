@@ -47,3 +47,5 @@ a.visited { color: blue; }
 
 #information {font-size: 70%;}
 .logged_in_as {font-style: italic;}
+
+#error {color: #ff0000; font-weight: bold;}
