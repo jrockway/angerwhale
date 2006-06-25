@@ -1,4 +1,3 @@
-[% USE CGI %]
 <div id="sidebar"> 
 
   [% IF c.config.sidebar_picture %]
@@ -33,7 +32,7 @@
     <h3>Categories</h3>
     <ul>
       [% FOREACH category = root.get_categories %]
-      <li><a href="/categories/[% CGI.escape(category) %]">
+      <li><a href="/categories/[% category %]">
       	     [% category %]</a></li>
       [% END %]
     </ul>
@@ -45,7 +44,7 @@
     <h3>Tags</h3>
     <ul>
       [% FOREACH tag = root.get_tags %]
-      <li><a href="/tags/[% CGI.escape(tag) %]">[% tag %]</a></li>
+      <li><a href="/tags/[% tag %]">[% tag %]</a></li>
       [% END %]
     </ul>
   </div>

@@ -7,7 +7,7 @@ package Blog::Model::Filesystem::Item;
 use strict;
 use warnings;
 use File::Slurp;
-use File::ExtAttr qw(getfattr setfattr);
+use File::ExtAttr qw(getfattr setfattr listfattr);
 require File::CreationTime; # don't want its imports today
 use Text::WikiFormat;
 use Data::GUID;
@@ -54,23 +54,16 @@ sub compare {
 
 ## tagging support 
 
-
 sub set_tag {
     my $self = shift;
     my @tags = @_;  
-    map {s{(?:\s|[_;,!.])}{}g;} @tags;
-    
-    my %tags;
-    @tags = (@tags, $self->tags);
-    
-    foreach my $tag (@tags){
-	next if $tag =~ /^\s*$/;
-	$tags{$tag} = 1;
-    }
+    map {s{(?:\s|[_;,!.])}{}g;} @tags; # destructive map
 
-    my $mytags = join ';', sort keys %tags;
-        
-    setfattr($self->{path}, "user.tags", $mytags);
+    foreach my $tag (@tags) {
+	#next if $tag =~ /^\s*$/; 
+	setfattr($self->{path}, "user.tags.$tag", "1");
+    }
+    
     return $self->tags;
 }
 
@@ -78,26 +71,39 @@ sub tags {
     my $self = shift;
     my $filename = $self->{path};
     
-    my $taglist;
+    my @attributes;
     eval {
-	$taglist = getfattr($filename, "user.tags");
+	@attributes = listfattr($filename);
     };
-    $taglist = lc $taglist;
     
-    my @taglist;
-    @taglist = split ';', $taglist if defined $taglist;
-    @taglist = grep {$_ !~ /(?:\s|[_;,!.])+/} @taglist;
-
-    if(wantarray){
- 	my %in;
-	return sort map {$in{$_}++; $_ if $in{$_} < 2;} @taglist; # remove dupes
+    my %taglist; # hash to avoid duplicates (due to case)
+    foreach my $attribute (@attributes){
+	$attribute = lc $attribute;
+	if($attribute =~ /^user[.]tags[.](.+)$/){
+	    $taglist{$1} = 1;
+	}
     }
 
-    $taglist = join ';', @taglist; # fix empty;;elements;etc.;
-    return $taglist;
+    
+    my @taglist = keys %taglist;
+    
+    if(wantarray){
+	return @taglist;
+    }
+    else {
+	return join ';', @taglist;
+    }
 }
 
 ## basic metadata
+
+sub type {
+    my $self = shift;
+    $self->{path} =~ m{[.](\w+)$};
+    $self->{type} = $1;
+    
+    return $self->{type};
+}
 
 sub name {
     my $self = shift;

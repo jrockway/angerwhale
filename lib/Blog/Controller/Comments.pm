@@ -39,7 +39,7 @@ sub find_by_path : Private {
     }
     $c->stash->{comment} = $article;    
 
-    return 0;
+    return;
 }
 
 sub default : Private {
@@ -49,16 +49,17 @@ sub default : Private {
     if(!$c->stash->{article}){
 	$c->stash->{template} = "error.tt";
 	$c->response->status(404);
-	return;
     }
-
-    $c->stash->{template} = "comments.tt";
+    else {
+	$c->stash->{template} = "comments.tt";
+    }
+    
+    return;
 }
 
 sub post : Local('post'){
     my ( $self, $c ) = @_;
-
-    my $preview = $c->request->param('Preview');
+    
     my $method = $c->request->method;
 
     # find what we're replying to
@@ -69,9 +70,10 @@ sub post : Local('post'){
     $object = $article if !defined $comment;
 
     # object is the object we're replying to
-
+    
+    my $title;
     if($method eq "POST"){
-	my $title = $c->request->param("title");
+	$title = $c->request->param("title");
 	my $body  = $c->request->param("body");
 
 	$title =~ s/[><&]//g;
@@ -79,14 +81,23 @@ sub post : Local('post'){
 	my $user = $c->stash->{user};
 	my $id   = $user->nice_id if ($user && $user->can('nice_id'));
 
-	$object->add_comment($title, $body, $id);
-	$c->response->redirect($c->stash->{article}->uri);
+	my $preview = $c->request->param('Preview');
+	if($preview){
+	    $c->stash->{body} = $body;
+	    $c->stash->{comment} = 
+	      Blog::Model::Filesystem::PreviewComment->new($c, $title, $body);
+	}
+	else {
+	    $object->add_comment($title, $body, $id);
+	    $c->response->redirect($c->stash->{article}->uri);
+	}
     }
     
-    $c->stash->{template} = "post_comment.tt";
+    $c->stash->{template} = 'post_comment.tt';
     $c->stash->{post_title} = "Re: ". $object->title;
     $c->stash->{action} = $c->request->uri->path;
-    #$c->response->body("comment is ". $article->title);
+
+    return;
 }
 
 

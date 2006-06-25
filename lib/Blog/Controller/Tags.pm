@@ -32,7 +32,7 @@ sub do_tag : LocalRegex('do_tag/.+') {
     $uri =~ m{tag/(.+)};
     my $article_name = $1;
     my $tags = $c->request->param("value");
-    my @tags = split /\W+/, $tags;
+    my @tags = split /\s+/, $tags;
     
     my $article;
     eval {
@@ -88,18 +88,13 @@ sub tag : LocalRegex('[^/]$') {
 
 sub tag_list : Private {
     my ($self, $c) = @_;
-    $c->response->body("You made it!");
+    $c->stash->{tags} = [$c->model('Filesystem')->get_tags];
+    $c->stash->{template} = 'tag_list.tt';
 }
 
 sub default : Private {
     my ( $self, $c ) = @_;
-
-    if($c->request->uri !~ m{tags/$}){
-	$c->response->redirect("/tags/");
-    }
-    else {
-	$c->forward("tag_list");
-    }
+    $c->forward('tag_list');
 }
 
 

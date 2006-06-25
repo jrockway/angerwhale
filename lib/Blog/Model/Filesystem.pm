@@ -5,7 +5,7 @@ use base 'Catalyst::Model';
 use NEXT;
 use Carp;
 use Blog::Model::Filesystem::Article;
-use File::ExtAttr qw(getfattr);
+use File::ExtAttr qw(getfattr listfattr);
 use Crypt::OpenPGP;
 
 sub new {
@@ -87,22 +87,9 @@ sub get_categories {
 
 sub get_tags {
     my $self = shift;
-    my $dirname = $self->{base};
-    
-    my %tag_count;
-    opendir my $dir, $dirname or die "cannot open $dirname: $!";
-    while(my $filename = readdir($dir)){
-	next if $filename =~ /^[.]/;
-	$filename = "$dirname/$filename";
-
-	my $attrs = getfattr($filename, "user.tags");
-	next if !defined $attrs;
-	warn "$filename: $attrs\n";
-	my @attrs = split /;/, $attrs;
-	map {$tag_count{lc $_}++} @attrs;
-    }
-
-    return sort keys %tag_count;
+    my @articles = $self->get_articles;
+    my @tags = map {$_->tags} @articles; 
+    return @tags;
 }
 
 sub get_by_category {

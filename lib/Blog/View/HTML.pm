@@ -3,11 +3,16 @@ package Blog::View::HTML;
 use strict;
 #use base 'Catalyst::View::TT';
 use base 'Catalyst::View::TT::ForceUTF8';
+use YAML;
 
-__PACKAGE__->config( STRICT_CONTENT_TYPE => 1,
-		     RECURSION => 1,
-		    );
-		     
+__PACKAGE__->config( 
+		    TOLERANT => 1,
+#		    TIMER => 1, 
+		    STRICT_CONTENT_TYPE => 1,
+		    RECURSION => 1,
+		    DEBUG => 1,
+		   );
+
 
 =head1 NAME
 
