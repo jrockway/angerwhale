@@ -8,8 +8,7 @@ use strict;
 use warnings;
 use Crypt::OpenPGP::KeyServer;
 use Crypt::OpenPGP::KeyRing;
-use Carp qw(cluck);
-use YAML;
+
 
 # id is Crypt::OpenPGP's format, i.e. the hex value packed into
 # 'H*'.  ($id = pack 'H*', hex "cafebabe") for 0xcafebabe
@@ -81,7 +80,7 @@ sub key {
 
     # see if we have it
     if(!$self->{public_key}){
-	die "No public key found.";
+	warn "No public key found for ". $self->nice_id;
     }
     
     return $self->{public_key};

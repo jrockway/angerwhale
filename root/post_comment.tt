@@ -7,7 +7,7 @@
 </div>
 [% END %]
 
-[% IF !defined(user) || !comment.signed %]
+[% IF !user && !comment.signed %]
 <p class="message">
 
 Note: you're not logged in.  To identify yourself, please <a

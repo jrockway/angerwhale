@@ -89,6 +89,8 @@ sub get_tags {
     my $self = shift;
     my @articles = $self->get_articles;
     my @tags = map {$_->tags} @articles; 
+    my %found;
+    @tags = grep {!$found{$_}++} @tags;
     return @tags;
 }
 

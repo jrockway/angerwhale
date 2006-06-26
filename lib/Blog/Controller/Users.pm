@@ -22,8 +22,9 @@ Provides a listing of users and information about those users.
 
 sub default : Private {
     my ( $self, $c ) = @_;
-
+    
     my @users = $c->model('UserStore')->users;
+
     foreach my $user (@users){
 	$user->refresh;
     }

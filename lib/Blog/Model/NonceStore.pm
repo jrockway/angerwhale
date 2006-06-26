@@ -101,6 +101,40 @@ sub unstore_session {
     die "No such session $sid ($@)";
 }
 
+sub clean_sessions {
+    my $self    = shift;
+    my $timeout = $self->{session_expire} || 3600;
+    my $dir     = $self->{sessions}. '/established';
+
+    _clean($timeout, $dir);
+}
+
+sub clean_nonces {
+    my $self    = shift;
+    my $timeout = $self->{nonce_expire} || 3600;
+    my $dir     = $self->{sessions}. '/pending';
+
+    _clean($timeout, $dir);
+}
+
+
+sub _clean {
+    my $timeout = shift;
+    my $dir     = shift;
+
+    my $count = 0;
+    opendir my $dh, $dir or die;
+    while(my $file = readdir $dh){
+	my $path  = "$dir/$file";
+	my $mtime = (stat $path)[9];
+	if((time() - $mtime) > $timeout){
+	    $count++;
+	    unlink $path;
+	}
+    }
+}
+
+
 =head1 NAME
 
 Blog::Model::NonceStore - stores session information in the filesystem

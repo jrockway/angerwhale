@@ -56,7 +56,6 @@ sub _parse {
 	if (blessed $element && $element->isa('HTML::Element')){
 	    my @kids = $element->content_list;
 	    my $type = $element->tag;
-	    
 	    # if it's a link
 	    if($type eq 'a'){
 		no warnings;
@@ -107,7 +106,10 @@ sub _parse {
 
 	    # ignore the header, do nothing.
 	    elsif($type eq 'head'){}
-	    
+
+	    # also ignore script, just in case
+	    elsif($type eq 'script'){}
+
 	    # something else
 	    else {
 		no warnings;

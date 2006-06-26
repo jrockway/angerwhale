@@ -157,6 +157,7 @@ sub title {
     # otherwise the filename is more than adequate
     if(!$name){
 	$name = $self->name;
+	$name =~ s{[.]\w+$}{};
     }
     return $name;
 }

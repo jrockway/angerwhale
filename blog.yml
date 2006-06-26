@@ -2,10 +2,12 @@ Model::Filesystem:
  base: /home/jon/tmp/blog_data
 Model::NonceStore:
  sessions: /home/jon/tmp/blog_data/.sessions
+ session_expire: 3600
+ nonce_expire: 300
 Model::UserStore:
  users: /home/jon/tmp/blog_data/.users
 
-name: Weblog.
+name: Blog
 blog_title: Test Weblog
-sidebar_blurb: "This is a test weblog, 98% devoid of actual content.  Note the similiarity to real, non-test weblogs."
-sidebar_picture: /static/jon.jpg
+sidebar_blurb: ~
+sidebar_picture: /static/perl_republic.gif

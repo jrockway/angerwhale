@@ -3,6 +3,7 @@
 
   [% FOREACH article = articles %][% INCLUDE post.tt %][% END %]
 
+[% IF previous || next %]
 <div id="nav_footer">
      <p>
 	[% IF previous > 0 %]	
@@ -18,4 +19,5 @@
 	[% END %]
      </p>
 </div>
+[% END %]
 [% END %]

@@ -2,9 +2,9 @@
 
 <h2> Users that I know about </h2>
 <ul>
-[% FOREACH user = users %]
-<li>[% user.fullname %] &lt;[% user.email %]&gt;<br />
-    [% user.nice_id %] - [% user.key_fingerprint %]
+[% FOREACH auser = users %]
+<li>[% auser.fullname %] &lt;[% auser.email %]&gt;<br />
+    [% auser.nice_id %] - [% auser.key_fingerprint %]
 </li>
 
 [% END %]
