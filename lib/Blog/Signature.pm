@@ -4,7 +4,6 @@
 # $Id: $
 
 package Blog::Signature;
-
 use strict;
 use warnings;
 
@@ -20,7 +19,7 @@ sub new {
     my $self = {};
     $self->{data} = $data;
     $self->{pgp} = Crypt::OpenPGP->new;
-
+    
     my ($msg_data, $sig) =  _decode($self);
     
     $self->{decoded_data} = $msg_data;

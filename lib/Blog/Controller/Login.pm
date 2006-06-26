@@ -64,7 +64,7 @@ sub process : Local {
     };
     
     if($@){
-	$c->log->warn("Failed login for 0x$nice_key_id");
+	$c->log->warn("Failed login for $nice_key_id");
 	$c->response->body("You cheating scum!  You are NOT $nice_key_id!");
 	return;
     }
@@ -73,7 +73,8 @@ sub process : Local {
 	my $session_id = $c->model('NonceStore')->store_session($user);
 	$c->model('UserStore')->refresh_user($user);
 	
-	$c->log->info("successful login for ". $user->nice_id);
+	$c->log->info("successful login for ". $user->fullname.
+		      "($nice_key_id)");
 	$c->log->debug("new session $session_id created");
 	$c->response->body("Passed!  You are ". $user->fullname.
 			   " (0x". $user->nice_id. ").");

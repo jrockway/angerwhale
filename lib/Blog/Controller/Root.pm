@@ -38,7 +38,7 @@ sub auto : Private {
 	    my $uid = $c->model('NonceStore')->unstore_session($sid);
 	    $c->stash->{user} = $c->model("UserStore")->
 	      get_user_by_nice_id($uid);
-	    $c->log->debug("got user $uid, ". $c->stash->{user}->nice_id);
+	    $c->log->debug("got user $uid, ". $c->stash->{user}->fullname);
 	};
 	if ($@){
 	    $c->log->debug("Failed to restore session $sid: $@");

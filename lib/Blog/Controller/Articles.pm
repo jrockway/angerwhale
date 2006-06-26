@@ -38,8 +38,10 @@ sub show_article : LocalRegex('[^.]') {
     my ($self, $c) = @_;
     my $name = uri_unescape($c->request->uri);
     
-    $name =~ m{/([^/]+)$};
+    $name =~ m{/([^/]+)(/raw)?$};
     $name = $1;
+    my $raw = $2;
+    
     $c->stash->{template} = "article.tt";
     eval {
 	$c->stash->{article} = $c->stash->{root}->get_article($name);
@@ -51,6 +53,15 @@ sub show_article : LocalRegex('[^.]') {
 	return;
     }
     $c->stash->{title} = $c->stash->{article}->title;
+
+    # if the user wants the raw message (to verify the signature),
+    # return that instead of rendering the template
+    if($raw){
+	$c->response->content_type('text/plain');
+	$c->response->body($c->stash->{article}->raw_text);
+	return;
+    }
+
 }
 
 sub default : Private {

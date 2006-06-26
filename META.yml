@@ -1,7 +1,7 @@
 abstract: Catalyst based application
 author: Jonathan Rockway
 distribution_type: module
-generated_by: Module::Install version 0.620
+generated_by: Module::Install version 0.630
 license: perl
 name: Blog
 no_index: 
@@ -29,7 +29,9 @@ requires:
   Digest::SHA1: 0
   File::CreationTime: 0
   File::ExtAttr: 0.04
+  File::Find: 0
   File::Slurp: 9999.12
+  Module::Pluggable: 0
   NEXT: 0.60
   Text::WikiFormat: 0.77
   URI::Escape: 3.28

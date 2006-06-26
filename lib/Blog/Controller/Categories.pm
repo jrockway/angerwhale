@@ -50,7 +50,7 @@ sub show_category : Private {
 	$c->stash->{message} = "No articles in $category.";
     } 
     my $total = scalar @articles;
-   
+    
     if($start > 0 && $start < @articles){
 	$c->stash->{previous} = $start;
 	@articles = @articles[$start..$#articles];

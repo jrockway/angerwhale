@@ -49,3 +49,11 @@ a.visited { color: blue; }
 .logged_in_as {font-style: italic;}
 
 #error {color: #ff0000; font-weight: bold;}
+.info img {border: none;}
+
+#advice p {font-size: 70%;}
+
+#replying_to_comment {border: 1px solid #aaaaaa; 
+		     background-color: #eeeeff; padding: 1em; }
+
+.message {font-size: 70%; }

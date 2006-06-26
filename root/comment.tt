@@ -4,6 +4,11 @@
     <p class="info">Written by
       <span class="author">[% comment.author.fullname %]</span>
       <span class="keyid">([% comment.author.nice_id %])</span>
+      [% IF comment.signed %]
+        <a href="[% comment.uri %]/raw">
+      	 <img src="/static/lock_icon.gif" alt="[SIGNED]" />
+        </a>
+      [% END %]
       on
       <span class="date">[% comment.creation_time %]</span>
     </p>

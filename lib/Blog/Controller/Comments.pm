@@ -3,6 +3,7 @@ package Blog::Controller::Comments;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
+use Blog::Format;
 
 =head1 NAME
 
@@ -51,7 +52,15 @@ sub default : Private {
 	$c->response->status(404);
     }
     else {
-	$c->stash->{template} = "comments.tt";
+	
+	if($c->request->uri->as_string =~ m{/raw$}){
+	    $c->response->content_type('text/plain');
+	    $c->response->body($c->stash->{comment}->raw_text);
+	}
+	
+	else {
+	    $c->stash->{template} = "comments.tt";
+	}
     }
     
     return;
@@ -68,14 +77,15 @@ sub post : Local('post'){
     my $comment = $c->stash->{comment};
     my $object = $comment;
     $object = $article if !defined $comment;
-
     # object is the object we're replying to
     
-    my $title;
-    if($method eq "POST"){
-	$title = $c->request->param("title");
-	my $body  = $c->request->param("body");
+    $c->stash->{post_title} = "Re: ". $object->title;
 
+    my $title;
+    if($method eq 'POST'){
+	$title = $c->request->param('title');
+	my $body = $c->request->param('body');
+	my $type = $c->request->param('type'); 
 	$title =~ s/[><&]//g;
 
 	my $user = $c->stash->{user};
@@ -83,20 +93,28 @@ sub post : Local('post'){
 
 	my $preview = $c->request->param('Preview');
 	if($preview){
-	    $c->stash->{body} = $body;
+	    $c->stash->{post_title} = $title;
+	    $c->stash->{type}  = $type;
+
 	    $c->stash->{comment} = 
-	      Blog::Model::Filesystem::PreviewComment->new($c, $title, $body);
+	      Blog::Model::Filesystem::PreviewComment->new($c, $title,
+							   $body, $type);
+	    
+	    $body =~ s/&/&amp;/g;
+	    $body =~ s/</&lt;/g;
+	    $body =~ s/>/&gt;/g;
+	    
+	    $c->stash->{body}  = $body;
 	}
 	else {
-	    $object->add_comment($title, $body, $id);
+	    $object->add_comment($title, $body, $id, $type);
 	    $c->response->redirect($c->stash->{article}->uri);
 	}
     }
     
     $c->stash->{template} = 'post_comment.tt';
-    $c->stash->{post_title} = "Re: ". $object->title;
     $c->stash->{action} = $c->request->uri->path;
-
+    $c->stash->{types}  = [Blog::Format::types()];
     return;
 }
 

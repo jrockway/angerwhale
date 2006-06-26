@@ -6,17 +6,36 @@
 package Blog::Model::Filesystem::Item;
 use strict;
 use warnings;
-use File::Slurp;
-use File::ExtAttr qw(getfattr setfattr listfattr);
-require File::CreationTime; # don't want its imports today
-use Text::WikiFormat;
-use Data::GUID;
+
 use Blog::DateFormat;
+use Blog::Format;
 use Blog::User::Anonymous;
+use Carp;
+use Data::GUID;
+
+require File::CreationTime; # (dont want imports; conflict with my namespace)
+
+use File::ExtAttr qw(listfattr);
+use File::Find;
+use File::Slurp;
+
+use Text::WikiFormat;
 
 use overload (q{<=>} => "compare",
 	      q{cmp} => "compare",
 	      fallback => "TRUE");
+
+# for debugging
+
+sub getfattr {
+#    warn "*** getfattr: @_\n\n";
+    return File::ExtAttr::getfattr(@_);
+}
+sub setfattr {
+#    croak "*** setfattr: @_";
+    return File::ExtAttr::setfattr(@_);
+}
+
 
 # arguments are passed in a hash ref
 # base: top directory containing this item (and its friends)
@@ -30,16 +49,19 @@ sub new {
     my $base_obj  = $args->{base_obj};
     my $parent    = $args->{parent};
 
-    die "$base is not a valid base directory" if(!defined $base || !-d $base || !-r $base);
-    die "$path is not a valid path" if(!defined $path || -d $path);
-    die "base object was not specified" if(!defined $base_obj);
+    die "$base is not a valid base directory" 
+      if(!defined $base || !-d $base || !-r $base);
+    die "$path is not a valid path"     
+      if(!defined $path || -d $path);
+    die "base object was not specified" 
+      if(!defined $base_obj);
     
     my $self = {};
     $self->{base}      = $base;
     $self->{path}      = $path;
     $self->{base_obj}  = $base_obj;
     $self->{parent}    = $parent;   # undefined if this is an article (as opposed to a comment)
-    
+
     bless $self, $class;
     
     return $self;
@@ -58,7 +80,7 @@ sub set_tag {
     my $self = shift;
     my @tags = @_;  
     map {s{(?:\s|[_;,!.])}{}g;} @tags; # destructive map
-
+    
     foreach my $tag (@tags) {
 	#next if $tag =~ /^\s*$/; 
 	setfattr($self->{path}, "user.tags.$tag", "1");
@@ -99,15 +121,17 @@ sub tags {
 
 sub type {
     my $self = shift;
-    $self->{path} =~ m{[.](\w+)$};
-    $self->{type} = $1;
+    my $type = getfattr($self->{path}, 'user.type');
     
-    return $self->{type};
+    if(!$type){
+	$self->{path} =~ m{[.](\w+)$};
+    };
+    
+    return $type;
 }
 
 sub name {
     my $self = shift;
-    my $base = $self->{base};
     my $name;
 
     # use the title attribute if it exists
@@ -164,18 +188,7 @@ sub modification_time {
 
 sub summary {
     my $self = shift;
-    my $summary;
-
-    open my $data, '<', $self->{path}
-      or die "cannot open $self->{path} for reading: $!";
-
-    while(my $line = <$data>){
-	chomp $line;
-	if($line){
-	    $summary = $line;
-	    last;
-	}
-    }
+    my $summary = $self->text;
     
     my $SPACE = q{ };
     $summary =~ s/\s+/$SPACE/g;
@@ -189,15 +202,79 @@ sub summary {
     return $summary;
 }
 
+# returns the real_key_id of the PGP signature
+# you might want to validate the signature first; this routine doesn't do that
+# see signed() below.
+sub signor {
+    my $self = shift;
+    my $sig = Blog::Signature->new($self->raw_text);
+    return $sig->get_key_id;
+}
+
+sub _cached_signature {
+    my $self = shift;
+    return getfattr($self->{path}, "user.signed");
+}
+
+sub _cache_signature {
+    my $self = shift;
+    # set the "signed" attribute	
+    setfattr($self->{path}, "user.signed", "yes");
+}
+
+# returns signed text if signed with good signature, false otherwise
+sub signed {
+    my $self = shift;
+
+    eval {
+	my $sig = Blog::Signature->new($self->raw_text);
+	
+	# XXX: Crypt::OpenPGP is really really slow, so cache the result
+	my $signed = $self->_cached_signature;
+
+	if(defined $signed && $signed eq "yes"){
+	    return $sig->get_signed_data;
+	}
+
+	else {
+	    if($sig->verify){
+		# and fix the author info if needed
+		$self->_cache_signature;
+		$self->_fix_author($sig->get_key_id);
+		
+		return $sig->get_signed_data;
+	    }
+	    
+	    else {
+		return;
+	    }
+	}
+    };    
+}
+
+# if a user posts a comment with someone else's key, ignore the login
+# and base the author on the signature
+
+sub _fix_author {
+    my $self   = shift;
+    my $id     = shift;
+    my $nice_key_id = unpack("H*", $id);
+    
+    setfattr($self->{path}, 'user.author', $nice_key_id);
+}
+
 sub author {
     my $self = shift;
+    $self->signed; # fix the author information
+
     my $id = getfattr($self->{path}, "user.author");
     my $c = $self->{base_obj}->{context};
-
+    
     if(defined $id){
 	my $user = $c->model('UserStore')->get_user_by_nice_id($id);
 	return $user if $user;
     }
+
     return Blog::User::Anonymous->new();
 }
 
@@ -206,25 +283,16 @@ sub raw_text {
     return scalar read_file( $self->{path} );
 }
 
-### XXX: this needs some work.  not as good as it could be.
 sub text {
     my $self = shift;
-    my $text = $self->raw_text;
 
-    $text =~ s/&/&amp;/g;
-    $text =~ s/>/&gt;/g;
-    $text =~ s/</&lt;/g;
-    
-    return Text::WikiFormat::format($text);#,
-				    #{
-				    # newline   => "",
-				    # paragraph => 
-				    # [ '<p>', "</p>\n", ' ',],
-				    #},
-				    #{
-				    # implicit_links => 0,
-				    # extended       => 1,
-				    #}); 
+    my $text = $self->signed;
+
+    if(!$text){
+	$text = $self->raw_text;
+    }
+
+    return Blog::Format::format($text, $self->type);
 }
 
 # hierarchy
@@ -252,10 +320,12 @@ sub comment_dir {
 sub comment_count {
     my $self = shift;
     my $comment_dir = $self->comment_dir;
+    return 0 if !-e $comment_dir; # return 0 quickly
+
+    my $count = 0;
+    find( sub { $count ++ if !-d $File::Find::name }, $comment_dir);
     
-    my @files = grep { chomp; !-d $_ } `find $comment_dir`;
-    
-    return scalar @files;
+    return $count;
 }
 
 sub comments {
@@ -267,7 +337,8 @@ sub comments {
 	  or die "unable to create root commentdir: $!";
     }
     if(!-e $comment_dir){
-	mkdir $comment_dir or die "unable to create commentdir $comment_dir: $!";
+	mkdir $comment_dir or
+	  die "unable to create commentdir $comment_dir: $!";
     }
 
     opendir my $dir, $comment_dir 
@@ -280,10 +351,12 @@ sub comments {
 	next if $file =~ /^[.]/;
 
 	my $comment = Blog::Model::Filesystem::Comment->
-	  new({base     => $self->{base},
+	  new({
+	       base     => $self->{base},
 	       base_obj => $self->{base_obj},
 	       path     => $filename,
-	       parent   => $self});
+	       parent   => $self,
+	      });
 
 	push @comments, $comment;
     }
@@ -297,7 +370,8 @@ sub add_comment {
     my $title = shift;
     my $body = shift;
     my $user = shift;
-        
+    my $type = shift;
+    
     die "no data" if (!$title || !$body);
     
     my $comment_dir = $self->comment_dir;
@@ -305,9 +379,8 @@ sub add_comment {
       if !-d $comment_dir;
 
     my $safe_title = $title;
-    $safe_title =~ s{/}{}g;
-    $safe_title =~ s/^[.]+//g;
-    
+    $safe_title =~ s{[^A-Za-z_]}{}g; # kill anything unusual
+
     my $filename = "$comment_dir/$safe_title";
     while(-e $filename){ # make names unique
 	$filename .= " [". int(rand(10000)). "]";
@@ -341,6 +414,11 @@ sub add_comment {
 	setfattr($filename, "user.title", $title);
     }
 
+    # finally, set the type
+    if(defined $type){
+	setfattr($filename, "user.type", $type);
+    }
+    
     return;
 }
 
