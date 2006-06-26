@@ -17,7 +17,7 @@ sub can_format {
     my $request = shift;
 
     return 100 if($request =~ /te?xt/);
-    return 0;
+    return 1; # everything is text, so let this match a little
 }
 
 sub types {
@@ -37,7 +37,9 @@ sub format {
     $text =~ s/>/&gt;/g;
     $text =~ s/</&lt;/g;
 
-    return $text;
+    my @paragraphs = split /\n+/m, $text;
+    @paragraphs = grep {$_ !~ /^\s*$/} @paragraphs;
+    return join(' ', map {"<p>$_</p><br />"} @paragraphs);
 }
 
 1;

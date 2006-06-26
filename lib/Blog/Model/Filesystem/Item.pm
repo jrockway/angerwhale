@@ -125,7 +125,12 @@ sub type {
     
     if(!$type){
 	$self->{path} =~ m{[.](\w+)$};
-    };
+	$type = $1;
+    }
+
+    if(!$type){
+	$type = 'text';
+    }
     
     return $type;
 }
@@ -134,6 +139,16 @@ sub name {
     my $self = shift;
     my $name;
 
+    $self->{path} =~ m{([^/]+)$};
+    $name = $1;
+        
+    return $name;
+}
+
+sub title {
+    my $self = shift;
+    my $name;
+    
     # use the title attribute if it exists
     eval {
 	$name = getfattr($self->{path}, "user.title");
@@ -141,16 +156,9 @@ sub name {
     
     # otherwise the filename is more than adequate
     if(!$name){
-	$self->{path} =~ m{([^/]+)$};
-	$name = $1;
+	$name = $self->name;
     }
-    
     return $name;
-}
-
-sub title {
-    my $self = shift;
-    return $self->name;
 }
 
 sub id {

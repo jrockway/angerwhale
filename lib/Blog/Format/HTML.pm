@@ -59,13 +59,20 @@ sub _parse {
 	    
 	    # if it's a link
 	    if($type eq 'a'){
+		no warnings;
 		my $location = $element->attr('href');
 		my $uri      = URI->new($location);
 		
 		my $scheme = $uri->scheme;
-		if($scheme !~ /^(http|ftp|mailto)$/){
+		if(!$scheme){
+		    $uri->scheme('http');
+		    $scheme = 'http';
+		}
+
+		if($scheme !~ /^(http|ftp|mailto)$/ || $uri->as_string =~ /#/){
 		    $result .= _parse(@kids); # not a link.
 		}
+
 		else {
 		    $location = _escape($uri->as_string);
 		    $result  .= qq{<a href="$location">};
@@ -76,6 +83,7 @@ sub _parse {
 	    
 	    # one of these tags
 	    elsif(grep {$type eq $_} qw(i b u pre blockquote code p ol ul li)){
+		no warnings;
 		$result .= qq{<$type>};
 		$result .= _parse(@kids);
 		$result .= qq{</$type>};
@@ -83,6 +91,7 @@ sub _parse {
 
 	    # heading
 	    elsif($type =~ /h(\d+)/){
+		no warnings;
 		my $heading = $1;
 		$heading += 2;
 		$heading  = 6 if($heading > 6);
@@ -96,8 +105,12 @@ sub _parse {
 		$result .= '<br />';
 	    }
 
+	    # ignore the header, do nothing.
+	    elsif($type eq 'head'){}
+	    
 	    # something else
 	    else {
+		no warnings;
 		$result .= _parse(@kids);
 	    }
 	}

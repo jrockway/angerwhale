@@ -17,8 +17,7 @@ sub can_format {
     my $self    = shift;
     my $request = shift;
     
-    return 100 if $request eq 'wiki';
-    return 10; # catch-all
+    return 100 if defined $request && $request eq 'wiki';
 }
 
 sub types {

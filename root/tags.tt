@@ -12,7 +12,7 @@
   </p>
   <p id="plus_[% article.id %]" class="tag_plus">[+]</p>
 </div>
-[% SET url = "/tags/do_tag/" _ article.title %]
+[% SET url = "/tags/do_tag/" _ article.name %]
 [% SET control = "plus_" _ article.id %]
 [% SET id = "tags_" _ article.id %]
 [% c.prototype.in_place_editor(id, { url             => url, 
