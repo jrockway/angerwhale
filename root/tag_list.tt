@@ -1,0 +1,11 @@
+[% WRAPPER page.tt title='Tags' %]
+
+Articles have been tagged with the following tags:
+
+<ul>
+[% FOREACH tag=tags %]
+<li><a href="tags/[% tag %]">[% tag %]</a></li>
+[% END %]
+</ul>
+
+[% END %]
