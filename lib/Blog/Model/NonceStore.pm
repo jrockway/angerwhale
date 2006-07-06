@@ -106,7 +106,7 @@ sub clean_sessions {
     my $timeout = $self->{session_expire} || 3600;
     my $dir     = $self->{sessions}. '/established';
 
-    _clean($timeout, $dir);
+    return _clean($timeout, $dir);
 }
 
 sub clean_nonces {
@@ -114,7 +114,7 @@ sub clean_nonces {
     my $timeout = $self->{nonce_expire} || 3600;
     my $dir     = $self->{sessions}. '/pending';
 
-    _clean($timeout, $dir);
+    return _clean($timeout, $dir);
 }
 
 
@@ -132,6 +132,9 @@ sub _clean {
 	    unlink $path;
 	}
     }
+    closedir $dh;
+    
+    return $count;
 }
 
 

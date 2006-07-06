@@ -11,9 +11,21 @@ use utf8;
 
 my @daynames = qw(日 月 火 水 木 金 土);
 
+#sub new {
+#    my $class = shift;
+#    my $self = {seconds => $_[0] || time()};
+#    
+#    return bless $self, $class;
+#}
+#
+#sub from_epoch {
+#    return new(@_);
+#}
+#
+
 sub _stringify {
     my $self = shift;
-
+    
     my $year   = $self->year;
     my $month  = $self->month;
     my $day    = $self->day;
@@ -26,7 +38,7 @@ sub _stringify {
     my $ampm   = ($hour < 11) ? "am" : "pm";
     $hour %= 12;
     $hour =~ s/^0+$/12/;
-
+    
     $wkday = $daynames[$wkday%7];
     
     return "$month-$day-$year ($wkday) $hour:$minute $ampm";

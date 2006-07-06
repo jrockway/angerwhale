@@ -42,13 +42,16 @@ sub format {
     $html->parse($text);
     $html->eof;
 
-    my $result =  _parse($html->guts);
+    my $result = $self->_parse($html->guts);
     $html->delete;
 
     return "$result";
 }
 
 sub _parse {
+
+    my $self = shift;
+
     my @elements = @_;
     my $result;
     foreach my $element (@elements){
@@ -69,13 +72,13 @@ sub _parse {
 		}
 
 		if($scheme !~ /^(http|ftp|mailto)$/ || $uri->as_string =~ /#/){
-		    $result .= _parse(@kids); # not a link.
+		    $result .= $self->_parse(@kids); # not a link.
 		}
 
 		else {
 		    $location = _escape($uri->as_string);
 		    $result  .= qq{<a href="$location">};
-		    $result  .= _parse(@kids);
+		    $result  .= $self->_parse(@kids);
 		    $result  .= '</a>';
 		}
 	    }
@@ -84,7 +87,7 @@ sub _parse {
 	    elsif(grep {$type eq $_} qw(i b u pre blockquote code p ol ul li)){
 		no warnings;
 		$result .= qq{<$type>};
-		$result .= _parse(@kids);
+		$result .= $self->_parse(@kids);
 		$result .= qq{</$type>};
 	    }
 
@@ -95,7 +98,7 @@ sub _parse {
 		$heading += 2;
 		$heading  = 6 if($heading > 6);
 		$result  .= qq{<h$heading>};
-		$result  .= _parse(@kids);
+		$result  .= $self->_parse(@kids);
 		$result  .= qq{</h$heading>};
 	    }
 
@@ -113,7 +116,7 @@ sub _parse {
 	    # something else
 	    else {
 		no warnings;
-		$result .= _parse(@kids);
+		$result .= $self->_parse(@kids);
 	    }
 	}
 

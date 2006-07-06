@@ -20,8 +20,8 @@ our $VERSION = '0.01';
 
 __PACKAGE__->setup;
 
-__PACKAGE__->schedule( at    => '0 * * * *',
-		       event => '/ScheduledEvents/clean_sessions', );
+__PACKAGE__->schedule( at    => '25 * * * *',
+		       event => '/scheduledevents/clean_sessions', );
 
 #
 # IMPORTANT: Please look into Blog::Controller::Root for more
