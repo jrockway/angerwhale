@@ -1,5 +1,6 @@
 blog.yml
 Changes
+config
 inc/Module/AutoInstall.pm
 inc/Module/Install.pm
 inc/Module/Install/AutoInstall.pm
@@ -82,7 +83,6 @@ root/tag_list.tt
 root/tags.tt
 root/tags_as_text.tt
 root/users.tt
-script/.gdb_history
 script/blog_cgi.pl
 script/blog_create.pl
 script/blog_fastcgi.pl
