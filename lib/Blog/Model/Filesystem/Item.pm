@@ -389,38 +389,56 @@ sub add_comment {
     while(-e $filename){ # make names unique
 	$filename .= " [". int(rand(10000)). "]";
     }
-    
-    open my $comment, '>', $filename
+
+    ## write the comment atomically ##
+    my $tmpname = $filename;
+    $tmpname =~ s{/([^/]+)$}{._tmp_.$1};
+    # /foo/bar/comment1337abc! -> /foo/bar/._tmp_.comment1337abc!
+    # maybe make a random filename instead?
+
+    open my $comment, '>', $tmpname
       or die "unable to open $filename: $!";
     eval {
-	print {$comment} $body or die "io error: $!";
-	print {$comment} "\n" or die "io error: $!";
+	print {$comment} "$body\n" or die "io error: $!";
 	close $comment;
+	rename($tmpname => $filename) or 
+	  die "Couldn't rename $tmpname to $filename: $!";
+    };
+    if($@){
+	my $error = $@;
+	eval {
+	    unlink $tmpname;
+	    unlink $filename; # partial rename !?
+	    close $comment;
+	};
+	die $error; # propagate the message up
+    }
+    
+    # set attributes: (TODO: atomic also)
+    eval {
+	# finally, attribute the comment to someone, if possible
+	if($user) {
+	    set_attribute($filename, 'author', $user);
+	}
+	
+	# and if the safe title and real title don't match, set 
+	# the title attribute
+	
+	$filename =~ m{/([^/]+)$}; # take into account the [##] that we added
+	$safe_title = $1;
+	
+	if($title ne $safe_title){
+	    set_attribute($filename, 'title', $title);
+	}
+	
+	# finally, set the type
+	if(defined $type){
+	    set_attribute($filename, 'type', $type);
+	}
     };
     if($@){
 	unlink $filename;
-	close $comment;
-	die $@; # propagate the message up
-    }
-
-    # finally, attribute the comment to someone, if possible
-    if($user) {
-	set_attribute($filename, 'author', $user);
-    }
-
-    # and if the safe title and real title don't match, set 
-    # the title attribute
-    
-    $filename =~ m{/([^/]+)$}; # take into account the [##] that we added
-    $safe_title = $1;
-
-    if($title ne $safe_title){
-	set_attribute($filename, 'title', $title);
-    }
-
-    # finally, set the type
-    if(defined $type){
-	set_attribute($filename, 'type', $type);
+	die "Problems seting attributes: $@";
     }
     
     return;
