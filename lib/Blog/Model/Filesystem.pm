@@ -5,7 +5,6 @@ use base 'Catalyst::Model';
 use NEXT;
 use Carp;
 use Blog::Model::Filesystem::Article;
-use File::ExtAttr qw(getfattr listfattr);
 use Crypt::OpenPGP;
 
 sub new {

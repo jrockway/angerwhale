@@ -22,8 +22,9 @@ requires (Catalyst => '5.66',
 	  DateTime => '0.30',
 	  Digest::MD5 => 0,
 	  Digest::SHA1 => 0,
-	  File::CreationTime => 0,
-	  File::ExtAttr => '0.04',
+	  File::Attributes => 0,
+	  File::CreationTime => '2.02', # older versions will work, if
+					# that's all you have
 	  File::Find => 0,
 	  File::Slurp => '9999.12',
 	  HTML::TreeBuilder => 0,

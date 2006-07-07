@@ -15,7 +15,7 @@ use Data::GUID;
 
 require File::CreationTime; # (dont want imports; conflict with my namespace)
 
-use File::ExtAttr qw(listfattr);
+use File::Attributes qw(list_attributes get_attribute set_attribute);
 use File::Find;
 use File::Slurp;
 
@@ -24,17 +24,6 @@ use Text::WikiFormat;
 use overload (q{<=>} => "compare",
 	      q{cmp} => "compare",
 	      fallback => "TRUE");
-
-# for debugging
-
-sub getfattr {
-#    warn "*** getfattr: @_\n\n";
-    return File::ExtAttr::getfattr(@_);
-}
-sub setfattr {
-#    croak "*** setfattr: @_";
-    return File::ExtAttr::setfattr(@_);
-}
 
 
 # arguments are passed in a hash ref
@@ -82,8 +71,9 @@ sub set_tag {
     map {s{(?:\s|[_;,!.])}{}g;} @tags; # destructive map
     
     foreach my $tag (@tags) {
-	#next if $tag =~ /^\s*$/; 
-	setfattr($self->{path}, "user.tags.$tag", "1");
+	my $count = eval { get_attribute($self->{path}, "user.tags.$tag"); };
+	$count = 0 if($count < 0);
+	set_attribute($self->{path}, "user.tags.$tag", ++$count);
     }
     
     return $self->tags;
@@ -95,7 +85,7 @@ sub tags {
     
     my @attributes;
     eval {
-	@attributes = listfattr($filename);
+	@attributes = list_attributes($filename);
     };
     
     my %taglist; # hash to avoid duplicates (due to case)
@@ -121,7 +111,7 @@ sub tags {
 
 sub type {
     my $self = shift;
-    my $type = getfattr($self->{path}, 'user.type');
+    my $type = get_attribute($self->{path}, 'type');
     
     if(!$type){
 	$self->{path} =~ m{[.](\w+)$};
@@ -151,7 +141,7 @@ sub title {
     
     # use the title attribute if it exists
     eval {
-	$name = getfattr($self->{path}, "user.title");
+	$name = get_attribute($self->{path}, 'title');
     };
     
     # otherwise the filename is more than adequate
@@ -168,14 +158,19 @@ sub id {
     my $guid;
     
     eval {
-	$guid = getfattr($path, "user.guid");
+	$guid = get_attribute($path, 'guid');
 	$guid = Data::GUID->from_string($guid);
     };
     return $guid->as_string if(!$@ && $guid->as_string);
       
     $guid = Data::GUID->new;
-    setfattr($path, 'user.guid', $guid->as_string);
 
+    eval {
+	set_attribute($path, 'guid', $guid->as_string);
+    };
+    if($@){
+	die "Problem setting guid on $path: $@";
+    }
     return $guid->as_string;
 }
 
@@ -222,13 +217,13 @@ sub signor {
 
 sub _cached_signature {
     my $self = shift;
-    return getfattr($self->{path}, "user.signed");
+    return get_attribute($self->{path}, 'signed');
 }
 
 sub _cache_signature {
     my $self = shift;
     # set the "signed" attribute	
-    setfattr($self->{path}, "user.signed", "yes");
+    set_attribute($self->{path}, 'signed', "yes");
 }
 
 # returns signed text if signed with good signature, false otherwise
@@ -269,14 +264,14 @@ sub _fix_author {
     my $id     = shift;
     my $nice_key_id = unpack("H*", $id);
     
-    setfattr($self->{path}, 'user.author', $nice_key_id);
+    set_attribute($self->{path}, 'author', $nice_key_id);
 }
 
 sub author {
     my $self = shift;
     $self->signed; # fix the author information
 
-    my $id = getfattr($self->{path}, "user.author");
+    my $id = get_attribute($self->{path}, 'author');
     my $c = $self->{base_obj}->{context};
     
     if(defined $id){
@@ -410,7 +405,7 @@ sub add_comment {
 
     # finally, attribute the comment to someone, if possible
     if($user) {
-	setfattr($filename, "user.author", $user);
+	set_attribute($filename, 'author', $user);
     }
 
     # and if the safe title and real title don't match, set 
@@ -420,12 +415,12 @@ sub add_comment {
     $safe_title = $1;
 
     if($title ne $safe_title){
-	setfattr($filename, "user.title", $title);
+	set_attribute($filename, 'title', $title);
     }
 
     # finally, set the type
     if(defined $type){
-	setfattr($filename, "user.type", $type);
+	set_attribute($filename, 'type', $type);
     }
     
     return;
