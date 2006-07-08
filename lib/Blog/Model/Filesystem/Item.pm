@@ -327,9 +327,21 @@ sub comment_count {
     return 0 if !-e $comment_dir; # return 0 quickly
 
     my $count = 0;
-    find( sub { $count ++ if !-d $File::Find::name }, $comment_dir);
+    find( sub { $count ++ if $self->_comment_counter($File::Find::name) }, 
+	  $comment_dir);
     
     return $count;
+}
+
+sub _comment_counter {
+    my $self     = shift;
+    my $filename = shift;
+
+    return if $filename =~ m{/[.][^/]+$};
+    return if -d $filename;
+    return if !-r $filename;
+
+    return 1;
 }
 
 sub comments {
