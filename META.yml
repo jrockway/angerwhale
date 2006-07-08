@@ -16,6 +16,7 @@ requires:
   Catalyst::Plugin::Prototype: 1.320
   Catalyst::Plugin::Scheduler: 0
   Catalyst::Plugin::Static::Simple: 0.140
+  Catalyst::View::TT::ForceUTF8: 0
   Crypt::Blowfish: 0
   Crypt::CAST5_PP: 0
   Crypt::DES_EDE3: 0
@@ -35,11 +36,12 @@ requires:
   HTML::TreeBuilder: 0
   Module::Pluggable: 0
   NEXT: 0.60
-  Pod::Simple::HTML: 0
+  Pod::Checker: 0
+  Pod::Xhtml: 1.51
   Scalar::Util: 0
   Text::WikiFormat: 0.77
   URI::Escape: 3.28
-  YAML: 0.58
+  YAML: 0.60
   base: 0
   overload: 1.02
   version: 0

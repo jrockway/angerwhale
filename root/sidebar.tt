@@ -9,45 +9,7 @@
     [% c.config.sidebar_blurb %]
   </p>		
   [% END %]
-  <div class="box">
-  <div id="sidebar_navigation">
-    <p>
-      [% IF page != "home" %]
-      <a href="/">Home</a>
-      [% ELSE %]
-      Home
-      [% END %]
-    
-      |
-
-      [% IF page != "article_list" %]
-      <a href="/articles/">Articles</a>
-      [% ELSE %]
-      Articles
-      [% END %]
-    </p>
-  </div>
-  [% IF root.get_categories %]
-  <div id="sidebar_categories">
-    <h3>Categories</h3>
-    <ul>
-      [% FOREACH category = root.get_categories %]
-      <li><a href="/categories/[% category | uri %]">
-      	     [% category %]</a></li>
-      [% END %]
-    </ul>
-  </div>
-  [% END %]
-
-  [% IF root.get_tags %]
-  <div id="sidebar_tags">
-    <h3>Tags</h3>
-    <ul>
-      [% FOREACH tag = root.get_tags %]
-      <li><a href="/tags/[% tag | uri %]">[% tag %]</a></li>
-      [% END %]
-    </ul>
-  </div>
-  [% END %]
+  <div id="sidebar_box_outside" class="box">
+   [% INCLUDE navbox.tt %]
   </div>
 </div>

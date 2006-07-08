@@ -81,7 +81,7 @@ sub get_categories {
 	
 	push @categories, $file if (-d $filename && -r $filename);
     }
-    return @categories;
+    return sort @categories;
 }
 
 sub get_tags {
@@ -90,7 +90,7 @@ sub get_tags {
     my @tags = map {$_->tags} @articles; 
     my %found;
     @tags = grep {!$found{$_}++} @tags;
-    return @tags;
+    return sort @tags;
 }
 
 sub get_by_category {

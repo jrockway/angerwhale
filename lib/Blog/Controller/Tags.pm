@@ -92,6 +92,16 @@ sub tag_list : Private {
     $c->stash->{template} = 'tag_list.tt';
 }
 
+sub get_nav_box : Local {
+    my ($self, $c) = @_;
+    if ($c->request->param('_home')){
+	$c->stash->{page} = 'home';
+    }
+    $c->stash->{categories} = [$c->model('Filesystem')->get_categories];
+    $c->stash->{tags} = [$c->model('Filesystem')->get_tags];
+    $c->stash->{template} = 'navbox.tt';
+}
+
 sub default : Private {
     my ( $self, $c ) = @_;
     $c->forward('tag_list');

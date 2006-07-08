@@ -5,7 +5,15 @@
   <head>
     <title>[% title %]</title>
     <link rel="stylesheet" href="/static/style.css" type="text/css" />
-    <script src="/static/prototype.js" type="text/javascript"></script>
+
+    <script type="text/javascript" src="/static/prototype.js"></script>
+    <script type="text/javascript" src="/static/builder.js"></script>
+    <script type="text/javascript" src="/static/controls.js"></script>
+    <script type="text/javascript" src="/static/dragdrop.js"></script>
+    <script type="text/javascript" src="/static/effects.js"></script>
+    <script type="text/javascript" src="/static/slider.js"></script>
+    <script type="text/javascript" src="/static/scriptaculous.js"></script>
+
   </head>
   <body>
     <div id="header" class="header">

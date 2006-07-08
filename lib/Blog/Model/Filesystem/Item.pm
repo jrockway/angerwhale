@@ -97,7 +97,7 @@ sub tags {
     }
 
     
-    my @taglist = keys %taglist;
+    my @taglist = sort keys %taglist;
     
     if(wantarray){
 	return @taglist;
