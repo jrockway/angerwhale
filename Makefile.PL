@@ -4,6 +4,7 @@ name 'Blog';
 all_from 'lib/Blog.pm';
 
 requires (Catalyst => '5.66',
+	  Catalyst::View::TT::ForceUTF8 => 0,
 	  Carp => 0,
 	  Catalyst::Plugin::ConfigLoader => '0.040',
 	  Catalyst::Plugin::DefaultEnd => 0,
