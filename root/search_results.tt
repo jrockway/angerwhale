@@ -9,13 +9,13 @@
       articles
       [% END %]
       to display.</p>
-    <table id="article_list">
+    <ul id="article_list">
       [% FOREACH item = articles %]
-      <tr>
-	<td><a href="[% item.uri %]">[% item.title %]</a></td>
-	<td class="creation_time">[% item.creation_time %]</td>
-	<td>[% item.summary %]</td>
+      <li>
+        <p><a href="[% item.uri %]">[% item.title %]</a>
+	      [% item.creation_time %]</p>
+	<p>[% item.summary %]</p>
       [% END %]
-    </table>
+    </ul>
 </div>
 [% END %]

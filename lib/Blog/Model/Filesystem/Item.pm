@@ -201,12 +201,15 @@ sub summary {
     
     my $SPACE = q{ };
     $summary =~ s/\s+/$SPACE/g;
-    
+
+    # get rid of HTML
+    $summary =~ s{</?[a-z]+(.?/)?>}{}g;
+
     my @words = split /\s+/, $summary;
     if(@words > 10){
 	@words = @words[0..9];
 	$summary = join $SPACE, @words;
-	$summary .= "…"; # utf-8 elipsis
+	$summary .= " …"; # utf-8 elipsis
     }
     return $summary;
 }
