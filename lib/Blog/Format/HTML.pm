@@ -7,8 +7,8 @@ use strict;
 use warnings;
 use HTML::TreeBuilder;
 use Scalar::Util qw(blessed);
-use YAML;
 use URI;
+use Quantum::Superpositions;
 
 sub new {
     my $class = shift;
@@ -61,7 +61,6 @@ sub _parse {
 	    my $type = $element->tag;
 	    # if it's a link
 	    if($type eq 'a'){
-		no warnings;
 		my $location = $element->attr('href');
 		my $uri      = URI->new($location);
 		
@@ -84,8 +83,7 @@ sub _parse {
 	    }
 	    
 	    # one of these tags
-	    elsif(grep {$type eq $_} qw(i b u pre blockquote code p ol ul li)){
-		no warnings;
+	    elsif($type eq any(qw(i b u pre blockquote code p ol ul li))){
 		$result .= qq{<$type>};
 		$result .= $self->_parse(@kids);
 		$result .= qq{</$type>};
@@ -93,7 +91,6 @@ sub _parse {
 
 	    # heading
 	    elsif($type =~ /h(\d+)/){
-		no warnings;
 		my $heading = $1;
 		$heading += 2;
 		$heading  = 6 if($heading > 6);
@@ -107,15 +104,14 @@ sub _parse {
 		$result .= '<br />';
 	    }
 
-	    # ignore the header, do nothing.
-	    elsif($type eq 'head'){}
+	    # ignore the header completely
+	    elsif($type eq 'head'){return "";} # to shut up warnings
 
 	    # also ignore script, just in case
-	    elsif($type eq 'script'){}
+	    elsif($type eq 'script'){return "";} # same
 
 	    # something else
 	    else {
-		no warnings;
 		$result .= $self->_parse(@kids);
 	    }
 	}

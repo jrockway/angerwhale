@@ -71,9 +71,9 @@ sub set_tag {
     map {s{(?:\s|[_;,!.])}{}g;} @tags; # destructive map
     
     foreach my $tag (@tags) {
-	my $count = eval { get_attribute($self->{path}, "user.tags.$tag"); };
+	my $count = eval { get_attribute($self->{path}, "tags.$tag"); };
 	$count = 0 if($count < 0);
-	set_attribute($self->{path}, "user.tags.$tag", ++$count);
+	set_attribute($self->{path}, "tags.$tag", ++$count);
     }
     
     return $self->tags;
@@ -91,7 +91,7 @@ sub tags {
     my %taglist; # hash to avoid duplicates (due to case)
     foreach my $attribute (@attributes){
 	$attribute = lc $attribute;
-	if($attribute =~ /^user[.]tags[.](.+)$/){
+	if($attribute =~ /^tags[.](.+)$/){
 	    $taglist{$1} = 1;
 	}
     }
@@ -179,6 +179,8 @@ sub creation_time {
     
     my $ct;
     $ct = File::CreationTime::creation_time($self->{path});
+#    return $ct;
+
     return Blog::DateFormat->from_epoch(epoch => $ct,
 					time_zone => "America/Chicago");      
 }
@@ -186,6 +188,9 @@ sub creation_time {
 sub modification_time {
     my $self = shift;
     my $time = (stat($self->{path}))[9];
+    
+#    return $time;
+
     return Blog::DateFormat->from_epoch(epoch => $time,
 					time_zone => "America/Chicago");
 }
