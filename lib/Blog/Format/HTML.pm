@@ -49,11 +49,10 @@ sub format {
 }
 
 sub _parse {
-
     my $self = shift;
 
     my @elements = @_;
-    my $result;
+    my $result = q{ };
     foreach my $element (@elements){
 	my $type;
 	if (blessed $element && $element->isa('HTML::Element')){
@@ -105,10 +104,10 @@ sub _parse {
 	    }
 
 	    # ignore the header completely
-	    elsif($type eq 'head'){return "";} # to shut up warnings
+	    elsif($type eq 'head'){}
 
 	    # also ignore script, just in case
-	    elsif($type eq 'script'){return "";} # same
+	    elsif($type eq 'script'){}
 
 	    # something else
 	    else {
@@ -121,6 +120,7 @@ sub _parse {
 	    $result .= _escape($element);
 	}
     }
+    
     return $result;
 }
 
