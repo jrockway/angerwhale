@@ -1,13 +1,13 @@
 Model::Filesystem:
- base: /home/jon/tmp/blog_data
+ base: /var/blog
 Model::NonceStore:
- sessions: /home/jon/tmp/blog_data/.sessions
+ sessions: /var/blog/.sessions
  session_expire: 3600
  nonce_expire: 300
 Model::UserStore:
- users: /home/jon/tmp/blog_data/.users
+ users: /var/blog
 
 name: Blog
-blog_title: Test Weblog
+blog_title: Jonathan Rockway's Blog!
 sidebar_blurb: ~
-sidebar_picture: /static/perl_republic.gif
+sidebar_picture: ~
