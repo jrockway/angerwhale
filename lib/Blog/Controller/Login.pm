@@ -58,13 +58,19 @@ sub process : Local {
     
     eval {
 	my $challenge = Load($nonce_data) or die "couldn't deserialize request";
-	
-	die unless $c->model("NonceStore")->verify_nonce($challenge) && 
-	  $sig->verify;
+
+	my $nonce_ok = $c->model("NonceStore")->verify_nonce($challenge);
+	my $sig_ok   = $sig->verify;
+
+	$c->log->debug("$nice_key_id: nonce verified OK (was $challenge)") if $nonce_ok;
+	$c->log->debug("$nice_key_id: Signature was valid") if $sig_ok;
+
+	die "bad nonce" if !$nonce_ok;
+	die "bad sig"   if !$sig_ok;
     };
     
     if($@){
-	$c->log->warn("Failed login for $nice_key_id");
+	$c->log->warn("Failed login for $nice_key_id: $@");
 	$c->response->body("You cheating scum!  You are NOT $nice_key_id!");
 	return;
     }
