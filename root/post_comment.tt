@@ -39,7 +39,7 @@ ASCII-armored is OK).
   Caveat poster: if you decide to digitally sign your post, add
   something to it mentioning that it is attached to this article.
   Otherwise, someone could just paste it into another discussion, out of
-  context.
+  context, and the signature would still validate.
  </p>
 </div>
 

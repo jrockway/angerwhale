@@ -12,7 +12,7 @@
     <ul id="article_list">
       [% FOREACH item = articles %]
       <li>
-        <p><a href="[% item.uri %]">[% item.title %]</a>
+        <p><a href="[% base %][% item.uri %]">[% item.title %]</a>
 	      [% item.creation_time %]</p>
 	<p>[% item.summary %]</p>
       [% END %]

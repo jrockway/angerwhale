@@ -467,7 +467,7 @@ sub add_comment {
 sub post_uri {
     my $self = shift;
     my $uri  = $self->uri;
-    $uri =~ s{/comments/}{/comments/post/};
+    $uri =~ s{comments/}{comments/post/};
     return $uri;
 }
 

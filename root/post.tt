@@ -1,4 +1,3 @@
-[% USE CGI %]
 <div class="post">
   <div class="post_title">
     <h2> [% article.title %]</h2>
@@ -6,7 +5,7 @@
     <div class="post_date">
      <p>
 	[% IF article.signed %]
-	    <a href="[% article.uri %]/raw">
+	    <a href="[% base %][% article.uri %]/raw">
 	      <img style="border: none;"
 	      	   src="/static/lock_icon.gif" alt="[SIGNED]" />
 	    </a>
@@ -21,10 +20,10 @@
 
   [% IF !standalone %]
   <div class="post_links">
-    <a href="[% article.uri %]#comments">
+    <a href="[% base %][% article.uri %]#comments">
       [% INCLUDE comment_count.tt count = article.comment_count %]</a> |
     
-    <a href="[% article.uri %]">Read more...</a>
+    <a href="[% base %][% article.uri %]">Read more...</a>
   </div>
   [% END %]
 
@@ -39,7 +38,7 @@
     [% SET foo = 1 %]
     <p>Posted in: 
       [% FOREACH category = article.categories %]
-      <a href="/categories/[% CGI.escape(category) %]">[% category %]</a>
+      <a href="[% base %]categories/[% CGI.escape(category) %]">[% category %]</a>
       [% END %]
     </p>
     [% END %]

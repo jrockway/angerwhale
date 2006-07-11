@@ -38,7 +38,7 @@ sub uri {
     my $self = shift;
     my $name = $self->name;
     $name = escape($name);
-    return "/articles/$name";
+    return "articles/$name";
 }
 
 

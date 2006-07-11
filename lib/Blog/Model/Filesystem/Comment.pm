@@ -12,7 +12,7 @@ sub uri {
     my $self = shift;
     my $parent = $self->{parent};
 
-    return "/comments/". join '/', $self->path_to_top;
+    return "comments/". join '/', $self->path_to_top;
 }
 
 

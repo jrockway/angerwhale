@@ -1,5 +1,5 @@
 [% WRAPPER page.tt %]
-[% USE CGI %]
+
 <h2>Login</h2>
 <p>Please authenticate yourself to this weblog by signing the
 following message with your PGP key.  You can do this automatically by
@@ -13,8 +13,8 @@ following message with your PGP key.  You can do this automatically by
   and pasting the result into this window.
 </p>
 
-[% action = 'login/process' %]
-[% CGI.start_form(action => c.request.base _ action) %]
+[% action = base _ 'login/process' %]
+[% CGI.start_form(action => action) %]
    [% CGI.textarea(rows => 25, cols=>80, name=>"login", default=>nonce) %]
    [% CGI.submit %]
 [% CGI.end_form %]

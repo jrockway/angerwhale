@@ -1,10 +1,9 @@
-[% USE CGI %]
 <div class="taglist">
   <p id="tags_[% article.id %]"> 
     [% IF article.tags %]
     Tags:
     [% FOREACH tag = article.tags %] 
-      <a href="/tags/[% CGI.escape(tag) %]">[% tag %]</a>
+      <a href="[% base %]tags/[% CGI.escape(tag) %]">[% tag %]</a>
     [% END %]
     [% ELSE %]
     No tags
@@ -12,7 +11,7 @@
   </p>
   <p id="plus_[% article.id %]" class="tag_plus">[+]</p>
 </div>
-[% SET url = "/tags/do_tag/" _ article.name %]
+[% SET url = base _ "tags/do_tag/" _ article.name %]
 [% SET control = "plus_" _ article.id %]
 [% SET id = "tags_" _ article.id %]
 [% SET complete = "function(transport, element){ alert(element); }" %]

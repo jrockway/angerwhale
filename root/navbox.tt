@@ -3,13 +3,13 @@
   <div id="sidebar_navigation">
     <p>
       [% IF page != "home" %]
-      <a href="/">Home</a>
+      <a href="[% base %]">Home</a>
       [% ELSE %]
       Home
       [% END %]
       |
       [% IF page != "article_list" %]
-      <a href="/articles/">Articles</a>
+      <a href="[% base %]articles/">Articles</a>
       [% ELSE %]
       Articles
       [% END %]
@@ -20,20 +20,18 @@
     <h3>Categories</h3>
     <ul>
       [% FOREACH category = root.get_categories %]
-      <li><a href="/categories/[% category | uri %]">
+      <li><a href="[% base %]categories/[% CGI.escape(category) %]">
       	     [% category %]</a></li>
       [% END %]
     </ul>
   </div>
   [% END %]
-
   [% IF root.get_tags %]
   <div id="sidebar_tags">
     <h3>Tags</h3>
     <ul>
-    [% USE CGI %]
     [% FOREACH tag = root.get_tags %]
-      <li><a href="/tags/[% CGI.escape(tag) %]">[% tag %]</a></li>
+      <li><a href="[% base %]tags/[% CGI.escape(tag) %]">[% tag %]</a></li>
       [% END %]
     </ul>
   </div>

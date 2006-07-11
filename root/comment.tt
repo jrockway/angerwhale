@@ -5,14 +5,14 @@
       <span class="author">[% comment.author.fullname %]</span>
       <span class="keyid">([% comment.author.nice_id %])</span>
       [% IF comment.signed %]
-        <a href="[% comment.uri %]/raw">
+        <a href="[% base %][% comment.uri %]/raw">
       	 <img src="/static/lock_icon.gif" alt="[SIGNED]" />
         </a>
       [% END %]
       on
       <span class="date">[% comment.creation_time %]</span>
     </p>
-    <p class="id">#<a href="[% comment.uri %]">[% comment.id %]</a></p>
+    <p class="id">#<a href="[% base %][% comment.uri %]">[% comment.id %]</a></p>
   </div>
   <div class="comment_body">
     [% comment.text %]
@@ -20,9 +20,9 @@
   [% IF readonly != 1 %]
   <div class="comment_footer">
     [ [% IF comment.parent.uri != article.uri %]
-      	 <a href="[% comment.parent.uri %]">Parent</a> | 
+      	 <a href="[% base %][% comment.parent.uri %]">Parent</a> | 
       [% END %]
-      <a href="[% comment.post_uri %]">Reply</a> ]
+      <a href="[% base %][% comment.post_uri %]">Reply</a> ]
   </div>
   [% IF comment.comments %]
   <div class="comment_children">
