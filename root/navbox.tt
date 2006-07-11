@@ -31,8 +31,9 @@
   <div id="sidebar_tags">
     <h3>Tags</h3>
     <ul>
-      [% FOREACH tag = root.get_tags %]
-      <li><a href="/tags/[% tag | uri %]">[% tag %]</a></li>
+    [% USE CGI %]
+    [% FOREACH tag = root.get_tags %]
+      <li><a href="/tags/[% CGI.escape(tag) %]">[% tag %]</a></li>
       [% END %]
     </ul>
   </div>
