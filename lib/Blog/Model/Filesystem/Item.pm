@@ -203,7 +203,7 @@ sub summary {
     $summary =~ s/\s+/$SPACE/g;
 
     # get rid of HTML
-    $summary =~ s{</?[a-z]+(.?/)?>}{}g;
+    $summary =~ s{</?[a-z]+\s([a-z]+="[a-z]")*(.?/)?>}{}g;
 
     my @words = split /\s+/, $summary;
     if(@words > 10){
