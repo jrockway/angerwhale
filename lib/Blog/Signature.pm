@@ -18,7 +18,8 @@ sub new {
     my ($class, $data) = @_;
     my $self = {};
     $self->{data} = $data;
-    $self->{pgp} = Crypt::OpenPGP->new;
+    $self->{pgp} = Crypt::OpenPGP->new(KeyServer => "stinkfoot.org", 
+				       AutoKeyRetrieve => 1);
     
     my ($msg_data, $sig) =  _decode($self);
     
