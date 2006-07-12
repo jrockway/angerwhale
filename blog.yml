@@ -1,5 +1,5 @@
 Model::Filesystem:
- base: /var/blog_data
+ base: /var/blog
 Model::NonceStore:
  sessions: /var/blog/.sessions
  session_expire: 3600
