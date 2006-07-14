@@ -1,5 +1,5 @@
 [% WRAPPER page.tt title='Tags' %]
-
+[% USE CGI %]
 Articles have been tagged with the following tags:
 
 <ul>

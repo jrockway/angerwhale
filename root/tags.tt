@@ -23,7 +23,7 @@
 <!--
  new Ajax.InPlaceEditor( '[% id %]',
     			'[% url %]',
-			{ evalScripts: true,
+			{ 
 			  externalControl: '[% control %]',
 			  loadTextURL: '[% url %]',
 			  onFailure: 
