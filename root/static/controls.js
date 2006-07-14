@@ -634,13 +634,9 @@ Ajax.InPlaceEditor.prototype = {
     );
   },
   onFailedExternalText: function(transport) {
-    this.leaveEditMode();
-     if (this.oldInnerHTML) {
-      this.element.innerHTML = this.oldInnerHTML;
-      this.oldInnerHTML = null;
-    }
-    this.options.onFailure(transport);
-    return false;
+    this.editField.style.backgroundColor = "#FF0000";
+    this.editField.style.color = "#FFFFFF";
+    this.onLoadedExternalText(transport);
   },
   onLoadedExternalText: function(transport) {
     Element.removeClassName(this.form, this.options.loadingClassName);
