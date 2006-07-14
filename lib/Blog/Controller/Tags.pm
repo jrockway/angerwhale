@@ -22,11 +22,24 @@ Catalyst Controller.
 =cut
 
 sub check_tag_access : Private {
-    die "I hate you.";
+    my ($self, $c) = @_;
+    
+    if(!$c->stash->{user}){
+	$c->response->status('401');
+	$c->response->body('Log in to edit.');
+	return 0;
+    }
+    else {
+	return 1;
+    }
 }
 
+# get a list for ajax if no params,
+# otherwise apply the tags
 sub do_tag : LocalRegex('do_tag/.+') {
     my ($self, $c) = @_;
+
+    return if !$c->forward('check_tag_access');
 
     my $uri = uri_unescape($c->request->uri);
     $uri =~ m{tag/(.+)};
@@ -40,7 +53,7 @@ sub do_tag : LocalRegex('do_tag/.+') {
     };
     if($@){
 	$c->response->status(404);
-	$c->stash->{template} = "error.tt";
+	$c->response->body("Tagging error: $@");
 	return;
     }
 

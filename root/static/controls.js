@@ -628,9 +628,19 @@ Ajax.InPlaceEditor.prototype = {
       this.options.loadTextURL,
       Object.extend({
         asynchronous: true,
+	onFailure: this.onFailedExternalText.bind(this),
         onComplete: this.onLoadedExternalText.bind(this)
       }, this.options.ajaxOptions)
     );
+  },
+  onFailedExternalText: function(transport) {
+    this.leaveEditMode();
+     if (this.oldInnerHTML) {
+      this.element.innerHTML = this.oldInnerHTML;
+      this.oldInnerHTML = null;
+    }
+    this.options.onFailure(transport);
+    return false;
   },
   onLoadedExternalText: function(transport) {
     Element.removeClassName(this.form, this.options.loadingClassName);
