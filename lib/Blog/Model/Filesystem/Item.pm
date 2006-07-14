@@ -71,12 +71,18 @@ sub set_tag {
     map {s{(?:\s|[_;,!.])}{}g;} @tags; # destructive map
     
     foreach my $tag (@tags) {
-	my $count = eval { get_attribute($self->{path}, "tags.$tag"); };
+	my $count = $self->tag_count($tag);
 	$count = 0 if($count < 0);
 	set_attribute($self->{path}, "tags.$tag", ++$count);
     }
     
     return $self->tags;
+}
+
+sub tag_count {
+    my $self = shift;
+    my $tag  = shift;
+    return eval { get_attribute($self->{path}, "tags.$tag"); };
 }
 
 sub tags {
