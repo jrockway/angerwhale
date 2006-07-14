@@ -42,6 +42,9 @@ sub auto : Private {
 	};
 	if ($@){
 	    $c->log->debug("Failed to restore session $sid: $@");
+	    $c->response->cookies->{sid} = {value   => q{},
+					    expires => -1};
+
 	}
     }
     $c->stash->{root} = $c->model('Filesystem');
