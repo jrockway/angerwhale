@@ -1,3 +1,5 @@
+[% USE CGI %]
+
 <div class="post">
   <div class="post_title">
     <h2> [% article.title %]</h2>

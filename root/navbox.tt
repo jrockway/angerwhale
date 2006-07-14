@@ -1,4 +1,4 @@
-
+[% USE CGI %]
 <div id="sidebar_box">
   <div id="sidebar_navigation">
     <p>

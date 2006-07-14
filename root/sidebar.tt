@@ -1,5 +1,4 @@
 <div id="sidebar"> 
-
   [% IF c.config.sidebar_picture %]
   <img id="sidebar_picture" src="[% c.config.sidebar_picture %]" alt="[LOGO]"/>
   [% END %]
