@@ -49,3 +49,5 @@ catalyst;
 install_script glob('script/*.pl');
 auto_install;
 WriteAll;
+catalyst_par_core();
+catalyst_par();  
