@@ -106,14 +106,15 @@ sub fullname {
     }
     else {
 	my $key = $self->key;
-	eval {
+	my $name = eval {
 	    my @uids = @{$key->{pkt}->{'Crypt::OpenPGP::UserID'}};
 	    my $uid = $uids[0]->id; # XXX: best idea?
 	    $uid =~ s/\s*<.+>\s*//g;
 	    $uid =~ s/\s*[(].+[)]\s*//g;
 	    return ($self->{fullname} = $uid);
 	};
-	return $key;
+	return "Unknown Name" if($@);
+	return $name;
     }
 }
 
