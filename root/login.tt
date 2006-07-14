@@ -1,4 +1,5 @@
 [% WRAPPER page.tt %]
+[% USE CGI %]
 
 <h2>Login</h2>
 <p>Please authenticate yourself to this weblog by signing the

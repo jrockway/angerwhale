@@ -5,14 +5,14 @@ use warnings;
 name 'Blog';
 all_from 'lib/Blog.pm';
 
-requires ('Catalyst'			      => '5.66',	  
+requires ('Catalyst'			      => '5.7',	  
           'Catalyst::View::TT::ForceUTF8'     => 0,
 	  'Carp'			      => 0,
-	  'Catalyst::Plugin::ConfigLoader'    => '0.040',
+	  'Catalyst::Plugin::ConfigLoader'    => 0,
 	  'Catalyst::Plugin::DefaultEnd'      => 0,
-	  'Catalyst::Plugin::Prototype'	      => '1.320',
+	  'Catalyst::Plugin::Prototype'	      => 0,
 	  'Catalyst::Plugin::Scheduler'	      => 0,
-	  'Catalyst::Plugin::Static::Simple'  => '0.140',
+	  'Catalyst::Plugin::Static::Simple'  => 0,
 	  'Crypt::Blowfish'		      => 0,
 	  'Crypt::CAST5_PP'		      => 0,
 	  'Crypt::DES_EDE3'		      => 0,
@@ -36,6 +36,7 @@ requires ('Catalyst'			      => '5.66',
 	  'Scalar::Util'		      => 0,
 	  'Text::WikiFormat'		      => '0.77',
 	  'URI::Escape'			      => '3.28',
+	  'XML::Feed'                         => 0,
 	  'YAML'			      => '0.60',  # config parser
 	  'base'			      => 0,
 	  'overload'			      => '1.02',

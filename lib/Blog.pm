@@ -10,7 +10,7 @@ use warnings;
 # Static::Simple: will serve static files from the application's root 
 # directory
 #
-use Catalyst qw/ConfigLoader Static::Simple Prototype Scheduler/;
+use Catalyst qw/-Debug ConfigLoader Static::Simple Prototype Scheduler/;
 
 our $VERSION = '0.01';
 

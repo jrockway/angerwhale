@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# User.pm - [description]
+# User.pm
 # Copyright (c) 2006 Jonathan T. Rockway
 # $Id: $
 
@@ -8,7 +8,7 @@ use strict;
 use warnings;
 use Crypt::OpenPGP::KeyServer;
 use Crypt::OpenPGP::KeyRing;
-
+use Carp;
 
 # id is Crypt::OpenPGP's format, i.e. the hex value packed into
 # 'H*'.  ($id = pack 'H*', hex "cafebabe") for 0xcafebabe
@@ -80,7 +80,7 @@ sub key {
 
     # see if we have it
     if(!$self->{public_key}){
-	warn "No public key found for ". $self->nice_id;
+	carp "No public key found for ". $self->nice_id;
     }
     
     return $self->{public_key};
@@ -106,11 +106,14 @@ sub fullname {
     }
     else {
 	my $key = $self->key;
-	my @uids = @{$key->{pkt}->{"Crypt::OpenPGP::UserID"}};
-	my $uid = $uids[0]->id; # XXX: best idea?
-	$uid =~ s/\s*<.+>\s*//g;
-	$uid =~ s/\s*[(].+[)]\s*//g;
-	return ($self->{fullname} = $uid);
+	eval {
+	    my @uids = @{$key->{pkt}->{'Crypt::OpenPGP::UserID'}};
+	    my $uid = $uids[0]->id; # XXX: best idea?
+	    $uid =~ s/\s*<.+>\s*//g;
+	    $uid =~ s/\s*[(].+[)]\s*//g;
+	    return ($self->{fullname} = $uid);
+	};
+	return $key;
     }
 }
 

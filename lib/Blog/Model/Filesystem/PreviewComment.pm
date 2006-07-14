@@ -35,12 +35,13 @@ sub type {
 }
 
 sub creation_time {
-    return Blog::DateFormat->now();
+    return Blog::DateFormat->now(time_zone => "America/Chicago");
 }
 
 sub raw_text {
     my $self = shift;
-    return $self->{body};
+    my $want_pgp = shift;
+    return $self->SUPER::raw_text($want_pgp, $self->{body});
 }
 
 sub title {
@@ -51,7 +52,7 @@ sub title {
 
 sub uri {
     my $self = shift;
-    return $self->{c}->request->uri;
+    return;
 }
 
 # a few hacks here to prevent setting attributes on this fake comment

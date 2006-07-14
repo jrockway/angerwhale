@@ -102,7 +102,7 @@ sub end : Private {
     #$c->forward('Blog::View::Dump');
     #print {*STDERR} $c->response->body;
 
-    if(!$c->response->body){
+    if(!($c->response->body || $c->response->redirect)){
 	$c->response->content_type('text/html');    
 	$c->forward('Blog::View::HTML');
     }

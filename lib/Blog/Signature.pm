@@ -11,7 +11,7 @@ use Crypt::OpenPGP;
 use Crypt::OpenPGP::Message;
 use Crypt::OpenPGP::KeyServer;
 use Crypt::OpenPGP::Signature;
-
+use Carp;
 use Data::Dumper;
 
 sub new {
@@ -54,7 +54,7 @@ sub _decode {
 	($sig, $data) = @pieces[0,1];
     } 
     else {
-	die "unable to read signature";
+	croak "unable to read signature";
     }
     
     return ($data, $sig);

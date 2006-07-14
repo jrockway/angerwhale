@@ -55,7 +55,7 @@ sub default : Private {
 	
 	if($c->request->uri->as_string =~ m{/raw$}){
 	    $c->response->content_type('text/plain');
-	    $c->response->body($c->stash->{comment}->raw_text);
+	    $c->response->body($c->stash->{comment}->raw_text(1));
 	}
 	
 	else {
@@ -108,7 +108,7 @@ sub post : Local('post'){
 	}
 	else {
 	    $object->add_comment($title, $body, $id, $type);
-	    $c->response->redirect($c->stash->{article}->uri);
+	    $c->response->redirect($c->uri_for("/". $c->stash->{article}->uri));
 	}
     }
     

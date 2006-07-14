@@ -17,7 +17,7 @@ ASCII-armored is OK).
 
 [% END %]
 <div id="post_box">
- <form method="post" action="[% action %]">
+ <form method="post" action="[% base %][% action %]">
   <p> Title: <input type="text" name="title" size="70" value="[% post_title %]" /></p> 
   <p><textarea name="body" rows="25" cols="80">[% body %]</textarea></p>
   [% IF types %]

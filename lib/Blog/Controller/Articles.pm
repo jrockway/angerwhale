@@ -58,7 +58,7 @@ sub show_article : LocalRegex('[^.]') {
     # return that instead of rendering the template
     if($raw){
 	$c->response->content_type('text/plain');
-	$c->response->body($c->stash->{article}->raw_text);
+	$c->response->body($c->stash->{article}->raw_text(1));
 	return;
     }
 

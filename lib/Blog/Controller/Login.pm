@@ -82,9 +82,13 @@ sub process : Local {
 	$c->log->info("successful login for ". $user->fullname.
 		      "($nice_key_id)");
 	$c->log->debug("new session $session_id created");
+
 	$c->response->body("Passed!  You are ". $user->fullname.
 			   " (0x". $user->nice_id. ").");
+
 	$c->response->cookies->{sid} = {value => "$session_id"};
+	$c->response->redirect($c->uri_for('/'));
+	
 	return 1;
     }
 }

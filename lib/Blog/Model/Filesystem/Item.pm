@@ -234,34 +234,44 @@ sub _cache_signature {
     set_attribute($self->{path}, 'signed', "yes");
 }
 
-# returns signed text if signed with good signature, false otherwise
+# returns true if the signature is good, false otherwise
+# 1 means the signature was checked against a current key and file
+# 2 means "signed=yes" was read as an attribute (from cache)
+# 0 means BAD SIGNATURE!
+# undef means not signed
+
 sub signed {
     my $self = shift;
 
-    eval {
-	my $sig = Blog::Signature->new($self->raw_text);
-	
+    return if $self->raw_text eq $self->raw_text(1);
+
+    my $result = eval {
+	my $sig = Blog::Signature->new($self->raw_text(1));
+
 	# XXX: Crypt::OpenPGP is really really slow, so cache the result
 	my $signed = $self->_cached_signature;
 
 	if(defined $signed && $signed eq "yes"){
-	    return $sig->get_signed_data;
+	    # good signature
+	    return 2;
 	}
-
+	
+	if($sig->verify){
+	    # and fix the author info if needed
+	    $self->_cache_signature;
+	    $self->_fix_author($sig->get_key_id);
+	    return 1;
+	}
 	else {
-	    if($sig->verify){
-		# and fix the author info if needed
-		$self->_cache_signature;
-		$self->_fix_author($sig->get_key_id);
-		
-		return $sig->get_signed_data;
-	    }
-	    
-	    else {
-		return;
-	    }
+	    die "Bad signature";
 	}
     };    
+    if($@){
+	#"Problem checking signature on ". $self->uri. ": $@";
+	return 0;
+    }
+    
+    return $result;
 }
 
 # if a user posts a comment with someone else's key, ignore the login
@@ -278,7 +288,7 @@ sub _fix_author {
 sub author {
     my $self = shift;
     $self->signed; # fix the author information
-
+    
     my $id = get_attribute($self->{path}, 'author');
     my $c = $self->{base_obj}->{context};
     
@@ -290,20 +300,28 @@ sub author {
     return Blog::User::Anonymous->new();
 }
 
+# returns unformatted text, strips OpenPGP armour etc. if necessary
 sub raw_text {
-    my $self = shift;
-    return scalar read_file( $self->{path} );
+    my $self     = shift;
+    my $want_pgp = shift;
+    my $text     = shift || scalar read_file( $self->{path} );
+    return $text if $want_pgp;
+
+    my $sig;
+    eval {
+	$sig = Blog::Signature->new($text);
+    };
+    if(!$@){
+	return $sig->get_signed_data;
+    }
+    
+    return $text;
 }
 
 sub text {
     my $self = shift;
 
-    my $text = $self->signed;
-
-    if(!$text){
-	$text = $self->raw_text;
-    }
-
+    my $text = $self->raw_text;
     return Blog::Format::format($text, $self->type);
 }
 
