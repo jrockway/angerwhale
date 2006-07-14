@@ -40,7 +40,6 @@ requires:
   Scalar::Util: 0
   Text::WikiFormat: 0.77
   URI::Escape: 3.28
-  XML::Feed: 0
   YAML: 0.60
   base: 0
   overload: 1.02
