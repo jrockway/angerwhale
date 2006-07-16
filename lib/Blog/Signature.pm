@@ -18,7 +18,7 @@ sub new {
     my ($class, $data) = @_;
     my $self = {};
     $self->{data} = $data;
-    $self->{pgp} = Crypt::OpenPGP->new(KeyServer => "stinkfoot.org", 
+    $self->{pgp} = Crypt::OpenPGP->new(KeyServer       => 'stinkfoot.org', 
 				       AutoKeyRetrieve => 1);
     
     my ($msg_data, $sig) =  _decode($self);
@@ -72,7 +72,7 @@ sub get_key_id {
 
 sub get_signed_data {
     my $self = shift;
-    return $self->{decoded_data}->{data}. "\n"; # newline keeps YAML happy
+    return $self->{decoded_data}->{data};
 }
 
 # cut-n-pasted from Crypt::OpenPGP, then modified slightly :(

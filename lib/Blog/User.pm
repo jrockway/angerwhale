@@ -17,17 +17,14 @@ sub new {
     my $self = {};
     die "specify id" if !$id;
     $self->{niceid} = unpack('H*', $id);
+    $self = bless $self, $class;
     
-#    if($key){
-#	$self->{key} = $key;
-#    }
-#    else {
-#	$self->{key} = _refresh_key($id);
-#    }
-#    
-#    die "no key" if !$self->{key};
+    if($key){
+	$self->{public_key} = $key;
+    }
     
-    return bless $self, $class;
+    die "no key" if !$self->key;
+    return $self;
 }
 
 =head2 id
@@ -57,8 +54,7 @@ sub nice_id {
 
 sub refresh {
     my $self = shift;
-    $self->refresh_key;
-    $self->fullname;
+    return $self->refresh_key;
 }
 
 sub refresh_key {
@@ -93,8 +89,8 @@ sub public_key {
 }
 
 sub key_fingerprint {
-    my $self = shift;
-    my $key = $self->key;
+    my $self   = shift;
+    my $key    = $self->key;
     my $signer = $key->signing_key;
     return unpack 'H*', $signer->fingerprint;
 }
@@ -131,23 +127,5 @@ sub photo {
     die "nyi";
 }
 
-# BUG:
-# I wish YAML::Syck would call these for me, but I have to remember
-# to call them each time.
-
-sub freeze {
-    my $self = shift;
-    my $key = $self->{public_key};
-    $self->{public_key} = $key->save_armoured if $key;
-}
-
-sub thaw {
-    my $self = shift;
-    my $key = $self->{public_key};
-    my $ring = Crypt::OpenPGP::KeyRing->new( Data => $key )
-      or die Crypt::OpenPGP::KeyRing->errstr;
-    $key = $ring->find_keyblock_by_index(0);
-    $self->{public_key} = $key;
-}
 
 1;
