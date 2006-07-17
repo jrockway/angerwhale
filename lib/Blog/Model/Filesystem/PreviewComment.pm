@@ -18,10 +18,10 @@ sub new {
     my $type  = shift;
     
     my $self = {
-		c     => $c,
-		title => $title,
-		body  => $body,
-		type  => $type,
+		context => $c,
+		title   => $title,
+		body    => $body,
+		type    => $type,
 	       };
     
     bless $self, $class;
@@ -36,6 +36,10 @@ sub type {
 
 sub creation_time {
     return Blog::DateFormat->now(time_zone => "America/Chicago");
+}
+
+sub modification_time {
+    return $_[0]->creation_time;
 }
 
 sub raw_text {
@@ -71,15 +75,19 @@ sub _cache_signature {
     return; 
 }
 
+sub checksum {
+    return;
+}
+
 sub author {
     my $self = shift;
-    my $user = $self->{c}->stash->{user};
+    my $user = $self->{context}->stash->{user};
     if (defined $user && $user->can('nice_id')){
 	return $user;
     }
     elsif ($self->signed){
 	my $id = $self->signor;
-	return $self->{c}->model('UserStore')->get_user_by_real_id($id);
+	return $self->{context}->model('UserStore')->get_user_by_real_id($id);
     }
     else {
 	return Blog::User::Anonymous->new;
@@ -87,9 +95,15 @@ sub author {
 }
 
 sub id {
-    return q{????-????????};
+    return q!??!;
 }
 
 sub comments {}
-
+sub comment_count {}
+sub add_comment {}
+sub post_uri {}
+sub set_tag {}
+sub tags {}
+sub tag_count {0;}
+sub name {}
 1;

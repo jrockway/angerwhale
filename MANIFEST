@@ -1,3 +1,4 @@
+.emacs.desktop
 blog.yml
 Changes
 inc/Module/AutoInstall.pm
@@ -106,10 +107,10 @@ script/blog_create.pl
 script/blog_fastcgi.pl
 script/blog_server.pl
 script/blog_test.pl
-t/01_get_actions.t
 t/02pod.t
 t/03podcoverage.t
+t/blog_user.t
+t/get_actions_work.t
 t/model_Filesystem.t
-t/model_NonceStore.t
-t/model_UserStore.t
+t/signature.t
 t/view_HTML.t

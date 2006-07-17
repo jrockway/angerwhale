@@ -19,6 +19,7 @@ requires:
   Catalyst::Plugin::Prototype: 0
   Catalyst::Plugin::Scheduler: 0
   Catalyst::Plugin::Static::Simple: 0
+  Catalyst::Plugin::Unicode: 0.2
   Catalyst::View::TT::ForceUTF8: 0
   Crypt::Blowfish: 0
   Crypt::CAST5_PP: 0
@@ -47,4 +48,4 @@ requires:
   base: 0
   overload: 1.02
   version: 0
-version: 0.01
+version: undef

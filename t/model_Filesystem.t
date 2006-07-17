@@ -26,12 +26,13 @@ my $fs = Blog::Model::Filesystem->new($c);
 isa_ok($fs, 'Blog::Model::Filesystem');
 
 $tmp->touch('articles/An Article', "This is a test article.");
-$tmp->touch('articles/Another Article.pod',
-	    "=pod",
-	    "This is a test.  This is a test.",
-	    "=head2 FOO",
-	    "",
-	    "This is a new paragraph.");
+
+my @lines = ("=pod",
+	     "This is a test.  This is a test.",
+	     "=head2 FOO",
+	     "",
+	     "This is a new paragraph.");
+$tmp->touch('articles/Another Article.pod',@lines);
 
 my @categories = $fs->get_categories;
 is(scalar @categories, 1, 'one category');

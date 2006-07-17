@@ -13,9 +13,7 @@ use warnings;
 
 use Catalyst qw/-Debug Unicode ConfigLoader Static::Simple Prototype Scheduler/;
 
-__PACKAGE__->config({name => __PACKAGE__,
-		     base => '/var/blog'});
-		     
+__PACKAGE__->config({name => __PACKAGE__});
 
 #our $VERSION = '0.01';
 

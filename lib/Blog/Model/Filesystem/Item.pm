@@ -238,7 +238,7 @@ sub summary {
 # see signed() below.
 sub signor {
     my $self = shift;
-    my $sig = Blog::Signature->new($self->raw_text);
+    my $sig = Blog::Signature->new($self->raw_text(1));
     return $sig->get_key_id;
 }
 

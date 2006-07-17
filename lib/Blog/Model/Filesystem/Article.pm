@@ -1,7 +1,6 @@
 #!/usr/bin/perl
-# Article.pm - [description]
+# Article.pm
 # Copyright (c) 2006 Jonathan T. Rockway
-# $Id: $
 
 package Blog::Model::Filesystem::Article;
 use strict;
