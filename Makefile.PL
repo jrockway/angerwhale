@@ -37,6 +37,7 @@ requires ('Catalyst'			      => '5.7',
 	  'Pod::Simple::Text'                 => 0,
 	  'Quantum::Superpositions'           => 0,
 	  'Scalar::Util'		      => 0,
+	  'Text::Autoformat'                  => 0,
 	  'Text::WikiFormat'		      => '0.77',
 	  'URI::Escape'			      => '3.28',
 #	  'XML::Feed'                         => 0,
@@ -51,6 +52,7 @@ build_requires
          (
 	  'Test::More'                         => 0,
 	  ok                                   => 0,
+	  'Directory::Scratch'                 => '0.03',
 	 );
 
 catalyst;

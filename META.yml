@@ -1,6 +1,7 @@
 abstract: Catalyst based application
 author: Jonathan Rockway
 build_requires: 
+  Directory::Scratch: 0.03
   Test::More: 0
   ok: 0
 distribution_type: module
@@ -44,6 +45,7 @@ requires:
   Pod::Simple::Text: 0
   Quantum::Superpositions: 0
   Scalar::Util: 0
+  Text::Autoformat: 0
   Text::WikiFormat: 0.77
   URI::Escape: 3.28
   YAML: 0.60

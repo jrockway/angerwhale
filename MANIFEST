@@ -1,4 +1,3 @@
-.emacs.desktop
 blog.yml
 Changes
 inc/Module/AutoInstall.pm
@@ -110,7 +109,11 @@ script/blog_test.pl
 t/02pod.t
 t/03podcoverage.t
 t/blog_user.t
+t/challenge.t
+t/formatters.t
 t/get_actions_work.t
 t/model_Filesystem.t
+t/model_NonceStore.t
+t/preview_comment.t
 t/signature.t
 t/view_HTML.t
