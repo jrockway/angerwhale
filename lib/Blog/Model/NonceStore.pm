@@ -7,11 +7,15 @@ use NEXT;
 use YAML qw(LoadFile DumpFile);
 use Crypt::Random qw(makerandom);
 use Blog::Challenge;
+use Blog::User::Anonymous;
 
 sub new {
     my ($self, $c) = @_;
     $self = $self->NEXT::new(@_);
     $self->{sessions} = $c->config->{base}. '/.sessions';
+
+    $self->{nonce_expire} = $c->config->{nonce_expire};
+    $self->{session_expire} = $c->config->{session_expire};
 
     my $dir = $self->{sessions};
     mkdir $dir;
@@ -22,7 +26,8 @@ sub new {
     return $self;
 }
 
-# takes a Blog::Challenge object
+# takes a Blog::Challenge object, adds the nonce to that object,
+# and returns the filename of the nonce object on success
 sub new_nonce {
     my $self = shift;
     my $challenge = shift;
@@ -84,7 +89,6 @@ sub store_session {
     my $dir  = $self->{sessions} . "/established";
     
     DumpFile("$dir/$sid", {uid => $uid});
-    warn "we made it here $sid";
     return $sid;
 }
 

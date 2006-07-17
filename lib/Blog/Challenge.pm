@@ -1,7 +1,6 @@
 #!/usr/bin/perl
-# Challenge.pm - [description]
+# Challenge.pm
 # Copyright (c) 2006 Jonathan T. Rockway
-# $Id: $
 
 package Blog::Challenge;
 use strict;

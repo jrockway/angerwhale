@@ -6,7 +6,7 @@
 package Blog::Format;
 use strict;
 use warnings;
-
+use Carp;
 use Module::Pluggable (
 		       search_path => ['Blog::Format'],
 		       instantiate => 'new',
@@ -14,6 +14,8 @@ use Module::Pluggable (
 
 sub _format {
     my ($text, $type, $what) = @_;
+
+    croak 'invalid arguments to _format' if !defined $text || !$type;
 
     my @choices;
     foreach my $plugin (plugins()){
@@ -31,6 +33,10 @@ sub _format {
 }
 
 sub format {
+    return format_html(@_);
+}
+
+sub format_html {
     return _format(@_, 'format');
 }
 

@@ -44,7 +44,7 @@ ok(!$comment->add_comment('foo', 'bar', 'baz'));
 ok(!$comment->set_tag('foo'));
 ok(!$comment->tags);
 is($comment->tag_count, 0);
-is($name, undef);
+is($comment->name, undef);
 
 __DATA__
 -----BEGIN PGP SIGNED MESSAGE-----

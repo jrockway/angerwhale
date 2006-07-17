@@ -3,12 +3,14 @@
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 package Blog::Format::HTML;
-use strict;
-use warnings;
+
 use HTML::TreeBuilder;
+use Quantum::Superpositions;
 use Scalar::Util qw(blessed);
 use URI;
-use Quantum::Superpositions;
+
+use strict;
+use warnings;
 
 sub new {
     my $class = shift;
@@ -29,7 +31,6 @@ sub types {
     return 
       ({type       => 'html', 
        description => 'HTML'});
-    
 }
 
 sub format {
@@ -48,11 +49,46 @@ sub format {
     return "$result";
 }
 
+sub format_text {
+    my $self = shift;
+    my $text = shift;
+    my $type = shift;
+
+    my $html = HTML::TreeBuilder->new;
+    
+    $html->parse($text);
+    $html->eof;
+
+    my $result = $self->_parse_text($html->guts);
+    $html->delete;
+
+    return "$result";
+}
+
+# just gets the text in the tags, and nothing else
+sub _parse_text {
+    my $self = shift;
+    my @elements = @_;
+    my $result = q{};
+    foreach my $element (@elements){
+	my $type;
+	if (blessed $element && $element->isa('HTML::Element')){
+	    my @kids = $element->content_list;
+	    my $type = $element->tag;
+	    $result .= $self->_parse_text(@kids);
+	}
+	else {
+	    $result .= $element;
+	}
+    }
+    return $result;
+}
+
 sub _parse {
     my $self = shift;
 
     my @elements = @_;
-    my $result = q{ };
+    my $result = q{};
     foreach my $element (@elements){
 	my $type;
 	if (blessed $element && $element->isa('HTML::Element')){
