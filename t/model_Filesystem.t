@@ -2,5 +2,5 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 
-BEGIN { use_ok 'Blog::Model::Filesystem' }
-
+use Catalyst::Test qw(Blog);
+use ok 'Blog::Model::Filesystem'

@@ -2,20 +2,18 @@
 # 01_get_actions.t 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-# tests all actions that are read-only
-
 use strict;
 use warnings;
-use Test::More tests => 16;
+use Test::More tests => 15;
 
-BEGIN { use_ok 'Catalyst::Test', 'Blog' }
-BEGIN { use_ok 'Blog::Controller::Articles' }
-BEGIN { use_ok 'Blog::Controller::Categories' }
-BEGIN { use_ok 'Blog::Controller::Comments' }
-BEGIN { use_ok 'Blog::Controller::Feeds' }
-BEGIN { use_ok 'Blog::Controller::Login' }
-BEGIN { use_ok 'Blog::Controller::Tags' }
-BEGIN { use_ok 'Blog::Controller::Users' }
+use Catalyst::Test qw(Blog);
+use ok "Blog::Controller::Articles";
+use ok "Blog::Controller::Categories";
+use ok "Blog::Controller::Comments";
+use ok "Blog::Controller::Feeds";
+use ok "Blog::Controller::Login";
+use ok "Blog::Controller::Tags";
+use ok "Blog::Controller::Users";
 
 ok( request('/')->is_success, 'Requesting /');
 ok( request('/articles/')->is_success, 'Requesting /articles/');
