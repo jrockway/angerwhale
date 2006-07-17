@@ -1,7 +1,6 @@
 #!/usr/bin/perl
-# DateFormat.pm - [description]
+# DateFormat.pm
 # Copyright (c) 2006 Jonathan T. Rockway
-# $Id: $
 
 package Blog::DateFormat;
 use strict;

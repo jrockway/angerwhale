@@ -10,6 +10,8 @@ use warnings;
 use Blog::DateFormat;
 use Blog::Format;
 use Blog::User::Anonymous;
+use Blog::Signature;
+
 use Carp;
 use Data::GUID;
 
@@ -25,6 +27,7 @@ use overload (q{<=>} => "compare",
 	      q{cmp} => "compare",
 	      fallback => "TRUE");
 
+use Digest::MD5;
 
 # arguments are passed in a hash ref
 # base: top directory containing this item (and its friends)
@@ -156,6 +159,16 @@ sub title {
 	$name =~ s{[.]\w+$}{};
     }
     return $name;
+}
+
+sub checksum {
+    my $self = shift;
+    my $path = $self->{path};
+    open (my $fh, '<', $path) or die "Couldn't open myself for reading: $!";
+    my $ctx = Digest::MD5->new;
+    $ctx->addfile($fh);
+    close $fh;
+    return $ctx->hexdigest;
 }
 
 sub id {

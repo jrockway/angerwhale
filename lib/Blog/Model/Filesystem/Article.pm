@@ -13,7 +13,7 @@ sub categories {
     my $self = shift;
     my $base = $self->{base};
     my $name = $self->name;
-    my $id   = $self->id; 
+    my $id   = $self->checksum; 
     
 
     my @categories = $self->{base_obj}->get_categories;
@@ -27,7 +27,7 @@ sub categories {
 							     base_obj => 
 							     $self->{base_obj},
 							     path   => $path});
-	    my $myid = $obj->id;
+	    my $myid = $obj->checksum;
 	    push @result, $categories[$i] if $myid eq $id;
 	};
 	$i++;

@@ -12,6 +12,8 @@ sub new {
     $self = $self->NEXT::new(@_);
     
     $self->{context} = $c;
+    $self->{base}    = $c->config->{base};
+
     my $base = $self->{base};
     # die if base isn't readable or isn't a directory
     die "$base is not a valid data directory"

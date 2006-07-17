@@ -42,7 +42,12 @@ requires ('Catalyst'			      => '5.7',
 	  'overload'			      => '1.02',
 	  'version'			      => 0,
 	  # enable this if you don't mind proprietary crypto
-	  #'Crypt::IDEA'                       => 0, 
+	  #'Crypt::IDEA'                      => 0, 
+	 );
+build_requires
+         (
+	  'Test::More'                         => 0,
+	  ok                                   => 0,
 	 );
 
 catalyst;

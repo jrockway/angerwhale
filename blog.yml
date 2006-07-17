@@ -1,12 +1,7 @@
-Model::Filesystem:
- base: /var/blog
-Model::NonceStore:
- sessions: /var/blog/.sessions
- session_expire: 3600
- nonce_expire: 300
-Model::UserStore:
- users: /var/blog/.users
-
+---
+base: /var/blog
+session_expire: 3600
+nonce_expire: 300
 name: Blog
 blog_title: Jonathan Rockway's Blog!
 sidebar_blurb: "This is the AngerWhale test blog."

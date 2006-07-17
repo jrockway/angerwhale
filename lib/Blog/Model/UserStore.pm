@@ -29,11 +29,13 @@ Catalyst Model.
 sub new {
     my ( $self, $c ) = @_;
     $self = $self->NEXT::new(@_);
-    my $dir = $self->{users};
-    
+    my $dir = $self->{users} = $c->config->{base}. '/.users';
+
     mkdir $dir;
-    die "no user store at $dir" if !-d $dir || !-w _;
-    
+    if(!-d $dir || !-w _){
+	$c->log->fatal("no user store at $dir");
+	die "no user store at $dir";
+    }
     return $self;
 }
 

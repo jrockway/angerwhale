@@ -1,5 +1,8 @@
 abstract: Catalyst based application
 author: Jonathan Rockway
+build_requires: 
+  Test::More: 0
+  ok: 0
 distribution_type: module
 generated_by: Module::Install version 0.630
 license: perl

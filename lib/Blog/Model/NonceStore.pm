@@ -11,7 +11,8 @@ use Blog::Challenge;
 sub new {
     my ($self, $c) = @_;
     $self = $self->NEXT::new(@_);
-    
+    $self->{sessions} = $c->config->{base}. '/.sessions';
+
     my $dir = $self->{sessions};
     mkdir $dir;
     mkdir "$dir/pending";
@@ -41,14 +42,16 @@ sub new_nonce {
 
 # verification can ONLY HAPPEN ONCE!
 sub verify_nonce {
-    my $self = shift;
+    my $self      = shift;
     my $challenge = shift;
     die if !$challenge->{nonce};
 
     my $nonce = $challenge->{nonce};
     # prevent people from specifying the nonce as "../../../../etc/passwd"
     # and fucking the system over
-    $nonce =~ s/[^0-9]//g;
+    if($nonce =~ m/[^0-9]/){
+	die "invalid nonce $nonce"
+    }
     
     my $dir  = $self->{sessions}. "/pending";
     my $file = $dir. "/". $nonce;
