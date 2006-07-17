@@ -10,9 +10,14 @@ use warnings;
 # Static::Simple: will serve static files from the application's root 
 # directory
 #
-use Catalyst qw/-Debug ConfigLoader Static::Simple Prototype Scheduler/;
 
-our $VERSION = '0.01';
+use Catalyst qw/-Debug Unicode ConfigLoader Static::Simple Prototype Scheduler/;
+
+__PACKAGE__->config({name => __PACKAGE__,
+		     base => '/var/blog'});
+		     
+
+#our $VERSION = '0.01';
 
 #
 # Start the application
@@ -20,8 +25,8 @@ our $VERSION = '0.01';
 
 __PACKAGE__->setup;
 
-__PACKAGE__->schedule( at    => '25 * * * *',
-		       event => '/scheduledevents/clean_sessions', );
+#__PACKAGE__->schedule( at    => '25 * * * *',
+#		       event => '/scheduledevents/clean_sessions', );
 
 #
 # IMPORTANT: Please look into Blog::Controller::Root for more
