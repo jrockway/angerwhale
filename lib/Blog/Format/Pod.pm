@@ -6,6 +6,7 @@ use strict;
 use warnings;
 use Blog::Format::HTML;
 use Pod::Simple::HTML;
+use Pod::Simple::Text;
 
 sub new {
     my $class = shift;
@@ -41,6 +42,21 @@ sub format {
     
     my $html_format = Blog::Format::HTML->new;
     return $html_format->format($output, 'html');
+}
+
+sub format_text {
+    my $self = shift;
+    my $text = shift;
+    my $type = shift;
+    
+    my $pod_format = Pod::Simple::Text->new;
+    
+    my $output;
+    $pod_format->output_string( \$output );
+    $pod_format->parse_string_document($text);
+    
+    my $text_format = Blog::Format::PlainText->new;
+    return $text_format->format_text($output, 'text');
 }
 
 1;

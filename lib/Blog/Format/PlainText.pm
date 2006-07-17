@@ -5,6 +5,7 @@
 package Blog::Format::PlainText;
 use strict;
 use warnings;
+use Text::Autoformat;
 
 sub new {
     my $class = shift;
@@ -39,7 +40,16 @@ sub format {
 
     my @paragraphs = split /\n+/m, $text;
     @paragraphs = grep {$_ !~ /^\s*$/} @paragraphs;
-    return join(' ', map {"<p>$_</p><br />"} @paragraphs);
+    return join(' ', map {"<p>$_</p>"} @paragraphs);
+}
+
+sub format_text {
+    my $self = shift;
+    my $text = shift;
+    my $type = shift;
+
+    $text = autoformat $text;
+    return $text;
 }
 
 1;

@@ -216,13 +216,9 @@ sub modification_time {
 
 sub summary {
     my $self = shift;
-    my $summary = $self->text;
-    
-    my $SPACE = q{ };
-    $summary =~ s/\s+/$SPACE/g;
+    my $summary = $self->plain_text;
 
-    # get rid of HTML
-    $summary =~ s{</?[a-z]+\s([a-z]+="[a-z]")*(.?/)?>}{}g;
+    my $SPACE = q{ };
 
     my @words = split /\s+/, $summary;
     if(@words > 10){
@@ -230,6 +226,11 @@ sub summary {
 	$summary = join $SPACE, @words;
 	$summary .= " …"; # utf-8 elipsis
     }
+    
+    $summary =~ s/&/&amp;/g;
+    $summary =~ s/>/&gt;/g;
+    $summary =~ s/</&lt;/g;
+
     return $summary;
 }
 
@@ -337,11 +338,20 @@ sub raw_text {
     return $text;
 }
 
+# returns HTML-formatted data
 sub text {
     my $self = shift;
-
     my $text = $self->raw_text;
+    
     return Blog::Format::format($text, $self->type);
+}
+
+# returns plain text formatted data
+sub plain_text {
+    my $self = shift;
+    my $text = $self->raw_text;
+
+    return Blog::Format::format_text($text, $self->type);
 }
 
 # hierarchy
@@ -389,18 +399,26 @@ sub _comment_counter {
     return 1;
 }
 
-sub comments {
+sub _create_comment_dir {
     my $self = shift;
     my $comment_dir = $self->comment_dir;
-
+    
     if(!-e $self->{base}. "/.comments"){
 	mkdir $self->{base}. "/.comments" 
 	  or die "unable to create root commentdir: $!";
     }
+      
     if(!-e $comment_dir){
 	mkdir $comment_dir or
 	  die "unable to create commentdir $comment_dir: $!";
-    }
+    }  
+}
+
+sub comments {
+    my $self = shift;
+    my $comment_dir = $self->comment_dir;
+    
+    $self->_create_comment_dir;
 
     opendir my $dir, $comment_dir 
       or die "unable to open commentdir $comment_dir: $!";
@@ -435,6 +453,7 @@ sub add_comment {
     
     die "no data" if (!$title || !$body);
     
+    $self->_create_comment_dir;
     my $comment_dir = $self->comment_dir;
     die "no comment dir $comment_dir" 
       if !-d $comment_dir;

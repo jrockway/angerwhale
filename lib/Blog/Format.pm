@@ -12,12 +12,12 @@ use Module::Pluggable (
 		       instantiate => 'new',
 		      );
 
-sub format {
-    my ($text, $type) = @_;
+sub _format {
+    my ($text, $type, $what) = @_;
 
     my @choices;
     foreach my $plugin (plugins()){
-	if($plugin->can('can_format') && $plugin->can('format')){
+	if($plugin->can('can_format') && $plugin->can($what)){
 	    my $possibility = $plugin->can_format($type);
 	    push @choices, [$plugin, $possibility];
 	}
@@ -27,8 +27,17 @@ sub format {
     @choices = sort {$b->[1] <=> $a->[1]} @choices;
     my $choice = $choices[0]->[0];
 
-    return $choice->format($text, $type);
+    return $choice->$what($text, $type);
 }
+
+sub format {
+    return _format(@_, 'format');
+}
+
+sub format_text {
+    return _format(@_, 'format_text');
+}
+
 
 sub types {
     my @types;
@@ -68,6 +77,10 @@ the "type".  1 is the lowest, 100 is the highest.
 This method will be called if your module returned the highest value
 for C<can_format>.  It is passed the text to format, and the type.  It
 should return the text formatted as HTML.
+
+=head2 format_text(text, type)
+
+Like C<format>, but return plain text instead of HTML.
 
 =head2 types
 

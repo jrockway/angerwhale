@@ -2,7 +2,7 @@
 # model_Filesystem.t 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 15;
+use Test::More tests => 19;
 use Test::MockObject;
 use Directory::Scratch;
 use Blog::Model::Filesystem;
@@ -27,11 +27,11 @@ isa_ok($fs, 'Blog::Model::Filesystem');
 
 $tmp->touch('articles/An Article', "This is a test article.");
 
-my @lines = ("=pod",
-	     "This is a test.  This is a test.",
-	     "=head2 FOO",
-	     "",
-	     "This is a new paragraph.");
+my @lines = ("=pod\n",
+	     "This is a test.  This is a test.\n",
+	     "=head2 FOO\n",
+	     "\n",
+	     "This is a new paragraph.\n");
 $tmp->touch('articles/Another Article.pod',@lines);
 
 my @categories = $fs->get_categories;
@@ -53,13 +53,12 @@ isa_ok($article, 'Blog::Model::Filesystem::Article');
 is($article->title, 'Another Article', 'title is correct');
 is($article->categories, (), 'not in any categories yet');
 is($article->uri, 'articles/Another%20Article.pod');
-is($article->checksum, '6e311f8f18ef958cdc7df6fd044defc8', "checksum is right");
+is($article->checksum, '63b08321fa7c7daf4c01eb86e5fdd231', "checksum is right");
 is($article->name, 'Another Article.pod', 'name is correct');
 is($article->type, 'pod', q{plain ol' documentation});
 ok($article->id, 'article has a GUID');
 ok($article->creation_time == $article->modification_time, 'crtime = mtime');
 is($article->signed, undef, 'no digital signature');
-die $article->summary;
 ok($article->summary =~ /This is a test/, 'summary exists');
 ok($article->text =~ /This is a new paragraph/, 'full text exists');
 is($article->comment_count, 0, 'no comments yet');
@@ -70,5 +69,6 @@ eval {
 			  0, 'text');
 };
 ok(!$@, 'added a comment without triggering a FATAL ERROR!!!!!!! :)');
+diag($@) if $@;
 
 is($article->comment_count, 1, 'comment stuck');
