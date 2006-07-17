@@ -22,12 +22,14 @@ sub categories {
     my @result;
     my $i = 0;
     foreach my $path (@paths){
-	my $obj = Blog::Model::Filesystem::Article->new({base   => $base,
-							 base_obj => 
-							 $self->{base_obj},
-							 path   => $path});
-	my $myid = $obj->id;
-	push @result, $categories[$i] if $myid eq $id;
+	eval {
+	    my $obj = Blog::Model::Filesystem::Article->new({base   => $base,
+							     base_obj => 
+							     $self->{base_obj},
+							     path   => $path});
+	    my $myid = $obj->id;
+	    push @result, $categories[$i] if $myid eq $id;
+	};
 	$i++;
     }
     
