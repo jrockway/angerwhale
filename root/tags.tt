@@ -3,7 +3,7 @@
     [% IF article.tags %]
     Tags:
     [% FOREACH tag = article.tags %] 
-      <a href="[% base %]tags/[% CGI.escape(tag) %]">[% tag %]</a>
+      <a href="[% base %]tags/[% tag | uri | html %]">[% tag %]</a>
     [% END %]
     [% ELSE %]
     No tags

@@ -1,22 +1,22 @@
 <div class="comment">
   <div class="comment_header">
-    <p class="title">[% comment.title %]</p>
+    <p class="title">[% comment.title | html %]</p>
     <p class="info">Written by
-      <span class="author">[% comment.author.fullname %]</span>
-      <span class="keyid">([% comment.author.nice_id %])</span>
+      <span class="author">[% comment.author.fullname | html %]</span>
+      <span class="keyid">([% comment.author.nice_id | html %])</span>
       [% IF comment.signed %]
-        <a href="[% base %][% comment.uri %]/raw">
+        <a href="[% base %][% comment.uri | uri %]/raw">
       	 <img src="/static/lock.png" alt="[SIGNED]" />
         </a>
       [% ELSIF comment.signed == 0 %]
-        <a href="[% base %][% comment.uri %]/raw">
+        <a href="[% base %][% comment.uri | uri %]/raw">
       	 <img src="/static/bad_lock.png" alt="[BAD SIGNATURE]" />
         </a>
       [% END %]
       on
       <span class="date">[% comment.creation_time %]</span>
     </p>
-    <p class="id">#<a href="[% base %][% comment.uri %]">[% comment.id %]</a></p>
+    <p class="id">#<a href="[% base %][% comment.uri | uri %]">[% comment.id | html %]</a></p>
   </div>
   <div class="comment_body">
     [% comment.text %]
@@ -24,9 +24,9 @@
   [% IF readonly != 1 %]
   <div class="comment_footer">
     [ [% IF comment.parent.uri != article.uri %]
-      	 <a href="[% base %][% comment.parent.uri %]">Parent</a> | 
+      	 <a href="[% base %][% comment.parent.uri | uri %]">Parent</a> | 
       [% END %]
-      <a href="[% base %][% comment.post_uri %]">Reply</a> ]
+      <a href="[% base %][% comment.post_uri | uri %]">Reply</a> ]
   </div>
   [% IF comment.comments %]
   <div class="comment_children">

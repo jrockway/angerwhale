@@ -1,4 +1,5 @@
 [% WRAPPER page.tt %]
+[% USE time = date(format => c.config.date_format) %]
 <div class="search_results">
   <h2>[% title %]</h2>
   
@@ -12,9 +13,10 @@
     <ul id="article_list">
       [% FOREACH item = articles %]
       <li>
-        <p><a href="[% base %][% item.uri %]">[% item.title %]</a>
+        <p><a href="[% base %][% item.uri | uri %]">[% item.title | html %]</a>
 	      [% item.creation_time %]</p>
-	<p>[% item.summary %]</p>
+	<p>[% item.summary | html %]</p>
+      </li>
       [% END %]
     </ul>
 </div>

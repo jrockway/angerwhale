@@ -1,18 +1,17 @@
-[% USE CGI %]
-
 <div class="post">
   <div class="post_title">
-    <h2> [% article.title %]</h2>
+    <h2> [% article.title | html %]</h2>
     [% INCLUDE tags.tt %]  
     <div class="post_date">
      <p>
 	[% IF article.signed %]
-	    <a href="[% base %][% article.uri %]/raw">
+	    <a href="[% base %][% article.uri | uri %]/raw">
 	      <img style="border: none;"
 	      	   src="[% base %]static/lock.png" alt="[SIGNED]" />
 	    </a>	
      	[% END %]
-        [% article.creation_time %]</p>
+        [% article.creation_time | uri %]
+</p>
     </div>
   </div>
   
@@ -22,10 +21,10 @@
 
   [% IF !standalone %]
   <div class="post_links">
-    <a href="[% base %][% article.uri %]#comments">
+    <a href="[% base %][% article.uri | uri %]#comments">
       [% INCLUDE comment_count.tt count = article.comment_count %]</a> |
     
-    <a href="[% base %][% article.uri %]">Read more...</a>
+    <a href="[% base %][% article.uri | uri %]">Read more...</a>
   </div>
   [% END %]
 
@@ -33,22 +32,20 @@
 
     [% IF article.modification_time != article.creation_time %]
     [% SET foo = 1 %]
-    <p>Last modified: [% article.modification_time %] </p>
+    <p>Last modified: [% article.modification_time  %] </p>
     [% END %]
     
     [% IF article.categories %]
-    [% SET foo = 1 %]
     <p>Posted in: 
       [% FOREACH category = article.categories %]
-      <a href="[% base %]categories/[% CGI.escape(category) %]">[% category %]</a>
+      <a href="[% base %]categories/[% category | uri |  html %]">
+      	 [% category | html %]
+      </a>
       [% END %]
     </p>
-    [% END %]
-
-    [% IF foo != 1 %]
+    [% ELSE %]
     <br />
     [% END %]
-
   </div>
 </div>
 

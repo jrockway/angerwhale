@@ -1,4 +1,3 @@
-[% USE CGI %]
 <div id="sidebar_box">
   <div id="sidebar_navigation">
     <p>
@@ -20,8 +19,8 @@
     <h3>Categories</h3>
     <ul>
       [% FOREACH category = root.get_categories %]
-      <li><a href="[% base %]categories/[% CGI.escape(category) %]">
-      	     [% category %]</a></li>
+      <li><a href="[% base %]categories/[% category | uri | html %]">
+      	     [% category | html %]</a></li>
       [% END %]
     </ul>
   </div>
@@ -31,7 +30,7 @@
     <h3>Tags</h3>
     <ul>
     [% FOREACH tag = root.get_tags %]
-      <li><a href="[% base %]tags/[% CGI.escape(tag) %]">[% tag %]</a></li>
+      <li><a href="[% base %]tags/[% tag | uri | html %]">[% tag | html %]</a></li>
       [% END %]
     </ul>
   </div>

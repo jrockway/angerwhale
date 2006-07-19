@@ -1,10 +1,9 @@
 [% WRAPPER page.tt title='Tags' %]
-[% USE CGI %]
 Articles have been tagged with the following tags:
 
 <ul>
 [% FOREACH tag=tags %]
-<li><a href="[% base %]tags/[% CGI.escape(tag) %]">[% tag %]</a></li>
+<li><a href="[% base %]tags/[% tag | uri | html %]">[% tag %]</a></li>
 [% END %]
 </ul>
 

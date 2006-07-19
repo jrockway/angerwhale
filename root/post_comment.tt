@@ -18,15 +18,15 @@ ASCII-armored is OK).
 [% END %]
 <div id="post_box">
  <form method="post" action="[% base %][% action %]">
-  <p> Title: <input type="text" name="title" size="70" value="[% post_title %]" /></p> 
-  <p><textarea name="body" rows="25" cols="80">[% body %]</textarea></p>
+  <p> Title: <input type="text" name="title" size="70" value="[% post_title | html %]" /></p> 
+  <p><textarea name="body" rows="25" cols="80">[% body | html %]</textarea></p>
   [% IF types %]
   <p>Format: <select name="type">
    [% FOREACH atype = types %]
     <option value="[% atype.type %]"
-    [% IF atype.type == type %]selected="true" [% END %]
-    >[% atype.description %]</option>
-   [% END %]
+    [% IF atype.type == type %]selected="true" [% END %]>
+      [% atype.description %]</option>
+    [% END %]
   </select></p>
   [% END %]
   <p>  <input type="submit" name="Preview" value="Preview" />
