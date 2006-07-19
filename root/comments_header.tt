@@ -1,9 +1,13 @@
     <div class="comments_header">
-      <p>Comments on <a href="[% base %][% article.uri %]">[% article.title %]</a>
+      <p>Comments on
+       <a href="[% base %][% article.uri | uri | html %]">
+      		[% article.title | html %]
+	</a>
 	| 
 	[% INCLUDE comment_count.tt 
 	           count = article.comment_count %]
 	|
-	<a href="[% base %]comments/post/[% article.id %]">Post a comment</a>
+	<a href="[% base %]comments/post/[% article.id | uri %]">
+	Post a comment</a>
       </p>
     </div>

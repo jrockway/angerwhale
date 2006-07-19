@@ -1,6 +1,7 @@
 package Blog::View::HTML;
 
 use strict;
+#use base 'Catalyst::View';
 use base 'Catalyst::View::TT';
 #use base 'Catalyst::View::TT::ForceUTF8';
 
@@ -12,7 +13,6 @@ __PACKAGE__->config(
 		    DEBUG => 1,
 #		    PLUGIN_BASE => 'Blog::Filter',
 		   );
-
 
 =head1 NAME
 

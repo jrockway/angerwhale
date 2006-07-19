@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Blog::Format;
+use Scalar::Util qw(blessed);
 
 =head1 NAME
 
@@ -47,13 +48,19 @@ sub default : Private {
     my ( $self, $c ) = @_;
     $c->forward('find_by_path');
     
-    if(!$c->stash->{article}){
-	$c->stash->{template} = "error.tt";
-	$c->response->status(404);
-    }
+    if(  !blessed $c->stash->{comment} || 
+         !$c->stash->{comment}->isa('Blog::Model::Filesystem::Item'))
+      {
+	  $c->stash->{template} = "error.tt";
+	  $c->response->status(404);
+      }
     else {
-	
-	if($c->request->uri->as_string =~ m{/raw$}){
+	# handle cases where the find_by_path item is the actual article
+	if(!$c->stash->{comment}->isa('Blog::Model::Filesystem::Comment')){
+	    # handle getting articles by their GUID (instead of name)
+	    $c->response->redirect($c->uri_for('/',$c->stash->{article}->uri));
+	}
+	elsif($c->request->uri->as_string =~ m{/raw$}){
 	    $c->response->content_type('text/plain');
 	    $c->response->body($c->stash->{comment}->raw_text(1));
 	}

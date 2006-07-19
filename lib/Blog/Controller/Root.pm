@@ -102,9 +102,11 @@ sub end : Private {
     # not implemented yet
     my $requested_type = $c->stash->{requested_type};
     
-    #$c->forward('Blog::View::Dump');
-    #print {*STDERR} $c->response->body;
-
+    my $res = $c->response->body;
+    $c->forward('Blog::View::Dump');
+    print {*STDERR} $c->response->body;
+    $c->response->body($res);
+    
     if(!($c->response->body || $c->response->redirect)){
 	$c->response->content_type('text/html');    
 	$c->forward('Blog::View::HTML');
