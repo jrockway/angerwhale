@@ -2,10 +2,12 @@
 # model_UserStore.t 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 11;
+use Test::More tests => 17;
 use ok 'Blog::Model::UserStore';
 use Test::MockObject;
 use Directory::Scratch;
+use File::Slurp qw(read_file write_file);
+use YAML;
 
 my $c = Test::MockObject->new;
 
@@ -30,12 +32,27 @@ isa_ok($jrock, 'Blog::User');
 is($jrock->fullname, "Jonathan T. Rockway");
 
 my $jrock_real = $users->get_user_by_real_id($id);
-is($jrock->id, $jrock_real->id, 'created user = returned user');
+is($jrock->fullname, $jrock_real->fullname, 'created user = returned user');
 
 my $jrock_nice = $users->get_user_by_nice_id($JROCK_ID);
-is($jrock->id, $jrock_nice->id, 'created user = returned (nice) user');
+is($jrock->fullname, $jrock_nice->fullname, 'created user = returned (nice) user');
 
 ok(-e "$base/.users/$JROCK_ID/", 'created jrock on disk');
 ok(-e "$base/.users/$JROCK_ID/fullname", 'created jrock name');
 ok(-e "$base/.users/$JROCK_ID/key", 'created jrock pubkey');
+ok(-e "$base/.users/$JROCK_ID/email", 'created jrock email');
 ok(-e "$base/.users/$JROCK_ID/fingerprint", 'created jrock fingerprint');
+ok(-e "$base/.users/$JROCK_ID/last_updated", 'created last_updated');
+
+
+ok(write_file("$base/.users/$JROCK_ID/fullname", 'Foo Bar'), 
+   'changed fullname');
+
+my $jrock_new  = $users->get_user_by_nice_id($JROCK_ID);
+is($jrock_new->fullname, 'Foo Bar', "key has cached data");
+
+# NOTE: this test is NOT y2k38 compliant!
+ok(write_file("$base/.users/$JROCK_ID/last_updated", '0'), 'changed mtime');
+$jrock_new = undef;
+$jrock_new = $users->get_user_by_nice_id($JROCK_ID);
+is($jrock_new->fullname, 'Jonathan T. Rockway', "key was refreshed");

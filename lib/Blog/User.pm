@@ -13,17 +13,13 @@ use Carp;
 # id is Crypt::OpenPGP's format, i.e. the hex value packed into
 # 'H*'.  ($id = pack 'H*', hex "cafebabe") for 0xcafebabe
 sub new {
-    my ($class, $id, $key) = @_;
+    my ($class, $id) = @_;
     my $self = {};
     die "specify id" if !$id;
     $self->{niceid} = unpack('H*', $id);
-    $self = bless $self, $class;
+    $self = bless $self, $class;    
     
-    if($key){
-	$self->{public_key} = $key;
-    }
-    
-    die "no key" if !$self->key;
+    $self->refresh;
     return $self;
 }
 
@@ -52,71 +48,58 @@ sub nice_id {
     return $self->{niceid};
 }
 
-sub refresh {
-    my $self = shift;
-    return $self->refresh_key;
-}
-
-sub refresh_key {
-    my $self = shift;
-    my $key_id = $self->id;
-    my $ks = Crypt::OpenPGP::KeyServer->new(Server => "stinkfoot.org");
-    my $kb = $ks->find_keyblock_by_keyid($key_id);
-    $self->{public_key} = $kb;
-    return $kb;
-}
-
 sub key {
     my $self = shift;
+    my $ks = Crypt::OpenPGP::KeyServer->new(Server => "stinkfoot.org");
+    my $kb = $ks->find_keyblock_by_keyid($self->id);
     
     # try to get the key if we don't have it
-    if(!$self->{public_key}){
-	$self->{public_key} = $self->refresh_key;
-    }
 
-    # see if we have it
-    if(!$self->{public_key}){
+    if(!$kb){
 	carp "No public key found for ". $self->nice_id;
     }
     
-    return $self->{public_key};
+    return $kb;
 }
 
 sub public_key {
     my $self = shift;
-    my $key = $self->key;
+    my $key  = shift;
+
+    return $self->{public_key} if $self->{public_key};
     return $key->save_armoured;
 }
 
 sub key_fingerprint {
     my $self   = shift;
-    my $key    = $self->key;
+    my $key    = shift;
+    return $self->{fingerprint} if $self->{fingerprint};
+    
     my $signer = $key->signing_key;
     return unpack 'H*', $signer->fingerprint;
 }
 
 sub fullname {
     my $self = shift;
-    if($self->{fullname}){
-	return $self->{fullname};
-    }
-    else {
-	my $key = $self->key;
-	my $name = eval {
-	    my @uids = @{$key->{pkt}->{'Crypt::OpenPGP::UserID'}};
-	    my $uid = $uids[0]->id; # XXX: best idea?
-	    $uid =~ s/\s*<.+>\s*//g;
-	    $uid =~ s/\s*[(].+[)]\s*//g;
-	    return ($self->{fullname} = $uid);
-	};
-	return "Unknown Name" if($@);
-	return $name;
-    }
+    my $key  = shift;
+    return $self->{fullname} if $self->{fullname};
+
+    my $name = eval {
+	my @uids = @{$key->{pkt}->{'Crypt::OpenPGP::UserID'}};
+	my $uid = $uids[0]->id; # XXX: best idea?
+	$uid =~ s/\s*<.+>\s*//g;
+	$uid =~ s/\s*[(].+[)]\s*//g;
+	return ($self->{fullname} = $uid);
+    };
+    return "Unknown Name" if($@);
+    return $name;
 }
 
 sub email {
     my $self = shift;
-    my $key = $self->key;
+    my $key  = shift;
+    return $self->{email} if defined $self->{email};
+
     my @uids = @{$key->{pkt}->{"Crypt::OpenPGP::UserID"}};
     my $uid = $uids[0]->id; # XXX: best idea?
     $uid =~ s/<(.+)>//g;
@@ -127,5 +110,15 @@ sub photo {
     die "nyi";
 }
 
+sub refresh {
+    # doesn't do anything anymore
+    my $self = shift;
+    my $key  = $self->key; # throws a good error on E_KEYNOTFOUND
+    $self->{public_key}  = $self->public_key($key);
+    $self->{fullname}    = $self->fullname($key);
+    $self->{email}       = $self->email($key);
+    $self->{fingerprint} = $self->key_fingerprint($key);
+#    $self->{photo} = $self->photo($key);
+}
 
 1;

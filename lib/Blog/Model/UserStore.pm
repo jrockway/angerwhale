@@ -33,6 +33,8 @@ sub new {
     $self = $self->NEXT::new(@_);
     my $dir = $self->{users} = $c->config->{base}. '/.users';
 
+    $self->config->{update_interval} = 3600;
+
     mkdir $dir;
     if(!-d $dir || !-w _){
 	$c->log->fatal("no user store at $dir");
@@ -62,21 +64,29 @@ sub get_user_by_real_id {
 sub get_user_by_nice_id {
     my $self    = shift;
     my $nice_id = shift;
-    
-    my $dir = $self->{users};
-
-    # read the user's public key
-    my $base = "$dir/$nice_id";
-    my $key;
-    eval {read_file("$base/key")};
     my $real_id = pack('H*', $nice_id);
     
-    # create a user if one does not exist
-    if(!$key){
-	return $self->create_user_by_real_id($real_id);
-    }
+    my $dir = $self->{users};
+    my $base = "$dir/$nice_id";
+    my $user = {};
+    my $last_updated;
     
-    return Blog::User->new($real_id, $key);
+    eval {
+	$user->{key}         = read_file("$base/key")          or die;
+	$user->{fullname}    = read_file("$base/fullname")     or die;
+	$user->{fingerprint} = read_file("$base/fingerprint")  or die;
+	$user->{email}       = read_file("$base/email")        or die;
+	$last_updated        = read_file("$base/last_updated") or die;
+    };
+    
+    # create a user if one does not exist
+    # or the data was bad
+    # or it's time to update
+    return $self->create_user_by_real_id($real_id)
+      if !$user->{key} || $@ || 
+	((time() - $last_updated) > $self->config->{update_interval});
+    
+    return bless $user, 'Blog::User'
 }
 
 sub refresh_user {
@@ -103,12 +113,28 @@ sub store_user {
 	write_file("$base/key", $user->public_key);
 	write_file("$base/fullname", $user->fullname);
 	write_file("$base/fingerprint", $user->key_fingerprint);
+	write_file("$base/email", $user->email);
+	write_file("$base/last_updated", time());
     };
     if($@){
 	die "Error writing user: $!";
     }
     
     return 1;
+}
+
+sub last_updated {
+    my $self = shift;
+    my $user = shift;
+    my $dir  = $self->{users};
+    my $uid  = $user->nice_id;
+    my $base = "$dir/$uid";
+    
+    my $updated;
+    eval {
+	$updated = read_file("$base/last_updated");
+    };
+    return $updated;
 }
 
 =head2 users
