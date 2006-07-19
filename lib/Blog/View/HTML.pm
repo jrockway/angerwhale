@@ -1,9 +1,8 @@
 package Blog::View::HTML;
 
 use strict;
-#use base 'Catalyst::View::TT';
-use base 'Catalyst::View::TT::ForceUTF8';
-use YAML;
+use base 'Catalyst::View::TT';
+#use base 'Catalyst::View::TT::ForceUTF8';
 
 __PACKAGE__->config( 
 		    TOLERANT => 1,
@@ -11,6 +10,7 @@ __PACKAGE__->config(
 		    STRICT_CONTENT_TYPE => 1,
 		    RECURSION => 1,
 		    DEBUG => 1,
+#		    PLUGIN_BASE => 'Blog::Filter',
 		   );
 
 

@@ -21,7 +21,7 @@ isa_ok($ns, 'Blog::Model::NonceStore');
 my $challenge = Blog::Challenge->new({uri => 'test://test'});
 my $nonce = $ns->new_nonce($challenge);
 
-ok($ns->verify_nonce($challenge), 'verify works');
+ok($ns->verify_nonce($challenge),  'verify works');
 ok(!$ns->verify_nonce($challenge),q{verify doesn't work again});
 ok(!$ns->verify_nonce($challenge),q{verify doesn't work again});
 ok(!$ns->verify_nonce({nonce => '123'}), 'invalid nonce doesnt work');

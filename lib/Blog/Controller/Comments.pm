@@ -86,23 +86,17 @@ sub post : Local('post'){
 	$title = $c->request->param('title');
 	my $body = $c->request->param('body');
 	my $type = $c->request->param('type'); 
-	$title =~ s/[><&]//g;
-
 	my $user = $c->stash->{user};
 	my $id   = $user->nice_id if ($user && $user->can('nice_id'));
 
 	my $preview = $c->request->param('Preview');
 	if($preview){
 	    $c->stash->{post_title} = $title;
-	    $c->stash->{type}  = $type;
+	    $c->stash->{type}       = $type;
 
 	    $c->stash->{comment} = 
 	      Blog::Model::Filesystem::PreviewComment->new($c, $title,
 							   $body, $type);
-	    
-	    $body =~ s/&/&amp;/g;
-	    $body =~ s/</&lt;/g;
-	    $body =~ s/>/&gt;/g;
 	    
 	    $c->stash->{body}  = $body;
 	}

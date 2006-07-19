@@ -6,7 +6,6 @@ package Blog::Model::Filesystem::PreviewComment;
 use strict;
 use warnings;
 use base qw(Blog::Model::Filesystem::Comment);
-use Blog::DateFormat;
 use Blog::User::Anonymous;
 
 sub new {
@@ -35,7 +34,7 @@ sub type {
 }
 
 sub creation_time {
-    return Blog::DateFormat->now(time_zone => "America/Chicago");
+    return time();
 }
 
 sub modification_time {

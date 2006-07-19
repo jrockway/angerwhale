@@ -17,7 +17,7 @@ sub init {
     $self->{ _DYNAMIC } = 1;
 
     # first arg can specify filter name
-    $self->install_filter($self->{ _ARGS }->[0] || 'time');
+    $self->install_filter($self->{ _ARGS }->[0] || 'foobarfoo');
     
     return $self;
 }

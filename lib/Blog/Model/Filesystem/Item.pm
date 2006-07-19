@@ -7,7 +7,6 @@ package Blog::Model::Filesystem::Item;
 use strict;
 use warnings;
 
-use Blog::DateFormat;
 use Blog::Format;
 use Blog::User::Anonymous;
 use Blog::Signature;
@@ -195,23 +194,14 @@ sub id {
 
 sub creation_time {
     my $self = shift;
-    
-    my $ct;
-    $ct = File::CreationTime::creation_time($self->{path});
-#    return $ct;
-
-    return Blog::DateFormat->from_epoch(epoch => $ct,
-					time_zone => "America/Chicago");      
+    my $ct = File::CreationTime::creation_time($self->{path});
+    return $ct;
 }
 
 sub modification_time {
     my $self = shift;
     my $time = (stat($self->{path}))[9];
-    
-#    return $time;
-
-    return Blog::DateFormat->from_epoch(epoch => $time,
-					time_zone => "America/Chicago");
+    return $time;
 }
 
 sub summary {

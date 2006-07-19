@@ -5,3 +5,4 @@ nonce_expire: 300
 blog_title: Jonathan Rockway's Blog!
 sidebar_blurb: "This is the AngerWhale test blog."
 sidebar_picture: ~
+date_format: %c
