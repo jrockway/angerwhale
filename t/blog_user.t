@@ -12,7 +12,7 @@ my $key_fingerprint = '95ff88c5277c2282973fb90ad0197853dd25e42f';
 my $realid = pack 'H*', $keyid;
 
 
-my $jrock = Blog::User->new($realid); 
+my $jrock = Blog::User->_new($realid); 
 isa_ok($jrock, 'Blog::User'); # 2
 
 is($jrock->id, $realid, "keyids match");

@@ -10,7 +10,7 @@ use Blog::User;
 my $user_store = Test::MockObject->new;use ok qw(Blog::Signature);
 my $JROCK_ID = 'd0197853dd25e42f'; # author's key ID;
 my $id = pack 'H*', $JROCK_ID;
-my $jrock = Blog::User->new($id);
+my $jrock = Blog::User->_new($id);
 $user_store->set_always('get_user_by_real_id', $jrock);
 my $c = Test::MockObject->new;
 $c->set_always('stash', {});
