@@ -72,18 +72,23 @@ sub get_user_by_nice_id {
     my $last_updated;
     
     eval {
-	$user->{key}         = read_file("$base/key")          or die;
+	$user->{public_key}  = read_file("$base/key")          or die;
 	$user->{fullname}    = read_file("$base/fullname")     or die;
 	$user->{fingerprint} = read_file("$base/fingerprint")  or die;
 	$user->{email}       = read_file("$base/email")        or die;
 	$last_updated        = read_file("$base/last_updated") or die;
     };
-    
+
+    if(!$@){
+	# refreshed OK
+	$user->{nice_id} = $nice_id;
+    }
+
     # create a user if one does not exist
     # or the data was bad
     # or it's time to update
     return $self->create_user_by_real_id($real_id)
-      if !$user->{key} || $@ || 
+      if !$user->{public_key} || $@ || 
 	((time() - $last_updated) > $self->config->{update_interval});
     
     return bless $user, 'Blog::User'

@@ -16,7 +16,7 @@ sub new {
     my ($class, $id) = @_;
     my $self = {};
     die "specify id" if !$id;
-    $self->{niceid} = unpack('H*', $id);
+    $self->{nice_id} = unpack('H*', $id);
     $self = bless $self, $class;    
     
     $self->refresh;
@@ -45,7 +45,7 @@ the OpenPGP key id is.
 
 sub nice_id {
     my $self = shift;
-    return $self->{niceid};
+    return $self->{nice_id};
 }
 
 sub key {

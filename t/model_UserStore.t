@@ -2,7 +2,7 @@
 # model_UserStore.t 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 17;
+use Test::More tests => 19;
 use ok 'Blog::Model::UserStore';
 use Test::MockObject;
 use Directory::Scratch;
@@ -50,6 +50,8 @@ ok(write_file("$base/.users/$JROCK_ID/fullname", 'Foo Bar'),
 
 my $jrock_new  = $users->get_user_by_nice_id($JROCK_ID);
 is($jrock_new->fullname, 'Foo Bar', "key has cached data");
+is($jrock_new->nice_id, $JROCK_ID, 'cached nice_id is correct');
+is($jrock_new->id, $id, 'cached real_id is correct');
 
 # NOTE: this test is NOT y2k38 compliant!
 ok(write_file("$base/.users/$JROCK_ID/last_updated", '0'), 'changed mtime');
