@@ -125,12 +125,13 @@ sub get_user_by_nice_id {
 	$user->{email}       = read_file("$base/email")        or die;
 	$last_updated        = read_file("$base/last_updated") or die;
     };
-    
+
     my $outdated = ((time() - $last_updated) > $self->{update_interval});
     
     if(!$@ && !$outdated){
 	# refreshed OK
 	$user->{nice_id} = $nice_id;
+	$user->{keyserver} = $self->{keyserver};
 	return bless $user, 'Blog::User';
     }
 
@@ -142,6 +143,7 @@ sub get_user_by_nice_id {
 	    delete $user->{fullname};
 	    delete $user->{fingerprint};
 	    delete $user->{email};
+	    $user->{keyserver} = $self->{keyserver};
 	    $user->refresh;
 	    return $user;
 	}
@@ -163,6 +165,7 @@ sub get_user_by_nice_id {
 
     # user is OK (might not be refreshed, if the keyserver was down)
     die if !$user->isa('Blog::User');
+    die if !$user->{keyserver};
 
     return $user;
 }
