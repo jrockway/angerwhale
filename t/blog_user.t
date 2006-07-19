@@ -5,7 +5,7 @@
 use Test::More tests => 8;
 use ok qw(Blog::User); # 1
 
-diag q{These tests will fail if you can't contact a keyserver.};
+#diag q{These tests will fail if you can't contact a keyserver.};
 my $keyid  = 'd0197853dd25e42f'; # key id of the author
 my $key_fingerprint = '95ff88c5277c2282973fb90ad0197853dd25e42f';
 

@@ -7,8 +7,6 @@ use Test::MockObject;
 use ok 'Blog::Model::Filesystem::PreviewComment';
 use Blog::User;
 
-diag("These tests will fail if you can't talk to a keyserver.");
-
 my $user_store = Test::MockObject->new;use ok qw(Blog::Signature);
 my $JROCK_ID = 'd0197853dd25e42f'; # author's key ID;
 my $id = pack 'H*', $JROCK_ID;

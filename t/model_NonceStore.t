@@ -28,7 +28,7 @@ ok(!$ns->verify_nonce({nonce => '123'}), 'invalid nonce doesnt work');
 
 $challenge = Blog::Challenge->new({uri => 'test://test'});
 $nonce = $ns->new_nonce($challenge);
-diag('sleeping 2 seconds');
+#diag('sleeping 2 seconds');
 sleep 2;
 $ns->clean_nonces;
 ok(!$ns->verify_nonce($challenge), 'verify fails when nonce expires');
@@ -44,7 +44,7 @@ eval {
 };
 ok($@, 'unstoring fake session fails');
 
-diag('sleeping 2 seconds');
+#diag('sleeping 2 seconds');
 sleep 2;
 
 $ns->clean_sessions();

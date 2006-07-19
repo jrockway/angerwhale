@@ -2,6 +2,8 @@ abstract: Catalyst based application
 author: Jonathan Rockway
 build_requires: 
   Directory::Scratch: 0.03
+  HTML::Tidy: 0
+  Test::HTML::Tidy: 0
   Test::More: 0
   ok: 0
 distribution_type: module
@@ -31,7 +33,6 @@ requires:
   Crypt::Rijndael: 0
   Crypt::Twofish: 2.00
   Data::GUID: 0.04
-  DateTime: 0.30
   Digest::MD5: 0
   Digest::SHA1: 0
   File::Attributes: 0

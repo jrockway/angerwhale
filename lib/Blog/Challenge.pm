@@ -6,7 +6,6 @@ package Blog::Challenge;
 use strict;
 use warnings;
 use Crypt::Random qw(makerandom);
-use DateTime;
 use YAML;
 
 use overload (q{==} => "equals", q{""} => "tostring");
@@ -16,7 +15,7 @@ sub new {
     my $self = {};
     
     my $random = makerandom(Size => 128, Strength => 0);
-    my $now    = DateTime->now;
+    my $now    = time();
  
     $self->{nonce} = "$random";
     $self->{uri}   = $args->{uri} || die "specify URI";

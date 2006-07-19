@@ -52,7 +52,7 @@ diag $config->{base};
 isa_ok($article, 'Blog::Model::Filesystem::Article');
 is($article->title, 'Another Article', 'title is correct');
 is($article->categories, (), 'not in any categories yet');
-is($article->uri, 'articles/Another%20Article.pod');
+is($article->uri, 'articles/Another Article.pod');
 is($article->checksum, '63b08321fa7c7daf4c01eb86e5fdd231', "checksum is right");
 is($article->name, 'Another Article.pod', 'name is correct');
 is($article->type, 'pod', q{plain ol' documentation});

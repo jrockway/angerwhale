@@ -23,7 +23,6 @@ requires ('Catalyst'			      => '5.7',
 	  'Crypt::Rijndael'		      => 0,
 	  'Crypt::Twofish'		      => '2.00',
 	  'Data::GUID'			      => '0.04',
-	  'DateTime'			      => '0.30',
 	  'Digest::MD5'			      => 0,
 	  'Digest::SHA1'		      => 0,
 	  'File::Attributes'		      => 0,
@@ -53,6 +52,8 @@ build_requires
 	  'Test::More'                         => 0,
 	  ok                                   => 0,
 	  'Directory::Scratch'                 => '0.03',
+	  'Test::HTML::Tidy'                   => 0,
+	  'HTML::Tidy'                         => 0,
 	 );
 
 catalyst;

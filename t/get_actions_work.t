@@ -4,7 +4,14 @@
 
 use strict;
 use warnings;
-use Test::More tests => 15;
+use Test::More tests => 27;
+use HTML::Tidy;
+use Test::HTML::Tidy;
+use YAML;
+use Blog;
+
+my $tidy = HTML::Tidy->new;
+$tidy->ignore( type => TIDY_WARNING );
 
 use Catalyst::Test qw(Blog);
 use ok "Blog::Controller::Articles";
@@ -14,12 +21,28 @@ use ok "Blog::Controller::Feeds";
 use ok "Blog::Controller::Login";
 use ok "Blog::Controller::Tags";
 use ok "Blog::Controller::Users";
+use ok "Blog::Controller::ScheduledEvents";
+use ok "Blog::Controller::Root";
 
-ok( request('/')->is_success, 'Requesting /');
-ok( request('/articles/')->is_success, 'Requesting /articles/');
-ok( request('/tags')->is_success);
-ok( request('/tags/get_nav_box')->is_success);
-ok( request('/tags/tag_list')->is_success);
-ok( request('/login')->is_success, 'Request should succeed' );
-ok( request('/login/nonce')->is_success, 'Request should succeed' );
-ok( request('/users')->is_success, 'Request should succeed' );
+my @html_urls = qw(/ /tags /tags/fake
+	           /tags/tag_list /login /users);
+
+my @urls = qw(/tags/tag_list /tags/do_tag);
+ 
+foreach my $url (@html_urls){
+    my $request = request($url);
+    ok($request->is_success, "request $url OK");
+    html_tidy_ok($tidy, $request->content, "$url HTML is valid");
+}
+
+foreach my $url (@urls){
+    my $request = request($url);
+    ok($request->is_success, "request $url OK");
+}
+
+my $request = request('/login/nonce');
+ok($request->is_success, 'requested a nonce OK');
+my $nonce   = YAML::Load($request->content);
+ok($nonce, 'nonce desearialized OK');
+isa_ok($nonce, 'Blog::Challenge');
+ok($nonce->{nonce}, 'nonce has a nonce');

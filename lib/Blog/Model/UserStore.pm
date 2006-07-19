@@ -101,7 +101,7 @@ sub store_user {
     die "couldn't create userdir $base for $uid" if !-d $base;
     eval {
 	write_file("$base/key", $user->public_key);
-	write_file("$base/name", $user->fullname);
+	write_file("$base/fullname", $user->fullname);
 	write_file("$base/fingerprint", $user->key_fingerprint);
     };
     if($@){
