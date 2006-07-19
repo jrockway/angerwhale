@@ -3,7 +3,7 @@
     [% IF article.tags %]
     Tags:
     [% FOREACH tag = article.tags %] 
-      <a href="[% base %]tags/[% tag | uri | html %]">[% tag %]</a>
+      <a href="[% base %]tags/[% tag | uri | html %]">[% tag | html %]</a>
     [% END %]
     [% ELSE %]
     No tags
