@@ -39,6 +39,7 @@ requires ('Catalyst'			      => '5.7',
 	  'Template::Plugin::Lingua::EN::Inflect' => 0,
 	  'Text::Autoformat'                  => 0,
 	  'Text::WikiFormat'		      => '0.77',
+	  'Time::Duration'                    => 0,
 	  'URI::Escape'			      => '3.28',
 #	  'XML::Feed'                         => 0,
 	  'YAML'			      => '0.60',  # config parser

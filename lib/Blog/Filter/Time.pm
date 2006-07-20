@@ -27,7 +27,6 @@ sub init {
 sub filter {
     my ($self, $time, $args, $config) = @_;
     my @time   = localtime($time);
-    warn "@time";
     my $year   = $time[5]+1900;
     my $month  = $time[4];
     my $day    = $time[3];
