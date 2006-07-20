@@ -11,7 +11,7 @@ use warnings;
 # directory
 #
 
-use Catalyst qw/-Debug Unicode ConfigLoader Singleton
+use Catalyst qw/-Debug Unicode ConfigLoader 
 		Static::Simple Prototype Scheduler/;
 
 __PACKAGE__->config({name => __PACKAGE__});
