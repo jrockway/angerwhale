@@ -1,3 +1,4 @@
+[% USE infl = Lingua.EN.Inflect %]
 <div class="post">
   <div class="post_title">
     <h2> [% article.title | html %]</h2>
@@ -22,7 +23,7 @@
   [% IF !standalone %]
   <div class="post_links">
     <a href="[% base %][% article.uri | uri %]#comments">
-      [% INCLUDE comment_count.tt count = article.comment_count %]</a> |
+      [% infl.NO("comment", article.comment_count) %]</a> |
     
     <a href="[% base %][% article.uri | uri %]">Read more...</a>
   </div>

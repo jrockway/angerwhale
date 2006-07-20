@@ -1,15 +1,9 @@
 [% WRAPPER page.tt %]
-[% USE time = date(format => c.config.date_format) %]
+[% USE infl = Lingua.EN.Inflect %]
 <div class="search_results">
   <h2>[% title %]</h2>
   
-    <p>[% article_count %] 
-      [% IF article_count == 1 %] 
-      article
-      [% ELSE %]
-      articles
-      [% END %]
-      to display.</p>
+    <p>[% infl.NO("article", article_count) %] to display.</p>
     <ul id="article_list">
       [% FOREACH item = articles %]
       <li>

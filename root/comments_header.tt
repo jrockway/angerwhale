@@ -1,11 +1,10 @@
+[% USE infl = Lingua.EN.Inflect %]
     <div class="comments_header">
       <p>Comments on
        <a href="[% base %][% article.uri | uri | html %]">
       		[% article.title | html %]
 	</a>
-	| 
-	[% INCLUDE comment_count.tt 
-	           count = article.comment_count %]
+	| [% infl.NO("comment", article.comment_count) %]
 	|
 	<a href="[% base %]comments/post/[% article.id | uri %]">
 	Post a comment</a>
