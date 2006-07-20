@@ -1,18 +1,28 @@
 package Blog::View::HTML;
-
+use NEXT;
 use strict;
-#use base 'Catalyst::View';
 use base 'Catalyst::View::TT';
-#use base 'Catalyst::View::TT::ForceUTF8';
+use Template::Stash::XS;
 
 __PACKAGE__->config( 
 		    TOLERANT => 1,
-#		    TIMER => 1, 
+		    #TIMER => 1, 
 		    STRICT_CONTENT_TYPE => 1,
 		    RECURSION => 1,
-		    DEBUG => 1,
-#		    PLUGIN_BASE => 'Blog::Filter',
+		    DEBUG => 1,    
+		    COMPILE_DIR => "/tmp/template_cache",
+		    STASH => Template::Stash::XS->new,
+		    PLUGIN_BASE => 'Blog::Filter',
 		   );
+
+sub process {
+    my ($self, $c) = @_;
+    if (!$c->response->content_type){
+	# this breaks IE, but fuck IE.
+	$c->reponse->content_type('application/xhtml+xml; charset=utf-8');
+    }
+    $self->NEXT::process($c);
+}
 
 =head1 NAME
 

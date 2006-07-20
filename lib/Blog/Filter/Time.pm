@@ -6,6 +6,7 @@ package Blog::Filter::Time;
 use strict;
 use warnings;
 use base qw(Template::Plugin::Filter);
+use Time::Duration qw(ago);
 use utf8;
 
 my @daynames = qw(日 月 火 水 木 金 土);
@@ -17,16 +18,16 @@ sub init {
     $self->{ _DYNAMIC } = 1;
 
     # first arg can specify filter name
-    $self->install_filter($self->{ _ARGS }->[0] || 'foobarfoo');
+    $self->install_filter($self->{ _ARGS }->[0] || 'time');
     
     return $self;
 }
 
 # converts seconds past the epoch, localtime, to a pretty string
 sub filter {
-    my ($self, $text, $args, $config) = @_;
-    my $text   = shift;
-    my $time   = [localtime($time)];
+    my ($self, $time, $args, $config) = @_;
+    my @time   = localtime($time);
+    warn "@time";
     my $year   = $time[5]+1900;
     my $month  = $time[4];
     my $day    = $time[3];
@@ -41,8 +42,14 @@ sub filter {
     $hour =~ s/^0+$/12/;
     
     $wkday = $daynames[$wkday%7];
-    
-    return "$month-$day-$year ($wkday) $hour:$minute $ampm";
+
+    my $ago = time() - $time;
+    if($ago < 86_400){
+	return ago($ago);
+    }
+    else {
+	return "$year-$month-$day at $hour:$minute $ampm";
+    }
 }
 
 1;

@@ -61,7 +61,7 @@ sub show_category : Private {
 	@articles = @articles[0..4];
     }
     
-    # nav links < 8 older | 5 newer > (etc.)
+    # nav links < 8 newer | 5 older > (etc.)
     $c->stash->{final_offset} = $total - 5;
     $c->stash->{next_offset} = $start + 5;
     if($c->stash->{next_offset} > $c->stash->{final_offset}){
