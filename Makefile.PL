@@ -2,9 +2,12 @@ use inc::Module::Install;
 use strict;
 use warnings;
 
-name 'Blog';
-all_from 'lib/Blog.pm';
-licence('gpl');
+name('Blog');
+abstract('exciting new weblogging software or something');
+author('Jonathan Rockway <jrockway@cpan.org>');
+version_from('lib/Blog.pm');
+include('ExtUtils::AutoInstall');
+#licence('gpl');  (broken!?)
 requires 
   (
    'Catalyst'						=> '5.7',	  
@@ -47,7 +50,7 @@ requires
    'URI'						=> 0,
    'URI::Escape'					=> '3.28',
    'XML::Feed'						=> 0,
-   'YAML'						=> '0.60', # config parser
+   'YAML'						=> '0.60', 
    'base'						=> 0,
    'overload'						=> '1.02',
    'version'						=> 0,

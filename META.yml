@@ -1,5 +1,5 @@
-abstract: Starts the Blog application
-author: Jonathan Rockway C<< <jrockway AT cpan.org> >>
+abstract: exciting new weblogging software or something
+author: Jonathan Rockway <jrockway@cpan.org>
 build_requires: 
   Directory::Scratch: 0.03
   HTML::Tidy: 0
@@ -54,6 +54,7 @@ requires:
   Time::Duration: 0
   URI: 0
   URI::Escape: 3.28
+  XML::Feed: 0
   YAML: 0.60
   base: 0
   overload: 1.02
