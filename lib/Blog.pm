@@ -2,8 +2,7 @@ package Blog;
 
 use strict;
 use warnings;
-use Catalyst qw/-Debug Unicode ConfigLoader 
-		Static::Simple Prototype Scheduler/;
+use Catalyst qw/Unicode ConfigLoader Scheduler Static::Simple Prototype/;
 
 __PACKAGE__->config({name => __PACKAGE__});
 our $VERSION = '0.01_01';
