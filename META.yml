@@ -1,5 +1,5 @@
-abstract: Catalyst based application
-author: Jonathan Rockway
+abstract: Starts the Blog application
+author: Jonathan Rockway C<< <jrockway AT cpan.org> >>
 build_requires: 
   Directory::Scratch: 0.03
   HTML::Tidy: 0
@@ -8,7 +8,7 @@ build_requires:
   ok: 0
 distribution_type: module
 generated_by: Module::Install version 0.630
-license: perl
+license: unknown
 name: Blog
 no_index: 
   directory: 
@@ -23,7 +23,7 @@ requires:
   Catalyst::Plugin::Scheduler: 0
   Catalyst::Plugin::Static::Simple: 0
   Catalyst::Plugin::Unicode: 0.2
-  Catalyst::View::TT::ForceUTF8: 0
+  Catalyst::View::TT: 0
   Crypt::Blowfish: 0
   Crypt::CAST5_PP: 0
   Crypt::DES_EDE3: 0
@@ -39,6 +39,7 @@ requires:
   File::CreationTime: 2.03
   File::Find: 0
   File::Slurp: 9999.12
+  File::Temp: 0
   HTML::TreeBuilder: 0
   Module::Pluggable: 0
   NEXT: 0.60
@@ -46,11 +47,15 @@ requires:
   Pod::Simple::Text: 0
   Quantum::Superpositions: 0
   Scalar::Util: 0
+  Template::Plugin::Filter: 0
+  Template::Plugin::Lingua::EN::Inflect: 0
   Text::Autoformat: 0
   Text::WikiFormat: 0.77
+  Time::Duration: 0
+  URI: 0
   URI::Escape: 3.28
   YAML: 0.60
   base: 0
   overload: 1.02
   version: 0
-version: undef
+version: 0.01_01

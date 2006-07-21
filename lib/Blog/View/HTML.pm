@@ -2,7 +2,7 @@ package Blog::View::HTML;
 use NEXT;
 use strict;
 use base 'Catalyst::View::TT';
-use Template::Stash::XS;
+use File::Temp;
 
 __PACKAGE__->config( 
 		    TOLERANT => 1,
@@ -10,8 +10,7 @@ __PACKAGE__->config(
 		    STRICT_CONTENT_TYPE => 1,
 		    RECURSION => 1,
 		    DEBUG => 1,    
-		    COMPILE_DIR => "/tmp/template_cache",
-		    STASH => Template::Stash::XS->new,
+		    COMPILE_DIR => File::Temp::tempdir(CLEANUP => 1),
 		    PLUGIN_BASE => 'Blog::Filter',
 		   );
 

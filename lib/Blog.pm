@@ -2,60 +2,52 @@ package Blog;
 
 use strict;
 use warnings;
-
-#
-# Set flags and add plugins for the application
-#
-#         -Debug: activates the debug mode for very useful log messages
-# Static::Simple: will serve static files from the application's root 
-# directory
-#
-
 use Catalyst qw/-Debug Unicode ConfigLoader 
 		Static::Simple Prototype Scheduler/;
 
 __PACKAGE__->config({name => __PACKAGE__});
-
-#our $VERSION = '0.01';
-
-#
-# Start the application
-#
-
+our $VERSION = '0.01_01';
 __PACKAGE__->setup;
+__PACKAGE__->schedule( at    => '25 * * * *',
+		       event => '/scheduledevents/clean_sessions', );
+1;
 
-#__PACKAGE__->schedule( at    => '25 * * * *',
-#		       event => '/scheduledevents/clean_sessions', );
-
-#
-# IMPORTANT: Please look into Blog::Controller::Root for more
-#
+__END__
 
 =head1 NAME
 
-Blog - Catalyst based application
+Blog - Starts the Blog application
 
 =head1 SYNOPSIS
 
-    script/blog_server.pl
+See L<Catalyst|Catalyst>.
 
-=head1 DESCRIPTION
+=head1 BUGS
 
-Catalyst based application.
+Tons, possibly :)
 
-=head1 SEE ALSO
-
-L<Blog::Controller::Root>, L<Catalyst>
+Report to L<http://www.jrock.us/trac/blog_software/new_ticket>
 
 =head1 AUTHOR
 
-Jonathan Rockway
+Jonathan Rockway C<< <jrockway AT cpan.org> >>
 
-=head1 LICENSE
+=head1 COPYRIGHT
 
-This library is free software, you can redistribute it and/or modify
-it under the same terms as Perl itself.
+Copyright (C) 2006 Jonathan Rockway
 
-=cut
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
 
-1;
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+USA.
+
