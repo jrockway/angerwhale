@@ -46,6 +46,11 @@
 
      [% content %]
     </div>
+    <div id="footer">
+      <p>Powered
+      by <a href="http://www.jrock.us/trac/blog_software">AngerWhale</a>
+      version 0.01_01 ($Revision$).</p>
+    </div>
   </body>
 </html>
 
