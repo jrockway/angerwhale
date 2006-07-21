@@ -28,7 +28,7 @@ sub filter {
     my ($self, $time, $args, $config) = @_;
     my @time   = localtime($time);
     my $year   = $time[5]+1900;
-    my $month  = $time[4];
+    my $month  = $time[4] + 1;
     my $day    = $time[3];
     my $wkday  = $time[6];
     

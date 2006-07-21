@@ -48,8 +48,15 @@
     </div>
     <div id="footer">
       <p>Powered
-      by <a href="http://www.jrock.us/trac/blog_software">AngerWhale</a>
-      version 0.01_01 ($Revision$).</p>
+	by <a href="http://www.jrock.us/trac/blog_software">AngerWhale</a>
+	version 0.01_01 ($Revision$).
+	<a href="http://validator.w3.org/check?uri=referer">
+	  <img
+	     src="http://www.w3.org/Icons/valid-xhtml11"
+             alt="Valid XHTML 1.1" height="31" width="88" />
+	</a>
+      </p>
+  
     </div>
   </body>
 </html>

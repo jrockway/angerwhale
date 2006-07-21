@@ -34,7 +34,7 @@
 
     [% IF article.modification_time != article.creation_time %]
     [% SET foo = 1 %]
-    <p>Last modified: [% article.modification_time  %] </p>
+    <p>Last modified: [% article.modification_time | time | html  %] </p>
     [% END %]
     
     [% IF article.categories %]
