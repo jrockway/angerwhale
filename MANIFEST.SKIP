@@ -9,4 +9,6 @@
 ~$
 \.old$
 \#$
-^\.#
+^\.
+_build
+scheduler.state
