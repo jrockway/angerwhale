@@ -12,7 +12,6 @@ use Crypt::OpenPGP::Message;
 use Crypt::OpenPGP::KeyServer;
 use Crypt::OpenPGP::Signature;
 use Carp;
-use Data::Dumper;
 
 sub new {
     my ($class, $data) = @_;
@@ -35,6 +34,7 @@ sub _decode {
     
     my $in_data = $self->{data};
     my $pgp = $self->{pgp};
+
     my $msg = Crypt::OpenPGP::Message->new(  Data => $in_data ) or
       die "Reading message failed: ". Crypt::OpenPGP::Message->errstr;
 

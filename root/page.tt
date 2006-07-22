@@ -47,16 +47,26 @@
      [% content %]
     </div>
     <div id="footer">
-      <p>Powered
+      <p id="angerwhale_blurb">Powered
 	by <a href="http://www.jrock.us/trac/blog_software">AngerWhale</a>
-	version 0.01_01 ($Revision$).
-	<a href="http://validator.w3.org/check?uri=referer">
-	  <img
-	     src="http://www.w3.org/Icons/valid-xhtml11"
-             alt="Valid XHTML 1.1" height="31" width="88" />
-	</a>
+	version [% c.config.VERSION %] ([% INCLUDE revision.tt %]).
       </p>
-  
+      <div id="logos">
+	<p>
+          <object data="[% base %]static/images/valid-xhtml11-blue-v.svg"
+		  type="image/svg+xml" height="30px" width="100px">
+	    Valid XHTML!
+	  </object>
+          <object data="[% base %]static/images/valid-css-blue-v.svg"
+		  type="image/svg+xml" height="30px" width="100px">
+	    Valid CSS!
+	  </object>
+          <object data="[% base %]static/images/valid-svg11-blue-v.svg"
+		  type="image/svg+xml" height="30px" width="100px">
+	    Valid SVG! (Too bad your browser is broken and can't display it.)
+	  </object>
+	</p>
+      </div>
     </div>
   </body>
 </html>

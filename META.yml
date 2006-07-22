@@ -59,4 +59,5 @@ requires:
   base: 0
   overload: 1.02
   version: 0
+tests: t/*/*.t
 version: 0.01_01

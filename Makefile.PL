@@ -71,6 +71,22 @@ catalyst;
 install_script glob('script/*.pl');
 auto_install;
 tests('t/*/*.t');
+write_revision();
 WriteAll( sign => 1, meta => 1 );
 catalyst_par_core();
 catalyst_par();  
+
+sub write_revision {
+# finally, dump the $Revision: $ to a template
+    print "Dumping repository revision number to root/revision.tt\n";
+    eval {
+	open(my $r, '>', 'root/revision.tt') 
+	  or die "Couldn't open root/revision.tt: $!";
+	my $revision = `svn info | grep Revision`;
+	$revision =~ /Revision: (\d+)/;
+	die "No revision in repository! (got: $1)" if !$1;
+	print {$r} "r$1" or die "Write error: $!";
+	close $r or die "Couldn't close file: $!";
+    };
+    # if this fails, we'll just use the revision.tt that is bundled.
+}

@@ -1,7 +1,7 @@
 \B\.svn\b
 # Avoid Makemaker generated and utility files.
 ^MANIFEST\.bak
-^Makefile$
+^Makefile(\.old)?$
 ^blib/
 ^MakeMaker-\d
 ^pm_to_blib$
@@ -9,6 +9,12 @@
 ~$
 \.old$
 \#$
-^\.
+\B\.\#
+\B\.
+
+# avoid Module::Build business
 _build
+^Build$
+
+# avoid this :)
 scheduler.state

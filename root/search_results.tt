@@ -5,6 +5,7 @@
   <h2>[% title %]</h2>
   
     <p>[% infl.NO("article", article_count) %] to display.</p>
+    [% IF article_count > 0 %]
     <ul id="article_list">
       [% FOREACH item = articles %]
       <li>
@@ -14,5 +15,6 @@
       </li>
       [% END %]
     </ul>
+    [% END %]
 </div>
 [% END %]

@@ -1,6 +1,7 @@
 blog.yml
 Build.PL
 Changes
+inc/ExtUtils/AutoInstall.pm
 inc/Module/AutoInstall.pm
 inc/Module/Install.pm
 inc/Module/Install/AutoInstall.pm
@@ -65,6 +66,7 @@ root/navbox.tt
 root/page.tt
 root/post.tt
 root/post_comment.tt
+root/revision.tt
 root/search_results.tt
 root/sidebar.tt
 root/static/bad_lock.png
@@ -84,6 +86,15 @@ root/static/images/btn_88x31_built_shadow.png
 root/static/images/btn_88x31_powered.png
 root/static/images/btn_88x31_powered_shadow.png
 root/static/images/catalyst_logo.png
+root/static/images/perl_powered.png
+root/static/images/valid-css-blue-v.svg
+root/static/images/valid-svg11-blue-v.svg
+root/static/images/valid-svg12-blue-v.svg
+root/static/images/valid-xhtml11-blue-v.svg
+root/static/images/xml.png
+root/static/images/XML.svg
+root/static/images/yaml.png
+root/static/images/YAML.svg
 root/static/jon.jpg
 root/static/lock.png
 root/static/lock.svg
@@ -94,10 +105,6 @@ root/static/scriptaculous.js
 root/static/slider.js
 root/static/style.css
 root/static/unittest.js
-root/static/xml.png
-root/static/XML.svg
-root/static/yaml.png
-root/static/YAML.svg
 root/tag_list.tt
 root/tags.tt
 root/tags_as_text.tt
