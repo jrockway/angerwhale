@@ -20,7 +20,7 @@
 [% SET home = "?_home=yes_indeed" %]
 [% END %]
 <script type="text/javascript">
-<!--
+<![CDATA[
  new Ajax.InPlaceEditor( '[% id %]',
     			'[% url %]',
 			{ 
@@ -36,5 +36,5 @@
 				    	         '/tags/get_nav_box[% home %]');
 			     }
  		         });
-//-->
+//]]>
 </script>

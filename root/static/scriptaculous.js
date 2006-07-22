@@ -23,7 +23,8 @@ var Scriptaculous = {
   Version: '1.6.1',
   require: function(libraryName) {
     // inserting via DOM fails in Safari 2.0, so brute force approach
-    document.write('<script type="text/javascript" src="'+libraryName+'"></script>');
+    // jrock: this shitty code BREAKS application/xhtml+xml documents, you idiot
+    //    document.write('<script type="text/javascript" src="'+libraryName+'"></script>');
   },
   load: function() {
     if((typeof Prototype=='undefined') || 

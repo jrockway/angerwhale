@@ -1,4 +1,3 @@
-[% USE Time %]
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -13,8 +12,6 @@
     <script type="text/javascript" src="/static/dragdrop.js"></script>
     <script type="text/javascript" src="/static/effects.js"></script>
     <script type="text/javascript" src="/static/slider.js"></script>
-    <script type="text/javascript" src="/static/scriptaculous.js"></script>
-
   </head>
   <body>
     <div id="header" class="header">
@@ -48,6 +45,7 @@
      [% content %]
     </div>
     <div id="footer">
+      [% USE Time %]
       <p id="angerwhale_blurb">Page generated
 	by <a href="http://www.jrock.us/trac/blog_software">AngerWhale</a>
 	version [% c.config.VERSION %] ([% INCLUDE revision.tt %]) at

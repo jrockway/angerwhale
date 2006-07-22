@@ -6,7 +6,8 @@ use base 'Catalyst::Controller';
 use URI;
 use HTTP::Date;
 
-__PACKAGE__->config->{namespace} = '';
+# this was auto-generated and is apparently essential
+__PACKAGE__->config->{namespace} = q{}; 
 
 =head1 NAME
 
@@ -109,8 +110,8 @@ sub end : Private {
 	$c->response->body($res);
     }
     
-    $c->response->content_type('text/html; charset=utf-8');
     if(!($c->response->body || $c->response->redirect)){
+	$c->response->content_type('application/xhtml+xml; charset=utf-8');
  	$c->stash->{generated_at} = time();
  	my $articles = $c->stash->{articles};
  	my $article  = $c->stash->{article};
@@ -126,13 +127,10 @@ sub end : Private {
  	    _cache($c, $key);
  	}
 	else {
-	
-	# craptaculous scriptaculous doesn't work if the contenttype is
-	# text application/xhtml+xml!
 	    $c->forward('Blog::View::HTML');
 	}
     }
-	
+    
     return;
 }
 

@@ -12,6 +12,7 @@ __PACKAGE__->config({name => __PACKAGE__});
 __PACKAGE__->config->{static}->{mime_types} = 
   {
    svg => 'image/svg+xml',
+   js  => 'text/javascript',
   };
 __PACKAGE__->config->{cache}->{storage} = tempdir(CLEANUP => 1);
 __PACKAGE__->config->{cache}->{expires} = 3600;
