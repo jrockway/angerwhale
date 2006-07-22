@@ -7,7 +7,8 @@ abstract('exciting new weblogging software or something');
 author('Jonathan Rockway <jrockway@cpan.org>');
 version_from('lib/Blog.pm');
 include('ExtUtils::AutoInstall');
-#licence('gpl');  (broken!?)
+licence('gpl');
+
 requires 
   (
    'Catalyst'						=> '5.7',	  
@@ -69,6 +70,7 @@ build_requires
 catalyst;
 install_script glob('script/*.pl');
 auto_install;
-WriteAll( sign => 1, meta => 1);
+tests('t/*/*.t');
+WriteAll( sign => 1, meta => 1 );
 catalyst_par_core();
 catalyst_par();  
