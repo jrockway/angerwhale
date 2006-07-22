@@ -4,8 +4,6 @@
   [% FOREACH article = articles %][% INCLUDE post.tt %][% END %]
 
 [% IF previous || next %]
-[% IF !defined(next) %] [% SET next = 0 %] [% END %]
-[% IF !defined(previous) %] [% SET previous = 0 %] [% END %]
 <div id="nav_footer">
      <p>
 	[% IF previous > 0 %]	
