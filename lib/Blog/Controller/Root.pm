@@ -111,8 +111,8 @@ sub end : Private {
     }
     
     if(!($c->response->body || $c->response->redirect)){
-#	$c->response->content_type('application/xhtml+xml; charset=utf-8');
-	$c->response->content_type('text/html; charset=utf-8');
+	$c->response->content_type('application/xhtml+xml; charset=utf-8');
+#	$c->response->content_type('text/html; charset=utf-8');
  	$c->stash->{generated_at} = time();
  	my $articles = $c->stash->{articles};
  	my $article  = $c->stash->{article};
