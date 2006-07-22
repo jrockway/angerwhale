@@ -12,7 +12,6 @@
     <script type="text/javascript" src="/static/dragdrop.js"></script>
     <script type="text/javascript" src="/static/effects.js"></script>
     <script type="text/javascript" src="/static/slider.js"></script>
-    <script><![CDATA[alert("foo");]]></script>
   </head>
   <body>
     <div id="header" class="header">
