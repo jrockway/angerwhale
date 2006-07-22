@@ -15,9 +15,11 @@
         </a>
       [% END %]
       on
-      <span class="date">[% comment.creation_time | time %]</span>
+      <span class="date">[% comment.creation_time | time | html %]</span>
     </p>
-    <p class="id">#<a href="[% base %][% comment.uri | uri %]">[% comment.id | html %]</a></p>
+    <p class="id"><a href="[% base %][% comment.uri | uri | html %]">
+       #
+    </a></p>
   </div>
   <div class="comment_body">
     [% comment.text %]

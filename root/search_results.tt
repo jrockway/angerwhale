@@ -9,8 +9,15 @@
     <ul id="article_list">
       [% FOREACH item = articles %]
       <li>
-        <p><a href="[% base %][% item.uri | uri %]">[% item.title | html %]</a>
-	      [% item.creation_time | time %]</p>
+        <p>
+	  <a href="[% base %][% item.uri | uri %]">[% item.title | html %]</a>
+	  <span class="postinfo">
+	  posted [% item.creation_time | time %]
+	  [% IF item.author.nice_id != 0 %]
+	  by [% item.author.fullname %]
+	  [% END %]
+	  </span>
+	</p>
 	<p>[% item.summary | html %]</p>
       </li>
       [% END %]
