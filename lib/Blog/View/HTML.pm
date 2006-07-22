@@ -16,10 +16,10 @@ __PACKAGE__->config(
 
 sub process {
     my ($self, $c) = @_;
-    if (!$c->response->content_type){
-	# this breaks IE, but fuck IE.
-	$c->reponse->content_type('application/xhtml+xml; charset=utf-8');
-    }
+#    if (!$c->response->content_type){
+#	# this breaks IE, but fuck IE.
+#	$c->reponse->content_type('application/xhtml+xml; charset=utf-8');
+#    }
     $self->NEXT::process($c);
 }
 

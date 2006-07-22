@@ -2,14 +2,20 @@ package Blog;
 
 use strict;
 use warnings;
-use Catalyst qw/Unicode ConfigLoader Scheduler Static::Simple Prototype/;
+use File::Temp qw(tempdir);
+use Catalyst qw/Unicode ConfigLoader Scheduler Static::Simple Prototype
+		Cache::FastMmap/;
+
+our $VERSION = '0.01_01';
 
 __PACKAGE__->config({name => __PACKAGE__});
 __PACKAGE__->config->{static}->{mime_types} = 
   {
    svg => 'image/svg+xml',
   };
-our $VERSION = '0.01_01';
+__PACKAGE__->config->{cache}->{storage} = tempdir(CLEANUP => 1);
+__PACKAGE__->config->{cache}->{expires} = 3600;
+
 __PACKAGE__->config({VERSION => $VERSION});
 __PACKAGE__->setup;
 __PACKAGE__->schedule( at    => '25 * * * *',

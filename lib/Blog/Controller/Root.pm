@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use URI;
+use HTTP::Date;
 
 __PACKAGE__->config->{namespace} = '';
 
@@ -108,12 +109,87 @@ sub end : Private {
 	$c->response->body($res);
     }
     
+    $c->response->content_type('text/html; charset=utf-8');
     if(!($c->response->body || $c->response->redirect)){
-	$c->response->content_type('text/html');    
+ 	$c->stash->{generated_at} = time();
+ 	my $articles = $c->stash->{articles};
+ 	my $article  = $c->stash->{article};
+ 	my $key      = _global_uniq_id($c);
+	
+ 	if(ref $articles eq 'ARRAY'){    
+ 	    # try the cache
+ 	    $key .= join '|', map {_article_uniq_id($_)} @{$articles};
+ 	    _cache($c, $key);
+ 	}
+ 	elsif (ref $article && $c->request->uri =~ m{/articles/}){
+ 	    $key .= _article_uniq_id($article);
+ 	    _cache($c, $key);
+ 	}
+	else {
+	
+	# craptaculous scriptaculous doesn't work if the contenttype is
+	# text application/xhtml+xml!
+	    $c->forward('Blog::View::HTML');
+	}
+    }
+	
+    return;
+}
+
+sub _global_uniq_id {
+    my $c = shift;
+    # main page changes for:
+    # uri
+    # change in tags
+    # change in categories
+    # change in user
+    my $user;
+    eval {
+	$user = $c->stash->{user}->nice_id;
+    };
+    $user ||= 'anonymous';
+    
+    return 	
+      $c->request->uri->path. '|'. $user. '|'.
+	'(tags:'. (join ':', $c->model('Filesystem')->get_tags). ')|'.
+	'(cats:'. (join ':', $c->model('Filesystem')->get_categories). 
+	  ')|';
+}
+
+sub _article_uniq_id {
+    my $article = shift;
+    # articles depend on:
+    # tags
+    # categories
+    # contents (and mtime by association)
+    # # of comments (to avoid traversing the entire comment tree)
+    no warnings;
+    return $article->comment_count.
+      '|'. $article->checksum.
+      '|'. $article->tags.
+      '|'. $article->categories.
+      '|'. $article->comment_count;
+}
+
+sub _cache {
+    my $c   = shift;
+    my $key = shift;
+    my $document;
+    if( $document = $c->cache->get($key) ){
+	$c->log->debug("serving from cache $key");
+	$c->response->body($document->{body});
+    }
+    else {
+	$c->log->debug("caching $key");
 	$c->forward('Blog::View::HTML');
+	$document = { mtime => time(),
+		      body  => $c->response->body };
+	$c->cache->set($key, $document);
     }
     
-    return;
+    my $h = $c->response->headers;
+    $h->header('E-Tag' => $key);
+    $h->header('Last-Modified' => time2str($document->{mtime}));
 }
 
 =head1 AUTHOR

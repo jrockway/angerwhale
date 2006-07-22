@@ -4,9 +4,11 @@
   <div class="post_title">
     <h2> [% article.title | html %]</h2>
     [% INCLUDE tags.tt %]  
-    <!--<div class="post_author">
+    <div class="post_date">
+     <p>
+        [% article.creation_time | time | html %]
         [% IF article.author.nice_id != 0 %]
-	[% article.author.fullname %]
+	by [% article.author.fullname %]
 	[% END %]
 	[% IF article.signed %]
 	    <a href="[% base %][% article.uri | uri %]/raw">
@@ -14,10 +16,6 @@
 	      	   src="[% base %]static/lock.png" alt="[SIGNED]" />
 	    </a>	
      	[% END %]
-    </div>-->
-    <div class="post_date">
-     <p>
-        [% article.creation_time | time | html %]
      </p>	
     </div>
   </div>

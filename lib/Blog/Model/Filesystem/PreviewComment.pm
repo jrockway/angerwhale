@@ -7,6 +7,7 @@ use strict;
 use warnings;
 use base qw(Blog::Model::Filesystem::Comment);
 use Blog::User::Anonymous;
+use Digest::MD5 qw(md5_hex);
 
 sub new {
     my $class = shift;
@@ -22,6 +23,7 @@ sub new {
 		body    => $body,
 		type    => $type,
 	       };
+    $self->{base_obj}->{context} = $c;
     
     bless $self, $class;
     
@@ -72,10 +74,6 @@ sub _cache_signature {
     # i'll get right on that...
     
     return; 
-}
-
-sub checksum {
-    return;
 }
 
 sub author {

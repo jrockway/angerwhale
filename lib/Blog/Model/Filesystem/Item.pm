@@ -26,7 +26,7 @@ use overload (q{<=>} => "compare",
 	      q{cmp} => "compare",
 	      fallback => "TRUE");
 
-use Digest::MD5;
+use Digest::MD5 qw(md5_hex);
 
 # arguments are passed in a hash ref
 # base: top directory containing this item (and its friends)
@@ -162,12 +162,9 @@ sub title {
 
 sub checksum {
     my $self = shift;
-    my $path = $self->{path};
-    open (my $fh, '<', $path) or die "Couldn't open myself for reading: $!";
-    my $ctx = Digest::MD5->new;
-    $ctx->addfile($fh);
-    close $fh;
-    return $ctx->hexdigest;
+    my $text = $self->raw_text;
+    chomp $text;
+    return md5_hex($text);
 }
 
 sub id {
@@ -332,16 +329,38 @@ sub raw_text {
 sub text {
     my $self = shift;
     my $text = $self->raw_text;
+    my $c = $self->{base_obj}->{context};
+
+    my $key = "htmltext|".$self->type."|".$self->checksum;
+    my $data;
+    if( $data = $c->cache->get($key) ){
+	$data = ${$data};
+    }
+    else {
+	$data = Blog::Format::format($text, $self->type); 
+	$c->cache->set($key, \$data);
+    }
     
-    return Blog::Format::format($text, $self->type);
+    return $data;
 }
 
 # returns plain text formatted data
 sub plain_text {
     my $self = shift;
     my $text = $self->raw_text;
+    my $c = $self->{base_obj}->{context};
+    my $key = "plaintext|".$self->type."|".$self->checksum;
 
-    return Blog::Format::format_text($text, $self->type);
+    my $data;
+    if( $data = $c->cache->get($key) ){
+	$data = ${$data};
+    }
+    else {
+	$data = Blog::Format::format_text($text, $self->type); 
+	$c->cache->set($key, \$data);
+    }
+    
+    return $data;
 }
 
 # hierarchy

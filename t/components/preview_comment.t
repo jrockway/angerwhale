@@ -15,6 +15,13 @@ $user_store->set_always('get_user_by_real_id', $jrock);
 my $c = Test::MockObject->new;
 $c->set_always('stash', {});
 $c->set_always('model', $user_store);
+my $cache = Test::MockObject->new;
+$cache->set_always('get', undef);
+$cache->set_always('set', undef);
+my $config = {};
+$c->set_always('cache', $cache);
+
+
 my $body;
 {
     local $/;
@@ -34,7 +41,7 @@ ok(!$comment->uri);
 ok($comment->signed);
 is($comment->author->fullname, 'Jonathan T. Rockway');
 is($comment->signor, $id);
-is($comment->checksum, undef);
+is($comment->checksum, '120ea8a25e5d487bf68b5f7096440019');
 is($comment->id, '??');
 ok($comment->summary =~ /This is a test./);
 ok(!$comment->post_uri);
