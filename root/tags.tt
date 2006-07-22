@@ -20,7 +20,7 @@
 [% SET home = "?_home=yes_indeed" %]
 [% END %]
 <script type="text/javascript">
-<![CDATA[
+//<![CDATA[
  new Ajax.InPlaceEditor( '[% id %]',
     			'[% url %]',
 			{ 

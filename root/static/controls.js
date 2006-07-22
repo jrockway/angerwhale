@@ -727,15 +727,17 @@ Ajax.InPlaceEditor.prototype = {
     if (this.saving) return;
     this.effect = new Effect.Highlight(this.element, {
       startcolor: this.options.highlightcolor,
+      // Konq bug workaround
       endcolor: this.options.highlightendcolor,
-      restorecolor: this.originalBackground
+      restorecolor: this.options.highlightendcolor
     });
   },
   leaveEditMode: function() {
     Element.removeClassName(this.element, this.options.savingClassName);
     this.removeForm();
     this.leaveHover();
-    this.element.style.backgroundColor = this.originalBackground;
+    // Konqueror bug
+    this.element.style.backgroundColor = this.options.highlightendcolor,
     Element.show(this.element);
     if (this.options.externalControl) {
       Element.show(this.options.externalControl);
