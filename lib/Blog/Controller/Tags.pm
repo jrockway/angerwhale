@@ -122,7 +122,7 @@ sub tag_list : Private {
     my $average_count = $total / (scalar (keys %{$tags}));
     
     foreach my $tag (values %{$tags}){
-	$tag->{count} = int(100+($tag->{count} - $average_count)*20);
+	$tag->{count} = int(($tag->{count} - $average_count)*15 + 100);
     }
     
     $c->stash->{tags} = [keys %{$tags}];
@@ -132,7 +132,9 @@ sub tag_list : Private {
 
 sub get_nav_box : Local {
     my ($self, $c) = @_;
-    if ($c->request->param('_home')){
+    if ($c->request->param('_home')){ 
+	# whether or not the Home link should be a link
+	# (on the main page, it's not a link because you're already home)
 	$c->stash->{page} = 'home';
     }
     $c->stash->{categories} = [$c->model('Filesystem')->get_categories];

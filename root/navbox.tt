@@ -27,7 +27,7 @@
   [% END %]
   [% IF root.get_tags %]
   <div id="sidebar_tags">
-    <h3>Tags</h3>
+    <h3><a href="[%base%]tags" style="text-decoration: none;">Tags</a></h3>
     <ul>
     [% FOREACH tag = root.get_tags %]
       <li><a href="[% base %]tags/[% tag | uri | html %]">[% tag | html %]</a></li>
