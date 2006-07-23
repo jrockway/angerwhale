@@ -101,7 +101,32 @@ sub tag : LocalRegex('[^/]$') {
 
 sub tag_list : Private {
     my ($self, $c) = @_;
-    $c->stash->{tags} = [$c->model('Filesystem')->get_tags];
+    my @articles = $c->model('Filesystem')->get_articles;
+    my $tags = {};
+
+    my $max_count = 1;
+    my $total     = 0;
+    
+    foreach my $article (@articles){
+	my @_tags = $article->tags;
+	foreach my $tag (@_tags){
+	    $tags->{$tag}->{articles}++;
+	    
+	    my $tag_count = 
+	      ($tags->{$tag}->{count} += $article->tag_count($tag));
+	    $max_count = $tag_count if($tag_count > $max_count);
+	    $total += $tag_count;
+	}
+    }
+    
+    my $average_count = $total / (scalar (keys %{$tags}));
+    
+    foreach my $tag (values %{$tags}){
+	$tag->{count} = int(100+($tag->{count} - $average_count)*20);
+    }
+    
+    $c->stash->{tags} = [keys %{$tags}];
+    $c->stash->{tag_data} = $tags;
     $c->stash->{template} = 'tag_list.tt';
 }
 

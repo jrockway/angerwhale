@@ -55,15 +55,16 @@
 	<p>
           <object data="[% base %]static/images/valid-xhtml11-blue-v.svg"
 		  type="image/svg+xml" height="30px" width="100px">
-	    Valid XHTML!
+	    Valid XHTML.
 	  </object>
           <object data="[% base %]static/images/valid-css-blue-v.svg"
 		  type="image/svg+xml" height="30px" width="100px">
-	    Valid CSS!
+	    Valid CSS.
 	  </object>
           <object data="[% base %]static/images/valid-svg11-blue-v.svg"
 		  type="image/svg+xml" height="30px" width="100px">
-	    Valid SVG! (Too bad your browser is broken and can't display it.)
+	    Valid SVG.  (If you're seeing this, though, you need a
+	    better browser so you can actually see them!)
 	  </object>
 	</p>
       </div>

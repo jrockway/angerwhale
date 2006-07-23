@@ -1,10 +1,15 @@
-[% WRAPPER page.tt title='Tags' %]
+[% WRAPPER page.tt title='All Tags' %]
 Articles have been tagged with the following tags:
 
-<ul>
-[% FOREACH tag=tags %]
-<li><a href="[% base %]tags/[% tag | uri | html %]">[% tag | html %]</a></li>
-[% END %]
-</ul>
+<div id="tag_cloud">
+[% FOREACH tag = tags %]
 
+<span class="tag" style="font-size: [% tag_data.$tag.count %]%">
+  <a href="[% base %]tags/[% tag | uri | html %]">
+    [% tag | html %]
+  </a>
+</span>	 
+
+[% END %]
+</div>
 [% END %]

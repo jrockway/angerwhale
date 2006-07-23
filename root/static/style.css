@@ -65,3 +65,7 @@ a.visited { color: blue; }
 		     background-color: #eeeeff; padding: 1em; }
 
 .message {font-size: 70%; }
+
+#tag_cloud {padding: 10%; text-align: justify;}
+.tag {padding: 5px;}
+.tag a {text-decoration: none;}
