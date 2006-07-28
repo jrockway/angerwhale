@@ -1,5 +1,7 @@
 [% WRAPPER page.tt title='All Tags' %]
-Articles have been tagged with the following tags:
+
+[% IF tag_count > 0 %]
+<p>Articles have been tagged with the following tags:</p>
 
 <div id="tag_cloud">
 [% FOREACH tag = tags %]
@@ -12,4 +14,7 @@ Articles have been tagged with the following tags:
 
 [% END %]
 </div>
+[% ELSE %]
+<p>No tags.</p>
+[% END %]
 [% END %]

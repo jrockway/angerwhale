@@ -72,15 +72,15 @@ sub do_tag : LocalRegex('do_tag/.+') {
     }
 }
 
-sub tag : LocalRegex('[^/]$') {
+sub show_tagged_articles : LocalRegex('[^/]+(/rss|/yaml)?$') {
     my ($self, $c) = @_;
     my $uri = uri_unescape($c->request->uri);
-    $uri =~ m{tags/(.+)/?$};
+    $uri =~ m{tags/([^/]+)(/rss|/yaml)?$};
+    my $type = $2;
     
     my @tags  = map {lc} split /(?:\s|[_;,!.])/, $1; 
 
     $c->stash->{template} = "search_results.tt";
-
     $c->stash->{title} = "Articles tagged with ". join ', ', @tags[0..$#tags-1];
 
     # make a nice-looking comma/and -separated list ("foo, bar, and baz"
@@ -97,6 +97,11 @@ sub tag : LocalRegex('[^/]$') {
 
     $c->stash->{articles} = [$c->stash->{root}->get_by_tag(@tags)];
     $c->stash->{article_count} = scalar @{$c->stash->{articles}};
+
+    if($type){
+	$c->detach('/feeds/articles_rss')  if $type eq '/rss';
+	$c->detach('/feeds/articles_yaml') if $type eq '/yaml';
+    }
 }
 
 sub tag_list : Private {
@@ -118,8 +123,9 @@ sub tag_list : Private {
 	    $total += $tag_count;
 	}
     }
-    
-    my $average_count = $total / (scalar (keys %{$tags}));
+    my $average_count = 1;
+    my $tag_count = (scalar (keys %{$tags}));
+    $average_count = $total / $tag_count if $tag_count > 0;
     
     foreach my $tag (values %{$tags}){
 	$tag->{count} = int(($tag->{count} - $average_count)*15 + 100);
