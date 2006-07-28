@@ -131,6 +131,7 @@ sub tag_list : Private {
 	$tag->{count} = int(($tag->{count} - $average_count)*15 + 100);
     }
     
+    $c->stash->{tag_count} = $tag_count;
     $c->stash->{tags} = [keys %{$tags}];
     $c->stash->{tag_data} = $tags;
     $c->stash->{template} = 'tag_list.tt';
