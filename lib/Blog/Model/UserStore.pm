@@ -61,19 +61,6 @@ sub new {
     return $self;
 }
 
-sub new_user {
-    my ($self, $nice_id) = @_;
-    my $user = {};
-    die "specify id" if !$nice_id;
-
-    $user->{nice_id} = $nice_id;
-    $user = bless $user, 'Blog::User';    
-    
-    $user->_keyserver($self->{keyserver});
-    $user->refresh;
-
-    return $user;
-}
 
 =head2 create_user_by_real_id
 
@@ -107,7 +94,6 @@ sub get_user_by_real_id {
     return $self->get_user_by_nice_id($nice_id);
 }
 
-###::: XXX refactor this!!!!! I am way too sleepy to be programming!
 sub get_user_by_nice_id {
     my $self    = shift;
     my $nice_id = shift;
@@ -118,56 +104,50 @@ sub get_user_by_nice_id {
     my $user = {};
     my $last_updated = 0;
     
-    eval {
-	$user->{public_key}  = read_file("$base/key")          or die;
-	$user->{fullname}    = read_file("$base/fullname")     or die;
-	$user->{fingerprint} = read_file("$base/fingerprint")  or die;
-	$user->{email}       = read_file("$base/email")        or die;
-	$last_updated        = read_file("$base/last_updated") or die;
-    };
+    $user->{nice_id} = $nice_id;
+    eval {$user->{public_key}  = read_file("$base/key")};
+    eval {$user->{fullname}    = read_file("$base/fullname")};
+    eval {$user->{fingerprint} = read_file("$base/fingerprint")};
+    eval {$user->{email}       = read_file("$base/email")};
+    eval {$last_updated        = read_file("$base/last_updated")};
+    bless $user, 'Blog::User';
+    $user->{keyserver} = $self->{keyserver};
 
     my $outdated = ((time() - $last_updated) > $self->{update_interval});
-    
+    eval {
+	_user_ok($user);
+    };
+
     if(!$@ && !$outdated){
 	# refreshed OK
-	$user->{nice_id} = $nice_id;
-	$user->{keyserver} = $self->{keyserver};
-	return bless $user, 'Blog::User';
+	return $user;
     }
-
+    
     # create a user if the data was bad
     # or it's time to update
-    $user = eval {
-	if($user->can('refresh') && $user->id){
-	    delete $user->{key};
-	    delete $user->{fullname};
-	    delete $user->{fingerprint};
-	    delete $user->{email};
-	    $user->{keyserver} = $self->{keyserver};
-	    $user->refresh;
-	    return $user;
-	}
+    eval {
+	delete $user->{public_key};
+	delete $user->{fullname};
+	delete $user->{fingerprint};
+	delete $user->{email};
+	$user->refresh;
+	$self->store_user($user);
+	_user_ok($user);
     };
     
-    if($@){
-	eval {
-	    $user = $self->new_user($nice_id);
-	    $self->store_user($user);
-	};
-    }
+    confess "Could not refresh or retrieve user 0x$nice_id!" if $@;
+    confess "user isnta a user" if !$user->isa('Blog::User');
     
-    # couldn't create a new user for some reason, and cached
-    # version is invalid
-    if($@ || !($user->{fullname} && $user->{public_key} &&
-	       $user->{fingerprint} && $user->{email})){
-	die "User $nice_id is invalid and could not be refreshed: $@";
-    }
-
-    # user is OK (might not be refreshed, if the keyserver was down)
-    die if !$user->isa('Blog::User');
-    die if !$user->{keyserver};
-
     return $user;
+}
+
+sub _user_ok {
+    my $user = shift;
+    die "no name" if !$user->fullname;
+    die "no key"  if !$user->public_key;
+    die "no email"if !$user->email;
+    die "no fingerprint" if !$user->key_fingerprint;
+    return 1;
 }
 
 sub refresh_user {
@@ -188,8 +168,8 @@ sub store_user {
     my $uid = $user->nice_id;
 
     my $base = "$dir/$uid";
-    mkdir $base;
-    die "couldn't create userdir $base for $uid" if !-d $base;
+    mkdir $base if !-d $base;
+    confess "couldn't create userdir $base for $uid" if !-d $base;
     eval {
 	write_file("$base/key", $user->public_key);
 	write_file("$base/fullname", $user->fullname);
@@ -198,7 +178,7 @@ sub store_user {
 	write_file("$base/last_updated", time());
     };
     if($@){
-	die "Error writing user: $!";
+	confess "Error writing user: $!";
     }
     
     return 1;
