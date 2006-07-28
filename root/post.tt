@@ -24,7 +24,14 @@
     [% article.text %]
   </div>
 
-  [% IF !standalone %]
+  [% IF standalone %]
+    <p><span class="feeds">
+    	 <a href="[% base %][% article.uri | uri %]/yaml">
+	    <img src="[% base %]static/images/yaml.png" alt="[as YAML]"/></a>
+	 <a href="[% base %][% article.uri | uri %]/rss">
+	    <img src="[% base %]static/images/xml.png" alt="[as RSS]" /></a>
+    </span></p>	 
+  [% ELSE %]
   <div class="post_links">
     <a href="[% base %][% article.uri | uri %]#comments">
       [% infl.NO("comment", article.comment_count) %]</a> |

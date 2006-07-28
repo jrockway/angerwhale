@@ -78,17 +78,31 @@ sub show_category : Private {
 
 sub list_categories : Private {
     my ($self, $c) = @_;
-    $c->response->status(404);
-    $c->stash->{template} = "error.tt";
+    $c->response->body('The list of categories is conveniently located to your left.');
 }
+
+
+sub yaml : Local {
+    my ($self, $c) = @_;
+    $c->detach('/feeds/articles_yaml', $c->stash->{articles});
+}
+
 
 sub default : Private {
     my ($self, $c) = @_;    
     my $path = uri_unescape($c->request->path);
     
-    if($path =~ m{categories/([^/]+)$}){
+    if($path =~ m{categories/([^/]+)(/yaml|/rss)?$}){
 	$c->stash->{category} = $1;
 	$c->forward('show_category');
+	
+	if($2 eq '/yaml'){
+	    $c->detach('yaml');
+	}
+	elsif($2 eq '/xml'){
+	    $c->detach('xml');
+	}
+	
     }
     else {
 	$c->forward('list_categories');

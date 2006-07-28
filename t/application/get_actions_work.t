@@ -4,7 +4,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 27;
+use Test::More tests => 29;
 use HTML::Tidy;
 use Test::HTML::Tidy;
 use YAML;
@@ -24,7 +24,7 @@ use ok "Blog::Controller::Users";
 use ok "Blog::Controller::ScheduledEvents";
 use ok "Blog::Controller::Root";
 
-my @html_urls = qw(/ /tags /tags/fake
+my @html_urls = qw(/ /tags /tags/fake /feeds
 	           /tags/tag_list /login /users);
 
 my @urls = qw(/tags/tag_list /tags/do_tag);

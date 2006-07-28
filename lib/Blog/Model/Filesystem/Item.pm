@@ -125,7 +125,7 @@ sub type {
 	$self->{path} =~ m{[.](\w+)$};
 	$type = $1;
     }
-
+    
     if(!$type){
 	$type = 'text';
     }
@@ -204,7 +204,8 @@ sub modification_time {
 sub summary {
     my $self = shift;
     my $summary = $self->plain_text;
-
+    return if !defined $summary;
+    
     my $SPACE = q{ };
 
     my @words = split /\s+/, $summary;

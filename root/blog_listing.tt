@@ -20,4 +20,10 @@
      </p>
 </div>
 [% END %]
+    <div class="feeds">
+    	 <a href="[% c.url_for("yaml") %]">
+	    <img src="[% base %]static/images/yaml.png" alt="[as YAML]"/></a>
+	 <a href="[% c.request.uri %]/rss">
+	    <img src="[% base %]static/images/xml.png" alt="[as RSS]" /></a>
+    </div>
 [% END %]

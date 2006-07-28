@@ -1,5 +1,5 @@
 [% WRAPPER page.tt title='All Tags' %]
-
+   
 [% IF tag_count > 0 %]
 <p>Articles have been tagged with the following tags:</p>
 

@@ -99,16 +99,16 @@ sub default : Private {
 
 sub end : Private {
     my ($self, $c) = @_;
-
+    
     #  not implemented yet
     # my $requested_type = $c->stash->{requested_type};
     
-    if($c->debug){
-	my $res = $c->response->body;
-	$c->forward('Blog::View::Dump');
-	print {*STDERR} $c->response->body;
-	$c->response->body($res);
-    }
+    #if($c->debug){
+#	my $res = $c->response->body;
+#	$c->forward('Blog::View::Dump');
+#	print {*STDERR} $c->response->body;
+#	$c->response->body($res);
+#    }
     
     if(!($c->response->body || $c->response->redirect)){
 	$c->response->content_type('application/xhtml+xml; charset=utf-8');
@@ -131,7 +131,7 @@ sub end : Private {
 	    $c->forward('Blog::View::HTML');
 	}
     }
-    
+
     return;
 }
 

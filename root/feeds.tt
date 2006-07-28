@@ -1,0 +1,28 @@
+[% WRAPPER page.tt title="Feed Me!" %]
+
+<p>Here you will find All Things Feed!</p>
+<ul>
+  <li>Feeds of the latest articles: </li>
+  <li>Feeds of the latest comments: </li>
+  [% IF categories.size > 0 %]
+  <li>Feeds of articles in a specific category:
+    <ul>
+     [% FOREACH category = categories %]
+     <li>Latest articles in [% category | html %]</li>
+     [% END %]
+    </ul>
+   </li>
+  [% END %]
+
+  [% IF tags.size > 0 %]
+  <li>Feeds of articles with a specific tag:
+    <ul>
+     [% FOREACH tag = tags %]
+     <li>Latest articles with tag [% tag | html %]</li>
+     [% END %]
+    </ul>
+   </li>
+  [% END %]
+</ul>
+
+[% END %]

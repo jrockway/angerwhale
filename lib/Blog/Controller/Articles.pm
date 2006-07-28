@@ -38,9 +38,9 @@ sub show_article : LocalRegex('[^.]') {
     my ($self, $c) = @_;
     my $name = uri_unescape($c->request->uri);
     
-    $name =~ m{/([^/]+)(/raw)?$};
-    $name = $1;
-    my $raw = $2;
+    $name    =~ m{/([^/]+)(/raw|/yaml|/rss)?$};
+    $name    = $1;
+    my $type = $2;
     
     $c->stash->{template} = "article.tt";
     eval {
@@ -56,10 +56,18 @@ sub show_article : LocalRegex('[^.]') {
 
     # if the user wants the raw message (to verify the signature),
     # return that instead of rendering the template
-    if($raw){
-	$c->response->content_type('text/plain');
-	$c->response->body($c->stash->{article}->raw_text(1));
-	return;
+    if($type){
+	if($type eq '/raw'){
+	    $c->response->content_type('application/octet-stream');
+	    $c->response->body($c->stash->{article}->raw_text(1));
+	    return;
+	}
+	elsif($type eq '/yaml'){
+	    $c->detach('/feeds/item_yaml', [$c->stash->{article}]);
+	}
+	elsif($type eq '/xml'){
+	    $c->detach('/feeds/item_rss',  [$c->stash->{article}]);
+	}
     }
 
 }

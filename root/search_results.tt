@@ -4,7 +4,13 @@
 <div class="search_results">
   <h2>[% title %]</h2>
   
-    <p>[% infl.NO("article", article_count) %] to display.</p>
+    <p>[% infl.NO("article", article_count) %] to display.
+    <span class="feeds">
+    	 <a href="[% c.request.uri %]/yaml">
+	    <img src="[% base %]static/images/yaml.png" alt="[as YAML]"/></a>
+	 <a href="[% c.request.uri %]/rss">
+	    <img src="[% base %]static/images/xml.png" alt="[as RSS]" /></a>
+    </span></p>
     [% IF article_count > 0 %]
     <ul id="article_list">
       [% FOREACH item = articles %]
