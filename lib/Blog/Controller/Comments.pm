@@ -22,14 +22,18 @@ Catalyst Controller.
 
 =cut
 
-sub find_by_path : Private {
+sub find_by_uri_path : Private {
     my ($self, $c) = @_;
 
     my $path = $c->request->uri->path;
     my @path = grep {/[-]/} (split m{/}, $path);
     
-    my $root     = $c->stash->{root};
-    my @articles = $root->get_articles;
+    return $c->forward('find_by_path', [@path]);
+}
+
+sub find_by_path : Private {
+    my ($self, $c, @path) = @_;
+    my @articles = $c->model('Filesystem')->get_articles;
     my $article  = (grep { $_->id eq $path[0]; } @articles)[0];
     $c->stash->{article} = $article;
     shift @path;
@@ -37,16 +41,15 @@ sub find_by_path : Private {
     while(my $path = shift @path){
 	my @comments = $article->comments;
 	$article = (grep {$_->id eq $path} @comments)[0];
-
     }
+    
     $c->stash->{comment} = $article;    
-
-    return;
+    return $article;
 }
 
 sub default : Private {
     my ( $self, $c ) = @_;
-    $c->forward('find_by_path');
+    $c->forward('find_by_uri_path');
     
     if(  !blessed $c->stash->{comment} || 
          !$c->stash->{comment}->isa('Blog::Model::Filesystem::Item'))
@@ -55,7 +58,7 @@ sub default : Private {
 	  $c->response->status(404);
       }
     else {
-	# handle cases where the find_by_path item is the actual article
+	# handle cases where the find_by_uri_path item is the actual article
 	if(!$c->stash->{comment}->isa('Blog::Model::Filesystem::Comment')){
 	    # handle getting articles by their GUID (instead of name)
 	    $c->response->redirect($c->uri_for('/',$c->stash->{article}->uri));
@@ -79,7 +82,7 @@ sub post : Local('post'){
     my $method = $c->request->method;
 
     # find what we're replying to
-    $c->forward('find_by_path');
+    $c->forward('find_by_uri_path');
     my $article = $c->stash->{article};
     my $comment = $c->stash->{comment};
     my $object = $comment;

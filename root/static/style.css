@@ -71,3 +71,10 @@ a.visited { color: blue; }
 
 .feeds  {padding-left: 10px;}
 .feeds img {border: none;}
+
+.feed_icon_box {
+	       padding: .2em;
+	       text-align: right; margin-top: -1.1em;
+	       }
+.feed_icon_box img {border: none;}
+.feed_icon_box li {list-style: none;}

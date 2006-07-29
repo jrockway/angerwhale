@@ -24,31 +24,31 @@ Catalyst Controller.
 sub articles : Private {
     my ($self, $c) = @_;
     
-    $c->stash->{page} = "article_list";
-    $c->stash->{template} = "search_results.tt";
-    $c->stash->{title} = "Blog Archives";
+    $c->stash->{page}	   = 'article_list';
+    $c->stash->{template}  = 'search_results.tt';
+    $c->stash->{title}	   = 'Archives - '. $c->config->{title};
     
     my @articles = reverse sort $c->stash->{root}->get_articles();
     
-    $c->stash->{articles} = \@articles;
-    $c->stash->{article_count} = scalar @articles;
+    $c->stash->{articles}	= [@articles];
+    $c->stash->{article_count}	= scalar @articles;
 }
 
 sub show_article : LocalRegex('[^.]') {
     my ($self, $c) = @_;
     my $name = uri_unescape($c->request->uri);
     
-    $name    =~ m{/([^/]+)(/raw|/yaml|/rss)?$};
+    $name    =~ m{/([^/]+)(/raw)?$};
     $name    = $1;
     my $type = $2;
     
-    $c->stash->{template} = "article.tt";
+    $c->stash->{template} = 'article.tt';
     eval {
 	$c->stash->{article} = $c->stash->{root}->get_article($name);
     };
     if($@){
 	# not found!
-	$c->stash->{template} = "error.tt";
+	$c->stash->{template} = 'error.tt';
 	$c->response->status(404);
 	return;
     }
@@ -62,12 +62,6 @@ sub show_article : LocalRegex('[^.]') {
 	    $c->response->body($c->stash->{article}->raw_text(1));
 	    return;
 	}
-	elsif($type eq '/yaml'){
-	    $c->detach('/feeds/item_yaml', [$c->stash->{article}]);
-	}
-	elsif($type eq '/xml'){
-	    $c->detach('/feeds/item_rss',  [$c->stash->{article}]);
-	}
     }
 
 }
@@ -79,7 +73,7 @@ sub default : Private {
 	$c->response->redirect('/articles/');
     }
     else {
-	$c->forward("articles");
+	$c->forward('articles');
     }
 }
 

@@ -4,6 +4,9 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use YAML;
+use Heap::Simple;
+use Benchmark;
+use HTTP::Date;
 
 =head1 NAME
 
@@ -42,20 +45,14 @@ sub default : Private {
     }
     
     $c->stash->{template}   = 'feeds.tt';
-    $c->stash->{categories} = [$c->model('Filesystem')->get_categories];
-    $c->stash->{tags}       = [$c->model('Filesystem')->get_tags];
-    
-}
-
-# feed of all (recent) articles
-sub articles : Local {
-    my ($self, $c, $type);
-    
+    my @c = $c->stash->{categories} = [$c->model('Filesystem')->get_categories];
+    my @t = $c->stash->{tags}       = [$c->model('Filesystem')->get_tags];
+     
 }
 
 # feed of an individual article and its comments
 sub article : Local {
-    my ($self, $c, $type, $article_name) = @_;
+    my ($self, $c, $article_name, $type) = @_;
 
     # if an article name isn't specified, redirect them to the all-articles
     # feed
@@ -75,20 +72,72 @@ sub article : Local {
     }
     else {
 	# YAML is the default
-	$c->detach('item_yaml', [$article]);
+	$c->detach('item_yaml', [$article, 1]);
     }
 }
 
-sub global_yaml : Path('/yaml') {
-    my ($self, $c) = @_;
-    $c->stash->{category} = q{};
+sub comments : Local {
+    my ($self, $c, $type) = @_;
+    my $max_comments = $c->config->{max_feed_comments} || 30;
+    my $heap = Heap::Simple->new(order => '>');
+    
+    my @todo = $c->model('Filesystem')->get_articles;
+    # todo contains articles first, but comments are added inside the loop
+    
+    while(my $item = shift @todo){
+	$heap->insert($item) if $item->isa('Blog::Model::Filesystem::Comment');
+	my @comments = $item->comments;
+	unshift @todo, @comments; # depth first
+    }
+    
+    my @comments;
+    eval {
+	for(1..$max_comments){
+	    push @comments, $c->forward('serialize_item', 
+					[$heap->extract_top, 0]);
+	}
+    }; # stop pushing if there heap empties before $max_comments
+
+    # yaml
+    my $yaml = "";
+    foreach my $comment (@comments){
+	$yaml .= Dump($comment);
+    }
+    $yaml = Dump(undef) if !$yaml;
+    
+    $c->response->content_type('text/x-yaml');
+    $c->response->body($yaml);
+}
+
+sub comment : Local {
+    my ($self, $c, $type, @path) = @_;
+    my $comment = $c->forward('/comments/find_by_path', [@path]);
+
+    if(!$comment){
+	$c->response->status(404);
+	$c->stash->{template} = 'error.tt';
+	return;
+    }
+
+    $c->detach('item_yaml', [$comment]);
+}
+
+sub categories : Local {
+    my ($self, $c, $category, $type) = @_;
+    $c->stash->{category} = $category;
     $c->forward('/categories/show_category');
     $c->detach('articles_yaml', $c->stash->{articles});
 }
 
-sub global_rss : Path('/rss'){
-    my ($self, $c) = @_;
-    die 'No RSS feed yet, dumbass';
+sub tags : Local {
+    my ($self, $c, $tags, $type) = @_;
+    $c->forward('/tags/show_tagged_articles');
+    $c->detach('articles_yaml', $c->stash->{articles});
+}
+
+sub articles : Local {
+    my ($self, $c, $type) = @_;
+    $c->detach('categories', [q{}, $type]);
 }
 
 sub item_yaml : Private {
@@ -109,7 +158,9 @@ sub serialize_item : Private {
     return $data if($data);
     
     if(!$author->isa('Blog::User::Anonymous')){
-	$data->{author} = $author->fullname. '('. $author->email. ')';
+	$data->{author} = { name  => $author->fullname,
+			    email => $author->email,
+			    keyid => $author->nice_id,  };
     }
     
     $data->{title}   = $item->title;
@@ -121,8 +172,12 @@ sub serialize_item : Private {
     $data->{raw}     = $item->raw_text(1);
     $data->{guid}    = $item->id;
     $data->{uri}     = $c->request->base. $item->uri;
-
-    $data->{comments} = [map {$c->forward('serialize_item', [$_, 1])} $item->comments]
+    $data->{date}    = time2str($item->creation_time);
+    $data->{modified}= time2str($item->modification_time);
+    $data->{tags}    = [map {{$_ => $item->tag_count($_)}} $item->tags];
+    
+    $data->{comments} = [map {$c->forward('serialize_item', [$_, 1])} 
+			 $item->comments]
       if $recursive;
 
     $c->cache->set($key, $data);
@@ -138,12 +193,38 @@ sub articles_yaml : Private {
 	my $data = $c->forward('serialize_item', [$article, 0]);
 	$response .= Dump($data). "\n";
     }
-    $response = Dump(undef) if(!$response); # return "--- ~" if there were no articles
+    $response = Dump(undef) if(!$response); # return '--- ~' if there
+					    # were no articles
+
     $c->response->content_type('text/x-yaml; charset=utf-8');
     $c->response->body($response);
-    warn $c->response->body;
 }
 
+=head2 feed_uri_for($uri, format = rss|yaml)
+
+Given a location, returns the uri of that item's feed.
+
+=cut
+
+sub feed_uri_for : Private {
+    my ($self, $c, $location, $type) = @_;
+
+    $type = q{yaml} unless $type; # default to YAML
+    
+    if($location eq '/'){
+	return "/feeds/articles/$type";
+    }
+    elsif($location =~ m{/categories/([^/]+)}){
+	return "/feeds/categories/$1/$type";
+    }
+    elsif($location =~ m{/articles/([^/]+)}){
+	return "/feeds/article/$1/$type";
+    }
+    elsif($location =~ m{/tags/([^/]+)}){
+	return "/feeds/tags/$1/$type";
+    }
+    return q{}; # no feed for that
+}
 
 
 =head1 AUTHOR

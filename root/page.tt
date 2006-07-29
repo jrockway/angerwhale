@@ -5,9 +5,11 @@
   <head>
     <title>[% title | html %]</title>
     <link rel="stylesheet" href="[% base %]static/style.css" type="text/css" />
-    <link rel="alternate" href="[% base %]/rss"  type="application/rss+xml" />
-    <link rel="alternate" href="[% base %]/yaml" type="text/x-yaml" />
-      
+    <link rel="alternate" href="[% base %]feeds/articles/rss"  
+	  type="application/rss+xml" />
+    <link rel="alternate" href="[% base %]feeds/articles/yaml" 
+	  type="text/x-yaml" />
+
     <script type="text/javascript" src="/static/prototype.js"></script>
     <script type="text/javascript" src="/static/builder.js"></script>
     <script type="text/javascript" src="/static/controls.js"></script>

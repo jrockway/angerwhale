@@ -122,8 +122,9 @@ sub type {
     my $type = get_attribute($self->{path}, 'type');
     
     if(!$type){
-	$self->{path} =~ m{[.](\w+)$};
-	$type = $1;
+	if($self->{path} =~ m{[.](\w+)$}){
+	    $type = $1;
+	}
     }
     
     if(!$type){
@@ -215,10 +216,6 @@ sub summary {
 	$summary .= " …"; # utf-8 elipsis
     }
     
-    $summary =~ s/&/&amp;/g;
-    $summary =~ s/>/&gt;/g;
-    $summary =~ s/</&lt;/g;
-
     return $summary;
 }
 
@@ -377,6 +374,11 @@ sub path_to_top {
     
     push @path, $self->id;
     return @path;
+}
+
+sub path {
+    my $self = shift;
+    return join '/', $self->path_to_top;
 }
 
 sub comment_dir {

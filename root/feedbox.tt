@@ -1,0 +1,7 @@
+<ul class="feed_icon_box">
+ <li><a href="[% c.uri_for(yaml_uri) %]">
+        <img src="[% base %]static/images/yaml.png" alt="YAML" /></a></li>
+ <li><a href="[% c.uri_for(rss_uri) %]">
+        <img src="[% base %]static/images/xml.png" alt="RSS" /></a>
+  </li>
+</ul>

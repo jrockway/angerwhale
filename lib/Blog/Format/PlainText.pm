@@ -5,7 +5,7 @@
 package Blog::Format::PlainText;
 use strict;
 use warnings;
-use Text::Autoformat;
+use Text::Autoformat qw(autoformat break_TeX);
 
 sub new {
     my $class = shift;
@@ -33,10 +33,12 @@ sub format {
     my $self = shift;
     my $text = shift;
     my $type = shift;
-        
+
     $text =~ s/&/&amp;/g;
     $text =~ s/>/&gt;/g;
     $text =~ s/</&lt;/g;
+    $text =~ s/'/&apos;/g;
+    $text =~ s/"/&quot;/g;
 
     my @paragraphs = split /\n+/m, $text;
     @paragraphs = grep {$_ !~ /^\s*$/} @paragraphs;
@@ -48,8 +50,7 @@ sub format_text {
     my $text = shift;
     my $type = shift;
 
-    $text = autoformat $text;
-    return $text;
+    return autoformat($text, {break=>break_TeX, all=>1});
 }
 
 1;

@@ -44,7 +44,7 @@ sub do_tag : LocalRegex('do_tag/.+') {
     my $uri = uri_unescape($c->request->uri);
     $uri =~ m{tag/(.+)};
     my $article_name = $1;
-    my $tags = $c->request->param("value");
+    my $tags = $c->request->param('value');
     my @tags = split /\s+/, $tags;
     
     my $article;
@@ -62,26 +62,25 @@ sub do_tag : LocalRegex('do_tag/.+') {
 	# get a list for the InPlaceEditor
 	@tags = $article->tags;
 	$c->stash->{tags} = "@tags";
-	$c->stash->{template} = "tags_as_text.tt";
+	$c->stash->{template} = 'tags_as_text.tt';
     }
     else {
 	# actually do the tagging, and return HTML
-	$c->stash->{template} = "ajax_tags.tt";
+	$c->stash->{template} = 'ajax_tags.tt';
 	$article->set_tag(@tags);
 	$c->stash->{article} = $article;
     }
 }
 
-sub show_tagged_articles : LocalRegex('[^/]+(/rss|/yaml)?$') {
+sub show_tagged_articles : LocalRegex('[^/]+') {
     my ($self, $c) = @_;
     my $uri = uri_unescape($c->request->uri);
-    $uri =~ m{tags/([^/]+)(/rss|/yaml)?$};
-    my $type = $2;
+    $uri =~ m{tags/([^/]+)};
     
     my @tags  = map {lc} split /(?:\s|[_;,!.])/, $1; 
 
-    $c->stash->{template} = "search_results.tt";
-    $c->stash->{title} = "Articles tagged with ". join ', ', @tags[0..$#tags-1];
+    $c->stash->{template} = 'search_results.tt';
+    $c->stash->{title} = 'Articles tagged with '. join ', ', @tags[0..$#tags-1];
 
     # make a nice-looking comma/and -separated list ("foo, bar, and baz"
     # or "foo and bar")
@@ -89,19 +88,15 @@ sub show_tagged_articles : LocalRegex('[^/]+(/rss|/yaml)?$') {
 	$c->stash->{title} .= $tags[-1];
     } # nop
     elsif($#tags == 1){
-	$c->stash->{title} .= " and ". $tags[-1];
+	$c->stash->{title} .= ' and '. $tags[-1];
     }
     else {
-	$c->stash->{title} .= ", and " . $tags[-1];
+	$c->stash->{title} .= ', and ' . $tags[-1];
     }
 
     $c->stash->{articles} = [$c->stash->{root}->get_by_tag(@tags)];
     $c->stash->{article_count} = scalar @{$c->stash->{articles}};
 
-    if($type){
-	$c->detach('/feeds/articles_rss')  if $type eq '/rss';
-	$c->detach('/feeds/articles_yaml') if $type eq '/yaml';
-    }
 }
 
 sub tag_list : Private {

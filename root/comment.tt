@@ -17,9 +17,12 @@
       on
       <span class="date">[% comment.creation_time | time | html %]</span>
     </p>
-    <p class="id"><a href="[% base %][% comment.uri | uri | html %]">
-       #
-    </a></p>
+    <p class="id">
+    <a href="[% base %][% comment.uri | uri | html %]">#</a>
+    <a style="border: none;"
+       href="[%base%]feeds/comment/yaml/[% comment.path %]">
+    <img style="border: none;" src="[%base%]static/images/yaml_square.png" alt="[YAML]" /></a>
+    </p>
   </div>
   <div class="comment_body">
     [% comment.text %]
