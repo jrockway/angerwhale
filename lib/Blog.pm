@@ -3,7 +3,7 @@ package Blog;
 use strict;
 use warnings;
 use File::Temp qw(tempdir);
-use Catalyst qw/Unicode ConfigLoader Scheduler Static::Simple Prototype
+use Catalyst qw/Unicode ConfigLoader Scheduler Static::Simple
 		Cache::FastMmap/;
 
 our $VERSION = '0.01_01';
@@ -18,9 +18,11 @@ __PACKAGE__->config->{cache}->{storage} = tempdir(CLEANUP => 1);
 __PACKAGE__->config->{cache}->{expires} = 3600;
 
 __PACKAGE__->config({VERSION => $VERSION});
+
 __PACKAGE__->setup;
 __PACKAGE__->schedule( at    => '25 * * * *',
 		       event => '/scheduledevents/clean_sessions', );
+
 1;
 
 __END__

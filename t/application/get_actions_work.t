@@ -30,7 +30,7 @@ my @html_urls = qw(/ /tags /tags/fake /feeds/
 
 my @urls = qw(/tags/tag_list /tags/do_tag);
 
-my @xml_urls = qw(/feeds/articles/rss /feeds/comments/rss);
+my @xml_urls = qw(/feeds/articles/xml /feeds/comments/xml);
 my @yaml_urls = qw(/feeds/articles/yaml /feeds/comments/yaml); 
 
 foreach my $url (@html_urls){

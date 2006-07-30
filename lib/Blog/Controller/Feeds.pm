@@ -144,7 +144,7 @@ sub comment : Local {
     $c->detach('item_yaml', [$comment]);
 }
 
-sub finalize_articles {
+sub finalize_articles : Private {
     my($self, $c, $title, $type) = @_;
     
     if($type eq 'xml'){
