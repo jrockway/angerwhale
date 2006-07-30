@@ -17,23 +17,20 @@
       on
       <span class="date">[% comment.creation_time | time | html %]</span>
     </p>
-    <p class="id">
-    <a href="[% base %][% comment.uri | uri | html %]">#</a>
-    <a style="border: none;"
-       href="[%base%]feeds/comment/yaml/[% comment.path %]">
-    <img style="border: none;" src="[%base%]static/images/yaml_square.png" alt="[YAML]" /></a>
-    </p>
   </div>
   <div class="comment_body">
     [% comment.text %]
   </div>
   [% IF readonly != 1 %]
-  <div class="comment_footer">
+  <div class="comment_footer"><p>
     [ [% IF comment.parent.uri != article.uri %]
       	 <a href="[% base %][% comment.parent.uri | uri %]">Parent</a> | 
       [% END %]
-      <a href="[% base %][% comment.post_uri | uri %]">Reply</a> ]
-  </div>
+      <a href="[% base %][% comment.uri | uri | html  %]">Link</a> |
+      <a href="[% base %]feeds/comment/xml/[% comment.path %]">XML</a> |
+      <a href="[% base %]feeds/comment/yaml/[% comment.path %]">YAML</a> |
+      <a href="[% base %][% comment.post_uri | uri | html %]">Reply...</a> ]
+  </p></div>
   [% IF comment.comments %]
   <div class="comment_children">
     <ul>

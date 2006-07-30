@@ -5,8 +5,9 @@ use warnings;
 use base 'Catalyst::Controller';
 use YAML;
 use Heap::Simple;
-use Benchmark;
+use XML::Feed;
 use HTTP::Date;
+use DateTime;
 
 =head1 NAME
 
@@ -98,15 +99,36 @@ sub comments : Local {
 	}
     }; # stop pushing if there heap empties before $max_comments
 
-    # yaml
-    my $yaml = "";
-    foreach my $comment (@comments){
-	$yaml .= Dump($comment);
+    if($type eq 'xml' || $type eq 'xml'){
+	my $title = $c->config->{title};   # My Blog - Comments
+	$title .= ' - Comments' if($title);
+	
+	# fall back to Comments if there's no title
+	$title ||= 'Comments';             
+	
+	my $feed = _start_xml($c, {title => $title});
+
+	foreach my $comment (@comments){
+	    my $entry = _item_xml($comment);
+	    $feed->add_entry($entry);
+	}
+
+	$c->response->content_type('application/atom+xml');
+	$c->response->body($feed->as_xml);
     }
-    $yaml = Dump(undef) if !$yaml;
+    else {
+	# yaml
+	my $yaml = "";
+	foreach my $comment (@comments){
+	    $yaml .= Dump($comment);
+	}
+	$yaml = Dump(undef) if !$yaml;
+	
+	$c->response->content_type('text/x-yaml');
+	$c->response->body($yaml);
+    }
     
-    $c->response->content_type('text/x-yaml');
-    $c->response->body($yaml);
+    return;
 }
 
 sub comment : Local {
@@ -122,17 +144,29 @@ sub comment : Local {
     $c->detach('item_yaml', [$comment]);
 }
 
+sub finalize_articles {
+    my($self, $c, $title, $type) = @_;
+    
+    if($type eq 'xml'){
+	$c->detach('articles_xml', $c->stash->{articles});
+    }
+    # make YAML the catch-all
+    else {
+	$c->detach('articles_yaml', $c->stash->{articles});
+    }
+}
+
 sub categories : Local {
     my ($self, $c, $category, $type) = @_;
     $c->stash->{category} = $category;
     $c->forward('/categories/show_category');
-    $c->detach('articles_yaml', $c->stash->{articles});
+    $c->forward('finalize_articles', ["Articles in $category", $type]);
 }
 
 sub tags : Local {
     my ($self, $c, $tags, $type) = @_;
     $c->forward('/tags/show_tagged_articles');
-    $c->detach('articles_yaml', $c->stash->{articles});
+    $c->forward('finalize_articles', ["Articles tagged with $tags", $type]);
 }
 
 sub articles : Local {
@@ -151,6 +185,8 @@ sub item_yaml : Private {
 sub serialize_item : Private {
     my ($self, $c, $item, $recursive) = @_;
     my $data;
+    die "invalid item passed to serialize_item" 
+      if !$item->isa('Blog::Model::Filesystem::Item');
     my $author = $item->author;
     my $key = 'yaml|'. $item->checksum. '|'. $item->comment_count;
     
@@ -175,6 +211,7 @@ sub serialize_item : Private {
     $data->{date}    = time2str($item->creation_time);
     $data->{modified}= time2str($item->modification_time);
     $data->{tags}    = [map {{$_ => $item->tag_count($_)}} $item->tags];
+    $data->{categories} = [$item->categories] if $item->can('categories');
     
     $data->{comments} = [map {$c->forward('serialize_item', [$_, 1])} 
 			 $item->comments]
@@ -183,6 +220,65 @@ sub serialize_item : Private {
     $c->cache->set($key, $data);
 
     return $data;
+}
+
+sub _start_xml {
+    my $c      = shift;
+    my $config = shift;
+    
+    my $feed = XML::Feed->new('Atom');
+    $feed->title( $config->{title} || $c->config->{title} || 'Atom feed' );
+    $feed->link( $c->req->base ); # link to the site.
+    $feed->description($c->config->{description});
+    $feed->generator('AngerWhale version '. $c->config->{VERSION});
+    $feed->author($c->config->{author});
+    $feed->language($c->config->{language}) if $c->config->{language};
+    return $feed;
+}
+
+sub _item_xml {
+    my $data = shift;
+    my $feed_entry = XML::Feed::Entry->new('Atom');
+    $feed_entry->title($data->{title});
+    $feed_entry->link($data->{uri});
+    $feed_entry->content($data->{html});
+    $feed_entry->summary($data->{summary});
+    
+    foreach my $category ($data->{categories}) {
+	$feed_entry->category($category);
+    }
+	
+    if ($data->{author}) {
+	my $author = $data->{author}->{fullname}. 
+	  '('. $data->{author}->{email}. ')';
+	$feed_entry->author($author);
+    }
+
+    $feed_entry->id($data->{guid});
+
+    $feed_entry->
+      issued(DateTime->from_epoch(epoch => str2time($data->{date})));
+    if ($data->{modified} ne $data->{date}) {
+	$feed_entry->
+	  modified(DateTime->from_epoch(epoch => str2time($data->{modified})));
+    }
+    
+    return $feed_entry;
+}
+
+sub articles_xml : Private {
+    my ($self, $c, @articles) = @_;
+
+    my $feed = _start_xml($c, {title => $c->config->{title}});
+    
+    foreach my $article (@articles){
+	my $data = $c->forward('serialize_item', [$article, 0]);
+	my $feed_entry = _item_xml($data);
+	$feed->add_entry($feed_entry);
+    }
+    
+    $c->response->content_type('application/atom+xml; charset=utf-8');
+    $c->response->body($feed->as_xml);
 }
 
 sub articles_yaml : Private {
@@ -200,7 +296,7 @@ sub articles_yaml : Private {
     $c->response->body($response);
 }
 
-=head2 feed_uri_for($uri, format = rss|yaml)
+=head2 feed_uri_for($uri, format = xml|yaml)
 
 Given a location, returns the uri of that item's feed.
 

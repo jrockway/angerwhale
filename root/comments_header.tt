@@ -7,6 +7,10 @@
 	| [% infl.NO("comment", article.comment_count) %]
 	|
 	<a href="[% base %]comments/post/[% article.id | uri %]">
-	Post a comment</a>
-      </p>
-    </div>
+	Post a comment</a> | 
+     [% INCLUDE feedbox.tt 
+      yaml_uri="/feeds/article/" _ article.name _ "/yaml"
+      rss_uri="/feeds/article/" _ article.name _ "/xml" 
+     %]
+    </p>
+   </div>

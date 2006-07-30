@@ -76,13 +76,13 @@ sub default : Private {
     return;
 }
 
-sub post : Local('post'){
-    my ( $self, $c ) = @_;
+sub post : Local {
+    my ( $self, $c, @path ) = @_;
     
     my $method = $c->request->method;
 
     # find what we're replying to
-    $c->forward('find_by_uri_path');
+    $c->forward('find_by_path', [@path]);
     my $article = $c->stash->{article};
     my $comment = $c->stash->{comment};
     my $object = $comment;
@@ -97,27 +97,27 @@ sub post : Local('post'){
 	my $body = $c->request->param('body');
 	my $type = $c->request->param('type'); 
 	my $user = $c->stash->{user};
-	my $id   = $user->nice_id if ($user && $user->can('nice_id'));
+	my $uid   = $user->nice_id if ($user && $user->can('nice_id'));
 
 	my $preview = $c->request->param('Preview');
 	if($preview){
 	    $c->stash->{post_title} = $title;
 	    $c->stash->{type}       = $type;
 
-	    $c->stash->{comment} = 
+	    $c->stash->{preview_comment} = 
 	      Blog::Model::Filesystem::PreviewComment->new($c, $title,
 							   $body, $type);
 	    
-	    $c->stash->{body}  = $body;
+	    $c->stash->{body} = $body;
 	}
 	else {
-	    $object->add_comment($title, $body, $id, $type);
-	    $c->response->redirect($c->uri_for("/". $c->stash->{article}->uri));
+	    $object->add_comment($title, $body, $uid, $type);
+	    $c->response->redirect($c->uri_for(q\/\. $c->stash->{article}->uri));
 	}
     }
     
     $c->stash->{template} = 'post_comment.tt';
-    $c->stash->{action} = $c->request->uri->path;
+    $c->stash->{action} = $c->uri_for("/comments/post/". join '/', @path);
     $c->stash->{types}  = [Blog::Format::types()];
     return;
 }

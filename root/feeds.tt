@@ -9,11 +9,11 @@ All Things Feed!</p>
 <ul>
 
   <li>
-	New articles (the standard "RSS feed")
+	New articles (the standard &quot;RSS feed&quot;)
 
        	[% INCLUDE feedbox.tt 
 	   yaml_uri="/feeds/articles/yaml"
-	   rss_uri="/feeds/articles/rss"
+	   rss_uri="/feeds/articles/xml"
 	 %]
 
   </li>
@@ -21,7 +21,7 @@ All Things Feed!</p>
 	Feeds of the latest comments 
         [% INCLUDE feedbox.tt 
 	   yaml_uri="/feeds/comments/yaml"
-	   rss_uri="/feeds/comments/rss"
+	   rss_uri="/feeds/comments/xml"
 	 %]
   </li>
 
@@ -32,7 +32,7 @@ All Things Feed!</p>
      <li>Latest articles in [% category | html %]
        	[% INCLUDE feedbox.tt 
 	   yaml_uri="/feeds/categories/" _ category _ "/yaml" 
-	   rss_uri="/feeds/categories/" _ category _ "/rss"
+	   rss_uri="/feeds/categories/" _ category _ "/xml"
 	 %]
      </li>
      [% END %]
@@ -47,7 +47,7 @@ All Things Feed!</p>
      <li>Latest articles with tag [% tag | html %]
        	[% INCLUDE feedbox.tt 
 	   yaml_uri="/feeds/tags/" _ tag _ "/yaml" 
-	   rss_uri="/feeds/tags/" _ tag _ "/rss"
+	   rss_uri="/feeds/tags/" _ tag _ "/xml"
 	 %]
       </li>
      [% END %]

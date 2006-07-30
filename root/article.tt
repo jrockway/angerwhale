@@ -12,8 +12,4 @@
     </ul>
     [% END %]
   </div>
-      [% INCLUDE feedbox.tt 
-      yaml_uri="/feeds/article/" _ article.name _ "/yaml"
-      rss_uri="/feeds/article/" _ article.name _ "/rss" 
-     %]
 [% END %]

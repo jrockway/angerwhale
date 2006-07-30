@@ -3,9 +3,9 @@
   <img id="sidebar_picture" src="[% c.config.sidebar_picture %]" alt="[LOGO]"/>
   [% END %]
 
-  [% IF c.config.sidebar_blurb %]
+  [% IF c.config.description %]
   <p id="sidebar_blurb">
-    [% c.config.sidebar_blurb %]
+    [% c.config.description %]
   </p>		
   [% END %]
   <div id="sidebar_box_outside" class="box">

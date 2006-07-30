@@ -4,14 +4,15 @@
 
 use strict;
 use warnings;
-use Test::More tests => 29;
+use Test::More tests => 44;
 use HTML::Tidy;
 use Test::HTML::Tidy;
+use Test::XML::Valid;
 use YAML;
 use Blog;
 
-my $tidy = HTML::Tidy->new;
-$tidy->ignore( type => TIDY_WARNING );
+my $tidy = HTML::Tidy->new({config_file => 'tidy_config'});
+#$tidy->ignore( type => TIDY_WARNING );
 
 use Catalyst::Test qw(Blog);
 use ok "Blog::Controller::Articles";
@@ -24,20 +25,39 @@ use ok "Blog::Controller::Users";
 use ok "Blog::Controller::ScheduledEvents";
 use ok "Blog::Controller::Root";
 
-my @html_urls = qw(/ /tags /tags/fake /feeds
+my @html_urls = qw(/ /tags /tags/fake /feeds/
 	           /tags/tag_list /login /users);
 
 my @urls = qw(/tags/tag_list /tags/do_tag);
- 
+
+my @xml_urls = qw(/feeds/articles/rss /feeds/comments/rss);
+my @yaml_urls = qw(/feeds/articles/yaml /feeds/comments/yaml); 
+
 foreach my $url (@html_urls){
     my $request = request($url);
     ok($request->is_success, "request $url OK");
-    html_tidy_ok($tidy, $request->content, "$url HTML is valid");
+    xml_string_ok($request->content, "$url is valid XML");
+    html_tidy_ok($tidy, $request->content, "$url is valid XHTML");
 }
 
 foreach my $url (@urls){
     my $request = request($url);
     ok($request->is_success, "request $url OK");
+}
+
+foreach my $url (@yaml_urls) {
+    my $request = request($url);
+    ok($request->is_success, "request $url OK");
+    eval {
+	Load($request->content);
+    };
+    ok(!$@, "YAML parsed OK");
+}
+
+foreach my $url (@xml_urls){
+    my $request = request($url);
+    ok($request->is_success, "request $url OK");
+    xml_string_ok($request->content, "$url is valid XML");
 }
 
 my $request = request('/login/nonce');

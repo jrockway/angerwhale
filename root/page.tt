@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xml:lang="en" >
   <head>
     <title>[% title | html %]</title>
     <link rel="stylesheet" href="[% base %]static/style.css" type="text/css" />
-    <link rel="alternate" href="[% base %]feeds/articles/rss"  
-	  type="application/rss+xml" />
-    <link rel="alternate" href="[% base %]feeds/articles/yaml" 
-	  type="text/x-yaml" />
+    <link rel="alternate" href="[% base %]feeds/articles/xml" type="application/atom+xml" />
+    <link rel="alternate" href="[% base %]feeds/articles/yaml" type="text/x-yaml" />
 
     <script type="text/javascript" src="/static/prototype.js"></script>
     <script type="text/javascript" src="/static/builder.js"></script>
@@ -19,13 +18,14 @@
   </head>
   <body>
     <div id="header" class="header">
-      <h1>[% c.config.blog_title | html %]</h1>
+      <h1>[% c.config.title | html %]</h1>
     </div>
 
-<!-- YAPC badge -->
+<!-- YAPC badge
 <div id="yapc_badge" style="position: absolute; top: 0; right: 0; border: 0;">
 <img src="/static/badge_yapcna2006.gif" alt="YAPC::NA badge" />
-</div>
+</div> 
+-->
 
     <div id="information">
       <p class="logged_in_as">
@@ -58,15 +58,15 @@
       <div id="logos">
 	<p>
           <object data="[% base %]static/images/valid-xhtml11-blue-v.svg"
-		  type="image/svg+xml" height="30px" width="100px">
+		  type="image/svg+xml" height="30" width="100">
 	    Valid XHTML.
 	  </object>
           <object data="[% base %]static/images/valid-css-blue-v.svg"
-		  type="image/svg+xml" height="30px" width="100px">
+		  type="image/svg+xml" height="30" width="100">
 	    Valid CSS.
 	  </object>
           <object data="[% base %]static/images/valid-svg11-blue-v.svg"
-		  type="image/svg+xml" height="30px" width="100px">
+		  type="image/svg+xml" height="30" width="100">
 	    Valid SVG.  (If you're seeing this, though, you need a
 	    better browser so you can actually see them!)
 	  </object>

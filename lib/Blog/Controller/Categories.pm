@@ -91,22 +91,7 @@ sub yaml : Local {
 sub default : Private {
     my ($self, $c) = @_;    
     my $path = uri_unescape($c->request->path);
-    
-    if($path =~ m{categories/([^/]+)(/yaml|/rss)?$}){
-	$c->stash->{category} = $1;
-	$c->forward('show_category');
-	
-	if($2 eq '/yaml'){
-	    $c->detach('yaml');
-	}
-	elsif($2 eq '/xml'){
-	    $c->detach('xml');
-	}
-	
-    }
-    else {
-	$c->forward('list_categories');
-    }
+    $c->forward('list_categories');
 }
 
 
