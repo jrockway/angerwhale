@@ -1,0 +1,5 @@
+<div class="mini_post">
+<b>[% article.title %]</b>
+[% article.text %]
+<span class="more"><a href="[% base %][% article.uri | uri %]">More</a></span>
+</div>
