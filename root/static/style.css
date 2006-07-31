@@ -6,6 +6,16 @@
 #footer.p {padding: 0; margin: 0;}
 
 span.postinfo  {font-size: 85%; }
+
+.mini_post {
+	   background-color: #ccc;
+	   font-size: 80%;
+	   border: 1px dashed #311;
+	   padding: .2em;
+	   margin-bottom: 1em;
+	   }
+.mini_post p { padding: 0; margin: 0; }
+
 .post {text-align: justify; margin-bottom: 1em;}
 .post_title {text-align: right; margin: 0 0% 1em 3px;}
 .post_title h2 {padding: 0px; margin: 0; margin-bottom: 2px;}

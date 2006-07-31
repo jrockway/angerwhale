@@ -1,7 +1,13 @@
 [% WRAPPER page.tt %]
   [% IF message %]<div id="message"><p>[% message %]</p></div>[% END %]
 
-  [% FOREACH article = articles %][% INCLUDE post.tt %][% END %]
+  [% FOREACH article = articles %]
+   [% IF article.mini || article.words < 150 %]
+     [% INCLUDE mini_post.tt %]
+   [% ELSE %]
+     [% INCLUDE post.tt %]
+   [% END %]
+  [% END %]
 
 [% IF previous || next %]
 <div id="nav_footer">

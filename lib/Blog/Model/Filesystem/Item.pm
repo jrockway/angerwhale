@@ -135,6 +135,22 @@ sub type {
     return $type;
 }
 
+# returns true if the article is a "mini-article"
+sub mini {
+    my $self = shift;
+    my $mini = get_attribute($self->{path}, 'mini');
+    return $mini;
+}
+
+# returns a word count
+sub words {
+    my $self = shift;
+    my $text = $self->plain_text;
+
+    my @words = split /\b/, $text;
+    return scalar @words;
+}
+
 sub name {
     my $self = shift;
     my $name;

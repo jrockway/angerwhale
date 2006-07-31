@@ -24,13 +24,6 @@
     <div id="header" class="header">
       <h1>[% c.config.title | html %]</h1>
     </div>
-
-<!-- YAPC badge
-<div id="yapc_badge" style="position: absolute; top: 0; right: 0; border: 0;">
-<img src="/static/badge_yapcna2006.gif" alt="YAPC::NA badge" />
-</div> 
--->
-
     <div id="information">
       <p class="logged_in_as">
        [% IF user.id %]
