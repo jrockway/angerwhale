@@ -27,6 +27,7 @@ use overload (q{<=>} => "compare",
 	      fallback => "TRUE");
 
 use Digest::MD5 qw(md5_hex);
+use utf8; # for the elipsis later on
 
 # arguments are passed in a hash ref
 # base: top directory containing this item (and its friends)
@@ -213,7 +214,9 @@ sub summary {
     if(@words > 10){
 	@words = @words[0..9];
 	$summary = join $SPACE, @words;
-	$summary .= " …"; # utf-8 elipsis
+	my $ELIPSIS = '…';
+	utf8::encode($ELIPSIS); # to avoid wide character warnings
+	$summary .= " $ELIPSIS";
     }
     
     return $summary;
