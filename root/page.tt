@@ -7,7 +7,10 @@
     <title>[% title | html %]</title>
     <link rel="stylesheet" href="[% base %]static/style.css" type="text/css" />
     <link rel="alternate" href="[% base %]feeds/articles/xml"
-	  type="application/rss+xml" />
+	  type="application/rss+xml" title="RSS Feed"/>
+    <link rel="alternate" href="[% base %]feeds/comments/xml"
+	  type="application/rss+xml" title="RSS Comment Feed"/>
+    
     <link rel="alternate" href="[% base %]feeds/articles/yaml" type="text/x-yaml" />
 
     <script type="text/javascript" src="/static/prototype.js"></script>

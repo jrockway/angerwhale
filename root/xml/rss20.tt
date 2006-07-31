@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
  <channel>
-  <title><![CDATA[[% title || c.config.title || "RSS Feed" %]]]></title>
+  <title><![CDATA[[% feed_title || c.config.title || "RSS Feed" %]]]></title>
   <link><![CDATA[[% link | uri %]]]></link>
   <description><![CDATA[[% description %]]]></description>
-  <generator><![CDATA[ AngerWhale version [% c.config.VERSION %]]]></generator>
+  <generator><![CDATA[AngerWhale version [% c.config.VERSION %]]]></generator>
   <language><![CDATA[[% c.config.language || "C" %]]]></language>
 
   [% FOREACH item = items %]

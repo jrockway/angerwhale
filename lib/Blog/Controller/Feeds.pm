@@ -67,7 +67,24 @@ sub article : Local {
     my $article =
       eval { return $c->model('Filesystem')->get_article($article_name)};
 
-    $c->stash->{items} = $article;
+    $c->stash->{type}  = $type;
+
+    if($type ne 'yaml'){
+	# flatten comments
+	my @todo  = $article;
+	my @items;
+	while(my $item = shift @todo){
+	    push @items, $item;
+	    my @comments = $item->comments;
+	    unshift @todo, @comments; # depth first (sort of)  
+	}
+	
+	$c->stash->{items} = [sort @items];
+	$c->stash->{feed_title} = "Comments on ". $article->title;
+    }
+    else {
+	$c->stash->{items} = $article;
+    }
 }
 
 =head2 comments
@@ -78,7 +95,7 @@ in C<< config->{max_feed_comments} >> (defaults to 30).
 =cut
 
 sub comments : Local {
-    my ($self, $c, $type) = @_;
+    my ($self, $c, $type, $unlimited) = @_;
     my $max_comments = $c->config->{max_feed_comments} || 30;
     my $heap = Heap::Simple->new(order => '>');
     
@@ -88,19 +105,18 @@ sub comments : Local {
     while(my $item = shift @todo){
 	$heap->insert($item) if $item->isa('Blog::Model::Filesystem::Comment');
 	my @comments = $item->comments;
-	unshift @todo, @comments; # depth first
+	unshift @todo, @comments; # depth first (sort of)
     }
     
     my @comments;
     eval {
-	for(1..$max_comments){
+	while($max_comments-- || $unlimited){
 	    push @comments, $heap->extract_top;
 	}
     }; # stop pushing if there heap empties before $max_comments
     
     $c->stash->{type} = $type;
     $c->stash->{items} = [@comments];
-    
     return;
 }
 
@@ -116,6 +132,7 @@ sub comment : Local {
     
     $c->stash->{type} = $type;
     $c->stash->{items} = $comment;
+    $c->stash->{feed_title} = 'Replies to '. $comment->title;
 }
 
 =head2 category
@@ -205,11 +222,11 @@ sub end : Private {
     
     if($type eq any(qw|rss xml rss2 rss20|)){
 	die "Something's wrong" if !$c->stash->{items};
-	$c->forward('View::Feed::RSS');
+	$c->forward('View::Feed::RSS', 'process');
     }
     elsif($type eq 'yaml') {
 	die "Something's wrong" if !$c->stash->{items};
-    	$c->forward('View::Feed::YAML');
+    	$c->forward('View::Feed::YAML', 'process');
     }
     else {
 	$c->detach('/end'); # back to the main end
