@@ -12,7 +12,8 @@
    <title><![CDATA[[% item.title %]]]></title>
    <link><![CDATA[[% item.uri | uri %]]]></link>
    [% IF item.author.defined %]
-   <author><![CDATA[[% item.author %]]]></author>
+   <author><![CDATA[[% item.author.email %] 
+   		       ([% item.author.fullname %])]]></author>
    [% END %]
    [% FOREACH category = items.categories %]
    <category><![CDATA[[% category %]]]></category>
