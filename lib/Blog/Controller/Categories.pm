@@ -89,7 +89,7 @@ sub yaml : Local {
 
 
 sub default : Private {
-    my ($self, $c, $category) = @_;    
+    my ($self, $c, undef, $category) = @_;    
     my $path = uri_unescape($c->request->path);
     if(!$category){
 	$c->forward('list_categories');
