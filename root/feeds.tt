@@ -31,8 +31,8 @@ All Things Feed!</p>
      [% FOREACH category = categories %]
      <li>Latest articles in [% category | html %]
        	[% INCLUDE feedbox.tt 
-	   yaml_uri="/feeds/categories/" _ category _ "/yaml" 
-	   rss_uri="/feeds/categories/" _ category _ "/xml"
+	   yaml_uri="/feeds/category/" _ category _ "/yaml" 
+	   rss_uri="/feeds/category/" _ category _ "/xml"
 	 %]
      </li>
      [% END %]
