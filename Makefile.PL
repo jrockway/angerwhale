@@ -18,7 +18,7 @@ requires
    'Catalyst::Plugin::ConfigLoader'			=> 0,
    'Catalyst::Plugin::DefaultEnd'			=> 0,
    'Catalyst::Plugin::Prototype'			=> 0,
-   'Catalyst::Plugin::Scheduler'			=> 0,
+   'Catalyst::Plugin::Scheduler'			=> '0.07',
    'Catalyst::Plugin::Static::Simple'			=> 0,
    'Catalyst::Plugin::Unicode'				=> '0.2',
    'Crypt::Blowfish'					=> 0,
@@ -37,6 +37,8 @@ requires
    'File::Find'						=> 0,
    'File::Slurp'					=> '9999.12',
    'File::Temp'						=> 0,
+   'Heap::Simple'                                       => 0,
+   'Heap::Simple::XS'                                   => 0,
    'HTML::TreeBuilder'					=> 0,
    'HTTP::Date'                                         => 0,
    'Module::Pluggable'					=> 0,
@@ -49,10 +51,10 @@ requires
    'Template::Plugin::Filter'				=> 0,
    'Text::Autoformat'					=> 0,
    'Text::WikiFormat'					=> '0.77',
+   'TeX::Hyphen'                                        => 0,
    'Time::Duration'					=> 0,
    'URI'						=> 0,
    'URI::Escape'					=> '3.28',
-   'XML::Feed'						=> 0,
    'YAML'						=> '0.60', 
    'base'						=> 0,
    'overload'						=> '1.02',
@@ -67,6 +69,7 @@ build_requires
    'Directory::Scratch'					=> '0.03',
    'Test::HTML::Tidy'					=> 0,
    'HTML::Tidy'						=> 0,
+   'Test::XML::Valid'                                   => 0,
   );
 
 catalyst;
