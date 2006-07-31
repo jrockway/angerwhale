@@ -28,7 +28,7 @@ use ok "Blog::Controller::Root";
 my @html_urls = qw(/ /tags /tags/fake /feeds/
 	           /tags/tag_list /login /users);
 
-my @urls = qw(/tags/tag_list /tags/do_tag);
+my @urls = qw(/tags/tag_list /tags/do_tag /feeds/comments/xml /feeds/articles/xml);
 
 my @xml_urls = qw(/feeds/articles/xml /feeds/comments/xml);
 my @yaml_urls = qw(/feeds/articles/yaml /feeds/comments/yaml); 

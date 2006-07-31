@@ -104,23 +104,20 @@ sub end : Private {
     #  not implemented yet
     # my $requested_type = $c->stash->{requested_type};
     
-    #if($c->debug){
-#	my $res = $c->response->body;
-#	$c->forward('Blog::View::Dump');
-#	print {*STDERR} $c->response->body;
-#	$c->response->body($res);
-#    }
+    #    if($c->debug){
+    # 	my $res = $c->response->body;
+    # 	$c->forward('Blog::View::Dump');
+    # 	print {*STDERR} $c->response->body;
+    #    }
     
     if(!($c->response->body || $c->response->redirect)){
 	$c->response->content_type('application/xhtml+xml; charset=utf-8');
-#	$c->response->content_type('text/html; charset=utf-8');
  	$c->stash->{generated_at} = time();
  	my $articles = $c->stash->{articles};
  	my $article  = $c->stash->{article};
  	my $key      = _global_uniq_id($c);
 	
  	if(ref $articles eq 'ARRAY'){    
- 	    # try the cache
  	    $key .= join '|', map {_article_uniq_id($_)} @{$articles};
  	    _cache($c, $key);
  	}
@@ -129,6 +126,7 @@ sub end : Private {
  	    _cache($c, $key);
  	}
 	else {
+	    # not cachable yet
 	    $c->forward('Blog::View::HTML');
 	}
     }
@@ -179,11 +177,11 @@ sub _cache {
     my $key = shift;
     my $document;
     if( $document = $c->cache->get($key) ){
-	$c->log->debug("serving from cache $key");
+	#$c->log->info("serving ". $c->request->uri ." from cache");
 	$c->response->body($document->{body});
     }
     else {
-	$c->log->debug("caching $key");
+	#$c->log->debug("caching $key");
 	$c->forward('Blog::View::HTML');
 	$document = { mtime => time(),
 		      body  => $c->response->body };

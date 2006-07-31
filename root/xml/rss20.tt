@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+ <channel>
+  <title><![CDATA[[% title || c.config.title || "RSS Feed" %]]]></title>
+  <link><![CDATA[[% link | uri %]]]</title>
+  <description><![CDATA[[% description %]]]></description>
+  <generator><![CDATA[AngerWhale version [% c.config.VERSION %]]]></generator>
+  <langauge><![CDATA[[% c.config.language || "C" %]]]></language>
+
+  [% FOREACH item = items %]
+  <item>
+   <title><![CDATA[[% item.title %]]]></title>
+   <link><![CDATA[[% item.uri | uri %]]]></link>
+   <author><![CDATA[[% item.author %]]]></author>
+   [% FOREACH category = items.categories %]
+   <category><![CDATA[[% category %]]]></category>
+   [% END %]
+   <guid>[% item.guid %]</guid>
+   <description> <![CDATA[[% item.html %]]]> </description>
+  </item>
+  [% END %]
+
+ </channel>
+</rss>

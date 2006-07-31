@@ -1,0 +1,120 @@
+#!/usr/bin/perl
+# Feed.pm 
+# Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
+
+package Blog::View::Feed;
+use strict;
+use warnings;
+use Scalar::Util qw(blessed);
+use HTTP::Date;
+
+=head1 NAME
+
+Blog::View::Feed - Common class that abstracts a "feed" of some sort
+
+=head1 DESCRIPTION
+
+This class serializes Blog::Model::Filesystem::Items, presumably to generate
+an RSS or YAML feed.
+
+Here's what this class knows how to deal with:
+
+=over 
+
+=item A single C<Item>
+
+If we get a single article or comment, we get the tree of children,
+flatten it, and return the result as an array of serialized items.
+
+=item Multiple C<Article>s
+
+If we get multiple articles, then we assume we're doing the main 'RSS
+feed', and return a list of those articles serialized without
+children.
+
+=back
+
+=head1 METHODS
+
+=head2 prepare_items
+
+Takes the stash and outputs an array of "items" that go in the feed.
+It's then up to the subclass to turn that into something readable
+
+=cut
+
+sub prepare_items {
+    my ($self, $c) = @_;
+    my $item_ref = $c->stash->{items};
+    my @result;
+    
+    # single item
+    if(blessed $item_ref && $item_ref->isa('Blog::Model::Filesystem::Item')){
+	push @result, $self->serialize_item($c, $item_ref, 'recursive');
+    }
+
+    # multiple items (probably articles)
+    elsif(ref $item_ref eq 'ARRAY'){
+	foreach my $item (@{$item_ref}){
+	    push @result, $self->serialize_item($c, $item); # not recursive 
+	}
+    }
+    
+    # i don't know what to do!
+    else {
+	die "invalid data ``$item_ref'' passed to View::Feed";
+    }
+
+    return @result;
+}
+
+sub serialize_item {
+    my ($self, $c, $item, $recursive) = @_;
+    
+    my $data;
+    die "invalid item passed to serialize_item" 
+      if !blessed($item) || !$item->isa('Blog::Model::Filesystem::Item');
+    my $author = $item->author;
+    my $key = 'yaml|'. $item->checksum. '|'. $item->comment_count;
+    
+    $data = $c->cache->get($key);
+    return $data if($data);
+    
+    if(!$author->isa('Blog::User::Anonymous')){
+	$data->{author} = { name  => $author->fullname,
+			    email => $author->email,
+			    keyid => $author->nice_id,  };
+    }
+    
+    $data->{title}	 = $item->title;
+    $data->{type}	 = $item->type;
+    $data->{summary}	 = $item->summary;
+    $data->{signed}	 = $item->signed ? 1 : 0;
+    $data->{html}	 = $item->text;
+    $data->{text}	 = $item->plain_text;	
+    $data->{raw}	 = $item->raw_text(1);
+    $data->{guid}	 = $item->id;
+    $data->{uri}	 = $c->request->base. $item->uri;
+    $data->{date}	 = time2str($item->creation_time);
+    $data->{modified}	 = time2str($item->modification_time);
+    $data->{tags}	 = [map {{$_ => $item->tag_count($_)}} $item->tags];
+    $data->{categories}	 = [$item->categories] if $item->can('categories');
+    
+    $data->{comments}	 = [map {$self->serialize_item($c, $_, 1)} 
+			    $item->comments]
+      if $recursive;
+
+    $c->cache->set($key, $data);
+
+    return $data;
+}
+
+1;
+
+__END__
+
+=head1 AUTHOR
+
+Jonathan Rockway
+
+
