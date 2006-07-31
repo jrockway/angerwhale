@@ -201,17 +201,19 @@ Requires that stash->{type} and stash->{items} are set.
 
 sub end : Private {
     my ($self, $c) = @_;
-    die "Something's wrong" if !$c->stash->{items};
-    
-    my $type = $c->stash->{type} || 'yaml';
+    my $type = $c->stash->{type} || q{ };
     
     if($type eq any(qw|rss xml rss2 rss20|)){
+	die "Something's wrong" if !$c->stash->{items};
 	$c->forward('View::Feed::RSS');
     }
-    else {
-	$c->forward('View::Feed::YAML');
+    elsif($type eq 'yaml') {
+	die "Something's wrong" if !$c->stash->{items};
+    	$c->forward('View::Feed::YAML');
     }
-    
+    else {
+	$c->detach('/end'); # back to the main end
+    }
     return;
 }
 
