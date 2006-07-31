@@ -89,9 +89,15 @@ sub yaml : Local {
 
 
 sub default : Private {
-    my ($self, $c) = @_;    
+    my ($self, $c, $category) = @_;    
     my $path = uri_unescape($c->request->path);
-    $c->forward('list_categories');
+    if(!$category){
+	$c->forward('list_categories');
+    }
+    else {
+	$c->stash->{category} = $category;
+	$c->forward('show_category');
+    }
 }
 
 
