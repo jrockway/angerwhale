@@ -24,16 +24,7 @@
     <div id="header" class="header">
       <h1>[% c.config.title | html %]</h1>
     </div>
-    <div id="information">
-      <p class="logged_in_as">
-       [% IF user.id %]
-	Logged in as <b>[% user.fullname | html %]</b>.
-       [% ELSE %]
-        Not logged in.  <a href="/login">Login</a>.
-       [% END %]
-      </p>
-    </div>
-    
+
     [% INCLUDE sidebar.tt %]
     
     <div id="content">

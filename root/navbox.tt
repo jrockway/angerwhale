@@ -18,9 +18,15 @@
   <div id="sidebar_categories">
     <h3>Categories</h3>
     <ul>
-      [% FOREACH category = root.get_categories %]
-      <li><a href="[% base %]categories/[% category | uri | html %]">
-      	     [% category | html %]</a></li>
+      [% FOREACH category_name = root.get_categories %]
+      <li>
+       [% IF category_name != category %]
+       <a href="[% base %]categories/[% category_name | uri | html %]">
+      	     [% category_name | html %]</a>
+       [% ELSE %]
+       <b>[% category_name | html %]</b> <!-- current category -->
+       [% END %]
+       </li>
       [% END %]
     </ul>
   </div>
@@ -30,9 +36,24 @@
     <h3><a href="[%base%]tags" style="text-decoration: none;">Tags</a></h3>
     <ul>
     [% FOREACH tag = root.get_tags %]
-      <li><a href="[% base %]tags/[% tag | uri | html %]">[% tag | html %]</a></li>
-      [% END %]
+      <li>
+	[% IF tag == tags %]
+	<b>[% tag | html %]</b>
+	[% ELSE %]
+	<a href="[% base %]tags/[% tag | uri | html %]">
+	   [% tag | html %]
+	</a>
+	[% END %]
+     </li>
+     [% END %]
     </ul>
   </div>
   [% END %]
+      <p class="logged_in_as">
+       [% IF user.id %]
+	Logged in as <b>[% user.fullname | html %]</b>.
+       [% ELSE %]
+        Not logged in.  <a href="/login">Login</a>.
+       [% END %]
+      </p>
 </div>

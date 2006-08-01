@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use URI::Escape;
+use Quantum::Superpositions;
 
 =head1 NAME
 
@@ -76,7 +77,6 @@ sub show_tagged_articles : LocalRegex('[^/]+') {
     my ($self, $c) = @_;
     my $uri = uri_unescape($c->request->uri);
     $uri =~ m{tags/([^/]+)};
-    
     my @tags  = map {lc} split /(?:\s|[_;,!.])/, $1; 
 
     $c->stash->{template} = 'search_results.tt';
@@ -94,7 +94,8 @@ sub show_tagged_articles : LocalRegex('[^/]+') {
 	$c->stash->{title} .= ', and ' . $tags[-1];
     }
 
-    $c->stash->{articles} = [$c->stash->{root}->get_by_tag(@tags)];
+    $c->stash->{tags}          = any(@tags); # for the navbar
+    $c->stash->{articles}      = [$c->stash->{root}->get_by_tag(@tags)];
     $c->stash->{article_count} = scalar @{$c->stash->{articles}};
 
 }
