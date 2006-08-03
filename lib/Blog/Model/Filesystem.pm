@@ -7,6 +7,18 @@ use Carp;
 use Blog::Model::Filesystem::Article;
 use Crypt::OpenPGP;
 
+=head1 NAME
+
+Blog::Model::Filesystem - Filesystem article and comment store
+
+=head1 METHODS
+
+=head2 new
+
+Used by Catalyst to initialize the article store
+
+=cut
+
 sub new {
     my ($self, $c) = @_;
     $self = $self->NEXT::new(@_);
@@ -21,6 +33,13 @@ sub new {
     
     return $self;
 }
+
+=head2 get_article
+
+Given the name of an article, retrieves it from the store and returns
+it in a C<Blog::Model::Filesystem::Article> object.
+
+=cut
 
 sub get_article {
     my $self	 = shift;
@@ -64,12 +83,25 @@ sub _ls {
     return @articles;
 }
 
+=head2 get_articles
+
+Returns a list of all articles in the store.  The articles are
+C<Blog::Model::Filesystem::Article>s.
+
+=cut
+
 sub get_articles {
     my $self = shift;
     my $base = $self->{base};
 
     return _ls($self, $base);
 }
+
+=head2 get_categories
+
+Returns a sorted list of the names of all categories.
+
+=cut
 
 sub get_categories {
     my $self = shift;
@@ -86,6 +118,12 @@ sub get_categories {
     return sort @categories;
 }
 
+=head2 get_tags
+
+Returns a sorted list of all tags that have been used
+
+=cut
+
 sub get_tags {
     my $self = shift;
     my @articles = $self->get_articles;
@@ -94,6 +132,12 @@ sub get_tags {
     @tags = grep {!$found{$_}++} @tags;
     return sort @tags;
 }
+
+=head2 get_by_category
+
+Retruns an unsorted list of all articles in a category.
+
+=cut
 
 sub get_by_category {
     my $self = shift;
@@ -105,6 +149,13 @@ sub get_by_category {
 
     return _ls($self, $path);
 }
+
+=head2 get_by_tag
+
+Returns a sorted list of all articles that have been tagged with a
+certain tag.  Multiple tags are also OK.
+
+=cut
 
 sub get_by_tag {
     my $self = shift;
@@ -123,20 +174,6 @@ sub get_by_tag {
     
     return @matching;
 }
-
-1; ## end ::Filesystem
-
-=head1 NAME
-
-Blog::Model::Filesystem - Catalyst Model
-
-=head1 SYNOPSIS
-
-See L<Blog>
-
-=head1 DESCRIPTION
-
-Catalyst Model.
 
 =head1 AUTHOR
 
