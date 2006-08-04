@@ -43,7 +43,7 @@ requires
    'HTTP::Date'                                         => 0,
    'Module::Pluggable'					=> 0,
    'NEXT'						=> '0.60',
-   'Pod::Simple::HTML'					=> 0,
+   'Pod::Xhtml' 					=> 0,
    'Pod::Simple::Text'					=> 0,
    'Quantum::Superpositions'				=> 0,
    'Scalar::Util'					=> 0,

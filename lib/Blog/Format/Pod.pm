@@ -4,9 +4,10 @@
 package Blog::Format::Pod;
 use strict;
 use warnings;
-use Blog::Format::HTML;
-use Pod::Simple::HTML;
+use IO::String;
+use Pod::Xhtml;
 use Pod::Simple::Text;
+use Blog::Format::HTML;
 
 sub new {
     my $class = shift;
@@ -34,14 +35,18 @@ sub format {
     my $text = shift;
     my $type = shift;
     
-    my $pod_format = Pod::Simple::HTML->new;
+    my $input  = IO::String->new($text);
+    my $result = IO::String->new;
     
-    my $output;
-    $pod_format->output_string( \$output );
-    $pod_format->parse_string_document($text);
+    my $parser = Pod::Xhtml->new(
+				 TopLinks => 0,
+				 MakeIndex => 0,
+				 FragmentOnly => 1,
+				);
+
+    $parser->parse_from_filehandle($input, $result);
     
-    my $html_format = Blog::Format::HTML->new;
-    return $html_format->format($output, 'html');
+    return Blog::Format::HTML->format(${$result->string_ref});
 }
 
 sub format_text {
