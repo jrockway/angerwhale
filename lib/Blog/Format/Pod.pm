@@ -42,11 +42,12 @@ sub format {
 				 TopLinks => 0,
 				 MakeIndex => 0,
 				 FragmentOnly => 1,
+				 TopHeading => 3,
 				);
 
     $parser->parse_from_filehandle($input, $result);
     
-    return Blog::Format::HTML->format(${$result->string_ref});
+    return ${$result->string_ref};
 }
 
 sub format_text {
