@@ -83,17 +83,21 @@ sub auto : Private {
 }
 
 sub blog : Path('') {
-    my ( $self, $c ) = @_;
-    
-    $c->stash->{page}     = "home";
-    $c->stash->{title}    = "Blog";
-    $c->stash->{category} = "/";
-    $c->forward("/categories/show_category");
+    my ( $self, $c, @date ) = @_;
+    $c->stash->{page}     = 'home';
+    $c->stash->{title}    = $c->config->{title} || 'Blog';
+    $c->stash->{category} = '/';
+    $c->forward('/categories/show_category', [@date]);
 }
 
 sub default : Private {
-    my ($self, $c) = @_;
-    $c->response->redirect('/');
+    my ($self, $c, @args) = @_;
+    if(@args == 3){
+	$c->forward('blog', [@args]);
+    }
+    else {
+	$c->response->redirect($c->uri_for('/'));
+    }
 }
 
 # global ending action

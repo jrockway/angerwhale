@@ -138,6 +138,16 @@ sub type {
 # returns true if the article is a "mini-article"
 sub mini {
     my $self = shift;
+
+    # allow override (mostly for the controller to pass on information
+    # to the view)
+    my $set  = shift;
+    if(defined $set){
+	$self->{is_mini} = $set;
+    }
+    return $self->{is_mini} if defined $self->{is_mini};
+    
+    # if not overriden, read the attribute
     my $mini = get_attribute($self->{path}, 'mini');
     return $mini;
 }

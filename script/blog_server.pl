@@ -19,7 +19,7 @@ my $host              = undef;
 my $port              = 3000;
 my $keepalive         = 0;
 my $restart           = 0;
-my $restart_delay     = 1;
+my $restart_delay     = 0;
 my $restart_regex     = '\.yml$|\.yaml$|\.pm$';
 my $restart_directory = undef;
 
