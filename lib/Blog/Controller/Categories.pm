@@ -116,7 +116,7 @@ sub show_category : Private {
 	return;
     } 
     
-    if(@too_old){
+    if(@too_old[0]){
 	my $article = $too_old[0];
 	my @older_date = (localtime($article->creation_time))[5,4,3];
 	
@@ -178,10 +178,9 @@ sub _split_articles {
 	die "invalid date @date" if @date != 3;
 	my $date = timelocal(59, 59, 23,$date[2], $date[1]-1, $date[0]-1900) 
 	              + 1; # always compare with <, not <=.
-	warn "date is @date ($date)";
       before:
 	while(my $article = shift @articles){
-	    if($date > $article->creation_time){
+	    if($article->creation_time > $date){
 		push @before, $article;
 	    }
 	    else {

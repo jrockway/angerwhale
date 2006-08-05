@@ -24,6 +24,7 @@ foreach (@_articles){
     $a->set_always('creation_time', $ctime+=$time_sep);
     push @articles, $a;
 }
+@articles = reverse @articles;
 
 my $o = bless \my $foo, 'Blog::Controller::Categories';
 my ($before, $current, $after) = 
@@ -38,7 +39,7 @@ ok($current->[0], "first current");
 ok($after->[0], "first after");
 ok($after->[1], "second after");
 
-my @date_after_10_articles = (localtime($time_sep*10))[5,4,3];
+my @date_after_10_articles = (localtime($time_sep*($num_articles-10)))[5,4,3];
 $date_after_10_articles[0] += 1900;
 $date_after_10_articles[1] += 1; # Jan = 0
 
