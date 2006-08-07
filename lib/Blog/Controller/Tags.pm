@@ -73,11 +73,8 @@ sub do_tag : LocalRegex('do_tag/.+') {
     }
 }
 
-sub show_tagged_articles : LocalRegex('[^/]+') {
-    my ($self, $c) = @_;
-    my $uri = uri_unescape($c->request->uri);
-    $uri =~ m{tags/([^/]+)};
-    my @tags  = map {lc} split /(?:\s|[_;,!.])/, $1; 
+sub show_tagged_articles : Private {
+    my ($self, $c, @tags) = @_;
 
     $c->stash->{template} = 'search_results.tt';
     $c->stash->{title} = 'Articles tagged with '. join ', ', @tags[0..$#tags-1];
@@ -148,8 +145,17 @@ sub get_nav_box : Local {
 }
 
 sub default : Private {
-    my ( $self, $c ) = @_;
-    $c->forward('tag_list');
+    my ( $self, $c, @tags ) = @_;
+    my $page = shift @tags; # should always be "tags"
+    die if $page ne q{tags}; # if it's not, i screwed up somewhere
+    
+    if(!@tags){
+	$c->detach('tag_list');
+    }
+    else {
+	# todo: canonicalize tag ordering?
+	$c->detach('show_tagged_articles', [@tags]);
+    }
 }
 
 
