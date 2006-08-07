@@ -148,17 +148,20 @@ sub _global_uniq_id {
     # change in tags
     # change in categories
     # change in user
+    # changes in previous and newer articles
     my $user;
     eval {
 	$user = $c->stash->{user}->nice_id;
     };
     $user ||= 'anonymous';
     
+    no warnings;
     return 	
       $c->request->uri->path. '|'. $user. '|'.
 	'(tags:'. (join ':', $c->model('Filesystem')->get_tags). ')|'.
 	'(cats:'. (join ':', $c->model('Filesystem')->get_categories). 
-	  ')|';
+	  ')|'. $c->stash->{newer_articles}. '|'. $c->stash->{older_articles}.
+	    '|' . $c->stash->{newest_is_newest}. '|';
 }
 
 sub _article_uniq_id {
