@@ -36,13 +36,15 @@ The main index of all available feeds
 
 sub default : Private {
     my ($self, $c) = @_;
-
+    
     if($c->request->uri->path ne '/feeds/'){
 	$c->response->redirect($c->uri_for('/feeds/'));
 	return;
     }
     
-    $c->stash->{template}   = 'feeds.tt';
+    $c->stash->{template} = 'feeds.tt';
+    
+    # for the sidebar
     my @c = $c->stash->{categories} = [$c->model('Filesystem')->get_categories];
     my @t = $c->stash->{tags}       = [$c->model('Filesystem')->get_tags];
      
@@ -143,12 +145,10 @@ Feed of one category.
 
 sub category : Local {
     my ($self, $c, $category, $type) = @_;
-    $c->stash->{category} = $category;
-    $c->forward('/categories/show_category');
-
-    $c->stash->{type}  = $type;
+    $c->stash->{category} = $category || q{/};
+    $c->forward('/categories/show_category', []);
     $c->stash->{items} = $c->stash->{articles};
-
+    $c->stash->{type}  = $type;
     return;
 }
 
@@ -220,9 +220,13 @@ sub end : Private {
     my ($self, $c) = @_;
     my $type = $c->stash->{type} || q{ };
     
-    if($type eq any(qw|rss xml rss2 rss20|)){
+    if($type eq any(qw|rss2 rss20|)){
 	die "Something's wrong" if !$c->stash->{items};
 	$c->forward('View::Feed::RSS', 'process');
+    }
+    elsif($type eq any(qw|xml atom|)){
+	die "Something's wrong" if !$c->stash->{items};
+	$c->forward('View::Feed::Atom', 'process');
     }
     elsif($type eq 'yaml') {
 	die "Something's wrong" if !$c->stash->{items};

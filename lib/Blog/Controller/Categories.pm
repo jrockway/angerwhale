@@ -67,7 +67,7 @@ sub show_category : Private {
     my ($self, $c, @start_date) = @_;
     $c->stash->{template} = q{blog_listing.tt};
     if(@start_date == 3){
-	$c->stash->{page} = "home, but with date"; # for navbar
+	$c->stash->{page} = "home, but with date"; # for navbar 
     }
 
     # how many (non-mini) articles to return?

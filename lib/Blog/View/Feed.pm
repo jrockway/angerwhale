@@ -6,7 +6,6 @@ package Blog::View::Feed;
 use strict;
 use warnings;
 use Scalar::Util qw(blessed);
-use HTTP::Date;
 
 =head1 NAME
 
@@ -72,25 +71,23 @@ sub serialize_item {
     my ($self, $c, $item, $recursive) = @_;
     
     my $data;
-    die "invalid item passed to serialize_item" 
-      if !blessed($item) || !$item->isa('Blog::Model::Filesystem::Item');
+    Carp::confess "invalid item passed to serialize_item". Dump($item)
+	if !blessed($item) || !$item->isa('Blog::Model::Filesystem::Item');
     my $author = $item->author;
     my $key = 'yaml|'. $item->checksum. '|'. $item->comment_count;
     
     $data = $c->cache->get($key);
     return $data if($data);
     
-    if(!$author->isa('Blog::User::Anonymous')){
-	$data->{author} = { name  => $author->fullname,
-			    email => $author->email,
-			    keyid => $author->nice_id,  };
-    }
+    $data->{author} = { name  => $author->fullname,
+			email => $author->email,
+			keyid => $author->nice_id,  };
     
     $data->{title}	 = $item->title;
     $data->{type}	 = $item->type;
     $data->{summary}	 = $item->summary;
     $data->{signed}	 = $item->signed ? 1 : 0;
-    $data->{html}	 = $item->text;
+    $data->{xhtml}	 = $item->text;
     $data->{text}	 = $item->plain_text;	
     $data->{raw}	 = $item->raw_text(1);
     $data->{guid}	 = $item->id;
@@ -107,6 +104,24 @@ sub serialize_item {
     $c->cache->set($key, $data);
 
     return $data;
+}
+
+
+
+sub time2str {
+    my $localtime = shift;
+    my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday) 
+      = gmtime($localtime);
+    $year += 1900;
+    $mon  += 1;
+    
+    $mday = "0$mday" if $mday < 10;
+    $mon  = "0$mon" if $mon < 10;
+    $hour = "0$hour" if $hour < 10;
+    $min  = "0$min" if $min < 10;
+    $sec  = "0$sec" if $sec < 10;
+    
+    return "$year-$mon-${mday}T$hour:$min:${sec}Z";
 }
 
 1;

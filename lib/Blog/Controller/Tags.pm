@@ -27,6 +27,7 @@ sub check_tag_access : Private {
     
     if(!$c->stash->{user}){
 	$c->response->status('401');
+	$c->response->content_type('text/plain'); # maybe XML later
 	$c->response->body('Log in to edit.');
 	return 0;
     }
@@ -37,14 +38,15 @@ sub check_tag_access : Private {
 
 # get a list for ajax if no params,
 # otherwise apply the tags
-sub do_tag : LocalRegex('do_tag/.+') {
-    my ($self, $c) = @_;
+sub do_tag : Local {
+    my ($self, $c, @args) = @_;
 
+    # we might want to handle the special case of
+    # the user wanting to view articles tagged with "do_tag"
+    
     return if !$c->forward('check_tag_access');
 
-    my $uri = uri_unescape($c->request->uri);
-    $uri =~ m{tag/(.+)};
-    my $article_name = $1;
+    my $article_name = shift @args;
     my $tags = $c->request->param('value');
     my @tags = split /\s+/, $tags;
     
