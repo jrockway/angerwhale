@@ -120,7 +120,7 @@ sub tags {
 
 sub type {
     my $self = shift;
-    my $type = get_attribute($self->{path}, 'type');
+    my $type = eval { get_attribute($self->{path}, 'type')};
     
     if(!$type){
 	if($self->{path} =~ m{[.](\w+)$}){
@@ -148,7 +148,7 @@ sub mini {
     return $self->{is_mini} if defined $self->{is_mini};
     
     # if not overriden, read the attribute
-    my $mini = get_attribute($self->{path}, 'mini');
+    my $mini = eval {get_attribute($self->{path}, 'mini')};
     return $mini;
 }
 
@@ -259,7 +259,7 @@ sub signor {
 
 sub _cached_signature {
     my $self = shift;
-    return get_attribute($self->{path}, 'signed');
+    return eval { get_attribute($self->{path}, 'signed') };
 }
 
 sub _cache_signature {
@@ -323,7 +323,7 @@ sub author {
     my $self = shift;
     $self->signed; # fix the author information
     
-    my $id = get_attribute($self->{path}, 'author');
+    my $id = eval{ get_attribute($self->{path}, 'author')};
     my $c = $self->{base_obj}->{context};
     
     if(defined $id){

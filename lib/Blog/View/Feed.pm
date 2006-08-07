@@ -91,7 +91,7 @@ sub serialize_item {
     $data->{text}	 = $item->plain_text;	
     $data->{raw}	 = $item->raw_text(1);
     $data->{guid}	 = $item->id;
-    $data->{uri}	 = $c->request->base. $item->uri;
+    $data->{uri}	 = "". $c->uri_for("/".$item->uri);
     $data->{date}	 = time2str($item->creation_time);
     $data->{modified}	 = time2str($item->modification_time);
     $data->{tags}	 = [map {{$_ => $item->tag_count($_)}} $item->tags];

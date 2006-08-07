@@ -13,8 +13,9 @@ sub process {
     my $feed = XML::Atom::SimpleFeed->
       new(
 	  title     => ($c->config->{title} || 'Blog'). ' Atom Feed',
-	  id        => 'angerwhale:'. $c->req->base,
-	  link      => $c->req->base,
+	  id        => $c->request->base,
+	  link      => {rel => "self", href => $c->request->uri},
+	  link      => $c->request->base,
 	  subtitle  => $c->config->{description} || 'Atom Feed',
 	  generator => {version => $c->config->{VERSION},
 			name    => 'AngerWhale',
@@ -24,6 +25,8 @@ sub process {
     foreach my $item ($self->prepare_items($c)){
 	my @data;
 	push @data, (title  => $item->{title});
+
+	delete $item->{author}->{email} if $item->{author}->{keyid} eq '0';
 	push @data, (author => $item->{author});
 	push @data, (id => 'urn:guid:'. $item->{guid});
 	push @data, (link => $item->{uri});
@@ -37,6 +40,7 @@ sub process {
 	push @data, (updated   => $item->{modified});
 	push @data, (content => { type => 'xhtml',
 				  content => $item->{xhtml}});
+	
 	$feed->add_entry(@data);
     }
     

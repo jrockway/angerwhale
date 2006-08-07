@@ -57,7 +57,7 @@ sub single_article : Private  {
 
     # if the user wants the raw message (to verify the signature),
     # return that instead of rendering the template
-    if($type eq 'raw'){
+    if(defined $type && $type eq 'raw'){
 	$c->response->content_type('application/octet-stream');
 	$c->response->body($c->stash->{article}->raw_text(1));
 	return;

@@ -31,7 +31,8 @@ sub new {
 sub _decode {
     my $self = shift;
     my ($data, $sig);
-    
+
+    $self->{data} = qq{ } if !$self->{data};
     my $in_data = $self->{data};
     my $pgp = $self->{pgp};
 
