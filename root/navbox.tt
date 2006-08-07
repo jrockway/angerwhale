@@ -38,7 +38,13 @@
     [% FOREACH tag = root.get_tags %]
       <li>
 	[% IF tag == tags %]
-	<b>[% tag | html %]</b>
+	   [% IF tag_count == 1 %]
+	     	<b>[% tag | html %]</b>
+	   [% ELSE %]
+                <a href="[% base %]tags/[% tag | uri | html %]">
+                   <b>[% tag | html %]</b>
+                </a>
+	   [% END %]
 	[% ELSE %]
 	<a href="[% base %]tags/[% tag | uri | html %]">
 	   [% tag | html %]

@@ -95,6 +95,7 @@ sub show_tagged_articles : LocalRegex('[^/]+') {
     }
 
     $c->stash->{tags}          = any(@tags); # for the navbar
+    $c->stash->{tag_count}     = scalar @tags; # easier to deal with in TT
     $c->stash->{articles}      = [reverse sort
 				  $c->stash->{root}->get_by_tag(@tags)];
     $c->stash->{article_count} = scalar @{$c->stash->{articles}};

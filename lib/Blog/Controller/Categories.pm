@@ -66,7 +66,10 @@ to the dates of newer and older articles.
 sub show_category : Private {
     my ($self, $c, @start_date) = @_;
     $c->stash->{template} = q{blog_listing.tt};
-    
+    if(@start_date == 3){
+	$c->stash->{page} = "home, but with date"; # for navbar
+    }
+
     # how many (non-mini) articles to return?
     my $ARTICLES_PER_PAGE = $c->stash->{articles_desired} || 
       $c->config->{articles_per_page} || 5;
@@ -108,7 +111,7 @@ sub show_category : Private {
     my @current = @{$current};
     my @too_old = @{$too_old};
 
-    # no articles to display
+    ## no articles to display
     if(@current == 0){
 	$c->stash->{message} = 'No articles to display.';
 	# TODO: generate "click here for new articles" message if
@@ -116,13 +119,55 @@ sub show_category : Private {
 	return;
     } 
     
-    if(@too_old[0]){
-	my $article = $too_old[0];
-	my @older_date = (localtime($article->creation_time))[5,4,3];
-	
-	$c->stash->{older_articles} = 
-	  sprintf('%d/%0d/%0d', $older_date[0]+1900,
-		  $older_date[1]+1, $older_date[2]);
+    ## find the date of the older articles page
+    if($too_old[0]){
+	$c->stash->{older_articles} = _date_of($too_old[0]);
+    }
+
+    ## find the date of the newer articles page
+    @too_new = reverse @too_new;
+    my @previous_page;
+    {
+	my $max = $ARTICLES_PER_PAGE;
+	my $article;
+	while($article = shift @too_new){
+	    last if !$max;
+	    $max-- if !$article->mini;
+	    
+	    push @previous_page, $article;
+	}
+	unshift @too_new, $article;
+    }
+    
+    my $last  = $previous_page[-1];
+    my $first = $previous_page[0];
+    my $after = $too_new[0];
+    
+    if(!$after && $first && $last){
+	$c->stash->{newer_articles}   = _date_of($last);
+	$c->stash->{newest_is_newest} = 1;
+    }
+    elsif(!$after && !$first && !$last){
+	# nothing newer
+    }
+    # the nested else handles one of these cases... maybe i should split?
+    elsif(_on_same_day($first, $after) || _on_same_day($after, $last)){
+	# step through previous page, oldest -> newest, looking for a
+	# date that won't spill (the first date != to date_of(i)
+	my $article;
+	foreach $article (reverse @previous_page){
+	    last if !_on_same_day($article, $last);
+	}
+	if($article){
+	    $c->stash->{newer_articles} = _date_of($article);
+	}
+	else {
+	    # just to be safe, do $first, not $last.
+	    $c->stash->{newer_articles} = _date_of($first);
+	}
+    }
+    else {
+	$c->stash->{newer_articles} = _date_of($last);
     }
     
     $c->stash->{articles} = [@current];
@@ -229,6 +274,18 @@ sub _on_same_day {
     return ($a[0] == $b[0]) &&
            ($a[1] == $b[1]) &&
 	   ($a[2] == $b[2]);
+}
+
+=head2 _date_of
+
+Given an article, returns the date in yyyy/mm/dd format.
+
+=cut
+
+sub _date_of {
+    my $article = shift;
+    my @a = (localtime($article->creation_time))[5,4,3];
+    return sprintf('%d/%0d/%0d', $a[0]+1900, $a[1]+1, $a[2]);
 }
 
 sub list_categories : Private {
