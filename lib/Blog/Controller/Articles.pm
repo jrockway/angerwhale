@@ -21,7 +21,7 @@ Catalyst Controller.
 
 =cut
 
-sub articles : Private {
+sub article_list : Private {
     my ($self, $c) = @_;
     
     $c->stash->{page}	   = 'article_list';
@@ -34,13 +34,14 @@ sub articles : Private {
     $c->stash->{article_count}	= scalar @articles;
 }
 
-sub show_article : LocalRegex('[^.]') {
-    my ($self, $c) = @_;
-    my $name = uri_unescape($c->request->uri);
+sub single_article : Private  {
+    my ($self, $c, @args) = @_;
+    my $name    = shift @args;
+    my $type    = shift @args;
     
-    $name    =~ m{/([^/]+)(/raw)?$};
-    $name    = $1;
-    my $type = $2;
+    if(!$name){
+	$c->detach('article_list');
+    }
     
     $c->stash->{template} = 'article.tt';
     eval {
@@ -56,25 +57,23 @@ sub show_article : LocalRegex('[^.]') {
 
     # if the user wants the raw message (to verify the signature),
     # return that instead of rendering the template
-    if($type){
-	if($type eq '/raw'){
-	    $c->response->content_type('application/octet-stream');
-	    $c->response->body($c->stash->{article}->raw_text(1));
-	    return;
-	}
+    if($type eq 'raw'){
+	$c->response->content_type('application/octet-stream');
+	$c->response->body($c->stash->{article}->raw_text(1));
+	return;
     }
-
 }
 
 sub default : Private {
-    my ($self, $c) = @_;
+    my ($self, $c, @args) = @_;
+    my $page = shift @args;
+    die unless $page eq 'articles'; # assert.
     
-    if($c->request->uri !~ m{articles/$}){
-	$c->response->redirect('/articles/');
+    if(@args){
+	$c->detach('single_article', [@args]);
     }
-    else {
-	$c->forward('articles');
-    }
+    
+    $c->detach('article_list');
 }
 
 
