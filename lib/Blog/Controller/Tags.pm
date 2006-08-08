@@ -125,7 +125,7 @@ sub tag_list : Private {
     $average_count = $total / $tag_count if $tag_count > 0;
     
     foreach my $tag (values %{$tags}){
-	$tag->{count} = int(($tag->{count} - $average_count)*15 + 100);
+	$tag->{count} = int(($tag->{count} - $average_count)*15 + 130);
     }
     
     $c->stash->{tag_count}  = $tag_count;

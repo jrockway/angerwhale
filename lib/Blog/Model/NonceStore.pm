@@ -132,11 +132,13 @@ sub _clean {
     my $count = 0;
     opendir my $dh, $dir or die;
     while(my $file = readdir $dh){
+	next if $file eq '.';
+	next if $file eq '..';
+	
 	my $path  = "$dir/$file";
 	my $mtime = (stat $path)[9];
 	if((time() - $mtime) > $timeout){
-	    $count++;
-	    unlink $path;
+	    $count += unlink $path;
 	}
     }
     closedir $dh;
