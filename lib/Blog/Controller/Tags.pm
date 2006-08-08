@@ -112,6 +112,7 @@ sub tag_list : Private {
     foreach my $article (@articles){
 	my @_tags = $article->tags;
 	foreach my $tag (@_tags){
+	    no warnings;
 	    $tags->{$tag}->{articles}++;
 	    
 	    my $tag_count = 
