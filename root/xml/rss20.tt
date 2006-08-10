@@ -6,23 +6,19 @@
   <description><![CDATA[[% description %]]]></description>
   <generator><![CDATA[AngerWhale version [% c.config.VERSION %]]]></generator>
   <language><![CDATA[[% c.config.language || "C" %]]]></language>
-
-  [% FOREACH item = items %]
-  <item>
+  [% FOREACH item = items %]<item>
    <title><![CDATA[[% item.title %]]]></title>
    <link><![CDATA[[% item.uri | uri %]]]></link>
-   [% IF item.author.defined %]
-   <author><![CDATA[[% item.author.email %] 
-   		       ([% item.author.name %])]]></author>
-   [% END %]
-   [% FOREACH category = items.categories %]
-   <category><![CDATA[[% category %]]]></category>
-   [% END %]
-   <guid isPermaLink="false">[% item.guid %]</guid>
-   <description><![CDATA[[% item.html %]]]></description>
+   [% IF item.author.defined %]<author><![CDATA[[% item.author.email || "nobody@example.com"%] ([% item.author.name || "Anonymous Coward" %])]]></author>
+   [% END %] [% FOREACH category = items.categories %] <category>
+      <![CDATA[[% category %]]]>
+   </category>
+   [% END %]<guid isPermaLink="false">[% item.guid %]</guid>
+   <description>
+      <![CDATA[[% item.xhtml %]]]>
+   </description>
    <pubDate>[% item.date | html %]</pubDate>
   </item>
   [% END %]
-
  </channel>
 </rss>
