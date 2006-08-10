@@ -8,6 +8,7 @@
 span.postinfo  {font-size: 85%; }
 
 .mini_post {
+	   color: #000;
 	   background-color: #ccc;
 	   font-size: 80%;
 	   border: 1px dashed #311;
@@ -56,17 +57,15 @@ div.post_extrainfo { margin-top: 1em; margin-bottom: 0em; width: 80%;}
 a {color: blue; }
 a.visited { color: blue; }
 
-#sidebar_navigation {font-size: 85%; font-weight: bold; text-align: center;}
-#sidebar_navigation p {padding: 0; margin: 0;}		 
+.sidebar_navigation {font-weight: bold; text-align: center;}
+.sidebar_navigation p {padding: 0; margin: 0;}		 
 #sidebar ul {list-style: none; margin: 0em 0em .5em 1em; padding: 0;}
 #sidebar h3 {margin: 0; padding: 0; margin-top: .5em;}
 
-#sidebar_categories {font-size: 85%;}
-#sidebar_tags {font-size: 85%;}
+.box {padding: 3px; background-color: #eeffee; border: 1px solid #ddffdd;
+      margin-bottom: 1em; font-size: 85%;}
 
-.box {padding: 3px; background-color: #eeffee; border: 1px solid #ddffdd;}
-
-.logged_in_as {font-style: italic; font-size: 70%;}
+.logged_in_as {font-size: 90%;}
 
 #error {color: #ff0000; font-weight: bold;}
 .info img {border: none;}
@@ -88,4 +87,4 @@ a.visited { color: blue; }
 .feed_icon_box {padding: 0; margin: 0;}
 .feed_icon_box img {border: none; vertical-align: middle;}
 
-#login
+.sidebar_feed li {margin-top: 1em;}

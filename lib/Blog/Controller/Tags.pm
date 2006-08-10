@@ -79,9 +79,9 @@ sub show_tagged_articles : Private {
     my ($self, $c, @tags) = @_;
 
     $c->stash->{template} = 'search_results.tt';
-    $c->stash->{title} = 'Articles tagged with '. join ', ', @tags[0..$#tags-1];
+    $c->stash->{title} = 'Articles tagged with '. join ', ', @tags[0..-2];
 
-    # make a nice-looking comma/and -separated list ("foo, bar, and baz"
+    # make a nice-looking comma-separated list ("foo, bar, and baz"
     # or "foo and bar")
     if($#tags == 0){
 	$c->stash->{title} .= $tags[-1];

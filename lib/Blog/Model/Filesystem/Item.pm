@@ -20,7 +20,7 @@ use File::Attributes qw(list_attributes get_attribute set_attribute);
 use File::Find;
 use File::Slurp;
 
-use Text::WikiFormat;
+use Encode;
 
 use overload (q{<=>} => "compare",
 	      q{cmp} => "compare",
@@ -104,10 +104,13 @@ sub tags {
 	    $taglist{$1} = 1;
 	}
     }
+    my @taglist;
+    foreach my $tag (sort keys %taglist){
+	my $copy = "$tag";
+#	Encode::_utf8_on($copy) unless Encode::is_utf8($copy);
+	push @taglist, $copy;
+    }
 
-    
-    my @taglist = sort keys %taglist;
-    
     if(wantarray){
 	return @taglist;
     }

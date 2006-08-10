@@ -8,7 +8,15 @@
     [% c.config.description %]
   </p>		
   [% END %]
-  <div id="sidebar_box_outside" class="box">
-   [% INCLUDE navbox.tt %]
+  [% INCLUDE navbox.tt %]		
+  <div id="login_box">
+  [% INCLUDE login_box.tt %]
+  </div>
+  <div id="sidebar_feeds">
+  [% FOREACH feed = c.forward("/fetchexternalinfo/sidebar_feeds") %]
+  <div class="sidebar_feed">
+     [% INCLUDE sidebar_feed.tt feed=feed %]
+  </div>
+  [% END %]
   </div>
 </div>

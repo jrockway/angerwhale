@@ -55,6 +55,7 @@ requires
    'URI'						    => 0,
    'URI::Escape'					    => '3.28',
    'XML::Atom::SimpleFeed'				    => '0.8',
+   'XML::Feed'                                              => '0',
    'YAML'						    => '0.60', 
    'base'						    => 0,
    'overload'						    => '1.02',

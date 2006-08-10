@@ -37,6 +37,15 @@ sub process {
 			      scheme => $c->uri_for('/categories/')});
 	    }
 	};
+	# not sure if i want to do this yet
+	#eval {
+	#    foreach my $tag (keys %{$item->{tags}}){
+	#	
+	#	push @data, (category => 
+	#		     {term   => $tag,
+	#		      scheme => $c->uri_for('/tags/')});
+	#    }
+	#};
 	push @data, (updated   => $item->{modified});
 	push @data, (content => { type => 'xhtml',
 				  content => $item->{xhtml}});

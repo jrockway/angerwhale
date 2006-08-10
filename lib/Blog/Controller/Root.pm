@@ -196,7 +196,7 @@ sub _cache {
     }
     
     my $h = $c->response->headers;
-    $h->header('E-Tag' => md5_hex($key));
+#    $h->header('E-Tag' => md5_hex($key));
     $h->header('Last-Modified' => time2str($document->{mtime}));
 }
 
