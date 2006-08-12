@@ -55,12 +55,12 @@ requires
    'URI'						    => 0,
    'URI::Escape'					    => '3.28',
    'XML::Atom::SimpleFeed'				    => '0.8',
-   'XML::Feed'                                              => '0',
+   'XML::Feed'                                              => '0.11',
    'YAML'						    => '0.60', 
    'base'						    => 0,
    'overload'						    => '1.02',
    'version'						    => 0,
-   #'Crypt::IDEA'					    => 0, 
+   'Crypt::IDEA'					    => 0, 
   );
 build_requires
   (
