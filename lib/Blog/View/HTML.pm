@@ -1,7 +1,7 @@
 package Blog::View::HTML;
 use NEXT;
 use strict;
-use base 'Catalyst::View::TT';
+use base 'Catalyst::View::TT::ForceUTF8';
 use File::Temp;
 
 __PACKAGE__->config( 
@@ -13,15 +13,6 @@ __PACKAGE__->config(
 		    COMPILE_DIR => File::Temp::tempdir(CLEANUP => 1),
 		    PLUGIN_BASE => 'Blog::Filter',
 		   );
-
-sub process {
-    my ($self, $c) = @_;
-#    if (!$c->response->content_type){
-#	# this breaks IE, but fuck IE.
-#	$c->reponse->content_type('application/xhtml+xml; charset=utf-8');
-#    }
-    $self->NEXT::process($c);
-}
 
 =head1 NAME
 

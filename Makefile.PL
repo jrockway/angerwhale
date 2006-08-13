@@ -12,7 +12,7 @@ licence('gpl');
 requires 
   (
    'Catalyst'						    => '5.7',	  
-   'Catalyst::View::TT'					    => 0,
+   'Catalyst::View::TT::ForceUTF8'   		            => 0,
    'Catalyst::Plugin::Cache::FastMmap'			    => 0,
    'Catalyst::Plugin::ConfigLoader'			    => 0,
    'Catalyst::Plugin::DefaultEnd'			    => 0,

@@ -29,7 +29,7 @@ sub sidebar_feeds : Private {
 	    @entries = map {{title => $_->title,
 			       link  => $_->link }} @entries; 
 	    
-	    map {utf8::encode($_->{title})} @entries;
+	    #map {utf8::encode($_->{title})} @entries;
 	    $data = { title => $desired->{title},
 		      entries  => [@entries] };
 	    

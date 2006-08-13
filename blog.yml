@@ -11,6 +11,7 @@ description: |
 author: Jonathan Rockway
 contact: jon@jrock.us
 language: en-us
+#feeds: ~
 feeds:
  - title: "delicious"
    location: "http://del.icio.us/rss/jrockway"
