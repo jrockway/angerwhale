@@ -6,11 +6,11 @@
       <span class="author">[% comment.author.fullname | html %]</span>
       <span class="keyid">([% comment.author.nice_id | html %])</span>
       [% IF comment.signed %]
-        <a href="[% c.uri_for(comment.uri) | html %]/raw">
+        <a href="[% c.uri_for("/$comment.uri") | html %]/raw">
       	 <img src="/static/lock.png" alt="[SIGNED]" />
         </a>
       [% ELSIF comment.signed == 0 %]
-        <a href="[% c.uri_for(comment.uri) | html %]/raw">
+        <a href="[% c.uri_for("/$comment.uri") | html %]/raw">
       	 <img src="/static/bad_lock.png" alt="[BAD SIGNATURE]" />
         </a>
       [% END %]
