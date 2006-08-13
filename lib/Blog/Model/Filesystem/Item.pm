@@ -108,7 +108,7 @@ sub tags {
     my @taglist;
     foreach my $tag (sort keys %taglist){
 	my $copy = "$tag";
-#	Encode::_utf8_on($copy) unless Encode::is_utf8($copy);
+	Encode::_utf8_on($copy) unless Encode::is_utf8($copy);
 	push @taglist, $copy;
     }
 
@@ -342,8 +342,9 @@ sub raw_text {
     my $want_pgp = shift;
     my $text     = shift || scalar read_file( $self->{path},
 					      binmode => ":utf8");
+    Encode::_utf8_on($text);
     return $text if $want_pgp;
-
+    
     my $sig;
     eval {
 	$sig = Blog::Signature->new($text);
