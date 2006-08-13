@@ -5,6 +5,7 @@ use warnings;
 use base 'Catalyst::Controller';
 use URI::Escape;
 use Quantum::Superpositions;
+use utf8;
 
 =head1 NAME
 
@@ -77,7 +78,7 @@ sub do_tag : Local {
 
 sub show_tagged_articles : Private {
     my ($self, $c, @tags) = @_;
-
+    
     $c->stash->{template} = 'search_results.tt';
     $c->stash->{title} = 'Articles tagged with '. join ', ', @tags[0..-2];
     

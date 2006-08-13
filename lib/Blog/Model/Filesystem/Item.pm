@@ -27,6 +27,7 @@ use overload (q{<=>} => "compare",
 	      fallback => "TRUE");
 
 use Digest::MD5 qw(md5_hex);
+use encoding "utf8";
 use utf8; # for the elipsis later on
 
 # arguments are passed in a hash ref
@@ -194,8 +195,7 @@ sub title {
 sub checksum {
     my $self = shift;
     my $text = $self->raw_text;
-    chomp $text;
-    return md5_hex($text);
+    return md5_hex(Encode::encode_utf8($text));
 }
 
 sub id {
@@ -244,7 +244,6 @@ sub summary {
 	@words = @words[0..9];
 	$summary = join $SPACE, @words;
 	my $ELIPSIS = '…';
-	utf8::encode($ELIPSIS); # to avoid wide character warnings
 	$summary .= " $ELIPSIS";
     }
     
@@ -341,7 +340,8 @@ sub author {
 sub raw_text {
     my $self     = shift;
     my $want_pgp = shift;
-    my $text     = shift || scalar read_file( $self->{path} );
+    my $text     = shift || scalar read_file( $self->{path},
+					      binmode => ":utf8");
     return $text if $want_pgp;
 
     my $sig;
