@@ -78,11 +78,11 @@ sub do_tag : Local {
 
 sub show_tagged_articles : Private {
     my ($self, $c, @tags) = @_;
-    
+
     map { Encode::_utf8_on($_) unless Encode::is_utf8($_)} @tags;
     $c->stash->{template} = 'search_results.tt';
-    $c->stash->{title} = 'Articles tagged with '. join ', ', @tags[0..-2];
-    
+    $c->stash->{title} = 'Articles tagged with '. join(', ', @tags[0..$#tags-1]);
+    warn $c->stash->{title};
     # make a nice-looking comma-separated list ("foo, bar, and baz"
     # or "foo and bar")
     if($#tags == 0){
