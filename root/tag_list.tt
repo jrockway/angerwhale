@@ -7,7 +7,7 @@
 [% FOREACH tag = tags %]
 
 <span class="tag" style="font-size: [% tag_data.$tag.count %]%">
-  <a href="[% base %]tags/[% tag | uri | html %]">
+  <a href="[% c.uri_for("/tags/$tag") | html %]">
     [% tag | html %]
   </a>
 </span>	 

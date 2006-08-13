@@ -6,11 +6,11 @@
       <span class="author">[% comment.author.fullname | html %]</span>
       <span class="keyid">([% comment.author.nice_id | html %])</span>
       [% IF comment.signed %]
-        <a href="[% base %][% comment.uri | uri %]/raw">
+        <a href="[% c.uri_for(comment.uri) | html %]/raw">
       	 <img src="/static/lock.png" alt="[SIGNED]" />
         </a>
       [% ELSIF comment.signed == 0 %]
-        <a href="[% base %][% comment.uri | uri %]/raw">
+        <a href="[% c.uri_for(comment.uri) | html %]/raw">
       	 <img src="/static/bad_lock.png" alt="[BAD SIGNATURE]" />
         </a>
       [% END %]
@@ -24,12 +24,12 @@
   [% IF readonly != 1 %]
   <div class="comment_footer"><p>
     [ [% IF comment.parent.uri != article.uri %]
-      	 <a href="[% base %][% comment.parent.uri | uri %]">Parent</a> | 
+      	 <a href="[% c.uri_for("/$comment.parent.uri") | html %]">Parent</a> | 
       [% END %]
-      <a href="[% base %][% comment.uri | uri | html  %]">Link</a> |
+      <a href="[% c.uri_for("/$comment.uri") | html%]">Link</a> |
       <a href="[% base %]feeds/comment/xml/[% comment.path %]">XML</a> |
       <a href="[% base %]feeds/comment/yaml/[% comment.path %]">YAML</a> |
-      <a href="[% base %][% comment.post_uri | uri | html %]">Reply...</a> ]
+      <a href="[% c.uri_for("/$comment.post_uri") | html %]">Reply...</a> ]
   </p></div>
   [% IF comment.comments %]
   <div class="comment_children">

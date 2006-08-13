@@ -2,7 +2,7 @@
 [% USE Time %]
 [% USE infl = Lingua.EN.Inflect %]
 <div class="search_results">
-  <h2>[% title %]</h2>
+  <h2>[% title | html %]</h2>
   
     <p>[% infl.NO("article", article_count) %] to display.
     </p>
@@ -11,7 +11,9 @@
       [% FOREACH item = articles %]
       <li>
         <p>
-	  <a href="[% base %][% item.uri | uri %]">[% item.title | html %]</a>
+	  <a href="[% c.uri_for("/$item.uri") %]">
+	     [% item.title | html %]
+	  </a>
 	  <span class="postinfo">
 	  posted [% item.creation_time | time %]
 	  [% IF item.author.nice_id != 0 %]

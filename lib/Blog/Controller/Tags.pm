@@ -80,7 +80,7 @@ sub show_tagged_articles : Private {
 
     $c->stash->{template} = 'search_results.tt';
     $c->stash->{title} = 'Articles tagged with '. join ', ', @tags[0..-2];
-
+    
     # make a nice-looking comma-separated list ("foo, bar, and baz"
     # or "foo and bar")
     if($#tags == 0){

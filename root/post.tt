@@ -11,7 +11,7 @@
 	by [% article.author.fullname %]
 	[% END %]
 	[% IF article.signed %]
-	    <a href="[% c.uri_for("articles/$article.name") %]/raw">
+	    <a href="[% c.uri_for("/articles/$article.name") %]/raw">
 	      <img style="border: none;"
 	      	   src="[% base %]static/lock.png" alt="[SIGNED]" />
 	    </a>	
@@ -26,10 +26,10 @@
 
   [% IF !standalone %]
   <div class="post_links">
-    <a href="[% c.uri_for("articles/$article.name") %]#comments">
+    <a href="[% c.uri_for("/articles/$article.name") %]#comments">
       [% infl.NO("comment", article.comment_count) %]</a> |
     
-    <a href="[% c.uri_for("articles/$article.name") %]">Read more...</a>
+    <a href="[% c.uri_for("/articles/$article.name") %]">Read more...</a>
   </div>
   [% END %]
 
@@ -43,7 +43,7 @@
     [% IF article.categories %]
     <p>Posted in: 
       [% FOREACH category = article.categories %]
-      <a href="[% base %]categories/[% category | uri |  html %]">
+      <a href="[% c.uri_for("/categories/$category") %]">
       	 [% category | html %]
       </a>
       [% END %]

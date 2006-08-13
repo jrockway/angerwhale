@@ -23,7 +23,7 @@ ASCII-armored is OK).
 </p>
 [% END %]
 
- <form method="post" action="[% action | uri %]">
+ <form method="post" action="[% action %]">
   <div id="post_box">
   <p> Title: <input type="text" name="title" size="70" value="[% post_title | html %]" /></p> 
   <p><textarea name="body" rows="25" cols="80">[% body | html %]</textarea></p>

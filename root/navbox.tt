@@ -21,7 +21,7 @@
       [% FOREACH category_name = root.get_categories %]
       <li>
        [% IF category_name != category %]
-       <a href="[% base %]categories/[% category_name | uri | html %]">
+       <a href="[% c.uri_for("/categories/$category_name") | html %]">
       	     [% category_name | html %]</a>
        [% ELSE %]
        <b>[% category_name | html %]</b> <!-- current category -->
@@ -31,7 +31,8 @@
     </ul>
   [% END %]
   [% IF root.get_tags %]
-    <h3><a href="[%base%]tags" style="text-decoration: none;">Tags</a></h3>
+    <h3><a href="[% c.uri_for("/tags") %]" 
+    	   style="text-decoration: none;">Tags</a></h3>
     <ul>
     [% FOREACH tag = root.get_tags %]
       <li>
@@ -39,12 +40,12 @@
 	   [% IF tag_count == 1 %]
 	     	<b>[% tag | html %]</b>
 	   [% ELSE %]
-                <a href="[% base %]tags/[% tag | uri | html %]">
+                <a href="[% c.uri_for("/tags/$tag") | html%]">
                    <b>[% tag | html %]</b>
                 </a>
 	   [% END %]
 	[% ELSE %]
-	<a href="[% base %]tags/[% tag | uri | html %]">
+	<a href="[% c.uri_for("/tags/$tag") | html%]">
 	   [% tag | html %]
 	</a>
 	[% END %]
