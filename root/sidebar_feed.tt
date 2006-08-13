@@ -2,7 +2,7 @@
 <h3>[% feed.title %]</h3>
 <ul class="sidebar_feed_entries">
 [% FOREACH entry = feed.entries %]
-   <li><a href="[% entry.link | uri | html %]">   
+   <li><a href="[% entry.link | html %]">   
       [% entry.title %]
    </a></li>
 [% END %]
