@@ -1,0 +1,17 @@
+---
+base: /var/blog
+session_expire: 3600
+nonce_expire: 300
+title: Content Considered Harmful
+sidebar_picture: ~
+date_format: %c
+description: |
+ This is Jonathan Rockway's Blog, quite possibily the best blog ever.
+ Or something.
+author: Jonathan Rockway
+contact: jon@jrock.us
+language: en-us
+#feeds: ~
+feeds:
+ - title: "delicious"
+   location: "http://del.icio.us/rss/jrockway"

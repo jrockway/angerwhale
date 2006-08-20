@@ -1,0 +1,15 @@
+<html>
+  <head><title>Error [% c.response.status %]</title></head>
+  <body>
+    <h1>Error [% c.response.status %]</h1>
+    <p>Your request was completely invalid, resulting in the following
+      error: <tt>[% c.response.status %]</tt></p>
+    
+    <p>Just click the links and leave the typing to experts.</p>
+    
+    <hr />
+    <address>Foo::Bar version 13.37 error page $Revision: 1337$ </address>
+  </body>
+</html>
+    
+		   

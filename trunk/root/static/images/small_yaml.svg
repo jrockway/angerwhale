@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.44"
+   sodipodi:docbase="/home/jon/projects/blog_software/root/static/images"
+   sodipodi:docname="small_yaml.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="RSSg"
+       y2="225.94001"
+       x2="225.94001"
+       y1="30.06"
+       x1="30.06"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         id="stop1876"
+         stop-color="#E3702D"
+         offset="0"
+         style="stop-color:#007a16;stop-opacity:1;" />
+      <stop
+         id="stop1878"
+         stop-color="#EA7D31"
+         offset="0.1071"
+         style="stop-color:#007b3a;stop-opacity:1;" />
+      <stop
+         id="stop1880"
+         stop-color="#F69537"
+         offset="0.35030001"
+         style="stop-color:#00a64e;stop-opacity:1;" />
+      <stop
+         id="stop1882"
+         stop-color="#FB9E3A"
+         offset="0.5"
+         style="stop-color:#00a547;stop-opacity:1;" />
+      <stop
+         id="stop1884"
+         stop-color="#EA7C31"
+         offset="0.70160002"
+         style="stop-color:#006a1c;stop-opacity:1;" />
+      <stop
+         id="stop1888"
+         stop-color="#D95B29"
+         offset="1"
+         style="stop-color:#005d16;stop-opacity:1;" />
+    </linearGradient>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="375"
+     inkscape:cy="507.17443"
+     inkscape:document-units="px"
+     inkscape:current-layer="g1913"
+     inkscape:window-width="908"
+     inkscape:window-height="611"
+     inkscape:window-x="404"
+     inkscape:window-y="372" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g1913"
+       transform="matrix(2.734375,0,0,2.734375,0.571371,11.79081)">
+      <rect
+         id="rect1890"
+         y="0"
+         x="0"
+         ry="20.114286"
+         rx="20.114288"
+         height="256"
+         width="256"
+         style="fill:#007429;fill-opacity:1"
+         inkscape:export-filename="/home/jon/projects/blog_software/root/static/images/yaml_square.png"
+         inkscape:export-xdpi="1.5428572"
+         inkscape:export-ydpi="1.5428572" />
+      <rect
+         id="rect1892"
+         y="5"
+         x="5"
+         ry="18.285717"
+         rx="18.285717"
+         height="246"
+         width="246"
+         style="fill:#00c335;fill-opacity:1"
+         inkscape:export-filename="/home/jon/projects/blog_software/root/static/images/yaml_square.png"
+         inkscape:export-xdpi="1.5428572"
+         inkscape:export-ydpi="1.5428572" />
+      <rect
+         id="rect1894"
+         y="10"
+         x="10"
+         ry="17.188572"
+         rx="17.188574"
+         height="236"
+         width="236"
+         style="fill:url(#RSSg)"
+         inkscape:export-filename="/home/jon/projects/blog_software/root/static/images/yaml_square.png"
+         inkscape:export-xdpi="1.5428572"
+         inkscape:export-ydpi="1.5428572" />
+      <circle
+         id="circle1896"
+         r="24"
+         cy="189"
+         cx="68"
+         sodipodi:cx="68"
+         sodipodi:cy="189"
+         sodipodi:rx="24"
+         sodipodi:ry="24"
+         style="fill:white"
+         inkscape:export-filename="/home/jon/projects/blog_software/root/static/images/yaml_square.png"
+         inkscape:export-xdpi="1.5428572"
+         inkscape:export-ydpi="1.5428572" />
+      <path
+         id="path1898"
+         d="M 160,213 L 126,213 C 126,167.71265 89.287349,131 44,131 L 44,97 C 108.06503,97 160,148.93497 160,213 z "
+         style="fill:white"
+         inkscape:export-filename="/home/jon/projects/blog_software/root/static/images/yaml_square.png"
+         inkscape:export-xdpi="1.5428572"
+         inkscape:export-ydpi="1.5428572" />
+      <path
+         id="path1900"
+         d="M 184,213 C 184,135.68014 121.31986,73 44,73 L 44,38 C 140.64983,38 219,116.35017 219,213 L 184,213 z "
+         style="fill:white"
+         inkscape:export-filename="/home/jon/projects/blog_software/root/static/images/yaml_square.png"
+         inkscape:export-xdpi="1.5428572"
+         inkscape:export-ydpi="1.5428572" />
+    </g>
+  </g>
+</svg>
