@@ -6,6 +6,7 @@ use base 'Catalyst::Controller';
 use URI;
 use HTTP::Date;
 use Digest::MD5 qw(md5_hex);
+use Encode;
 
 # this was auto-generated and is apparently essential
 __PACKAGE__->config->{namespace} = q{}; 
@@ -196,7 +197,7 @@ sub _cache {
     }
     
     my $h = $c->response->headers;
-#    $h->header('E-Tag' => md5_hex($key));
+    $h->header('E-Tag' => md5_hex(Encode::encode_utf8($key)));
     $h->header('Last-Modified' => time2str($document->{mtime}));
 }
 
