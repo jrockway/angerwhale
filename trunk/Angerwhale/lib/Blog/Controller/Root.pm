@@ -78,11 +78,11 @@ sub auto : Private {
 
 #     }
 
-
+    
     return 1;
 }
-
-sub blog : Path('') {
+  
+sub blog : Path('/') {
     my ( $self, $c, @date ) = @_;
     $c->stash->{page}     = 'home';
     $c->stash->{title}    = $c->config->{title} || 'Blog';
@@ -91,9 +91,13 @@ sub blog : Path('') {
 }
 
 sub default : Private {
-    my ( $self, $c ) = @_;
-    $c->response->status(404);
-    $c->stash->{template} = 'error.tt';
+    my ($self, $c, @args) = @_;
+    if(@args == 3){
+	$c->forward('blog', [@args]);
+    }
+    else {
+	$c->response->redirect($c->uri_for('/'));
+    }
 }
 
 # global ending action
