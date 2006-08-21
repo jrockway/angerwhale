@@ -76,7 +76,7 @@ sub do_tag : Local {
     }
 }
 
-sub show_tagged_articles : Private {
+sub show_tagged_articles : Path('') {
     my ($self, $c, @tags) = @_;
 
     map { Encode::_utf8_on($_) unless Encode::is_utf8($_)} @tags;
@@ -149,18 +149,9 @@ sub get_nav_box : Local {
     $c->stash->{template} = 'navbox.tt';
 }
 
-sub default : Private {
-    my ( $self, $c, @tags ) = @_;
-    my $page = shift @tags; # should always be "tags"
-    die if $page ne q{tags}; # if it's not, i screwed up somewhere
-    
-    if(!@tags){
-	$c->detach('tag_list');
-    }
-    else {
-	# todo: canonicalize tag ordering?
-	$c->detach('show_tagged_articles', [@tags]);
-    }
+sub index : Private {
+    my ($self, $c) = @_;
+    $c->detach('tag_list');
 }
 
 
