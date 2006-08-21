@@ -17,7 +17,7 @@ __PACKAGE__->config->{static}->{mime_types} =
    js  => 'text/javascript',
   };
 __PACKAGE__->config->{cache}->{storage} = tempdir(CLEANUP => 1);
-__PACKAGE__->config->{cache}->{expires} = 3600;
+__PACKAGE__->config->{cache}->{expires} = 43200; # 12 hours
 
 __PACKAGE__->config({VERSION => $VERSION});
 
