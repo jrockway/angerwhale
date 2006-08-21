@@ -6,10 +6,10 @@
   <head>
     <title>[% title | html %]</title>
     <link rel="stylesheet" href="[% base %]static/style.css" type="text/css" />
-    <link rel="alternate" href="[% base %]feeds/articles/xml"
-	  type="application/rss+xml" title="RSS Feed"/>
-    <link rel="alternate" href="[% base %]feeds/comments/xml"
-	  type="application/rss+xml" title="RSS Comment Feed"/>
+    <link rel="alternate" href="[% base %]feeds/articles/atom"
+	  type="application/atom+xml" title="RSS Feed"/>
+    <link rel="alternate" href="[% base %]feeds/comments/atom"
+	  type="application/atom+xml" title="RSS Comment Feed"/>
     
     <link rel="alternate" href="[% base %]feeds/articles/yaml" type="text/x-yaml" />
     
