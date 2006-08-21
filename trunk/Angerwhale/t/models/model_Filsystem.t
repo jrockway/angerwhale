@@ -56,7 +56,7 @@ isa_ok($article, 'Blog::Model::Filesystem::Article');
 is($article->title, 'Another Article', 'title is correct');
 is($article->categories, (), 'not in any categories yet');
 is($article->uri, 'articles/Another Article.pod');
-is($article->checksum, '4e1b070d00c811c516aa20cd44d959f7', "checksum is right");
+is($article->checksum, '63b08321fa7c7daf4c01eb86e5fdd231', "checksum is right");
 is($article->name, 'Another Article.pod', 'name is correct');
 is($article->type, 'pod', q{plain ol' documentation});
 ok($article->id, 'article has a GUID');

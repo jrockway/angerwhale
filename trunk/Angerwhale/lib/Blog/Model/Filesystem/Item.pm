@@ -27,7 +27,6 @@ use overload (q{<=>} => "compare",
 	      fallback => "TRUE");
 
 use Digest::MD5 qw(md5_hex);
-use encoding "utf8";
 use utf8; # for the elipsis later on
 
 # arguments are passed in a hash ref
@@ -107,9 +106,8 @@ sub tags {
     }
     my @taglist;
     foreach my $tag (sort keys %taglist){
-	my $copy = "$tag";
-	Encode::_utf8_on($copy) unless Encode::is_utf8($copy);
-	push @taglist, $copy;
+	# tags must be stored as utf8
+	push @taglist, Encode::decode_utf8($tag);
     }
 
     if(wantarray){
@@ -342,7 +340,7 @@ sub raw_text {
     my $want_pgp = shift;
     my $text     = shift || scalar read_file( $self->{path},
 					      binmode => ":utf8");
-    Encode::_utf8_on($text);
+    $text = Encode::decode_utf8($text);
     return $text if $want_pgp;
     
     my $sig;

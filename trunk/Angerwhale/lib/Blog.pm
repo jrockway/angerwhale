@@ -8,6 +8,8 @@ use Catalyst qw/Unicode ConfigLoader Scheduler Static::Simple
 
 our $VERSION = '0.01_01';
 
+binmode STDOUT, ':utf8';
+
 __PACKAGE__->config({name => __PACKAGE__});
 __PACKAGE__->config->{static}->{mime_types} = 
   {
@@ -22,6 +24,7 @@ __PACKAGE__->config({VERSION => $VERSION});
 __PACKAGE__->setup;
 __PACKAGE__->schedule( at    => '25 * * * *',
 		       event => '/scheduledevents/clean_sessions', );
+
 
 1;
 

@@ -4,7 +4,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 44;
+use Test::More tests => 46;
 use HTML::Tidy;
 use Test::HTML::Tidy;
 use Test::XML::Valid;
@@ -15,20 +15,20 @@ my $tidy = HTML::Tidy->new({config_file => 'tidy_config'});
 #$tidy->ignore( type => TIDY_WARNING );
 
 use Catalyst::Test qw(Blog);
-use ok "Blog::Controller::Articles";
-use ok "Blog::Controller::Categories";
-use ok "Blog::Controller::Comments";
-use ok "Blog::Controller::Feeds";
-use ok "Blog::Controller::Login";
-use ok "Blog::Controller::Tags";
-use ok "Blog::Controller::Users";
-use ok "Blog::Controller::ScheduledEvents";
-use ok "Blog::Controller::Root";
+use ok q"Blog::Controller::Articles";
+use ok q"Blog::Controller::Categories";
+use ok q"Blog::Controller::Comments";
+use ok q"Blog::Controller::Feeds";
+use ok q"Blog::Controller::Login";
+use ok q"Blog::Controller::Tags";
+use ok q"Blog::Controller::Users";
+use ok q"Blog::Controller::ScheduledEvents";
+use ok q"Blog::Controller::Root";
 
 my @html_urls = qw(/ /tags /tags/fake /feeds/
 	           /tags/tag_list /login /users);
 
-my @urls = qw(/tags/tag_list /tags/do_tag /feeds/comments/xml /feeds/articles/xml);
+my @urls = qw(/tags/tag_list /feeds/comments/xml /feeds/articles/xml);
 
 my @xml_urls = qw(/feeds/articles/xml /feeds/comments/xml);
 my @yaml_urls = qw(/feeds/articles/yaml /feeds/comments/yaml); 
@@ -36,14 +36,20 @@ my @yaml_urls = qw(/feeds/articles/yaml /feeds/comments/yaml);
 foreach my $url (@html_urls){
     my $request = request($url);
     ok($request->is_success, "request $url OK");
-    xml_string_ok($request->content, "$url is valid XML");
-    html_tidy_ok($tidy, $request->content, "$url is valid XHTML");
+    my $content = $request->content;
+    xml_string_ok($content, "$url is valid XML");
+    html_tidy_ok($tidy, $content, "$url is valid XHTML");
 }
 
 foreach my $url (@urls){
     my $request = request($url);
     ok($request->is_success, "request $url OK");
 }
+
+do {
+    my $request = request("/tags/do_tag");
+    is($request->content, "Log in to edit.", "can't tag");
+};
 
 foreach my $url (@yaml_urls) {
     my $request = request($url);
@@ -54,10 +60,13 @@ foreach my $url (@yaml_urls) {
     ok(!$@, "YAML parsed OK");
 }
 
-foreach my $url (@xml_urls){
-    my $request = request($url);
-    ok($request->is_success, "request $url OK");
-    xml_string_ok($request->content, "$url is valid XML");
+SKIP: {
+    skip q{Need an Atom DTD for this}, 4;
+    foreach my $url (@xml_urls){
+	my $request = request($url);
+	ok($request->is_success, "request $url OK");
+	xml_string_ok($request->content, "$url is valid XML");
+    }
 }
 
 my $request = request('/login/nonce');

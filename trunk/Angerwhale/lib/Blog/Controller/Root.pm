@@ -33,7 +33,6 @@ Root Controller for this Catalyst based application.
 
 sub auto : Private {
     my ($self, $c) = @_;
-
     my $sid = $c->request->cookie("sid");
     if(defined $sid){
 	eval {
@@ -92,13 +91,9 @@ sub blog : Path('') {
 }
 
 sub default : Private {
-    my ($self, $c, @args) = @_;
-    if(@args == 3){
-	$c->forward('blog', [@args]);
-    }
-    else {
-	$c->response->redirect($c->uri_for('/'));
-    }
+    my ( $self, $c ) = @_;
+    $c->response->status(404);
+    $c->stash->{template} = 'error.tt';
 }
 
 # global ending action
@@ -114,7 +109,9 @@ sub end : Private {
     # 	$c->forward('Blog::View::Dump');
     # 	print {*STDERR} $c->response->body;
     #    }
-    
+
+    return if $c->response->status == 500; # don't cache server errors
+
     if(!($c->response->body || $c->response->redirect)){
 	$c->response->content_type('application/xhtml+xml; charset=utf-8');
  	$c->stash->{generated_at} = time();

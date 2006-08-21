@@ -34,6 +34,7 @@ sub _decode {
 
     $self->{data} = qq{ } if !$self->{data};
     my $in_data = $self->{data};
+#    warn "in_data is utf8" . utf8::is_utf8($in_data);
     my $pgp = $self->{pgp};
 
     my $msg = Crypt::OpenPGP::Message->new(  Data => $in_data ) or
