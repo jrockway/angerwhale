@@ -28,15 +28,23 @@ my $html = 'This <i>is</i> HTML. Hopefully this passes thru.';
 
 my $formatted_html = Blog::Format::format($html, 'html');
 my $text_html = Blog::Format::format_text($html, 'html');
+chomp $html;
+chomp $text_html;
+chomp $formatted_html;
+
 is($formatted_html, $html, 'html passed through');
 is($text_html, 'This is HTML. Hopefully this passes thru.');
 
 my $formatted_txt  = Blog::Format::format($txt, 'txt');
 my $text_txt  = Blog::Format::format_text($txt, 'txt');
+chomp $txt;
+chomp $text_txt;
+chomp $formatted_txt;
+
 ok($formatted_txt);
 is($text_txt, $txt);
 
 my $formatted_pod  = Blog::Format::format($pod, 'pod');
 my $text_pod  = Blog::Format::format_text($pod, 'pod');
 ok($formatted_pod);
-ok($text_pod =~ /Confusing!$/);
+like($text_pod, qr/Confusing!$/);

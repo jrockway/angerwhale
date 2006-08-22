@@ -8,6 +8,7 @@ use HTML::TreeBuilder;
 use Quantum::Superpositions;
 use Scalar::Util qw(blessed);
 use URI;
+use Text::Autoformat qw(autoformat break_TeX);
 
 use strict;
 use warnings;
@@ -59,29 +60,80 @@ sub format_text {
     $html->parse($text);
     $html->eof;
 
-    my $result = $self->_parse_text($html->guts);
+    my ($result, $links) = $self->_parse_text($html->guts);
     $html->delete;
 
-    return "$result";
+    $result = "$result\n$links\n";
+    
+    return autoformat($result, {break=>break_TeX, all=>1});
 }
 
-# just gets the text in the tags, and nothing else
-sub _parse_text {
-    my $self = shift;
-    my @elements = @_;
-    my $result = q{};
-    foreach my $element (@elements){
-	my $type;
-	if (blessed $element && $element->isa('HTML::Element')){
-	    my @kids = $element->content_list;
-	    my $type = $element->tag;
-	    $result .= $self->_parse_text(@kids);
+# just gets the text in the tags
+# but also gets links from a tags
+# and alt from img tags
+{
+    my $links  = q{}; # stores footer containing links
+    my $link_counter = 0;
+    
+    sub _parse_text {
+	my $self = shift;
+	my @elements = @_;
+	my $result = q{}; # stores body of text
+	foreach my $element (@elements){
+	    my $type;
+	    if (blessed $element && $element->isa('HTML::Element')){
+		my @kids = $element->content_list;
+		my $type = $element->tag;
+		if   ($type eq 'a'){
+		    my $location = $element->attr('href');
+		    my $uri      = URI->new($location);
+		    $link_counter++;
+		    $result .= $self->_parse_text(@kids). " [$link_counter]";
+		    $links  .= "[$link_counter] $uri\n";
+		}
+		elsif($type eq 'img'){
+		    my $alt = $element->attr('alt');
+		    $result .= "[$alt]" if $alt ne '';
+		}
+		elsif($type =~ /^h(\d)/){
+		    my $level    = $1;
+		    my $heading .= $self->_parse_text(@kids);
+
+		    if($level < 3){
+			$heading = uc $heading;
+		    }
+
+		    if($level < 2){
+			my $len = length $heading;
+			$len = 72 if $len > 72;
+
+			$heading .= "\n";
+			$heading .= "-" x $len;
+		    }
+		    
+		    $result .= "\n$heading\n";
+		}
+		elsif($type eq 'br'){
+		    $result .= "\n";
+		}
+		elsif($type eq 'hr'){
+		    $result .= "\n\n";
+		}
+		elsif($type eq 'p'){
+		    $result .= "\n". $self->_parse_text(@kids). "\n";
+		}
+		else {
+		    $result .= $self->_parse_text(@kids);
+		}
+	    }
+	    else {
+		$result .= $element;
+	    }
 	}
-	else {
-	    $result .= $element;
-	}
+	return $result unless wantarray;
+	return ($result, $links);
     }
-    return $result;
+    
 }
 
 sub _parse {
@@ -123,7 +175,15 @@ sub _parse {
 		$result .= $self->_parse(@kids);
 		$result .= qq{</$type>};
 	    }
-
+	    
+	    # image
+	    elsif($type eq 'img'){
+		my $alt = $element->attr('alt');
+		if($alt){
+		    $result .= "[$alt]";
+		}
+	    }
+	    
 	    # heading
 	    elsif($type =~ /h(\d+)/){
 		my $heading = $1;
