@@ -71,6 +71,7 @@ build_requires
    'Test::HTML::Tidy'					    => 0,
    'HTML::Tidy'						    => 0,
    'Test::XML::Valid'					    => 0,
+   'Test::WWW::Mechanize::Catalyst'                         => 0,
   );
 
 catalyst;
