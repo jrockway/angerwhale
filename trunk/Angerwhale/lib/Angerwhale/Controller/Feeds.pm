@@ -115,6 +115,9 @@ sub comments : Local {
 	}
     }; # stop pushing if there heap empties before $max_comments
     
+    $c->stash->{feed_title} = $c->config->{title}. " Comment Feed"
+      if $c->config->{title};
+    
     $c->stash->{type} = $type;
     $c->stash->{items} = [@comments];
     return;
@@ -145,6 +148,16 @@ sub category : Local {
     my ($self, $c, $category, $type) = @_;
     $c->stash->{category} = $category || q{/};
     $c->forward('/categories/show_category', []);
+    
+    if($c->config->{title}){
+	$c->stash->{feed_title} = $c->config->{title};
+	$c->stash->{feed_title} .= ": $category" 
+	  if $category && $category ne q{/};
+    }
+    else {
+	$c->stash->{feed_title} = "Articles in $category";
+    }
+    
     $c->stash->{items} = $c->stash->{articles};
     $c->stash->{type}  = $type;
     return;
@@ -172,7 +185,15 @@ the URI.
 sub tags : Local {
     my ($self, $c, $tags, $type) = @_;
     $c->forward('/tags/show_tagged_articles');
-    
+
+    if($c->config->{title}){
+	$c->stash->{feed_title} = $c->config->{title};
+	$c->stash->{feed_title} .= " - Articles tagged with $tags"
+	  if $tags;
+    }
+    else {
+	$c->stash->{feed_title} = "Articles tagged with $tags";
+    }
     $c->stash->{type}  = $type;
     $c->stash->{items} = $c->stash->{articles};
 

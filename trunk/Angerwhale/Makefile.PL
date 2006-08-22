@@ -20,6 +20,7 @@ requires
    'Catalyst::Plugin::Scheduler'			    => '0.07',
    'Catalyst::Plugin::Static::Simple'			    => 0,
    'Catalyst::Plugin::Unicode'				    => '0.2',
+   'Catalyst::Model::XML::Feed'                             => '0.01',
    'Crypt::Blowfish'					    => 0,
    'Crypt::CAST5_PP'					    => 0,
    'Crypt::DES_EDE3'					    => 0,

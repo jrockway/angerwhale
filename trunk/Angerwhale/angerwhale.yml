@@ -6,8 +6,8 @@ title: Content Considered Harmful
 sidebar_picture: ~
 date_format: %c
 description: |
- This is Jonathan Rockway's Blog, quite possibily the best blog ever.
- Or something.
+  This is Jonathan Rockway's Blog, where he talks about Catalyst,
+  Angerwhale, and Everything.
 author: Jonathan Rockway
 contact: jon@jrock.us
 language: en-us
@@ -15,3 +15,4 @@ language: en-us
 feeds:
  - title: "delicious"
    location: "http://del.icio.us/rss/jrockway"
+

@@ -12,7 +12,8 @@ sub process {
     my @header;
     my $feed = XML::Atom::SimpleFeed->
       new(
-	  title     => ($c->config->{title} || 'Blog'). ' Atom Feed',
+	  title     => $c->stash->{feed_title} || 
+	  (($c->config->{title} || 'Blog'). ' Atom Feed'),
 	  id        => $c->request->base,
 	  link      => {rel => "self", href => $c->request->uri},
 	  link      => $c->request->base,

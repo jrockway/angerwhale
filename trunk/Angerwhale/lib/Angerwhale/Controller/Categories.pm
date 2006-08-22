@@ -98,7 +98,7 @@ sub show_category : Private {
 
     # first article can never be mini.  too ugly.
     # (but, on archive pages, keep it mini for consistency)
-    $articles[0]->mini(0);
+    $articles[0]->mini(0) if $articles[0];
 
     my $config;
     $config->{articles_per_page} = $ARTICLES_PER_PAGE;
