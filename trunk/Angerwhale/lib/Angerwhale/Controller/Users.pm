@@ -1,4 +1,4 @@
-package Blog::Controller::Users;
+package Angerwhale::Controller::Users;
 
 use strict;
 use warnings;
@@ -6,7 +6,7 @@ use base 'Catalyst::Controller';
 
 =head1 NAME
 
-Blog::Controller::Users - Catalyst Controller
+Angerwhale::Controller::Users - Catalyst Controller
 
 =head1 SYNOPSIS
 

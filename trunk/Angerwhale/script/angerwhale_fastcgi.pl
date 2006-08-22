@@ -8,7 +8,7 @@ use Getopt::Long;
 use Pod::Usage;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
-use Blog;
+use Angerwhale;
 
 my $help = 0;
 my ( $listen, $nproc, $pidfile, $manager, $detach );
@@ -24,7 +24,7 @@ GetOptions(
 
 pod2usage(1) if $help;
 
-Blog->run( 
+Angerwhale->run( 
     $listen, 
     {   nproc   => $nproc,
         pidfile => $pidfile, 
@@ -37,11 +37,11 @@ Blog->run(
 
 =head1 NAME
 
-blog_fastcgi.pl - Catalyst FastCGI
+angerwhale_fastcgi.pl - Catalyst FastCGI
 
 =head1 SYNOPSIS
 
-blog_fastcgi.pl [options]
+angerwhale_fastcgi.pl [options]
  
  Options:
    -? -help      display this help and exits

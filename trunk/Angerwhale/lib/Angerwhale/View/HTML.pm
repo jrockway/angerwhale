@@ -1,4 +1,4 @@
-package Blog::View::HTML;
+package Angerwhale::View::HTML;
 use NEXT;
 use strict;
 use base 'Catalyst::View::TT::ForceUTF8';
@@ -11,16 +11,16 @@ __PACKAGE__->config(
 		    RECURSION => 1,
 		    DEBUG => 1,    
 		    COMPILE_DIR => File::Temp::tempdir(CLEANUP => 1),
-		    PLUGIN_BASE => 'Blog::Filter',
+		    PLUGIN_BASE => 'Angerwhale::Filter',
 		   );
 
 =head1 NAME
 
-Blog::View::HTML - Catalyst TT View
+Angerwhale::View::HTML - Catalyst TT View
 
 =head1 SYNOPSIS
 
-See L<Blog>
+See L<Angerwhale>
 
 =head1 DESCRIPTION
 

@@ -2,7 +2,7 @@
 # HTML.pm 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-package Blog::Format::HTML;
+package Angerwhale::Format::HTML;
 
 use HTML::TreeBuilder;
 use Quantum::Superpositions;

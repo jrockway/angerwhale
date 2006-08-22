@@ -1,4 +1,4 @@
-package Blog::Controller::Articles;
+package Angerwhale::Controller::Articles;
 
 use strict;
 use warnings;
@@ -7,11 +7,11 @@ use URI::Escape;
 
 =head1 NAME
 
-Blog::Controller::Articles - Catalyst Controller
+Angerwhale::Controller::Articles - Catalyst Controller
 
 =head1 SYNOPSIS
 
-See L<Blog>
+See L<Angerwhale>
 
 =head1 DESCRIPTION
 

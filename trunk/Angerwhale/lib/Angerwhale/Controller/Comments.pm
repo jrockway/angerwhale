@@ -1,18 +1,18 @@
-package Blog::Controller::Comments;
+package Angerwhale::Controller::Comments;
 
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use Blog::Format;
+use Angerwhale::Format;
 use Scalar::Util qw(blessed);
 
 =head1 NAME
 
-Blog::Controller::Comments - Catalyst Controller
+Angerwhale::Controller::Comments - Catalyst Controller
 
 =head1 SYNOPSIS
 
-See L<Blog>
+See L<Angerwhale>
 
 =head1 DESCRIPTION
 
@@ -52,14 +52,14 @@ sub default : Private {
     $c->forward('find_by_uri_path');
     
     if(  !blessed $c->stash->{comment} || 
-         !$c->stash->{comment}->isa('Blog::Model::Filesystem::Item'))
+         !$c->stash->{comment}->isa('Angerwhale::Model::Filesystem::Item'))
       {
 	  $c->stash->{template} = "error.tt";
 	  $c->response->status(404);
       }
     else {
 	# handle cases where the find_by_uri_path item is the actual article
-	if(!$c->stash->{comment}->isa('Blog::Model::Filesystem::Comment')){
+	if(!$c->stash->{comment}->isa('Angerwhale::Model::Filesystem::Comment')){
 	    # handle getting articles by their GUID (instead of name)
 	    $c->response->redirect($c->uri_for('/',$c->stash->{article}->uri));
 	}
@@ -105,7 +105,7 @@ sub post : Local {
 	    $c->stash->{type}       = $type;
 
 	    $c->stash->{preview_comment} = 
-	      Blog::Model::Filesystem::PreviewComment->new($c, $title,
+	      Angerwhale::Model::Filesystem::PreviewComment->new($c, $title,
 							   $body, $type);
 	    
 	    $c->stash->{body} = $body;
@@ -118,7 +118,7 @@ sub post : Local {
     
     $c->stash->{template} = 'post_comment.tt';
     $c->stash->{action} = $c->uri_for("/comments/post/". join '/', @path);
-    $c->stash->{types}  = [Blog::Format::types()];
+    $c->stash->{types}  = [Angerwhale::Format::types()];
     return;
 }
 

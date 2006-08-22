@@ -49,9 +49,9 @@ if ( $debug ) {
 
 # This is require instead of use so that the above environment
 # variables can be set at runtime.
-require Blog;
+require Angerwhale;
 
-Blog->run( $port, $host, {
+Angerwhale->run( $port, $host, {
     argv              => \@argv,
     'fork'            => $fork,
     keepalive         => $keepalive,
@@ -67,11 +67,11 @@ __END__
 
 =head1 NAME
 
-blog_server.pl - Catalyst Testserver
+angerwhale_server.pl - Catalyst Testserver
 
 =head1 SYNOPSIS
 
-blog_server.pl [options]
+angerwhale_server.pl [options]
 
  Options:
    -d -debug          force debug mode

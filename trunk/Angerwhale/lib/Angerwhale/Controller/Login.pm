@@ -1,27 +1,27 @@
-package Blog::Controller::Login;
+package Angerwhale::Controller::Login;
 
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use Blog::Challenge;
-use Blog::Signature;
+use Angerwhale::Challenge;
+use Angerwhale::Signature;
 use YAML;
 
 
 =head1 NAME
 
-Blog::Controller::Login - Handles logins
+Angerwhale::Controller::Login - Handles logins
 
 =head1 SYNOPSIS
 
-See L<Blog>
+See L<Angerwhale>
 
 =cut
 
 sub nonce : Local {
     my ( $self, $c ) = @_;
     
-    my $nonce = Blog::Challenge->new({uri => $c->request->base->as_string});    
+    my $nonce = Angerwhale::Challenge->new({uri => $c->request->base->as_string});    
     $c->model('NonceStore')->new_nonce($nonce);
     $c->stash->{nonce} = $nonce;
     
@@ -41,7 +41,7 @@ sub process : Local {
     my $key_id;
 
     eval {
-	$sig    = Blog::Signature->new($data);
+	$sig    = Angerwhale::Signature->new($data);
 	$key_id = $sig->get_key_id;
     };
     if(!$key_id || !$sig || $@){

@@ -2,7 +2,7 @@
 # Challenge.pm
 # Copyright (c) 2006 Jonathan T. Rockway
 
-package Blog::Challenge;
+package Angerwhale::Challenge;
 use strict;
 use warnings;
 use Crypt::Random qw(makerandom);

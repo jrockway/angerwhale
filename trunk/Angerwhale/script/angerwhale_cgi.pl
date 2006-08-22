@@ -6,9 +6,9 @@ use strict;
 use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
-use Blog;
+use Angerwhale;
 
-Blog->run;
+Angerwhale->run;
 
 1;
 

@@ -2,10 +2,10 @@
 # Article.pm
 # Copyright (c) 2006 Jonathan T. Rockway
 
-package Blog::Model::Filesystem::Article;
+package Angerwhale::Model::Filesystem::Article;
 use strict;
 use warnings;
-use base qw(Blog::Model::Filesystem::Item);
+use base qw(Angerwhale::Model::Filesystem::Item);
 
 sub categories {
     my $self = shift;
@@ -21,10 +21,11 @@ sub categories {
     my $i = 0;
     foreach my $path (@paths){
 	eval {
-	    my $obj = Blog::Model::Filesystem::Article->new({base   => $base,
-							     base_obj => 
-							     $self->{base_obj},
-							     path   => $path});
+	    my $obj = Angerwhale::Model::Filesystem::Article->
+	      new({base     => $base,
+		   base_obj => $self->{base_obj},
+		   path     => $path});
+	    
 	    my $myid = $obj->checksum;
 	    push @result, $categories[$i] if $myid eq $id;
 	};

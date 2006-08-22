@@ -3,9 +3,9 @@
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 use Test::More tests => 10;
-use ok 'Blog::Format::HTML';
+use ok 'Angerwhale::Format::HTML';
 
-my $html = Blog::Format::HTML->new;
+my $html = Angerwhale::Format::HTML->new;
 ok($html, 'created parser OK');
 
 my $input  = do { local $/; <DATA> };

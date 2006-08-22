@@ -1,4 +1,4 @@
-package Blog::Controller::Categories;
+package Angerwhale::Controller::Categories;
 
 use strict;
 use warnings;
@@ -10,11 +10,11 @@ use Scalar::Util qw(blessed);
 
 =head1 NAME
 
-Blog::Controller::Categories - Catalyst Controller
+Angerwhale::Controller::Categories - Catalyst Controller
 
 =head1 SYNOPSIS
 
-See L<Blog>
+See L<Angerwhale>
 
 =head1 DESCRIPTION
 

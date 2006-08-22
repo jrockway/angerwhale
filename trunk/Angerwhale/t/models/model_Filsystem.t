@@ -5,7 +5,7 @@
 use Test::More tests => 19;
 use Test::MockObject;
 use Directory::Scratch;
-use Blog::Model::Filesystem;
+use Angerwhale::Model::Filesystem;
 use YAML;
 use strict;
 use warnings;
@@ -25,8 +25,8 @@ $config->{base} = $base;
 
 $tmp->mkdir('articles/test category');
 
-my $fs = Blog::Model::Filesystem->new($c);
-isa_ok($fs, 'Blog::Model::Filesystem');
+my $fs = Angerwhale::Model::Filesystem->new($c);
+isa_ok($fs, 'Angerwhale::Model::Filesystem');
 
 $tmp->touch('articles/An Article', "This is a test article.");
 
@@ -52,7 +52,7 @@ foreach my $a (@articles){
 }
 diag $config->{base};
 
-isa_ok($article, 'Blog::Model::Filesystem::Article');
+isa_ok($article, 'Angerwhale::Model::Filesystem::Article');
 is($article->title, 'Another Article', 'title is correct');
 is($article->categories, (), 'not in any categories yet');
 is($article->uri, 'articles/Another Article.pod');

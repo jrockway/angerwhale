@@ -2,18 +2,18 @@
 # Feed.pm 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-package Blog::View::Feed;
+package Angerwhale::View::Feed;
 use strict;
 use warnings;
 use Scalar::Util qw(blessed);
 
 =head1 NAME
 
-Blog::View::Feed - Common class that abstracts a "feed" of some sort
+Angerwhale::View::Feed - Common class that abstracts a "feed" of some sort
 
 =head1 DESCRIPTION
 
-This class serializes Blog::Model::Filesystem::Items, presumably to generate
+This class serializes Angerwhale::Model::Filesystem::Items, presumably to generate
 an RSS or YAML feed.
 
 Here's what this class knows how to deal with:
@@ -48,7 +48,7 @@ sub prepare_items {
     my @result;
     
     # single item
-    if(blessed $item_ref && $item_ref->isa('Blog::Model::Filesystem::Item')){
+    if(blessed $item_ref && $item_ref->isa('Angerwhale::Model::Filesystem::Item')){
 	push @result, $self->serialize_item($c, $item_ref, 'recursive');
     }
 
@@ -72,7 +72,7 @@ sub serialize_item {
     
     my $data;
     Carp::confess "invalid item passed to serialize_item". Dump($item)
-	if !blessed($item) || !$item->isa('Blog::Model::Filesystem::Item');
+	if !blessed($item) || !$item->isa('Angerwhale::Model::Filesystem::Item');
     my $author = $item->author;
     my $key = 'yaml|'. $item->checksum. '|'. $item->comment_count;
     

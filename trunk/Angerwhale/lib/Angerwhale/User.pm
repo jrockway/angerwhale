@@ -3,7 +3,7 @@
 # Copyright (c) 2006 Jonathan T. Rockway
 # $Id: $
 
-package Blog::User;
+package Angerwhale::User;
 use strict;
 use warnings;
 use Crypt::OpenPGP::KeyServer;

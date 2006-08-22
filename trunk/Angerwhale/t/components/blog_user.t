@@ -3,7 +3,7 @@
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 use Test::More tests => 8;
-use ok qw(Blog::User); # 1
+use ok qw(Angerwhale::User); # 1
 
 #diag q{These tests will fail if you can't contact a keyserver.};
 my $keyid  = 'd0197853dd25e42f'; # key id of the author
@@ -12,8 +12,8 @@ my $key_fingerprint = '95ff88c5277c2282973fb90ad0197853dd25e42f';
 my $realid = pack 'H*', $keyid;
 
 
-my $jrock = Blog::User->_new($realid); 
-isa_ok($jrock, 'Blog::User'); # 2
+my $jrock = Angerwhale::User->_new($realid); 
+isa_ok($jrock, 'Angerwhale::User'); # 2
 
 is($jrock->id, $realid, "keyids match");
 is($jrock->nice_id, $keyid, "nice keyid matches");

@@ -3,10 +3,10 @@
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 use Test::More tests => 10;
-use ok 'Blog::Challenge';
+use ok 'Angerwhale::Challenge';
 use YAML;
 
-my $challenge = new Blog::Challenge( {uri => 'test://test'} );
+my $challenge = new Angerwhale::Challenge( {uri => 'test://test'} );
 ok($challenge->{nonce});
 ok($challenge->{date});
 is($challenge->{uri}, 'test://test');
@@ -14,7 +14,7 @@ is($challenge->{uri}, 'test://test');
 my $copy = { nonce => $challenge->{nonce},
 	     uri   => $challenge->{uri},
 	     date  => $challenge->{date}, };
-bless $copy => 'Blog::Challenge';
+bless $copy => 'Angerwhale::Challenge';
 
 is($copy, $challenge, 'copy and challenge match');
 is("$copy", Dump($copy));

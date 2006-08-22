@@ -2,7 +2,7 @@
 # OpenOffice.pm 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-package Blog::Format::OpenOffice;
+package Angerwhale::Format::OpenOffice;
 use strict;
 use warnings;
 

@@ -2,7 +2,7 @@
 # Wiki.pm 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-package Blog::Format::Wiki;
+package Angerwhale::Format::Wiki;
 use strict;
 use warnings;
 use Text::WikiFormat;

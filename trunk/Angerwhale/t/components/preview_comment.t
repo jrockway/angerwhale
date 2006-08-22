@@ -4,13 +4,13 @@
 
 use Test::More tests => 22;
 use Test::MockObject;
-use ok 'Blog::Model::Filesystem::PreviewComment';
-use Blog::User;
+use ok 'Angerwhale::Model::Filesystem::PreviewComment';
+use Angerwhale::User;
 
-my $user_store = Test::MockObject->new;use ok qw(Blog::Signature);
+my $user_store = Test::MockObject->new;use ok qw(Angerwhale::Signature);
 my $JROCK_ID = 'd0197853dd25e42f'; # author's key ID;
 my $id = pack 'H*', $JROCK_ID;
-my $jrock = Blog::User->_new($id);
+my $jrock = Angerwhale::User->_new($id);
 $user_store->set_always('get_user_by_real_id', $jrock);
 my $c = Test::MockObject->new;
 $c->set_always('stash', {});
@@ -28,9 +28,9 @@ my $body;
     $body = <DATA>;
 }
 
-my $comment = Blog::Model::Filesystem::PreviewComment
+my $comment = Angerwhale::Model::Filesystem::PreviewComment
   ->new($c, 'test', $body, 'text');
-isa_ok($comment, 'Blog::Model::Filesystem::PreviewComment');
+isa_ok($comment, 'Angerwhale::Model::Filesystem::PreviewComment');
 is($comment->type, 'text');
 ok($comment->creation_time);
 ok($comment->modification_time);

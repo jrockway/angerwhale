@@ -3,7 +3,7 @@
 # Copyright (c) 2006 Jonathan T. Rockway
 # $Id: $
 
-package Blog::Signature;
+package Angerwhale::Signature;
 use strict;
 use warnings;
 

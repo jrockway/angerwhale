@@ -5,16 +5,16 @@
 use Test::More tests=>5;
 use strict;
 use warnings;
-use ok qw(Blog::Signature);
+use ok qw(Angerwhale::Signature);
 my $JROCK_ID = 'd0197853dd25e42f'; # author's key ID;
 my $id = pack 'H*', $JROCK_ID;
 
 local $/;
 my $data = <DATA>;
 
-my $sig = Blog::Signature->new($data);
+my $sig = Angerwhale::Signature->new($data);
 
-isa_ok($sig, 'Blog::Signature');
+isa_ok($sig, 'Angerwhale::Signature');
 
 my $text = $sig->get_signed_data;
 

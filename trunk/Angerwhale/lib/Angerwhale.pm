@@ -1,4 +1,4 @@
-package Blog;
+package Angerwhale;
 
 use strict;
 use warnings;
@@ -32,7 +32,7 @@ __END__
 
 =head1 NAME
 
-Blog - Starts the Blog application
+Angerwhale - Starts up the Catalyst framework.
 
 =head1 SYNOPSIS
 

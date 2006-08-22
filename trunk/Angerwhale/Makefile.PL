@@ -2,10 +2,10 @@ use inc::Module::Install;
 use strict;
 use warnings;
 
-name('Blog');
+name('Angerwhale');
 abstract('exciting new weblogging software or something');
 author('Jonathan Rockway <jrockway@cpan.org>');
-version_from('lib/Blog.pm');
+version_from('lib/Angerwhale.pm');
 include('ExtUtils::AutoInstall');
 licence('gpl');
 

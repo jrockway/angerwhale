@@ -1,4 +1,4 @@
-package Blog::Controller::Root;
+package Angerwhale::Controller::Root;
 
 use strict;
 use warnings;
@@ -13,11 +13,11 @@ __PACKAGE__->config->{namespace} = q{};
 
 =head1 NAME
 
-Blog::Controller::Root - Root Controller for this Catalyst based application
+Angerwhale::Controller::Root - Root Controller for this Catalyst based application
 
 =head1 SYNOPSIS
 
-See L<Blog>.
+See L<Angerwhale>.
 
 =head1 DESCRIPTION
 
@@ -110,7 +110,7 @@ sub end : Private {
     
     #    if($c->debug){
     # 	my $res = $c->response->body;
-    # 	$c->forward('Blog::View::Dump');
+    # 	$c->forward('Angerwhale::View::Dump');
     # 	print {*STDERR} $c->response->body;
     #    }
 
@@ -133,7 +133,7 @@ sub end : Private {
  	}
 	else {
 	    # not cachable yet
-	    $c->forward('Blog::View::HTML');
+	    $c->forward('Angerwhale::View::HTML');
 	}
     }
 
@@ -191,7 +191,7 @@ sub _cache {
     }
     else {
 	#$c->log->debug("caching $key");
-	$c->forward('Blog::View::HTML');
+	$c->forward('Angerwhale::View::HTML');
 	$document = { mtime => time(),
 		      body  => $c->response->body };
 	$c->cache->set($key, $document);

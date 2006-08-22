@@ -3,10 +3,10 @@
 # Copyright (c) 2006 Jonathan T. Rockway
 # $Id: $
 
-package Blog::User::Anonymous;
+package Angerwhale::User::Anonymous;
 use strict;
 use warnings;
-use base qw(Blog::User);
+use base qw(Angerwhale::User);
 
 sub new {
     my $class = shift;

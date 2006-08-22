@@ -1,4 +1,4 @@
-package Blog::Controller::Tags;
+package Angerwhale::Controller::Tags;
 
 use strict;
 use warnings;
@@ -9,11 +9,11 @@ use utf8;
 
 =head1 NAME
 
-Blog::Controller::Tags - Catalyst Controller
+Angerwhale::Controller::Tags - Catalyst Controller
 
 =head1 SYNOPSIS
 
-See L<Blog>
+See L<Angerwhale>
 
 =head1 DESCRIPTION
 

@@ -1,13 +1,13 @@
 #!/usr/bin/perl
 # Pod.pm 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
-package Blog::Format::Pod;
+package Angerwhale::Format::Pod;
 use strict;
 use warnings;
 use IO::String;
 use Pod::Xhtml;
 use Pod::Simple::Text;
-use Blog::Format::HTML;
+use Angerwhale::Format::HTML;
 
 sub new {
     my $class = shift;
@@ -61,7 +61,7 @@ sub format_text {
     $pod_format->output_string( \$output );
     $pod_format->parse_string_document($text);
     
-    my $text_format = Blog::Format::PlainText->new;
+    my $text_format = Angerwhale::Format::PlainText->new;
     return $text_format->format_text($output, 'text');
 }
 

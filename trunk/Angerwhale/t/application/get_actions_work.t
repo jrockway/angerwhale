@@ -9,21 +9,21 @@ use HTML::Tidy;
 use Test::HTML::Tidy;
 use Test::XML::Valid;
 use YAML;
-use Blog;
+use Angerwhale;
 
 my $tidy = HTML::Tidy->new({config_file => 'tidy_config'});
 #$tidy->ignore( type => TIDY_WARNING );
 
-use Catalyst::Test qw(Blog);
-use ok q"Blog::Controller::Articles";
-use ok q"Blog::Controller::Categories";
-use ok q"Blog::Controller::Comments";
-use ok q"Blog::Controller::Feeds";
-use ok q"Blog::Controller::Login";
-use ok q"Blog::Controller::Tags";
-use ok q"Blog::Controller::Users";
-use ok q"Blog::Controller::ScheduledEvents";
-use ok q"Blog::Controller::Root";
+use Catalyst::Test qw(Angerwhale);
+use ok q"Angerwhale::Controller::Articles";
+use ok q"Angerwhale::Controller::Categories";
+use ok q"Angerwhale::Controller::Comments";
+use ok q"Angerwhale::Controller::Feeds";
+use ok q"Angerwhale::Controller::Login";
+use ok q"Angerwhale::Controller::Tags";
+use ok q"Angerwhale::Controller::Users";
+use ok q"Angerwhale::Controller::ScheduledEvents";
+use ok q"Angerwhale::Controller::Root";
 
 my @html_urls = qw(/ /tags /tags/fake /feeds/
 	           /tags/tag_list /login /users);
@@ -73,5 +73,5 @@ my $request = request('/login/nonce');
 ok($request->is_success, 'requested a nonce OK');
 my $nonce   = YAML::Load($request->content);
 ok($nonce, 'nonce desearialized OK');
-isa_ok($nonce, 'Blog::Challenge');
+isa_ok($nonce, 'Angerwhale::Challenge');
 ok($nonce->{nonce}, 'nonce has a nonce');

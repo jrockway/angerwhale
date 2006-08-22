@@ -2,7 +2,7 @@
 # Dump.pm 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-package Blog::View::Dump;
+package Angerwhale::View::Dump;
 
 use base qw(Catalyst::View);
 

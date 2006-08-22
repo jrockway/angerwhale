@@ -2,7 +2,7 @@
 # Time.pm
 # Copyright (c) 2006 Jonathan T. Rockway
 
-package Blog::Filter::Time;
+package Angerwhale::Filter::Time;
 use strict;
 use warnings;
 use base qw(Template::Plugin::Filter);

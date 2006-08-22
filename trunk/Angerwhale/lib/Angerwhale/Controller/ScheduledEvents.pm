@@ -1,4 +1,4 @@
-package Blog::Controller::ScheduledEvents;
+package Angerwhale::Controller::ScheduledEvents;
 
 use strict;
 use warnings;

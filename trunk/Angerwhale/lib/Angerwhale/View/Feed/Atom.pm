@@ -1,10 +1,10 @@
 #!/usr/bin/perl
 # Atom.pm 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
-package Blog::View::Feed::Atom;
+package Angerwhale::View::Feed::Atom;
 
 use strict;
-use base qw(Blog::View::Feed);
+use base qw(Angerwhale::View::Feed);
 use XML::Atom::SimpleFeed;
 
 sub process {

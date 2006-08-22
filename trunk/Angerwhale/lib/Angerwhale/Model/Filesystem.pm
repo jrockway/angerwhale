@@ -1,15 +1,15 @@
-package Blog::Model::Filesystem;
+package Angerwhale::Model::Filesystem;
 use strict;
 use warnings;
 use base 'Catalyst::Model';
 use NEXT;
 use Carp;
-use Blog::Model::Filesystem::Article;
+use Angerwhale::Model::Filesystem::Article;
 use Crypt::OpenPGP;
 
 =head1 NAME
 
-Blog::Model::Filesystem - Filesystem article and comment store
+Angerwhale::Model::Filesystem - Filesystem article and comment store
 
 =head1 METHODS
 
@@ -37,7 +37,7 @@ sub new {
 =head2 get_article
 
 Given the name of an article, retrieves it from the store and returns
-it in a C<Blog::Model::Filesystem::Article> object.
+it in a C<Angerwhale::Model::Filesystem::Article> object.
 
 =cut
 
@@ -51,7 +51,7 @@ sub get_article {
 
     die "no such article" if !-r "$base/$article" || -d "$base/$article";
     
-    return Blog::Model::Filesystem::Article->new({path     => "$base/$article",
+    return Angerwhale::Model::Filesystem::Article->new({path     => "$base/$article",
 						  base     => $base,
 						  base_obj => $self});
     
@@ -71,7 +71,7 @@ sub _ls {
 	next if -d $entry;
 
 	#entry is acceptable
-	my $article = Blog::Model::Filesystem::Article->
+	my $article = Angerwhale::Model::Filesystem::Article->
 	  new({path     => $entry,
 	       base     => $self->{base},
 	       base_obj => $self});
@@ -86,7 +86,7 @@ sub _ls {
 =head2 get_articles
 
 Returns a list of all articles in the store.  The articles are
-C<Blog::Model::Filesystem::Article>s.
+C<Angerwhale::Model::Filesystem::Article>s.
 
 =cut
 

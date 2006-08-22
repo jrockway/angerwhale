@@ -2,7 +2,7 @@
 # PlainText.pm 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-package Blog::Format::PlainText;
+package Angerwhale::Format::PlainText;
 use strict;
 use warnings;
 use Text::Autoformat qw(autoformat break_TeX);

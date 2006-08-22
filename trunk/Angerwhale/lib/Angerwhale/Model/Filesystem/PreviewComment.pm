@@ -2,11 +2,11 @@
 # PreviewComment.pm 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-package Blog::Model::Filesystem::PreviewComment;
+package Angerwhale::Model::Filesystem::PreviewComment;
 use strict;
 use warnings;
-use base qw(Blog::Model::Filesystem::Comment);
-use Blog::User::Anonymous;
+use base qw(Angerwhale::Model::Filesystem::Comment);
+use Angerwhale::User::Anonymous;
 use Digest::MD5 qw(md5_hex);
 
 sub new {
@@ -87,7 +87,7 @@ sub author {
 	return $self->{context}->model('UserStore')->get_user_by_real_id($id);
     }
     else {
-	return Blog::User::Anonymous->new;
+	return Angerwhale::User::Anonymous->new;
     }
 }
 

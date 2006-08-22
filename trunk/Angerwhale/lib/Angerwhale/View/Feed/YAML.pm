@@ -1,8 +1,8 @@
-package Blog::View::Feed::YAML;
+package Angerwhale::View::Feed::YAML;
 
 use strict;
 use warnings;
-use base qw(Blog::View::Feed Catalyst::View);
+use base qw(Angerwhale::View::Feed Catalyst::View);
 use YAML;
 use Scalar::Util qw(blessed);
 
@@ -21,7 +21,7 @@ __END__
 
 =head1 NAME
 
-Blog::View::Feed::YAML - Syndicated YAML
+Angerwhale::View::Feed::YAML - Syndicated YAML
 
 =head1 IMPORTANT NOTE
 

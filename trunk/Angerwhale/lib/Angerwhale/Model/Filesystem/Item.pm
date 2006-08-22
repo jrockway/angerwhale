@@ -3,13 +3,13 @@
 # Copyright (c) 2006 Jonathan T. Rockway
 # $Id: $
 
-package Blog::Model::Filesystem::Item;
+package Angerwhale::Model::Filesystem::Item;
 use strict;
 use warnings;
 
-use Blog::Format;
-use Blog::User::Anonymous;
-use Blog::Signature;
+use Angerwhale::Format;
+use Angerwhale::User::Anonymous;
+use Angerwhale::Signature;
 
 use Carp;
 use Data::GUID;
@@ -253,7 +253,7 @@ sub summary {
 # see signed() below.
 sub signor {
     my $self = shift;
-    my $sig = Blog::Signature->new($self->raw_text(1));
+    my $sig = Angerwhale::Signature->new($self->raw_text(1));
     return $sig->get_key_id;
 }
 
@@ -280,7 +280,7 @@ sub signed {
     return if $self->raw_text eq $self->raw_text(1);
 
     my $result = eval {
-	my $sig = Blog::Signature->new($self->raw_text(1));
+	my $sig = Angerwhale::Signature->new($self->raw_text(1));
 
 	# XXX: Crypt::OpenPGP is really really slow, so cache the result
 	my $signed = $self->_cached_signature;
@@ -331,7 +331,7 @@ sub author {
 	return $user if $user;
     }
 
-    return Blog::User::Anonymous->new();
+    return Angerwhale::User::Anonymous->new();
 }
 
 # returns unformatted text, strips OpenPGP armour etc. if necessary
@@ -345,7 +345,7 @@ sub raw_text {
     
     my $sig;
     eval {
-	$sig = Blog::Signature->new($text);
+	$sig = Angerwhale::Signature->new($text);
     };
     if(!$@){
 	return $sig->get_signed_data;
@@ -366,7 +366,7 @@ sub text {
 	$data = ${$data};
     }
     else {
-	$data = Blog::Format::format($text, $self->type); 
+	$data = Angerwhale::Format::format($text, $self->type); 
 	$c->cache->set($key, \$data);
     }
     
@@ -385,7 +385,7 @@ sub plain_text {
 	$data = ${$data};
     }
     else {
-	$data = Blog::Format::format_text($text, $self->type); 
+	$data = Angerwhale::Format::format_text($text, $self->type); 
 	$c->cache->set($key, \$data);
     }
     
@@ -472,7 +472,7 @@ sub comments {
 	next if -d $filename;
 	next if $file =~ /^[.]/;
 
-	my $comment = Blog::Model::Filesystem::Comment->
+	my $comment = Angerwhale::Model::Filesystem::Comment->
 	  new({
 	       base     => $self->{base},
 	       base_obj => $self->{base_obj},

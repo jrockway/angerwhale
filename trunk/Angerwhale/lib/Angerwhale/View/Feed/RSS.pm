@@ -1,15 +1,15 @@
-package Blog::View::Feed::RSS;
+package Angerwhale::View::Feed::RSS;
 
 use strict;
-use base qw(Blog::View::Feed Catalyst::View::TT);
+use base qw(Angerwhale::View::Feed Catalyst::View::TT);
 use File::Temp;
-use Blog;
+use Angerwhale;
 
 __PACKAGE__->config( 
 		    TOLERANT => 1,
 		    #TIMER => 1, 
 		    DEBUG => 1,    
-		    INCLUDE_PATH => [ Blog->path_to('root', 'xml') ],
+		    INCLUDE_PATH => [ Angerwhale->path_to('root', 'xml') ],
 		    COMPILE_DIR => File::Temp::tempdir(CLEANUP => 1),
 		   );
 
@@ -46,7 +46,7 @@ __END__
 
 =head1 NAME
 
-Blog::View::Feed::RSS - TT-based RSS feed generator (because L<XML::Feed>
+Angerwhale::View::Feed::RSS - TT-based RSS feed generator (because L<XML::Feed>
 and L<XML::RSS> are bad)
 
 =head1 AUTHOR

@@ -3,7 +3,7 @@
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 use Test::More tests => 19;
-use ok 'Blog::Model::UserStore';
+use ok 'Angerwhale::Model::UserStore';
 use Test::MockObject;
 use Directory::Scratch;
 use File::Slurp qw(read_file write_file);
@@ -19,8 +19,8 @@ $c->set_always('config', $config);
 my $JROCK_ID = 'd0197853dd25e42f'; # author's key ID;
 my $id = pack 'H*', $JROCK_ID;
 
-my $users = Blog::Model::UserStore->new($c);
-isa_ok($users, 'Blog::Model::UserStore');
+my $users = Angerwhale::Model::UserStore->new($c);
+isa_ok($users, 'Angerwhale::Model::UserStore');
 
 my $jrock;
 eval {
@@ -28,7 +28,7 @@ eval {
 };
 
 ok(!$@, 'created jrock without throwing an exception');
-isa_ok($jrock, 'Blog::User');
+isa_ok($jrock, 'Angerwhale::User');
 is($jrock->fullname, "Jonathan T. Rockway");
 
 my $jrock_real = $users->get_user_by_real_id($id);

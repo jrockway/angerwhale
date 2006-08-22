@@ -1,11 +1,11 @@
-package Blog::Model::UserStore;
+package Angerwhale::Model::UserStore;
 
 use strict;
 use warnings;
 use base qw(Catalyst::Model);
 use NEXT;
 use YAML qw(LoadFile DumpFile);
-use Blog::User;
+use Angerwhale::User;
 use File::Slurp qw(read_file write_file);
 use Carp;
 use Crypt::OpenPGP::KeyRing;
@@ -13,7 +13,7 @@ use Crypt::OpenPGP::KeyServer;
 
 =head1 NAME
 
-Blog::Model::UserStore - Manages Blog users.
+Angerwhale::Model::UserStore - Manages Blog users.
 
 =head1 SYNOPSIS
 
@@ -23,7 +23,7 @@ Keeps track of the blog's users.
     my $user   = $c->model('UserStore')->get_user_by_nice_id($pgp_id);
     print "$pgp_id is ". $user->fullname;
 
-See also L<Blog::User|Blog::User>.  Note that users are cached; they
+See also L<Angerwhale::User|Angerwhale::User>.  Note that users are cached; they
 are refreshed from the keyserver according to the config's
 C<update_interval> in seconds.  Defaults to one hour.
 
@@ -68,7 +68,7 @@ sub new {
 
 Creates a new user in the user store (by the OpenPGP keyid 0xcafebabe
 [nice] or the Crypt::OpenPGP representation of that number [real]).
-Returns the C<Blog::User> on success, exception on failure.
+Returns the C<Angerwhale::User> on success, exception on failure.
 
 =cut
 
@@ -110,7 +110,7 @@ sub get_user_by_nice_id {
     eval {$user->{fingerprint} = read_file("$base/fingerprint")};
     eval {$user->{email}       = read_file("$base/email")};
     eval {$last_updated        = read_file("$base/last_updated")};
-    bless $user, 'Blog::User';
+    bless $user, 'Angerwhale::User';
     $user->{keyserver} = $self->{keyserver};
 
     my $outdated = ((time() - $last_updated) > $self->{update_interval});
@@ -136,7 +136,7 @@ sub get_user_by_nice_id {
     };
     
     confess "Could not refresh or retrieve user 0x$nice_id!" if $@;
-    confess "user isnta a user" if !$user->isa('Blog::User');
+    confess "user isnta a user" if !$user->isa('Angerwhale::User');
     
     return $user;
 }
@@ -200,7 +200,7 @@ sub last_updated {
 
 =head2 users
 
-Returns a list of all the users (C<Blog::Users>s) the system knows
+Returns a list of all the users (C<Angerwhale::Users>s) the system knows
 about.  The users are refreshed if they've expired.
 
 =cut
@@ -241,11 +241,11 @@ sub keyring {
 
 =head1 NAME
 
-Blog::Model::UserStore - Catalyst Model
+Angerwhale::Model::UserStore - Catalyst Model
 
 =head1 SYNOPSIS
 
-See L<Blog>
+See L<Angerwhale>
 
 =head1 DESCRIPTION
 

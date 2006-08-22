@@ -3,12 +3,12 @@
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 
-package Blog::Format;
+package Angerwhale::Format;
 use strict;
 use warnings;
 use Carp;
 use Module::Pluggable (
-		       search_path => ['Blog::Format'],
+		       search_path => ['Angerwhale::Format'],
 		       instantiate => 'new',
 		      );
 
@@ -60,13 +60,13 @@ __END__
 
 =head1 NAME
 
-  Blog::Format - Dispatches formatting of posts/comments to sub-modules
+Angerwhale::Format - Dispatches formatting of posts/comments to sub-modules
 
 =head1 SYNOPSIS
 
 =head1 EXTENSIONS
 
-A Blog::Format extension is simple to write.  It needs the following routines:
+A Angerwhale::Format extension is simple to write.  It needs the following routines:
 
 =head2 new
 

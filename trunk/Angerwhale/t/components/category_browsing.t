@@ -6,7 +6,7 @@ use warnings;
 
 use Test::More tests=>20;
 use Test::MockObject;
-use ok 'Blog::Controller::Categories';
+use ok 'Angerwhale::Controller::Categories';
 
 my $c = Test::MockObject->new;
 my $articles = Test::MockObject->new;
@@ -26,7 +26,7 @@ foreach (@_articles){
 }
 @articles = reverse @articles;
 
-my $o = bless \my $foo, 'Blog::Controller::Categories';
+my $o = bless \my $foo, 'Angerwhale::Controller::Categories';
 my ($before, $current, $after) = 
   $o->_split_articles([@articles],
 		{articles_per_page => 1}
@@ -127,7 +127,7 @@ $c->set_always('config', {articles_per_page => 1,
 			  mini_cutoff => -1});
 $c->set_always('stash', {category => q{/}, root => $articles});
 
-my $o = bless \my $foo, 'Blog::Controller::Categories';
+my $o = bless \my $foo, 'Angerwhale::Controller::Categories';
 eval {
     $o->show_category($c);
 };

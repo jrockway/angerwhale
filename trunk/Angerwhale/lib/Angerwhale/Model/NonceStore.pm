@@ -1,4 +1,4 @@
-package Blog::Model::NonceStore;
+package Angerwhale::Model::NonceStore;
 
 use strict;
 use warnings;
@@ -6,8 +6,8 @@ use base 'Catalyst::Model';
 use NEXT;
 use YAML qw(LoadFile DumpFile);
 use Crypt::Random qw(makerandom);
-use Blog::Challenge;
-use Blog::User::Anonymous;
+use Angerwhale::Challenge;
+use Angerwhale::User::Anonymous;
 
 sub new {
     my ($self, $c) = @_;
@@ -26,7 +26,7 @@ sub new {
     return $self;
 }
 
-# takes a Blog::Challenge object, adds the nonce to that object,
+# takes a Angerwhale::Challenge object, adds the nonce to that object,
 # and returns the filename of the nonce object on success
 sub new_nonce {
     my $self = shift;
@@ -149,11 +149,11 @@ sub _clean {
 
 =head1 NAME
 
-Blog::Model::NonceStore - stores session information in the filesystem
+Angerwhale::Model::NonceStore - stores session information in the filesystem
 
 =head1 SYNOPSIS
 
-See L<Blog>
+See L<Angerwhale>
 
 =head1 DESCRIPTION
 

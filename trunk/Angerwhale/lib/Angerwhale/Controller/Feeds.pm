@@ -1,4 +1,4 @@
-package Blog::Controller::Feeds;
+package Angerwhale::Controller::Feeds;
 
 use strict;
 use warnings;
@@ -10,15 +10,13 @@ use HTTP::Date;
 use DateTime;
 use Quantum::Superpositions;
 
-my $FEED_FORMAT = 'RSS';
-
 =head1 NAME
 
-Blog::Controller::Feeds - Catalyst Controller
+Angerwhale::Controller::Feeds - Catalyst Controller
 
 =head1 SYNOPSIS
 
-See L<Blog>
+See L<Angerwhale>
 
 =head1 DESCRIPTION
 
@@ -105,7 +103,7 @@ sub comments : Local {
     # todo contains articles first, but comments are added inside the loop
     
     while(my $item = shift @todo){
-	$heap->insert($item) if $item->isa('Blog::Model::Filesystem::Comment');
+	$heap->insert($item) if $item->isa('Angerwhale::Model::Filesystem::Comment');
 	my @comments = $item->comments;
 	unshift @todo, @comments; # depth first (sort of)
     }

@@ -3,10 +3,10 @@
 # Copyright (c) 2006 Jonathan T. Rockway
 # $Id: $
 
-package Blog::Model::Filesystem::Comment;
+package Angerwhale::Model::Filesystem::Comment;
 use strict;
 use warnings;
-use base qw(Blog::Model::Filesystem::Item);
+use base qw(Angerwhale::Model::Filesystem::Item);
 
 sub uri {
     my $self = shift;

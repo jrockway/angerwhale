@@ -1,4 +1,4 @@
-package Blog::Controller::FetchExternalInfo;
+package Angerwhale::Controller::FetchExternalInfo;
 
 use strict;
 use warnings;
@@ -46,7 +46,7 @@ __END__
 
 =head1 NAME
 
-Blog::Controller::FetchExternalInfo - Pull down RSS feeds, etc., for
+Angerwhale::Controller::FetchExternalInfo - Pull down RSS feeds, etc., for
 the sidebar
 
 =head1 METHODS
