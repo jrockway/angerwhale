@@ -30,6 +30,23 @@ C<update_interval> in seconds.  Defaults to one hour.
 If a user exists, but a keyserver can't be contacted, the old data
 will still be used.
 
+=head1 CONFIGURATION
+
+=head2 keyserver
+
+The keyserver to fetch PGP keys from.  Defaults to C<stinkfoot.org>,
+since other keyservers can't manage to properly store and retieve the
+author's key.
+
+=head2 update_interval
+
+Try to update user info from C<keyserver> after this many
+seconds. Defaults to 3600, one hour.
+
+=cut
+
+__PACKAGE__->mk_accessors(qw|update_interval keyserver|);
+
 =head1 METHODS
 
 =head2 new
@@ -46,15 +63,17 @@ sub new {
     $self = $self->NEXT::new(@_);
     my $dir = $self->{users} = $c->config->{base}. '/.users';
 
-    my $update_interval = $c->config->{update_interval} || 3600;
-    my $keyserver       = $c->config->{keyserver} || "stinkfoot.org";
-
-    $self->{update_interval} = $update_interval;
-    $self->{keyserver}       = $keyserver;
+    # read the config, first from $self->whatever, then from
+    # c->config->whatever, and finally fall back to some
+    # clever defaults
+    $self->update_interval($c->config->{update_interval} || 3600)
+      if !$self->update_interval;
+    $self->keyserver($c->config->{keyserver} || "stinkfoot.org")
+      if !$self->keyserver;
     
     mkdir $dir;
     if(!-d $dir || !-w _){
-	$c->log->fatal("no user store at $dir");
+	$c->log->fatal("no user store at $dir ($!)");
 	die "no user store at $dir";
     }
     

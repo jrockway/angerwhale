@@ -2,22 +2,25 @@ package Angerwhale::Model::NonceStore;
 
 use strict;
 use warnings;
-use base 'Catalyst::Model';
+use base qw(Catalyst::Model);
 use NEXT;
 use YAML qw(LoadFile DumpFile);
 use Crypt::Random qw(makerandom);
 use Angerwhale::Challenge;
 use Angerwhale::User::Anonymous;
 
+__PACKAGE__->mk_accessors(qw|sessions nonce_expire session_expire|);
+
 sub new {
     my ($self, $c) = @_;
     $self = $self->NEXT::new(@_);
-    $self->{sessions} = $c->config->{base}. '/.sessions';
-
-    $self->{nonce_expire} = $c->config->{nonce_expire};
-    $self->{session_expire} = $c->config->{session_expire};
-
-    my $dir = $self->{sessions};
+    $self->sessions($c->config->{base}. '/.sessions');
+    $self->nonce_expire($c->config->{nonce_expire} || 3600)
+      if !$self->nonce_expire;
+    $self->session_expire($c->config->{session_expire} || 3600)
+      if !$self->session_expire;
+    
+    my $dir = $self->sessions;
     mkdir $dir;
     mkdir "$dir/pending";
     mkdir "$dir/established";
@@ -33,7 +36,7 @@ sub new_nonce {
     my $challenge = shift;
     die if !$challenge->{nonce};
     
-    my $dir  = $self->{sessions}. "/pending";
+    my $dir  = $self->sessions. "/pending";
     my $file = $dir. "/". $challenge->{nonce};
     
     open my $store, '>', $file 
@@ -58,7 +61,7 @@ sub verify_nonce {
 	die "invalid nonce $nonce"
     }
     
-    my $dir  = $self->{sessions}. "/pending";
+    my $dir  = $self->sessions. "/pending";
     my $file = $dir. "/". $nonce;
     my $old_challenge;
 
@@ -96,7 +99,7 @@ sub store_session {
 sub unstore_session {
     my $self = shift;
     my $sid = shift;
-    my $dir = $self->{sessions};
+    my $dir = $self->sessions;
     $sid =~ s/[^0-9]//g;
 
     my $file;
@@ -110,16 +113,16 @@ sub unstore_session {
 
 sub clean_sessions {
     my $self    = shift;
-    my $timeout = $self->{session_expire} || 3600;
-    my $dir     = $self->{sessions}. '/established';
+    my $timeout = $self->session_expire || 3600;
+    my $dir     = $self->sessions. '/established';
 
     return _clean($timeout, $dir);
 }
 
 sub clean_nonces {
     my $self    = shift;
-    my $timeout = $self->{nonce_expire} || 3600;
-    my $dir     = $self->{sessions}. '/pending';
+    my $timeout = $self->nonce_expire || 3600;
+    my $dir     = $self->sessions. '/pending';
 
     return _clean($timeout, $dir);
 }
