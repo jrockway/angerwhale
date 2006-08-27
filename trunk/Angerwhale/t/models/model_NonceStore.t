@@ -46,10 +46,9 @@ ok($@, 'unstoring fake session fails');
 
 #diag('sleeping 2 seconds');
 sleep 2;
-
 $ns->clean_sessions();
 
 eval {
-    $uid  = $ns->unstore_session($sid);
+    $uid = $ns->unstore_session($sid);
 };
 ok($@, 'unstoring expired session fails');
