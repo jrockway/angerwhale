@@ -105,14 +105,15 @@ sub post : Local {
 	    $c->stash->{type}       = $type;
 
 	    $c->stash->{preview_comment} = 
-	      Angerwhale::Model::Filesystem::PreviewComment->new($c, $title,
-							   $body, $type);
+	      Angerwhale::Model::Filesystem::PreviewComment->
+		  new($c, $title, $body, $type);
 	    
 	    $c->stash->{body} = $body;
 	}
 	else {
 	    $object->add_comment($title, $body, $uid, $type);
-	    $c->response->redirect($c->uri_for(q\/\. $c->stash->{article}->uri));
+	    $c->response->
+	      redirect($c->uri_for(q\/\. $c->stash->{article}->uri));
 	}
     }
     
