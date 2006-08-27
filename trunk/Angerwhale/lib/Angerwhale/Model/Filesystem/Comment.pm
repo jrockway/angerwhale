@@ -10,8 +10,6 @@ use base qw(Angerwhale::Model::Filesystem::Item);
 
 sub uri {
     my $self = shift;
-    my $parent = $self->{parent};
-
     return "comments/". $self->path;
 }
 

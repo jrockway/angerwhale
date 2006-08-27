@@ -28,7 +28,7 @@ sub article_list : Private {
     $c->stash->{template}  = 'search_results.tt';
     $c->stash->{title}	   = 'Archives - '. $c->config->{title};
     
-    my @articles = reverse sort $c->stash->{root}->get_articles();
+    my @articles = reverse sort $c->model('Filesystem')->get_articles();
     
     $c->stash->{articles}	= [@articles];
     $c->stash->{article_count}	= scalar @articles;
@@ -45,7 +45,7 @@ sub single_article : Private  {
     
     $c->stash->{template} = 'article.tt';
     eval {
-	$c->stash->{article} = $c->stash->{root}->get_article($name);
+	$c->stash->{article} = $c->model('Filesystem')->get_article($name);
     };
     if($@){
 	# not found!
@@ -54,7 +54,7 @@ sub single_article : Private  {
 	return;
     }
     $c->stash->{title} = $c->stash->{article}->title;
-
+    
     # if the user wants the raw message (to verify the signature),
     # return that instead of rendering the template
     if(defined $type && $type eq 'raw'){

@@ -9,12 +9,12 @@ use base qw(Angerwhale::Model::Filesystem::Item);
 
 sub categories {
     my $self = shift;
-    my $base = $self->{base};
+    my $base = $self->base;
     my $name = $self->name;
     my $id   = $self->checksum; 
+    my $c    = $self->context;
     
-
-    my @categories = $self->{base_obj}->get_categories;
+    my @categories = $c->model('Filesystem')->get_categories;
     my @paths = map {$base."/$_/$name"} @categories;
 
     my @result;
@@ -23,7 +23,6 @@ sub categories {
 	eval {
 	    my $obj = Angerwhale::Model::Filesystem::Article->
 	      new({base     => $base,
-		   base_obj => $self->{base_obj},
 		   path     => $path});
 	    
 	    my $myid = $obj->checksum;

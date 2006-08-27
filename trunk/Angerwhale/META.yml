@@ -5,6 +5,7 @@ build_requires:
   HTML::Tidy: 0
   Test::HTML::Tidy: 0
   Test::More: 0
+  Test::WWW::Mechanize::Catalyst: 0
   Test::XML::Valid: 0
   ok: 0
 distribution_type: module

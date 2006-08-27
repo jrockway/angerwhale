@@ -27,7 +27,7 @@ $tmp->mkdir('articles/test category');
 
 my $fs = Angerwhale::Model::Filesystem->new($c);
 isa_ok($fs, 'Angerwhale::Model::Filesystem');
-$c->set_always('Model', $fs);
+$c->set_always('model', $fs);
 
 $tmp->touch('articles/An Article', "This is a test article.");
 

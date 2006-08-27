@@ -11,6 +11,18 @@ use Crypt::OpenPGP;
 
 Angerwhale::Model::Filesystem - Filesystem article and comment store
 
+=head1 CONFIGURATION
+
+=head2 base
+
+The directory where the articles are stored.  May contain hidden files
+or files (or directories) staring with C<_>, as in C<_users>.  These
+files will be ignored by this module.
+
+=cut
+
+__PACKAGE__->mk_accessors(qw(base context));
+
 =head1 METHODS
 
 =head2 new
@@ -23,10 +35,10 @@ sub new {
     my ($self, $c) = @_;
     $self = $self->NEXT::new(@_);
     
-    $self->{context} = $c;
-    $self->{base}    = $c->config->{base};
-
-    my $base = $self->{base};
+    $self->context($c);
+    $self->base($c->config->{base}) if !$self->base;
+    
+    my $base = $self->base;
     # die if base isn't readable or isn't a directory
     die "$base is not a valid data directory"
       if (!-r $base || !-d $base);
@@ -44,17 +56,19 @@ it in a C<Angerwhale::Model::Filesystem::Article> object.
 sub get_article {
     my $self	 = shift;
     my $article	 = shift;
-    my $base     = $self->{base};
+    my $base     = $self->base;
 
     die "article name contains weird characters"
       if $article =~ m{/};
 
     die "no such article" if !-r "$base/$article" || -d "$base/$article";
     
-    return Angerwhale::Model::Filesystem::Article->new({path     => "$base/$article",
-						  base     => $base,
-						  base_obj => $self});
-    
+    return Angerwhale::Model::Filesystem::Article->
+      new({
+	   location => "$base/$article",
+	   base     => $self->base,
+	   context  => $self->context,
+	  });
 }
 
 sub _ls {
@@ -72,9 +86,9 @@ sub _ls {
 
 	#entry is acceptable
 	my $article = Angerwhale::Model::Filesystem::Article->
-	  new({path     => $entry,
-	       base     => $self->{base},
-	       base_obj => $self});
+	  new({location => $entry,
+	       base     => $self->base,
+	       context  => $self->context});
 
 	push @articles, $article;
 	
@@ -92,7 +106,7 @@ C<Angerwhale::Model::Filesystem::Article>s.
 
 sub get_articles {
     my $self = shift;
-    my $base = $self->{base};
+    my $base = $self->base;
 
     return _ls($self, $base);
 }
@@ -105,7 +119,7 @@ Returns a sorted list of the names of all categories.
 
 sub get_categories {
     my $self = shift;
-    my $base = $self->{base};
+    my $base = $self->base;
 
     my @categories;
     opendir my $dir, $base or die "cannot open $base: $!";
@@ -143,7 +157,7 @@ sub get_by_category {
     my $self = shift;
     my $category = shift;
 
-    my $base = $self->{base};
+    my $base = $self->base;
     my $path = "$base/$category";
     die "No category $category" if !-d $path;
 

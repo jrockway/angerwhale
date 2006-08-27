@@ -1,60 +1,91 @@
 #!/usr/bin/perl
-# Item.pm - [description]
+# Item.pm - a Filesystem item (Article or Comment, usually)
 # Copyright (c) 2006 Jonathan T. Rockway
-# $Id: $
 
 package Angerwhale::Model::Filesystem::Item;
 use strict;
 use warnings;
 
+use base qw(Class::Accessor); #mixin some accessors 
+__PACKAGE__->mk_accessors(qw(base location parent context));
+
 use Angerwhale::Format;
 use Angerwhale::User::Anonymous;
 use Angerwhale::Signature;
-
 use Carp;
 use Data::GUID;
-
-require File::CreationTime; # (dont want imports; conflict with my namespace)
-
+use Digest::MD5 qw(md5_hex);
+use Encode;
+# (dont want imports; they conflict with my namespace)
+require File::CreationTime; 
 use File::Attributes qw(list_attributes get_attribute set_attribute);
 use File::Find;
 use File::Slurp;
 
-use Encode;
-
-use overload (q{<=>} => "compare",
-	      q{cmp} => "compare",
+# make sort @articles sort by creation time
+use overload (q{<=>} => \&compare,
+	      q{cmp} => \&compare,
+# but still let other stuff work too	    
 	      fallback => "TRUE");
 
-use Digest::MD5 qw(md5_hex);
 use utf8; # for the elipsis later on
+
+=head1 NAME
+
+Angerwhale::Model::Filesystem::Item - a filesystem item that knows how
+to attach other C<Item>s to itself
+
+=head1 SYNOPSIS
+
+=head1 METHODS
+
+=head2 new( \%arguments )
+
+Creates a new Filesystem::Item; but you probably want
+C<Filesystem::Item::Article> or C<Filesystem::Item::Comment> instead.
+
+Arguments:
+
+=over 4
+
+=item base 
+
+[REQUIRED] The directory to read filesystem items from.
+
+=item path
+
+[REQUIRED] The file used to back this item.  Must exist, and must be a
+regular file.
+
+=back
+
+=cut
 
 # arguments are passed in a hash ref
 # base: top directory containing this item (and its friends)
 # path: full path to this item
-
 sub new {
     my ($class, $args) = @_;
-
+    die Carp::longmess "Unexpected path: $args->{path}" if $args->{path};
     my $base      = $args->{base};
-    my $path      = $args->{path};
-    my $base_obj  = $args->{base_obj};
+    my $location  = $args->{location};
     my $parent    = $args->{parent};
-
-    die "$base is not a valid base directory" 
-      if(!defined $base || !-d $base || !-r $base);
-    die "$path is not a valid path"     
-      if(!defined $path || -d $path);
-    die "base object was not specified" 
-      if(!defined $base_obj);
+    my $context   = $args->{context};
     
+    croak "$base is not a valid base directory" 
+      if(!defined $base || !-d $base || !-r $base);
+    croak "$location is not a valid path"     
+      if(!defined $location || -d $location);
+    croak "need a valid Angerwhale context"
+      if(!defined $context);
     my $self = {};
-    $self->{base}      = $base;
-    $self->{path}      = $path;
-    $self->{base_obj}  = $base_obj;
-    $self->{parent}    = $parent;   # undefined if this is an article (as opposed to a comment)
-
     bless $self, $class;
+    
+    $self->base($base);
+    $self->location($location);
+    $self->context($context);
+    # undefined if this is an article (as opposed to a comment)
+    $self->parent($parent);
     
     return $self;
 }
@@ -76,7 +107,7 @@ sub set_tag {
     foreach my $tag (@tags) {
 	my $count = $self->tag_count($tag);
 	$count = 0 if($count < 0);
-	set_attribute($self->{path}, "tags.$tag", ++$count);
+	set_attribute($self->location, "tags.$tag", ++$count);
     }
     
     return $self->tags;
@@ -85,12 +116,12 @@ sub set_tag {
 sub tag_count {
     my $self = shift;
     my $tag  = shift;
-    return eval { get_attribute($self->{path}, "tags.$tag"); };
+    return eval { get_attribute($self->location, "tags.$tag"); };
 }
 
 sub tags {
     my $self = shift;
-    my $filename = $self->{path};
+    my $filename = $self->location;
     
     my @attributes;
     eval {
@@ -122,10 +153,10 @@ sub tags {
 
 sub type {
     my $self = shift;
-    my $type = eval { get_attribute($self->{path}, 'type')};
+    my $type = eval { get_attribute($self->location, 'type')};
     
     if(!$type){
-	if($self->{path} =~ m{[.](\w+)$}){
+	if($self->location =~ m{[.](\w+)$}){
 	    $type = $1;
 	}
     }
@@ -145,12 +176,12 @@ sub mini {
     # to the view)
     my $set  = shift;
     if(defined $set){
-	$self->{is_mini} = $set;
+	$self->{_is_mini} = $set;
     }
-    return $self->{is_mini} if defined $self->{is_mini};
+    return $self->{_is_mini} if defined $self->{_is_mini};
     
     # if not overriden, read the attribute
-    my $mini = eval {get_attribute($self->{path}, 'mini')};
+    my $mini = eval {get_attribute($self->location, 'mini')};
     return $mini;
 }
 
@@ -167,7 +198,7 @@ sub name {
     my $self = shift;
     my $name;
 
-    $self->{path} =~ m{([^/]+)$};
+    $self->location =~ m{([^/]+)$};
     $name = $1;
         
     return $name;
@@ -179,7 +210,7 @@ sub title {
     
     # use the title attribute if it exists
     eval {
-	$name = get_attribute($self->{path}, 'title');
+	$name = get_attribute($self->location, 'title');
     };
     
     # otherwise the filename is more than adequate
@@ -198,9 +229,9 @@ sub checksum {
 
 sub id {
     my $self = shift;
-    my $path = (-l $self->{path}) ? readlink($self->{path}) : $self->{path};
+    my $path = (-l $self->location) ? readlink($self->location) 
+                                    : $self->location;
     my $guid;
-    
     eval {
 	$guid = get_attribute($path, 'guid');
 	$guid = Data::GUID->from_string($guid);
@@ -208,7 +239,7 @@ sub id {
     return $guid->as_string if(!$@ && $guid->as_string);
       
     $guid = Data::GUID->new;
-
+    
     eval {
 	set_attribute($path, 'guid', $guid->as_string);
     };
@@ -220,13 +251,13 @@ sub id {
 
 sub creation_time {
     my $self = shift;
-    my $ct = File::CreationTime::creation_time($self->{path});
+    my $ct = File::CreationTime::creation_time($self->location);
     return $ct;
 }
 
 sub modification_time {
     my $self = shift;
-    my $time = (stat($self->{path}))[9];
+    my $time = (stat($self->location))[9];
     return $time;
 }
 
@@ -259,13 +290,13 @@ sub signor {
 
 sub _cached_signature {
     my $self = shift;
-    return eval { get_attribute($self->{path}, 'signed') };
+    return eval { get_attribute($self->location, 'signed') };
 }
 
 sub _cache_signature {
     my $self = shift;
     # set the "signed" attribute	
-    set_attribute($self->{path}, 'signed', "yes");
+    set_attribute($self->location, 'signed', "yes");
 }
 
 # returns true if the signature is good, false otherwise
@@ -316,21 +347,20 @@ sub _fix_author {
     my $id     = shift;
     my $nice_key_id = unpack("H*", $id);
     
-    set_attribute($self->{path}, 'author', $nice_key_id);
+    set_attribute($self->location, 'author', $nice_key_id);
 }
 
 sub author {
     my $self = shift;
     $self->signed; # fix the author information
     
-    my $id = eval{ get_attribute($self->{path}, 'author')};
-    my $c = $self->{base_obj}->{context};
+    my $id = eval{ get_attribute($self->location, 'author')};
     
     if(defined $id){
-	my $user = $c->model('UserStore')->get_user_by_nice_id($id);
+	my $user = $self->context->model('UserStore')->get_user_by_nice_id($id);
 	return $user if $user;
     }
-
+    
     return Angerwhale::User::Anonymous->new();
 }
 
@@ -338,7 +368,7 @@ sub author {
 sub raw_text {
     my $self     = shift;
     my $want_pgp = shift;
-    my $text     = shift || scalar read_file( $self->{path},
+    my $text     = shift || scalar read_file( $self->location,
 					      binmode => ":utf8");
     $text = Encode::decode_utf8($text);
     return $text if $want_pgp;
@@ -358,16 +388,15 @@ sub raw_text {
 sub text {
     my $self = shift;
     my $text = $self->raw_text;
-    my $c = $self->{base_obj}->{context};
 
     my $key = "htmltext|".$self->type."|".$self->checksum;
     my $data;
-    if( $data = $c->cache->get($key) ){
+    if( $data = $self->context->cache->get($key) ){
 	$data = ${$data};
     }
     else {
 	$data = Angerwhale::Format::format($text, $self->type); 
-	$c->cache->set($key, \$data);
+	$self->context->cache->set($key, \$data);
     }
     
     return $data;
@@ -377,16 +406,15 @@ sub text {
 sub plain_text {
     my $self = shift;
     my $text = $self->raw_text;
-    my $c = $self->{base_obj}->{context};
-    my $key = "plaintext|".$self->type."|".$self->checksum;
-
+    my $key = 'plaintext|'. $self->type. '|' .$self->checksum;
+    
     my $data;
-    if( $data = $c->cache->get($key) ){
+    if( $data = $self->context->cache->get($key) ){
 	$data = ${$data};
     }
     else {
 	$data = Angerwhale::Format::format_text($text, $self->type); 
-	$c->cache->set($key, \$data);
+	$self->context->cache->set($key, \$data);
     }
     
     return $data;
@@ -396,7 +424,7 @@ sub plain_text {
 
 sub path_to_top {
     my $self = shift;
-    my $parent = $self->{parent};
+    my $parent = $self->parent;
     
     my @path;
     if($parent){
@@ -404,8 +432,7 @@ sub path_to_top {
     }
     
     push @path, $self->id;
-    return @path;
-}
+    return @path;}
 
 sub path {
     my $self = shift;
@@ -414,7 +441,7 @@ sub path {
 
 sub comment_dir {
     my $self = shift;
-    my $base = $self->{base}. "/.comments/";
+    my $base = $self->base. "/.comments/";
     
     return $base. join '/', $self->path_to_top;
 }
@@ -446,8 +473,8 @@ sub _create_comment_dir {
     my $self = shift;
     my $comment_dir = $self->comment_dir;
     
-    if(!-e $self->{base}. "/.comments"){
-	mkdir $self->{base}. "/.comments" 
+    if(!-e $self->base. "/.comments"){
+	mkdir $self->base. "/.comments" 
 	  or die "unable to create root commentdir: $!";
     }
       
@@ -474,10 +501,10 @@ sub comments {
 
 	my $comment = Angerwhale::Model::Filesystem::Comment->
 	  new({
-	       base     => $self->{base},
-	       base_obj => $self->{base_obj},
-	       path     => $filename,
+	       base     => $self->base,
+	       location => $filename,
 	       parent   => $self,
+	       context  => $self->context,
 	      });
 
 	push @comments, $comment;

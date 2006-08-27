@@ -22,7 +22,6 @@ lib/Angerwhale/Controller/Articles.pm
 lib/Angerwhale/Controller/Categories.pm
 lib/Angerwhale/Controller/Comments.pm
 lib/Angerwhale/Controller/Feeds.pm
-lib/Angerwhale/Controller/FetchExternalInfo.pm
 lib/Angerwhale/Controller/Login.pm
 lib/Angerwhale/Controller/Root.pm
 lib/Angerwhale/Controller/ScheduledEvents.pm
@@ -35,6 +34,7 @@ lib/Angerwhale/Format/OpenOffice.pm
 lib/Angerwhale/Format/PlainText.pm
 lib/Angerwhale/Format/Pod.pm
 lib/Angerwhale/Format/Wiki.pm
+lib/Angerwhale/Model/Feeds.pm
 lib/Angerwhale/Model/Filesystem.pm
 lib/Angerwhale/Model/Filesystem/Article.pm
 lib/Angerwhale/Model/Filesystem/Comment.pm
@@ -139,12 +139,12 @@ t/components/formatters.t
 t/components/html-format.t
 t/components/preview_comment.t
 t/components/signature.t
-t/controller_FetchExternalInfo.t
 t/default/02pod.t
 t/default/03podcoverage.t
-t/models/model_Filsystem.t
+t/models/model_Filesystem.t
 t/models/model_NonceStore.t
 t/models/model_UserStore.t
+t/svn-commit.tmp
 t/views/view_Atom.t
 t/views/view_HTML.t
 t/views/view_RSS.t

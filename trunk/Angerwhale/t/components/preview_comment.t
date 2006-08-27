@@ -21,35 +21,30 @@ $cache->set_always('set', undef);
 my $config = {};
 $c->set_always('cache', $cache);
 
-
-my $body;
-{
-    local $/;
-    $body = <DATA>;
-}
-
+my $body = do {local $/; <DATA> };
 my $comment = Angerwhale::Model::Filesystem::PreviewComment
   ->new($c, 'test', $body, 'text');
+
 isa_ok($comment, 'Angerwhale::Model::Filesystem::PreviewComment');
-is($comment->type, 'text');
-ok($comment->creation_time);
-ok($comment->modification_time);
-is($comment->raw_text, 'This is a test.');
-is($comment->raw_text(1), $body);
-is($comment->title, 'test');
-ok(!$comment->uri);
-ok($comment->signed);
-is($comment->author->fullname, 'Jonathan T. Rockway');
-is($comment->signor, $id);
-is($comment->checksum, '120ea8a25e5d487bf68b5f7096440019');
-is($comment->id, '??');
-ok($comment->summary =~ /This is a test./);
-ok(!$comment->post_uri);
-ok(!$comment->add_comment('foo', 'bar', 'baz'));
-ok(!$comment->set_tag('foo'));
-ok(!$comment->tags);
-is($comment->tag_count, 0);
-is($comment->name, undef);
+is($comment->type, 'text', 'type is text');
+ok($comment->creation_time, 'creation time is set');
+ok($comment->modification_time, 'mod type is set');
+is($comment->raw_text, 'This is a test.', 'raw_text is correct');
+is($comment->raw_text(1), $body, 'body matches');
+is($comment->title, 'test', 'title is correct');
+ok(!$comment->uri, 'no uri');
+ok($comment->signed, 'signature exists');
+is($comment->author->fullname, 'Jonathan T. Rockway', "I'm the author");
+is($comment->signor, $id, 'uid exists');
+is($comment->checksum, '120ea8a25e5d487bf68b5f7096440019', 'checksum matches');
+is($comment->id, '??', 'id is ??');
+like($comment->summary, qr/This is a test./, 'summary contains correct text');
+ok(!$comment->post_uri, 'post_uri undefined');
+ok(!$comment->add_comment('foo', 'bar', 'baz'), 'add_comment fails');
+ok(!$comment->set_tag('foo'), 'tagging fails');
+ok(!$comment->tags, 'no tags');
+is($comment->tag_count, 0, 'tag count = 0');
+is($comment->name, undef, 'no name');
 
 __DATA__
 -----BEGIN PGP SIGNED MESSAGE-----
