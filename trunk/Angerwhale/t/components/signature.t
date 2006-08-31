@@ -9,10 +9,14 @@ use ok qw(Angerwhale::Signature);
 my $JROCK_ID = 'd0197853dd25e42f'; # author's key ID;
 my $id = pack 'H*', $JROCK_ID;
 
-local $/;
-my $data = <DATA>;
+# fake cat env.
+
+my $data = do {local $/; <DATA>};
 
 my $sig = Angerwhale::Signature->new($data);
+### 
+
+die FIXME;
 
 isa_ok($sig, 'Angerwhale::Signature');
 
