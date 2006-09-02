@@ -2,29 +2,37 @@
 # signature.t 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests=>5;
+use Test::More tests=>4;
 use strict;
 use warnings;
-use ok qw(Angerwhale::Signature);
+use Test::MockObject::Extends;
+use Test::MockObject;
+
+# constants
 my $JROCK_ID = 'd0197853dd25e42f'; # author's key ID;
+
+# setup
 my $id = pack 'H*', $JROCK_ID;
-
-# fake cat env.
-
+my $us = Test::MockObject->new; # fake UserStore
+$us->set_always('keyserver', 'stinkfoot.org');
+my $c = Test::MockObject->new; # fake cat context
+$c->set_always('model', $us);
 my $data = do {local $/; <DATA>};
+my $sig = bless {}, 
+  'Angerwhale::Model::Filesystem::Item::Components::Signature';
+$sig = Test::MockObject::Extends->new($sig);
+$sig->mock('raw_text', sub {if($_[1]){$data}else{" "}});
+$sig->set_always('context', $c);
+$sig->set_always('_cache_signature', '1');
+$sig->set_always('_cached_signature', 0);
+$sig->set_always('_fix_author', '1');
 
-my $sig = Angerwhale::Signature->new($data);
-### 
-
-die FIXME;
-
-isa_ok($sig, 'Angerwhale::Signature');
-
-my $text = $sig->get_signed_data;
-
+# tests
+use ok qq[Angerwhale::Model::Filesystem::Item::Components::Signature];
+my $text = $sig->_signed_text($data);
 is($text, "This is a test PGP-signed message.\n", "Got the message text");
-is($sig->get_key_id, $id, "Signature is by jrock");
-ok($sig->verify, 'Signature verifies');
+is($sig->signor, $id, "Signature is by jrock");
+ok($sig->signed, 'Signature verifies');
 
 __DATA__
 -----BEGIN PGP MESSAGE-----

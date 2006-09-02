@@ -21,7 +21,7 @@ sub id {
       
     $guid = Data::GUID->new;
     
-    eval { $self->set_attribute('guid', $guid->as_string) };
+    eval { set_attribute($self->location, 'guid', $guid->as_string) };
     die "Problem setting guid on $path: $@" if $@;
     
     return $guid->as_string;

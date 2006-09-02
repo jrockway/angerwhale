@@ -1,87 +1,66 @@
 #!/usr/bin/perl
-# Signature.pm<2> 
+# Signature.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 package Angerwhale::Model::Filesystem::Item::Components::Signature;
 use strict;
 use warnings;
 use Crypt::OpenPGP;
+use Crypt::OpenPGP::Message;
 use Angerwhale::User::Anonymous;
 use File::Attributes qw(get_attribute set_attribute);
+use Carp;
+
+use YAML;
+
 =head1 METHODS
 
-=head2 check_signature($message)
+=head1 signor
 
-Checks the OpenPGP signature on $message.  Returns the user object if
-the signature is valid, undefined otherwise.  Raises an exception on
-error.
-
-=cut
-
-sub check_signature {
-    my ($self, $message) = @_;
-    my $c = $self->context;
-    
-    my $keyserver = $c->model('UserStore')->keyserver;
-    
-    my $pgp    = Crypt::OpenPGP->new( KeyServer => $keyserver );
-    my $key_id = $pgp->verify( Data => $message );
-    
-    die $pgp->errstr if $key_id == 0; # error
-    return if !defined $key_id;       # bad signature
-    return $c->model('UserStore')->get_user_by_id($key_id); # good signature
-}
-
-=head2 signed_text($message)
-
-Given PGP-signed $message, returns the plaintext of that message.
-Throws an exception on error.
+Returns the key id of the message's signor, or 0 if the message is not
+signed.
 
 =cut
 
-sub signed_text {
-    my ($self, $message) = @_;
-    my $c = $self->context;
-    
-    my $pgp = Crypt::OpenPGP->new();
-    die "broken";
-    #return Crypt::OpenPGP->
-}
-
-# returns the real_key_id of the PGP signature
-# you might want to validate the signature first; this routine doesn't do that
-# see signed() below.
 sub signor {
     my $self = shift;
-    my $sig = Angerwhale::Signature->new($self->raw_text(1));
-    return $sig->get_key_id;
+    my ($data, $sig) = $self->_signed_text($self->raw_text(1));
+    return $sig->key_id;
 }
 
-sub _cached_signature {
-    my $self = shift;
-    return eval { get_attribute($self->location, 'signed') };
-}
 
-sub _cache_signature {
-    my $self = shift;
-    # set the "signed" attribute	
-    set_attribute($self->location, 'signed', "yes");
-}
+=head1 signed
 
-# returns true if the signature is good, false otherwise
-# 1 means the signature was checked against a current key and file
-# 2 means "signed=yes" was read as an attribute (from cache)
-# 0 means BAD SIGNATURE!
-# undef means not signed
+Returns true if the signature is good, false otherwise.
+
+More detail:
+
+=over 4
+
+=item 1 
+
+means the signature was actually checked
+
+=item 2
+
+means "signed=yes" was read as an attribute from cache
+
+=item 0
+
+BAD SIGNATURE!
+
+=item undef 
+
+message was not signed
+
+=cut
 
 sub signed {
     my $self = shift;
-
-    return if $self->raw_text eq $self->raw_text(1);
-
+    my $raw_text = $self->raw_text(1);
+    return if $self->raw_text eq $raw_text;
+    
     my $result = eval {
-	my $sig = Angerwhale::Signature->new($self->raw_text(1));
-
 	# XXX: Crypt::OpenPGP is really really slow, so cache the result
 	my $signed = $self->_cached_signature;
 
@@ -90,10 +69,11 @@ sub signed {
 	    return 2;
 	}
 	
-	if($sig->verify){
+	my $id;
+	if($id = $self->_check_signature($self->raw_text(1))){
 	    # and fix the author info if needed
 	    $self->_cache_signature;
-	    $self->_fix_author($sig->get_key_id);
+	    $self->_fix_author($id);
 	    return 1;
 	}
 	else {
@@ -106,6 +86,95 @@ sub signed {
     }
     
     return $result;
+}
+
+=head2 _check_signature($message)
+
+Checks the OpenPGP signature on $message.  Returns the real (binary)
+key id if the signature is valid.  Raises an exception on error.
+
+B<Warning: slow.>  It is best to cache the result, if possible.
+
+=cut
+
+sub _check_signature {
+    my ($self, $message) = @_;
+    my $c = $self->context;
+    
+    my $keyserver = $c->model('UserStore')->keyserver;
+    
+    my $pgp         = Crypt::OpenPGP->new( KeyServer => $keyserver );
+    my ($id, $sig)  = $pgp->verify( Signature => $message );
+    
+    die $pgp->errstr if !defined $id;
+    return $sig->key_id if $id;
+    return 0; # otherwise
+}
+
+=head2 signed_text($message)
+
+Given PGP-signed $message, returns the plaintext of that message.
+Throws an exception on error.
+
+In array context, returns an list (data, signature), where data is a
+Crypt::OpenPGP::PlainText and signature isa Crypt::OpenPGP::Signature
+ora Crypt::OpenPGP::OnePassSig.
+
+=cut
+
+sub _signed_text {
+    my ($self, $message) = @_;
+    my ($data, $sig);
+      
+    my $msg = Crypt::OpenPGP::Message->new(Data => $message)
+      or croak "Reading message failed: ". Crypt::OpenPGP::Message->errstr;
+    
+    my @pieces = $msg->pieces;
+    if (ref($pieces[0]) eq 'Crypt::OpenPGP::Compressed') {
+	$data = $pieces[0]->decompress or
+	  die "Decompression error: " . $pieces[0]->errstr;
+	$msg = Crypt::OpenPGP::Message->new( Data => $data ) or
+	  die"Reading decompressed data failed: " .
+	    Crypt::OpenPGP::Message->errstr;
+	@pieces = $msg->pieces;
+    }
+    
+    if (ref($pieces[0]) eq 'Crypt::OpenPGP::OnePassSig') {
+	($data, $sig) = @pieces[1,2];
+    }
+    elsif (ref($pieces[0]) eq 'Crypt::OpenPGP::Signature') {
+	($sig, $data) = @pieces[0,1];
+    }
+    else {
+	croak "unable to read signature";
+    }
+    
+    return ($data, $sig) if wantarray;
+    return $data->{data}; # otherwise, just the data
+}
+
+=head1 _cached_signature
+
+Returns the cached signature; true for "signature ok", false for
+"signature not ok" (or no signature).
+
+=cut
+
+sub _cached_signature {
+    my $self = shift;
+    return eval { get_attribute($self->location, 'signed') };
+}
+
+=head1 _cached_signature
+
+Sets the cached signature to true.
+
+=cut
+
+sub _cache_signature {
+    my $self = shift;
+    # set the "signed" attribute	
+    set_attribute($self->location, 'signed', "yes");
 }
 
 # if a user posts a comment with someone else's key, ignore the login

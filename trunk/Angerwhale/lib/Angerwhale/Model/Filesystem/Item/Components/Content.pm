@@ -10,6 +10,7 @@ use Digest::MD5 qw(md5_hex);
 use Encode;
 use File::Slurp;
 use utf8; # for the elipsis later on
+my $ELIPSIS = '…';
 
 sub checksum {
     my $self = shift;
@@ -28,7 +29,6 @@ sub summary {
     if(@words > 10){
 	@words = @words[0..9];
 	$summary = join $SPACE, @words;
-	my $ELIPSIS = '…';
 	$summary .= " $ELIPSIS";
     }
     
@@ -44,14 +44,11 @@ sub raw_text {
     $text = Encode::decode_utf8($text);
     return $text if $want_pgp;
     
-    my $sig;
+    my $data;
     eval {
-	$sig = Angerwhale::Signature->new($text);
+	$data = $self->_signed_text;
     };
-    if(!$@){
-	return $sig->get_signed_data;
-    }
-    
+    return $data if !$@;
     return $text;
 }
 
