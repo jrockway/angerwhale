@@ -6,6 +6,7 @@ package Angerwhale::Model::Filesystem::Item::Components::Metadata;
 use strict;
 use warnings;
 require File::CreationTime;
+use File::Attributes qw(get_attribute set_attribute);
 
 =head1 SYNOPSIS
 

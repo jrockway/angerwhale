@@ -6,10 +6,10 @@ package Angerwhale::Model::Filesystem::Item;
 use strict;
 use warnings;
 use Carp;
+use Class::C3;
 
+# mixin our methods
 use base qw(
-	    Class::Accessor
-	    Angerwhale::Model::Filesystem::Item::Components::Attributes
 	    Angerwhale::Model::Filesystem::Item::Components::Tags
 	    Angerwhale::Model::Filesystem::Item::Components::Comments
 	    Angerwhale::Model::Filesystem::Item::Components::Metadata
@@ -17,9 +17,12 @@ use base qw(
 	    Angerwhale::Model::Filesystem::Item::Components::GUID
 	    Angerwhale::Model::Filesystem::Item::Components::Signature
 	    Angerwhale::Model::Filesystem::Item::Components::Context
+	    Class::Accessor
 	   ); 
 
-__PACKAGE__->mk_accessors(qw(base location parent));
+# setup internal state
+__PACKAGE__->mk_accessors(qw|base location parent|);
+Class::C3::initialize();
 
 # make sort @articles sort by creation time
 use overload (q{<=>} => \&compare,
@@ -49,10 +52,14 @@ Arguments:
 
 [REQUIRED] The directory to read filesystem items from.
 
-=item path
+=item location
 
-[REQUIRED] The file used to back this item.  Must exist, and must be a
+[REQUIRED] The file used to back this I<Item>.  Must exist, and must be a
 regular file.
+
+=item parent
+
+The object that this I<Item> is attached to, if any.
 
 =back
 
@@ -73,13 +80,11 @@ sub new {
     
     my $self = {};
     bless $self, $class;
-    
     $self->base($base);
     $self->location($location);
-    # undefined if this is an article (as opposed to a comment)
-    $self->parent($parent);
-    
-    return $self->NEXT::new(@_);
+    $self->parent($parent) if $parent;
+    $self->next::method($args);
+    return $self;
 }
 
 =head2 name

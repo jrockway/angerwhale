@@ -6,7 +6,8 @@ package Angerwhale::Model::Filesystem::Item::Components::Comments;
 use strict;
 use warnings;
 use File::Find;
-use File::Attributes qw(list_attributes get_attribute set_attribute);
+
+# requries attributes to be mixed in to child
 
 =head1 SYNOPSIS
 
@@ -256,3 +257,5 @@ sub post_uri {
     $uri =~ s{comments/}{comments/post/};
     return $uri;
 }
+
+1; # magic true value

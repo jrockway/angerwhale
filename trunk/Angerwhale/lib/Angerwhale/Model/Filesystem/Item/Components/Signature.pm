@@ -7,7 +7,7 @@ use strict;
 use warnings;
 use Crypt::OpenPGP;
 use Angerwhale::User::Anonymous;
-
+use File::Attributes qw(get_attribute set_attribute);
 =head1 METHODS
 
 =head2 check_signature($message)
@@ -18,7 +18,7 @@ error.
 
 =cut
 
-sub check_signature : Private {
+sub check_signature {
     my ($self, $message) = @_;
     my $c = $self->context;
     
@@ -39,7 +39,7 @@ Throws an exception on error.
 
 =cut
 
-sub signed_text : Private {
+sub signed_text {
     my ($self, $message) = @_;
     my $c = $self->context;
     

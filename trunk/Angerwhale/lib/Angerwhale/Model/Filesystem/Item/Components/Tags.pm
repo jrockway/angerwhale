@@ -5,6 +5,7 @@
 package Angerwhale::Model::Filesystem::Item::Components::Tags;
 use strict;
 use warnings;
+use File::Attributes qw(get_attribute set_attribute list_attributes);
 
 =head1 SYNOPSIS
 
@@ -44,7 +45,7 @@ Returns the number of times C<$tag> has been applied to this Item.
 sub tag_count {
     my $self = shift;
     my $tag  = shift;
-    return eval { get_attribute($self->location, "tags.$tag"); };
+    return eval { get_attribute($self->location, "tags.$tag") };
 }
 
 =head2 tags

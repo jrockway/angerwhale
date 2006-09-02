@@ -6,6 +6,7 @@ package Angerwhale::Model::Filesystem::Item::Components::GUID;
 use strict;
 use warnings;
 use Data::GUID;
+use File::Attributes qw(get_attribute set_attribute);
 
 sub id {
     my $self = shift;
@@ -13,19 +14,16 @@ sub id {
                                     : $self->location;
     my $guid;
     eval {
-	$guid = get_attribute($path, 'guid');
+	$guid = $self->get_attribute('guid');
 	$guid = Data::GUID->from_string($guid);
     };
     return $guid->as_string if(!$@ && $guid->as_string);
       
     $guid = Data::GUID->new;
     
-    eval {
-	set_attribute($path, 'guid', $guid->as_string);
-    };
-    if($@){
-	die "Problem setting guid on $path: $@";
-    }
+    eval { $self->set_attribute('guid', $guid->as_string) };
+    die "Problem setting guid on $path: $@" if $@;
+    
     return $guid->as_string;
 }
 

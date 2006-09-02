@@ -6,6 +6,16 @@ package Angerwhale::Model::Filesystem::Article;
 use strict;
 use warnings;
 use base qw(Angerwhale::Model::Filesystem::Item);
+use Class::C3;
+use Carp;
+
+sub new {
+    my ($class, $args) = @_;
+    croak "Articles cannot have a parent" 
+      if $args->{parent};
+    
+    shift->next::method(@_);
+}
 
 sub categories {
     my $self = shift;

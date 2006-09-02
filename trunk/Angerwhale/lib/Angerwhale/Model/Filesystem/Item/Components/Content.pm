@@ -3,7 +3,7 @@
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 package Angerwhale::Model::Filesystem::Item::Components::Content;
-use stict;
+use strict;
 use warnings;
 use Angerwhale::Format;
 use Digest::MD5 qw(md5_hex);
