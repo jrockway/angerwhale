@@ -4,7 +4,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 10;
+use Test::More tests => 11;
 use Test::MockObject;
 use Directory::Scratch;
 
@@ -28,3 +28,6 @@ is($item->title, 'article', 'correct title');
 is($item->name, 'article.txt', 'correct filename');
 is($item->type, 'txt', 'correct type');
 like($item->raw_text, qr/is an article/, 'body is ok');
+
+ok(!$item->signed, 'no signature that I can see...');
+
