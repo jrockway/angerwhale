@@ -11,6 +11,8 @@ use Test::XML::Valid;
 use YAML;
 use Angerwhale;
 
+local $SIG{__WARN__} = sub {};
+
 my $tidy = HTML::Tidy->new({config_file => 'tidy_config'});
 #$tidy->ignore( type => TIDY_WARNING );
 

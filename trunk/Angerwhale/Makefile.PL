@@ -89,11 +89,12 @@ sub write_revision {
     eval {
 	open(my $r, '>', 'root/revision.tt') 
 	  or die "Couldn't open root/revision.tt: $!";
-	my $revision = `svn info | grep Revision`;
-	$revision =~ /Revision: (\d+)/;
+	my $revision = `svk info | grep Mirrored.From`;
+	$revision =~ /(\d+)$/;
 	die "No revision in repository! (got: $1)" if !$1;
-	print {$r} "r$1" or die "Write error: $!";
+	print {$r} "$1" or die "Write error: $!";
 	close $r or die "Couldn't close file: $!";
     };
+    warn $@ if $@;
     # if this fails, we'll just use the revision.tt that is bundled.
 }
