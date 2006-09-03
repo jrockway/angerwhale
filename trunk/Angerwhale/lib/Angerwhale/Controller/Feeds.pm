@@ -183,16 +183,16 @@ the URI.
 =cut
 
 sub tags : Local {
-    my ($self, $c, $tags, $type) = @_;
-    $c->forward('/tags/show_tagged_articles');
+    my ($self, $c, $tag, $type) = @_;
+    $c->forward('/tags/show_tagged_articles', $tag);
 
     if($c->config->{title}){
 	$c->stash->{feed_title} = $c->config->{title};
-	$c->stash->{feed_title} .= " - Articles tagged with $tags"
-	  if $tags;
+	$c->stash->{feed_title} .= " - Articles tagged with $tag"
+	  if $tag;
     }
     else {
-	$c->stash->{feed_title} = "Articles tagged with $tags";
+	$c->stash->{feed_title} = "Articles tagged with $tag";
     }
     $c->stash->{type}  = $type;
     $c->stash->{items} = $c->stash->{articles};
