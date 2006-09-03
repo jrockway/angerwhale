@@ -13,9 +13,9 @@
   [% INCLUDE login_box.tt %]
   </div>
   <div id="sidebar_feeds">
-  [% FOREACH feed = c.model("Feeds").get_all_feeds %]
+  [% FOREACH feed_name = c.model("Feeds").names %]
   <div class="sidebar_feed">
-     [% INCLUDE sidebar_feed.tt feed=feed %]
+     [% INCLUDE sidebar_feed.tt feed_name=feed_name %]
   </div>
   [% END %]
   </div>

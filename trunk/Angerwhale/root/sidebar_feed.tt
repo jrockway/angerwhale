@@ -1,5 +1,6 @@
+[% feed = c.model("Feeds").get(feed_name) %]
 <div class="box">
-<h3>[% feed.title %]</h3>
+<h3>[% feed_name %]</h3>
 <ul class="sidebar_feed_entries">
 [% FOREACH entry = feed.entries %]
    <li><a href="[% entry.link | html %]">   
