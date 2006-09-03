@@ -508,12 +508,13 @@ Ajax.InPlaceEditor.prototype = {
     
     this.element.title = this.options.clickToEditText;
     
+    // disable non-external control
     this.onclickListener = this.enterEditMode.bindAsEventListener(this);
     this.mouseoverListener = this.enterHover.bindAsEventListener(this);
     this.mouseoutListener = this.leaveHover.bindAsEventListener(this);
-    Event.observe(this.element, 'click', this.onclickListener);
-    Event.observe(this.element, 'mouseover', this.mouseoverListener);
-    Event.observe(this.element, 'mouseout', this.mouseoutListener);
+   // Event.observe(this.element, 'click', this.onclickListener);
+   // Event.observe(this.element, 'mouseover', this.mouseoverListener);
+   // Event.observe(this.element, 'mouseout', this.mouseoutListener);
     if (this.options.externalControl) {
       Event.observe(this.options.externalControl, 'click', this.onclickListener);
       Event.observe(this.options.externalControl, 'mouseover', this.mouseoverListener);

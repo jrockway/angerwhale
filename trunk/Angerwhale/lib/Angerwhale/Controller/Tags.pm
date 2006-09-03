@@ -76,7 +76,7 @@ sub do_tag : Local {
     }
 }
 
-sub show_tagged_articles : Path(q{}) {
+sub show_tagged_articles : Path('/tags') {
     my ($self, $c, @tags) = @_;
 
     map { Encode::_utf8_on($_) unless Encode::is_utf8($_)} @tags;
