@@ -137,9 +137,6 @@ sub end : Private {
 	}
     }
 
-    my $h = $c->response->headers;
-    $h->header('Content-Location' => $c->request->base);
-
     return;
 }
 
