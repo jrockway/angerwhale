@@ -5,7 +5,6 @@ use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
 use Test::More qw(no_plan);
 use strict;
 use warnings;
-use URI;
 use YAML;
 
 my $mech = Test::WWW::Mechanize::Catalyst->new;
@@ -26,6 +25,7 @@ while (my $link = shift @links) {
 	    };
 	    ok(!$@, "no YAML errors on feed $url");
 	}
+	
 	else {
 	    # must be XML
 	    like($mech->ct, qr{application/(rss|atom)[+]xml}, 

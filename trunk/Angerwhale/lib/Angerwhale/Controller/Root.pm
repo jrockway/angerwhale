@@ -114,7 +114,7 @@ sub end : Private {
     # 	print {*STDERR} $c->response->body;
     #    }
 
-    return if $c->response->status == 500; # don't cache server errors
+    return if $c->response->status != 200; # don't cache server errors
 
     if(!($c->response->body || $c->response->redirect)){
 	$c->response->content_type('application/xhtml+xml; charset=utf-8');

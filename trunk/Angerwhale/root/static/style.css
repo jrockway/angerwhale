@@ -36,8 +36,8 @@ div.post_extrainfo { margin-top: 1em; margin-bottom: 0em; width: 80%;}
 .post_extrainfo p {
 		font-size: 85%; padding: 0; margin: 0; font-style: italic;}
 
-#content {margin-left: 12em; margin-right: 10%;}
-#sidebar {width: 10em; float: left; padding: 1em; margin: 0;}
+#content {margin-left: 19em; margin-right: 10%;}
+#sidebar {width: 15em; float: left; padding: 1em; margin: 0;}
 #sidebar_blurb {padding-left: 2px; padding-right: 2px; font-size: 80%;}
 
 #comments ul {list-style: none;}
@@ -63,7 +63,7 @@ a.visited { color: blue; }
 #sidebar h3 {margin: 0; padding: 0; margin-top: .5em;}
 
 .box {padding: 3px; background-color: #eeffee; border: 1px solid #ddffdd;
-      margin-bottom: 1em; font-size: 85%;}
+       margin-bottom: 1em; font-size: 85%; }
 
 .logged_in_as {font-size: 90%;}
 

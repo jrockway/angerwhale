@@ -7,7 +7,7 @@
 my $tmp;
 BEGIN {
     use Directory::Scratch;
-    use YAML qw(DumpFile);
+    use YAML qw(DumpFile Dump);
 
     $tmp  = Directory::Scratch->new;
     my $base = $tmp->base;
@@ -61,16 +61,16 @@ $mech->content_contains('no comments', 'page contains no comments');
 $mech->content_contains('Post a comment', 'page contains post comment link');
 
 # post a comment
-SKIP: {
-    skip q{This doesn't work yet}, 6;
-    $mech->follow_link_ok({text => 'Post a comment'}, 'trying to post a comment');
-    die Dump($mech);
-    ok($mech->form_number(0));
-    ok($mech->set_fields(title => 'test comment'));
-    ok($mech->set_fields(body  => 'This is a test comment!'));
-    ok($mech->select(type => 'text'));
-    ok($mech->click("Post"));
-}
+$mech->follow_link_ok({text => 'Post a comment'}, 'trying to post a comment');
+die $mech->content;
+
+ok($mech->submit_form(
+		      fields => { title => 'test comment',
+				  body  => 'This is a test comment!',
+				  type => 'text',
+				},
+		      button => 'Post'
+		     ), 'submit a comment OK');
 
 END {
     #diag(q"Unlinking angerwhale_test.yml");
