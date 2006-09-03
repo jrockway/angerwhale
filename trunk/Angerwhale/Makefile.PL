@@ -89,9 +89,18 @@ sub write_revision {
     eval {
 	open(my $r, '>', 'root/revision.tt') 
 	  or die "Couldn't open root/revision.tt: $!";
-	my $revision = `svk info | grep Mirrored.From`;
+
+	my $revision;
+	if(-d '.svn'){
+	    $revision = `svn info | grep Revision`;
+	}
+	else {
+	    $revision = `svk info | grep Mirrored.From`;
+	}
+	
 	$revision =~ /(\d+)$/;
 	die "No revision in repository! (got: $1)" if !$1;
+	
 	print {$r} "$1" or die "Write error: $!";
 	close $r or die "Couldn't close file: $!";
     };
