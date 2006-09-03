@@ -5,7 +5,6 @@
 package Angerwhale::Model::Filesystem::Item::Components::Attributes;
 use strict;
 use warnings;
-use File::Attributes qw(get_attribute set_attribute list_attributes);
 
 sub list_attributes {
     my $self = shift;

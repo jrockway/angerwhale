@@ -14,7 +14,7 @@ sub id {
                                     : $self->location;
     my $guid;
     eval {
-	$guid = $self->get_attribute('guid');
+	$guid = get_attribute($self->location, 'guid');
 	$guid = Data::GUID->from_string($guid);
     };
     return $guid->as_string if(!$@ && $guid->as_string);

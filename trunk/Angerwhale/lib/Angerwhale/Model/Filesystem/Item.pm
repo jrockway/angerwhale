@@ -9,7 +9,7 @@ use Carp;
 use Class::C3;
 
 # mixin our methods
-use base qw(
+use base qw|
 	    Angerwhale::Model::Filesystem::Item::Components::Tags
 	    Angerwhale::Model::Filesystem::Item::Components::Comments
 	    Angerwhale::Model::Filesystem::Item::Components::Metadata
@@ -18,7 +18,7 @@ use base qw(
 	    Angerwhale::Model::Filesystem::Item::Components::Signature
 	    Angerwhale::Model::Filesystem::Item::Components::Context
 	    Class::Accessor
-	   ); 
+	   |; 
 
 # setup internal state
 __PACKAGE__->mk_accessors(qw|base location parent|);

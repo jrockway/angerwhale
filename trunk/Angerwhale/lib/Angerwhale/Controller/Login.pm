@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Angerwhale::Challenge;
-use Angerwhale::Signature;
+use Crypt::OpenPGP;
 use YAML;
 
 
@@ -35,36 +35,36 @@ sub nonce : Local {
 
 sub process : Local {
     my ( $self, $c ) = @_;
-    my $data = $c->request->param('login');
+    my $input = $c->request->param('login');
     
-    my $sig;
-    my $key_id;
-
-    eval {
-	$sig    = Angerwhale::Signature->new($data);
-	$key_id = $sig->get_key_id;
-    };
-    if(!$key_id || !$sig || $@){
-	#$c->stash->{error} = 'You forgot to sign the message.';
-	#$c->detach('login_page');
-	
-	$c->response->body('You forgot to sign the message.');
-	return;
+    my $keyserver = $c->model('UserStore')->keyserver;
+    
+    my $pgp          = Crypt::OpenPGP->new(Keyserver => $keyserver);
+    my ($nonce_data, $sig) = $pgp->verify($input);
+    if(!$sig || !$nonce_data){
+	$c->stash->{error} = 'You forgot to sign the message.';
+	$c->detach('/login');
+	#$c->response->body('You forgot to sign the message.');
+	#return;
     }
+    
+    my $key_id      = $sig->key_id;
     my $nice_key_id = "0x". substr(unpack("H*", $key_id), -8, 8);
-    my $nonce_data = $sig->get_signed_data;
-
+    
     $c->log->debug("keyid $nice_key_id is presumably logging in");
     
     eval {
-	my $challenge = Load($nonce_data) or die "couldn't deserialize request";
+	my $challenge = Load($nonce_data) 
+	  or die "couldn't deserialize request";
 
 	my $nonce_ok = $c->model("NonceStore")->verify_nonce($challenge);
 	my $sig_ok   = $sig->verify;
 
-	$c->log->debug("$nice_key_id: nonce verified OK (was $challenge)") if $nonce_ok;
-	$c->log->debug("$nice_key_id: Signature was valid") if $sig_ok;
-
+	$c->log->debug("$nice_key_id: nonce verified OK (was $challenge)") 
+	  if $nonce_ok;
+	$c->log->debug("$nice_key_id: Signature was valid") 
+	  if $sig_ok;
+	
 	die "bad nonce" if !$nonce_ok;
 	die "bad sig"   if !$sig_ok;
     };
@@ -96,7 +96,7 @@ sub process : Local {
 sub login_page : Private {
     my ( $self, $c ) = @_;
     $c->stash->{template} = 'login.tt';
-    $c->forward('nonce');
+    $c->forward('nonce') unless defined $c->stash->{error};
 }
 
 sub default : Private {

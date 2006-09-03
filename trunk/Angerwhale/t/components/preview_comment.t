@@ -2,12 +2,14 @@
 # preview_comment.t 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 22;
+use Test::More tests => 21;
 use Test::MockObject;
 use ok 'Angerwhale::Model::Filesystem::PreviewComment';
 use Angerwhale::User;
 
-my $user_store = Test::MockObject->new;use ok qw(Angerwhale::Signature);
+my $user_store = Test::MockObject->new;
+$user_store->set_always('keyserver', 'stinkfoot.org');
+
 my $JROCK_ID = 'd0197853dd25e42f'; # author's key ID;
 my $id = pack 'H*', $JROCK_ID;
 my $jrock = Angerwhale::User->_new($id);

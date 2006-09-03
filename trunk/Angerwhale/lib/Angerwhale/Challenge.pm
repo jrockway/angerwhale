@@ -8,7 +8,7 @@ use warnings;
 use Crypt::Random qw(makerandom);
 use YAML;
 
-use overload (q{==} => "equals", q{""} => "tostring");
+use overload (q{==} => "equals", q{""} => "raw_text");
 
 sub new {
     my ($class, $args) = @_;
@@ -20,7 +20,7 @@ sub new {
     $self->{nonce} = "$random";
     $self->{uri}   = $args->{uri} || die "specify URI";
     $self->{date}  = "$now";
-    
+
     bless $self, $class;
 }
 
@@ -34,9 +34,10 @@ sub equals {
       ($self->{date}  eq $them->{date} ) ;
 }
 
-sub tostring {
+sub raw_text {
     my $self = shift;
     return Dump($self);
 }
+
 
 1;

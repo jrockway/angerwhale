@@ -37,21 +37,23 @@ More detail:
 
 =over 4
 
-=item 1 
+=item C<1> 
 
 means the signature was actually checked
 
-=item 2
+=item C<2>
 
 means "signed=yes" was read as an attribute from cache
 
-=item 0
+=item C<0>
 
 BAD SIGNATURE!
 
-=item undef 
+=item C<undef>
 
 message was not signed
+
+=back
 
 =cut
 

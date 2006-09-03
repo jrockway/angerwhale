@@ -6,6 +6,7 @@ package Angerwhale::Model::Filesystem::Item::Components::Comments;
 use strict;
 use warnings;
 use File::Find;
+use File::Attributes qw(get_attribute set_attribute);
 
 # requries attributes to be mixed in to child
 
@@ -93,16 +94,22 @@ sub _comment_counter {
 sub _create_comment_dir {
     my $self = shift;
     my $comment_dir = $self->comment_dir;
+
+    if(!-d $self->base){
+	die "base ". $self->base. " does not exist!";
+    }
     
     if(!-e $self->base. "/.comments"){
 	mkdir $self->base. "/.comments" 
 	  or die "unable to create root commentdir: $!";
     }
-      
-    if(!-e $comment_dir){
+    
+    if(!-d $comment_dir){
 	mkdir $comment_dir or
 	  die "unable to create commentdir $comment_dir: $!";
     }  
+    
+    return;
 }
 
 =head2 comments

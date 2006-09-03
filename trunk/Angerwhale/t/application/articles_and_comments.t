@@ -23,18 +23,16 @@ BEGIN {
 }
 
 ##
-use Test::More tests=>23;
+use Test::More tests=>24;
 ##
 
 use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
 use File::Attributes qw(get_attribute list_attributes);
 my $mech = Test::WWW::Mechanize::Catalyst->new;
 
+ok(-e 'angerwhale_test.yml', 'created fake config ok');
 $mech->get_ok('/');
-SKIP: {
-    skip 'Test::WWW::Mechanize is broken on XHTML', 1;
-    $mech->title_is('Unit Tests Are Fun');
-}
+$mech->title_is('Unit Tests Are Fun');
 $mech->content_contains('No articles to display.', 'no articles yet');
 
 my $title = 'This is a test';

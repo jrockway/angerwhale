@@ -239,7 +239,7 @@ sub end : Private {
     my ($self, $c) = @_;
     my $type = $c->stash->{type} || q{ };
     
-    if($type eq any(qw|xml atom|)){
+    if($type eq any(qw|xml atom rss|)){
 	die "Something's wrong" if !$c->stash->{items};
 	$c->forward('View::Feed::Atom', 'process');
     }

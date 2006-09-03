@@ -46,7 +46,7 @@ sub raw_text {
     
     my $data;
     eval {
-	$data = $self->_signed_text;
+	$data = $self->_signed_text($text);
     };
     return $data if !$@;
     return $text;
