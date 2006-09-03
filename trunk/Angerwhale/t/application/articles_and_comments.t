@@ -32,7 +32,7 @@ my $mech = Test::WWW::Mechanize::Catalyst->new;
 
 ok(-e 'angerwhale_test.yml', 'created fake config ok');
 $mech->get_ok('/');
-$mech->title_is('Unit Tests Are Fun');
+$mech->has_tag('title', 'Unit Tests Are Fun', 'correct title');
 $mech->content_contains('No articles to display.', 'no articles yet');
 
 my $title = 'This is a test';
