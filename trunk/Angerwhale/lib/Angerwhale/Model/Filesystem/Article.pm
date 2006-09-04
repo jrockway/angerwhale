@@ -33,7 +33,8 @@ sub categories {
 	eval {
 	    my $obj = Angerwhale::Model::Filesystem::Article->
 	      new({base     => $base,
-		   path     => $path});
+		   location => $path,
+		   context  => $c     });
 	    
 	    my $myid = $obj->checksum;
 	    push @result, $categories[$i] if $myid eq $id;
