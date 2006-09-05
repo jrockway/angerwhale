@@ -144,8 +144,8 @@ img {
 p,
 ul,
 ol,
-dl,
-pre {
+dl
+{
 	margin: 1em 0;
 }
 ul ul,
@@ -172,10 +172,10 @@ blockquote {
 }
 pre,
 code {
+        white-space: pre-wrap;
 	background: #e5f6ff;
 	color: #074f88;
 	font-family: Courier, monospace;
-	font-size: 1em;
 }
 pre {
 	border: 1px solid #c2e5ff;
