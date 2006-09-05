@@ -11,23 +11,25 @@
    General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
+   along with this style sheet; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
    USA.
 */
 
 /* yup, this style sheet was definitely stolen from typo.  that's the
-   MIT license for ya :) */
+   MIT license for ya :) 
 
-/*******************************************************************************
-*                                                                              *
-*  Typo Theme  :  Phokus                                                       *
-*  Author      :  John Serris (a.k.a JB)                                       *
-*  Web         :  http://phonophunk.com/                                       *
-*  E-mail      :  phonophunk ( at ) gmail ( dot ) ( com )                      *
-*  Modified    :  04-DEC-2005                                                  *
-*                                                                              *
-*******************************************************************************/
+Original author:
+
+*******************************************************************************
+*                                                                             *
+* Typo Theme  :  Phokus                                                       *
+* Author      :  John Serris (a.k.a JB)                                       *
+* Web         :  http://phonophunk.com/                                       *
+* E-mail      :  phonophunk ( at ) gmail ( dot ) ( com )                      *
+* Modified    :  04-DEC-2005                                                  *
+*                                                                             *
+******************************************************************************/
 
 * {
 	margin: 0;
@@ -81,6 +83,8 @@ body {
 	width: 551px;
         clear: left;
 }
+
+#error { background: #fdd; color: #f00; font-weight: bold; padding: .5em 0 .5em 2em;}
 
 /* General
 *******************************************************************************/
@@ -172,13 +176,13 @@ blockquote {
 }
 pre,
 code {
-        font-size: 85%;
         white-space: pre-line;
 	background: #e5f6ff;
 	color: #074f88;
 	font-family: Courier, monospace;
 }
 pre {
+        font-size: 85%;
 	border: 1px solid #c2e5ff;
 	overflow: hidden;
 	padding: 10px;

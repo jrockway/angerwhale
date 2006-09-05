@@ -5,8 +5,10 @@ use warnings;
 use base 'Catalyst::Controller';
 use Angerwhale::Challenge;
 use Crypt::OpenPGP;
-use YAML;
+use YAML::Syck;
 
+# XXX: HACK, HACK, HACK ... !
+use Angerwhale::Model::Filesystem::Item::Components::Signature;
 
 =head1 NAME
 
@@ -36,30 +38,34 @@ sub nonce : Local {
 sub process : Local {
     my ( $self, $c ) = @_;
     my $input = $c->request->param('login');
-    
     my $keyserver = $c->model('UserStore')->keyserver;
     
-    my $pgp          = Crypt::OpenPGP->new(Keyserver => $keyserver);
-    my ($nonce_data, $sig) = $pgp->verify($input);
-    if(!$sig || !$nonce_data){
-	$c->stash->{error} = 'You forgot to sign the message.';
-	$c->detach('/login');
+    my $nonce_data = 
+      Angerwhale::Model::Filesystem::Item::Components::Signature->
+	  _signed_text($input);
+    warn $nonce_data;
+    
+    my $pgp = Crypt::OpenPGP->new(KeyServer => $keyserver);
+    my ($long_id, $sig) = $pgp->verify(Signature => $input);
+    if(!$nonce_data){
+	$c->stash->{error} = "You forgot to sign the message.";
+	$c->detach('login_page');
 	#$c->response->body('You forgot to sign the message.');
 	#return;
     }
-    
+
+    my $sig_ok = $sig && $long_id;
     my $key_id      = $sig->key_id;
     my $nice_key_id = "0x". substr(unpack("H*", $key_id), -8, 8);
     
-    $c->log->debug("keyid $nice_key_id is presumably logging in");
+    $c->log->debug("keyid $nice_key_id ($long_id) is presumably logging in");
     
+    warn "$key_id, $nice_key_id";
     eval {
-	my $challenge = Load($nonce_data) 
+	my $challenge = Load($nonce_data. "\n") 
 	  or die "couldn't deserialize request";
 
 	my $nonce_ok = $c->model("NonceStore")->verify_nonce($challenge);
-	my $sig_ok   = $sig->verify;
-
 	$c->log->debug("$nice_key_id: nonce verified OK (was $challenge)") 
 	  if $nonce_ok;
 	$c->log->debug("$nice_key_id: Signature was valid") 

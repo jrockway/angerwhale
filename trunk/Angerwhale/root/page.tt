@@ -25,7 +25,6 @@
     <script type="text/javascript" src="/static/slider.js" />
   </head>
   <body>
-    <div id="fuckme">
    <div id="page"> <!-- for typo themes -->
     <div id="header" class="header">
       <h1>[% c.config.title | html %]</h1>
@@ -65,7 +64,6 @@
 	  </object>
       </div>
     </div>
-   </div>
    </div>
   </body>
 </html>
