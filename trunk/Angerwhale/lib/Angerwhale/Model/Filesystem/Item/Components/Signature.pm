@@ -105,7 +105,8 @@ sub _check_signature {
     
     my $keyserver = $c->model('UserStore')->keyserver;
     
-    my $pgp         = Crypt::OpenPGP->new( KeyServer => $keyserver );
+    my $pgp         = Crypt::OpenPGP->new( KeyServer => $keyserver,
+					   AutoKeyRetrieve => 1     );
     my ($id, $sig)  = $pgp->verify( Signature => $message );
     
     die $pgp->errstr if !defined $id;

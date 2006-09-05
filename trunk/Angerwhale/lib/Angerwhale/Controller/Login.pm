@@ -44,9 +44,10 @@ sub process : Local {
       Angerwhale::Model::Filesystem::Item::Components::Signature->
 	  _signed_text($input);
     
-    my $pgp = Crypt::OpenPGP->new(KeyServer => $keyserver);
+    my $pgp = Crypt::OpenPGP->new(KeyServer => $keyserver,
+				  AutoKeyRetrieve => 1);
     my ($long_id, $sig) = $pgp->verify(Signature => $input);
-    if(!$nonce_data){
+    if(!$nonce_data || !$sig){
 	$c->stash->{error} = "You forgot to sign the message.";
 	$c->detach('login_page');
 	#$c->response->body('You forgot to sign the message.');
@@ -54,7 +55,7 @@ sub process : Local {
     }
 
     my $sig_ok = $sig && $long_id;
-    my $key_id      = $sig->key_id;
+    my $key_id = $sig->key_id;
     my $nice_key_id = "0x". substr(unpack("H*", $key_id), -8, 8);
     
     $c->log->debug("keyid $nice_key_id ($long_id) is presumably logging in");
