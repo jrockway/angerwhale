@@ -5,7 +5,7 @@ use warnings;
 use base 'Catalyst::Controller';
 use Angerwhale::Challenge;
 use Crypt::OpenPGP;
-use YAML::Syck;
+use YAML;
 
 # XXX: HACK, HACK, HACK ... !
 use Angerwhale::Model::Filesystem::Item::Components::Signature;
@@ -62,7 +62,7 @@ sub process : Local {
     
     warn "$key_id, $nice_key_id";
     eval {
-	my $challenge = Load($nonce_data. "\n") 
+	my $challenge = Load($nonce_data) 
 	  or die "couldn't deserialize request";
 
 	my $nonce_ok = $c->model("NonceStore")->verify_nonce($challenge);
