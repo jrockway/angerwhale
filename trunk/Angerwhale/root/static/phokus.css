@@ -172,6 +172,7 @@ blockquote {
 }
 pre,
 code {
+        font-size: 85%;
         white-space: pre-line;
 	background: #e5f6ff;
 	color: #074f88;
