@@ -102,12 +102,13 @@ B<Warning: slow.>  It is best to cache the result, if possible.
 sub _check_signature {
     my ($self, $message) = @_;
     my $c = $self->context;
-    
-    my $keyserver = $c->model('UserStore')->keyserver;
-    
-    my $pgp         = Crypt::OpenPGP->new( KeyServer => $keyserver,
-					   AutoKeyRetrieve => 1     );
-    my ($id, $sig)  = $pgp->verify( Signature => $message );
+
+    my $keyserver   = $c->model('UserStore')->keyserver;
+    my $pgp         = Crypt::OpenPGP->new( 
+					  KeyServer       => $keyserver,
+					  AutoKeyRetrieve => 1     
+					 );
+    my ($id, $sig)  = $pgp->verify(Signature => $message);
     
     die $pgp->errstr if !defined $id;
     return $sig->key_id if $id;
