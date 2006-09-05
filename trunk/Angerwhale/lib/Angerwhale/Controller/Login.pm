@@ -43,7 +43,6 @@ sub process : Local {
     my $nonce_data = 
       Angerwhale::Model::Filesystem::Item::Components::Signature->
 	  _signed_text($input);
-    warn $nonce_data;
     
     my $pgp = Crypt::OpenPGP->new(KeyServer => $keyserver);
     my ($long_id, $sig) = $pgp->verify(Signature => $input);
@@ -60,7 +59,6 @@ sub process : Local {
     
     $c->log->debug("keyid $nice_key_id ($long_id) is presumably logging in");
     
-    warn "$key_id, $nice_key_id";
     eval {
 	my $challenge = Load($nonce_data) 
 	  or die "couldn't deserialize request";
