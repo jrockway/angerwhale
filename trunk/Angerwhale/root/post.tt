@@ -5,9 +5,7 @@
     <h2> [% article.title | html %]</h2>
   </div>
   <div class="post_info">
-     <p class="post_tags">
        [% INCLUDE tags.tt %]  
-     </p>
      <p>
         Posted on [% article.creation_time | time | html %]
         [% IF article.author.nice_id != 0 %]

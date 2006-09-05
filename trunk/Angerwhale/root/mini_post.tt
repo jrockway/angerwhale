@@ -1,7 +1,7 @@
 <div class="mini_post">
 <div class="mini_post_title"><p>[% article.title %]</p></div>
 <div class="mini_body">[% article.text %]
-<span class="more"><p><a href="[% c.uri_for("/articles/$article.name") %]">
+<p class="more"><a href="[% c.uri_for("/articles/$article.name") %]">
       More
-</a></p></span></div>
+</a></p></div>
 </div>
