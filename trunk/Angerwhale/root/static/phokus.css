@@ -51,7 +51,7 @@ body {
 
 }
 #header {
-	background: #1381d4 url(../../static/images/phokus/hd-bg-02.gif) no-repeat;
+	background: #1381d4 url(images/phokus/hd-bg-02.gif) no-repeat;
 	height: 168px;
 	margin: 0 4px;
 	position: relative;
@@ -59,14 +59,14 @@ body {
 }
 
 #content {
-	background:  url(../../static/images/phokus/mn-bg.gif) repeat-y;
+	background:  url(images/phokus/mn-bg.gif) repeat-y;
 	color: #444;
 	margin: 0 4px 0px 203px;
 	padding: 0;
 	width: 551px;
 }
 #sidebar {
-	background: #696969 url(../../static/images/phokus/sb-bg.gif) repeat-y;
+	background: #696969 url(images/phokus/sb-bg.gif) repeat-y;
 	color: #fff;
 	float: left;
 	font-size: .9em;
@@ -75,7 +75,7 @@ body {
 	width: 199px;
 }
 #footer {
-	background: #696969 url(../../static/images/phokus/ft-top.gif) no-repeat;
+	background: #696969 url(images/phokus/ft-top.gif) no-repeat;
 	color: #aaa;
 	font-size: .8em;
         margin-left: 203px;
@@ -163,7 +163,7 @@ li li {
 	margin: 0 0 0 1em;
 }
 ul li {
-	background: url(../../static/images/phokus/blt-01.gif) no-repeat 0 .2em;
+	background: url(images/phokus/blt-01.gif) no-repeat 0 .2em;
 	list-style: none;
 	padding: 0 0 0 16px;
 }
@@ -216,7 +216,7 @@ h1 {
 
 .mini_post_title { 
                    margin-top: -1.1em;
-   background: url(../../static/images/phokus/mini-top.gif) no-repeat 100% 0%;
+   background: url(images/phokus/mini-top.gif) no-repeat 100% 0%;
  }
 .mini_post_title p { 
                      font-size: 1.1em;
@@ -225,7 +225,7 @@ h1 {
                      padding-left: 1em;
  }
 .mini_post {  
-   background: url(../../static/images/phokus/mn-bottom.gif) no-repeat 0 100%;
+   background: url(images/phokus/mn-bottom.gif) no-repeat 0 100%;
  }
 
 .mini_body { 
@@ -239,7 +239,7 @@ h1 {
 
 
 .post {
-	background: url(../../static/images/phokus/mn-bottom.gif) no-repeat 0 100%;
+	background: url(images/phokus/mn-bottom.gif) no-repeat 0 100%;
 	color: #444;
 	padding: 0 25px 9px;
 	position: relative;
@@ -247,7 +247,7 @@ h1 {
 }
 
 .post_title {
-	background: #0a78cb url(../../static/images/phokus/mn-top.gif) no-repeat 0 0;
+	background: #0a78cb url(images/phokus/mn-top.gif) no-repeat 0 0;
 	margin: 0 0 0 -25px;
 	padding: 15px 34px 12px 20px;
 	width: 497px;
@@ -262,7 +262,7 @@ h2 {
 
 .post_info
  {
-	background: #c2e5ff url(../../static/images/phokus/meta-top.gif) no-repeat;
+	background: #c2e5ff url(images/phokus/meta-top.gif) no-repeat;
 	color: #0a78cb;
 	font-size: .9em;
 	margin: 0 0 15px -25px;
@@ -304,11 +304,11 @@ h2 {
 /* search */
 .search_results { 
     padding: 2em;
-   background: url(../../static/images/phokus/mini-top.gif) no-repeat 100% 0%;
+   background: url(images/phokus/mini-top.gif) no-repeat 100% 0%;
  }
 
 .after { 
-   background: url(../../static/images/phokus/mn-bottom.gif) no-repeat 0 100%;
+   background: url(images/phokus/mn-bottom.gif) no-repeat 0 100%;
  }
 
 #nav_footer p { 
@@ -319,13 +319,13 @@ h2 {
 #nav_footer { 
    margin-top: -1em;
    text-align: center;
-   background: url(../../static/images/phokus/mini-top.gif) no-repeat 100% 0%;
+   background: url(images/phokus/mini-top.gif) no-repeat 100% 0%;
       
  }
 .comments_header { 
 /*   margin-top: -1.2em;*/
    padding-top: .1em;
-   background: url(../../static/images/phokus/mini-top.gif) no-repeat 100% 0%;
+   background: url(images/phokus/mini-top.gif) no-repeat 100% 0%;
  }
 .comments_header p {
                      font-size: 70%;
@@ -336,12 +336,12 @@ h2 {
  }
 #post_comment, #comments, #login, #feeds { 
        padding: 2em;
-   background: url(../../static/images/phokus/mini-top.gif) no-repeat 100% 0%;
+   background: url(images/phokus/mini-top.gif) no-repeat 100% 0%;
  }
 
 
 #button {
-	background: #0a78cb url(../../static/images/phokus/lb-top.gif) no-repeat 0 -2px;
+	background: #0a78cb url(images/phokus/lb-top.gif) no-repeat 0 -2px;
 	border: 2px solid #0a78cb;
 	color: #fff;
 	font-weight: bold;
@@ -352,7 +352,7 @@ h2 {
 *******************************************************************************/
 
 #sidebar h3 {
-	background: url(../../static/images/phokus/sb-top.gif) no-repeat;
+	background: url(images/phokus/sb-top.gif) no-repeat;
 	color: #fff;
 	display: block;
 	font-family: "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
@@ -365,7 +365,7 @@ h2 {
 	width: 150px;
 }
 #sidebar .box {
-	background: url(../../static/images/phokus/sb-bottom.gif) no-repeat 0 100%;
+	background: url(images/phokus/sb-bottom.gif) no-repeat 0 100%;
         padding-bottom: 15px;
 }
 
@@ -396,7 +396,7 @@ h2 {
         padding: 6px 15px 5px 15px;
  }
 #sidebar li a:hover, #sidebar li b {
-	background: #fff url(../../static/images/phokus/sb-a-bg.gif) repeat-y 0 50%;
+	background: #fff url(images/phokus/sb-a-bg.gif) repeat-y 0 50%;
 	color: #2392e4;
 }
 
@@ -446,10 +446,10 @@ h2 {
 	background-color: #c2e5ff;
 }
 .ico-feed {
-	background-image: url(../../static/images/phokus/ico-feed.gif);
+	background-image: url(images/phokus/ico-feed.gif);
 }
 .ico-external {
-	background-image: url(../../static/images/phokus/ico-external.gif);
+	background-image: url(images/phokus/ico-external.gif);
 }
 
 /* Fixes
