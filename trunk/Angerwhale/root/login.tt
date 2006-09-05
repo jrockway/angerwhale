@@ -1,4 +1,5 @@
 [% WRAPPER page.tt %]
+<div id="login">
 <h2>Login</h2>
 <p>Please authenticate yourself to this weblog by signing the
 following message with your PGP key.  You can do this automatically by
@@ -19,6 +20,6 @@ following message with your PGP key.  You can do this automatically by
    <input type="submit" name="submit" />
   </div>
 </form>
-
-
+</div>
+<div class="after"><br /></div>
 [% END %]

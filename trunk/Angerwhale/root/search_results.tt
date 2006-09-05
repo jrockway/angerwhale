@@ -11,9 +11,7 @@
       [% FOREACH item = articles %]
       <li>
         <p>
-	  <a href="[% c.uri_for("/$item.uri") %]">
-	     [% item.title | html %]
-	  </a>
+	  <a href="[% c.uri_for("/$item.uri") %]">[% item.title | html %]</a>
 	  <span class="postinfo">
 	  posted [% item.creation_time | time %]
 	  [% IF item.author.nice_id != 0 %]
@@ -27,4 +25,5 @@
     </ul>
     [% END %]
 </div>
+<div class="after"><br /> <!-- css fucking sucks --></div>
 [% END %]

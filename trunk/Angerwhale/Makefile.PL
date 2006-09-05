@@ -108,3 +108,7 @@ sub write_revision {
     warn $@ if $@;
     # if this fails, we'll just use the revision.tt that is bundled.
 }
+
+sub MY::postamble {
+    return "run:\n\tscript/angerwhale_server.pl -r -d";
+}

@@ -1,4 +1,5 @@
-<div class="box">
+<div id="login_box" class="box">
+     <h3>Login</h3>
       <p class="logged_in_as">
        [% IF user.id %]
 	Logged in as <b>[% user.fullname | html %]</b>.

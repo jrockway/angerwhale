@@ -1,6 +1,7 @@
 <div id="sidebar_box">
-<div class="box">
   <div class="sidebar_navigation">
+   <div class="box">
+   <h3>Navigation</h3>
     <p>
       [% IF page != "home" %]
       <a href="[% base %]">Home</a>
@@ -14,8 +15,10 @@
       Articles
       [% END %]
     </p>
+   </div>
   </div>
   [% IF root.get_categories %]
+   <div class="box">
     <h3>Categories</h3>
     <ul>
       [% FOREACH category_name = root.get_categories %]
@@ -29,8 +32,10 @@
        </li>
       [% END %]
     </ul>
+   </div>
   [% END %]
   [% IF root.get_tags %]
+   <div class="box">
     <h3><a href="[% c.uri_for("/tags") %]" 
     	   style="text-decoration: none;">Tags</a></h3>
     <ul>
@@ -52,6 +57,6 @@
      </li>
      [% END %]
     </ul>
+   </div>
   [% END %]
-</div>
 </div>

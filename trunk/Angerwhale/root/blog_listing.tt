@@ -9,8 +9,9 @@
    [% END %]
   [% END %]
 
+[% IF newer_articles.defined || older_articles.defined %]
 <div id="nav_footer">
-
+<p>
  [% IF newer_articles %]
    [% IF newest_is_newest %] 
      <a href="[% c.uri_for("$category") %]">
@@ -26,6 +27,9 @@
    <a href="[% c.uri_for("$category/$older_articles") | html%]">
      Older articles &gt;</a>
  [% END %]
+</p>
 </div>
+<div class="after"><br /></div>
+[% END %]
 
 [% END %]

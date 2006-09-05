@@ -482,7 +482,7 @@ Ajax.InPlaceEditor.prototype = {
       loadingClassName: 'inplaceeditor-loading',
       formClassName: 'inplaceeditor-form',
       highlightcolor: Ajax.InPlaceEditor.defaultHighlightColor,
-      highlightendcolor: "#FFFFFF",
+      highlightendcolor: "#c2e5ff",
       externalControl: null,
       submitOnBlur: false,
       ajaxOptions: {},

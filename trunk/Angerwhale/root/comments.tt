@@ -5,4 +5,5 @@
      <br />
      [% INCLUDE comment.tt %]
 </div>
+<div class="after"><br /></div>
 [% END %]

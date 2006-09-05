@@ -17,7 +17,8 @@ metadata support.
 
 =head2 title
 
-Returns the title of the article.
+Returns 
+the title of the article.
 
 =cut
 

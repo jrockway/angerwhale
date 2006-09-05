@@ -3,10 +3,13 @@
 <div class="post">
   <div class="post_title">
     <h2> [% article.title | html %]</h2>
-    [% INCLUDE tags.tt %]  
-    <div class="post_date">
+  </div>
+  <div class="post_info">
+     <p class="post_tags">
+       [% INCLUDE tags.tt %]  
+     </p>
      <p>
-        [% article.creation_time | time | html %]
+        Posted on [% article.creation_time | time | html %]
         [% IF article.author.nice_id != 0 %]
 	by [% article.author.fullname %]
 	[% END %]
@@ -16,41 +19,42 @@
 	      	   src="[% base %]static/lock.png" alt="[SIGNED]" />
 	    </a>	
      	[% END %]
-     </p>	
-    </div>
-  </div>
-  
-  <div class="article_body">
-    [% article.text %]
-  </div>
-
-  [% IF !standalone %]
-  <div class="post_links">
-    <a href="[% c.uri_for("/articles/$article.name") %]#comments">
-      [% infl.NO("comment", article.comment_count) %]</a> |
-    
-    <a href="[% c.uri_for("/articles/$article.name") %]">Read more...</a>
-  </div>
-  [% END %]
-
-  <div class="post_extrainfo">
-
-    [% IF article.modification_time != article.creation_time %]
-    [% SET foo = 1 %]
-    <p>Last modified: [% article.modification_time | time | html  %] </p>
-    [% END %]
-    
+     </p>    
     [% IF article.categories %]
-    <p>Posted in: 
+    <p class="categories">Posted in: 
       [% FOREACH category = article.categories %]
       <a href="[% c.uri_for("/categories/$category") %]">
       	 [% category | html %]
       </a>
       [% END %]
     </p>
+    [% END %]	
+  </div>
+  
+  <div class="article_body">
+    [% article.text %]
+  </div>
+
+  <div class="post_extrainfo">
+   [% IF !standalone %]
+    <p class="post_links">
+     <a href="[% c.uri_for("/articles/$article.name") %]#comments">
+      [% infl.NO("comment", article.comment_count) %]</a> |
+     <a href="[% c.uri_for("/articles/$article.name") %]">Read more...</a>
+    </p>
+   [% ELSE %]
+   <br />
+   [% END %]
+
+    [% IF article.modification_time != article.creation_time %]
+    [% SET foo = 1 %]
+    <p class="last_modified">
+    Last modified: [% article.modification_time | time | html  %] 
+    </p>
     [% ELSE %]
     <br />
     [% END %]
   </div>
+
 </div>
 

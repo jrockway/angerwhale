@@ -1,5 +1,5 @@
 <div id="tagbox_[% article.id %]" class="taglist">
-  <p id="tags_[% article.id %]"> 
+  <span id="tags_[% article.id %]"> 
     [% IF article.tags %]
     Tags:
     [% FOREACH tag = article.tags %] 
@@ -8,8 +8,8 @@
     [% ELSE %]
     No tags
     [% END %]
-  </p>
-  <p id="plus_[% article.id %]" class="tag_plus">[+]</p>
+  </span>
+  <span id="plus_[% article.id %]" class="tag_plus">[+]</span>
 </div>
 [% SET url = base _ "tags/do_tag/" _ article.name %]
 [% SET control = "plus_" _ article.id %]

@@ -1,4 +1,5 @@
 [% WRAPPER page.tt %]
+<div id="post_comment">
 <h2>Respond to [% article.title | html %]</h2>
 
 [% IF comment != article %]
@@ -25,8 +26,8 @@ ASCII-armored is OK).
 
  <form method="post" action="[% action %]">
   <div id="post_box">
-  <p> Title: <input type="text" name="title" size="70" value="[% post_title | html %]" /></p> 
-  <p><textarea name="body" rows="25" cols="80">[% body | html %]</textarea></p>
+  <p> Title: <input type="text" name="title" size="60" value="[% post_title | html %]" /></p> 
+  <p><textarea name="body" rows="25" cols="60">[% body | html %]</textarea></p>
   [% IF types %]
   <p>Format: <select name="type">
    [% FOREACH atype = types %]
@@ -49,5 +50,7 @@ ASCII-armored is OK).
   context, and the signature would still validate.
  </p>
 </div>
+</div>
+<div class="after"><br /></div>
 
 [% END %]

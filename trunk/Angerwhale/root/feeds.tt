@@ -1,5 +1,7 @@
 [% WRAPPER page.tt title="Feed Me!" %]
 
+<div id="feeds">
+<h2>Feed Me!</h2>
 <p>Want to keep up on the latest posts or comments?  Want to write a
 script to use the blog comments as entropy for your random number
 generator?  Just really bored?  You're in luck!  Here you will find
@@ -56,5 +58,6 @@ All Things Feed!</p>
   [% END %]
 </ul>
 </div>
-
+</div>
+<div class="after"><br /></div>
 [% END %]
