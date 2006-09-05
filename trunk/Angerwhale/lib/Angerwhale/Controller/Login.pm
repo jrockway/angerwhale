@@ -102,7 +102,7 @@ sub process : Local {
 sub login_page : Private {
     my ( $self, $c ) = @_;
     $c->stash->{template} = 'login.tt';
-    $c->forward('nonce') unless defined $c->stash->{error};
+    $c->forward('nonce');
 }
 
 sub default : Private {
