@@ -24,10 +24,10 @@
       [% FOREACH category_name = root.get_categories %]
       <li>
        [% IF category_name != category %]
-       <a href="[% c.uri_for("/categories", category_name) | html %]">
-      	     [% category_name | html %]</a>
+          <a href="[% c.uri_for("/categories", category_name) | html %]">
+      	        [% category_name | html %]</a>
        [% ELSE %]
-       <b>[% category_name | html %]</b> <!-- current category -->
+          <div class="selected"><b>[% category_name | html %]</b></div>
        [% END %]
        </li>
       [% END %]
@@ -43,7 +43,7 @@
       <li>
 	[% IF tag == tags %]
 	   [% IF tag_count == 1 %]
-	     	<b>[% tag | html %]</b>
+	     	<div class="selected"><b>[% tag | html %]</b></div>
 	   [% ELSE %]
                 <a href="[% c.uri_for("/tags", tag) | html%]">
                    <b>[% tag | html %]</b>

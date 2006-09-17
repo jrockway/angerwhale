@@ -35,7 +35,7 @@ sub format {
     my $text = shift;
     my $type = shift;
     
-    my $input  = IO::String->new($text);
+    my $input  = IO::String->new("=pod\n\n$text");
     my $result = IO::String->new;
     
     my $parser = Pod::Xhtml->new(
@@ -59,7 +59,7 @@ sub format_text {
     
     my $output;
     $pod_format->output_string( \$output );
-    $pod_format->parse_string_document($text);
+    $pod_format->parse_string_document("=pod\n\n$text");
     
     my $text_format = Angerwhale::Format::PlainText->new;
     return $text_format->format_text($output, 'text');

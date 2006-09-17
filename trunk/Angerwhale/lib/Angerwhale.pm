@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use File::Temp qw(tempdir);
 use Catalyst qw/Unicode ConfigLoader Scheduler Static::Simple
-		Cache::FastMmap/;
+		Cache::FastMmap LogWarnings/;
 
 our $VERSION = '0.01_01';
 
@@ -24,7 +24,6 @@ __PACKAGE__->config({VERSION => $VERSION});
 __PACKAGE__->setup;
 __PACKAGE__->schedule( at    => '25 * * * *',
 		       event => '/scheduledevents/clean_sessions', );
-
 
 1;
 

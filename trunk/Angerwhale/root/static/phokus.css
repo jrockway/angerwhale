@@ -334,7 +334,7 @@ h2 {
                      margin-bottom: -1em;
                      text-align: center;
  }
-#post_comment, #comments, #login, #feeds { 
+#post_comment, #comments, #login, #feeds, #users { 
        padding: 2em;
    background: url(images/phokus/mini-top.gif) no-repeat 100% 0%;
  }
@@ -390,6 +390,7 @@ h2 {
 	width: 169px;
 	overflow: hidden;
 }
+
 #sidebar p { 
         width: 169px;
         overflow: hidden;

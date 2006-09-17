@@ -1,5 +1,5 @@
 [% WRAPPER page.tt %]
-
+<div id="users">
 <h2> Users that I know about </h2>
 <ul>
 [% FOREACH auser = users %]
@@ -9,5 +9,6 @@
 
 [% END %]
 </ul>
-
+</div>
+<div class="after"><br /></div>
 [% END %]

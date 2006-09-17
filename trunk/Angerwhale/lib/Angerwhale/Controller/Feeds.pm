@@ -26,20 +26,14 @@ Catalyst Controller.
 
 =cut
 
-=head2 default
+=head2 index
 
 The main index of all available feeds
 
 =cut
 
-sub default : Private {
-    my ($self, $c) = @_;
-    
-    if($c->request->uri->path ne '/feeds/'){
-	$c->response->redirect($c->uri_for('/feeds/'));
-	return;
-    }
-    
+sub index : Private {
+    my ($self, $c) = @_;    
     $c->stash->{template} = 'feeds.tt';
     
     # for the sidebar
@@ -80,7 +74,7 @@ sub article : Local {
 	}
 	
 	$c->stash->{items} = [sort @items];
-	$c->stash->{feed_title} = "Comments on ". $article->title;
+	$c->stash->{feed_title} = 'Comments on '. $article->title;
     }
     else {
 	$c->stash->{items} = $article;
@@ -238,7 +232,9 @@ Requires that stash->{type} and stash->{items} are set.
 sub end : Private {
     my ($self, $c) = @_;
     my $type = $c->stash->{type} || q{ };
-    
+
+    undef $c->stash->{categories};
+
     if($type eq any(qw|xml atom rss|)){
 	die "Something's wrong" if !$c->stash->{items};
 	$c->forward('View::Feed::Atom', 'process');
