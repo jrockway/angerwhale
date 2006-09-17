@@ -184,7 +184,7 @@ code {
 pre {
         font-size: 85%;
 	border: 1px solid #c2e5ff;
-	overflow: hidden;
+	overflow: auto;
 	padding: 10px;
 	width: 479px;
 }
