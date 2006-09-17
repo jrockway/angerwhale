@@ -334,7 +334,7 @@ h2 {
                      margin-bottom: -1em;
                      text-align: center;
  }
-#post_comment, #comments, #login, #feeds, #users { 
+#post_comment, #comments, #login, #feeds, #users, #tag_cloud { 
        padding: 2em;
    background: url(images/phokus/mini-top.gif) no-repeat 100% 0%;
  }
