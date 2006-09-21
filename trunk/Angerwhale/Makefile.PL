@@ -76,9 +76,9 @@ build_requires
    'Test::WWW::Mechanize::Catalyst'                         => 0,
   );
 
-catalyst;
-install_script glob('script/*.pl');
-auto_install;
+catalyst();
+install_script(glob('script/*.pl'));
+auto_install();
 tests('t/*/*.t');
 write_revision();
 WriteAll( sign => 1, meta => 1 );
