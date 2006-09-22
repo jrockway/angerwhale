@@ -1,6 +1,7 @@
 use inc::Module::Install;
 use strict;
 use warnings;
+require 5.008006;
 
 name('Angerwhale');
 abstract('exciting new weblogging software or something');
@@ -61,7 +62,6 @@ requires
    'XML::Feed'                                              => '0.11',
    'YAML'						    => '0.60', 
    'base'						    => 0,
-   'overload'						    => '1.02',
    'version'						    => 0,
    'Crypt::IDEA'					    => 0, 
   );
