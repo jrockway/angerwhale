@@ -14,7 +14,7 @@ Angerwhale->run;
 
 =head1 NAME
 
-blog_cgi.pl - Catalyst CGI
+angerwhale_cgi.pl - Catalyst CGI
 
 =head1 SYNOPSIS
 

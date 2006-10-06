@@ -30,7 +30,7 @@ angerwhale_create.pl - Create a new Catalyst Component
 
 =head1 SYNOPSIS
 
-blog_create.pl [options] model|view|controller name [helper] [options]
+angerwhale_create.pl [options] model|view|controller name [helper] [options]
 
  Options:
    -force        don't create a .new file where a file to be created exists
@@ -38,15 +38,15 @@ blog_create.pl [options] model|view|controller name [helper] [options]
    -help         display this help and exits
 
  Examples:
-   blog_create.pl controller My::Controller
-   blog_create.pl -mechanize controller My::Controller
-   blog_create.pl view My::View
-   blog_create.pl view MyView TT
-   blog_create.pl view TT TT
-   blog_create.pl model My::Model
-   blog_create.pl model SomeDB DBIC::Schema MyApp::Schema create=dynamic\
+   angerwhale_create.pl controller My::Controller
+   angerwhale_create.pl -mechanize controller My::Controller
+   angerwhale_create.pl view My::View
+   angerwhale_create.pl view MyView TT
+   angerwhale_create.pl view TT TT
+   angerwhale_create.pl model My::Model
+   angerwhale_create.pl model SomeDB DBIC::Schema MyApp::Schema create=dynamic\
    dbi:SQLite:/tmp/my.db
-   blog_create.pl model AnotherDB DBIC::Schema MyApp::Schema create=static\
+   angerwhale_create.pl model AnotherDB DBIC::Schema MyApp::Schema create=static\
    dbi:Pg:dbname=foo root 4321
 
  See also:

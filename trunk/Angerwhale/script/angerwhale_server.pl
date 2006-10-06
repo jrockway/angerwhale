@@ -2,7 +2,8 @@
 
 BEGIN { 
     $ENV{CATALYST_ENGINE} ||= 'HTTP';
-    $ENV{CATALYST_SCRIPT_GEN} = 28;
+    $ENV{CATALYST_SCRIPT_GEN} = 29;
+    require Catalyst::Engine::HTTP;
 }  
 
 use strict;
@@ -19,7 +20,7 @@ my $host              = undef;
 my $port              = 3000;
 my $keepalive         = 0;
 my $restart           = 0;
-my $restart_delay     = 0;
+my $restart_delay     = 1;
 my $restart_regex     = '\.yml$|\.yaml$|\.pm$';
 my $restart_directory = undef;
 
@@ -62,8 +63,6 @@ Angerwhale->run( $port, $host, {
 } );
 
 1;
-
-__END__
 
 =head1 NAME
 
