@@ -27,7 +27,7 @@ All Things Feed!</p>
 	 %]
   </li>
 
-  [% IF categories.size > 0 %]
+  [% IF categories.defined && categories.size > 0 %]
   <li>Feeds of articles in a specific category:
     <ul>
      [% FOREACH category = categories %]
@@ -42,7 +42,7 @@ All Things Feed!</p>
    </li>
   [% END %]
 
-  [% IF tags.size > 0 %]
+  [% IF tags.defined && tags.size > 0 %]
   <li>Feeds of articles with a specific tag:
     <ul>
      [% FOREACH tag = tags %]
