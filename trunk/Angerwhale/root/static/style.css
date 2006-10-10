@@ -67,13 +67,21 @@ a.visited { color: blue; }
 
 .logged_in_as {font-size: 90%;}
 
-#error {color: #ff0000; font-weight: bold;}
+#error {
+    color: #ff0000;
+    font-weight: bold;
+}
 .info img {border: none;}
 
-#advice p {font-size: 70%;}
+#advice p {
+    font-size: 70%;
+}
 
-#preview_comment {border: 1px solid #aaaaaa; 
-		     background-color: #eee; padding: 5px; }
+#preview_comment {
+    border: 1px solid #aaaaaa; 
+    background-color: #eee; 
+    padding: 5px; 
+}
 
 .message {font-size: 70%; }
 
