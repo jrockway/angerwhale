@@ -85,6 +85,7 @@ sub new {
     $self->location($location);
     $self->parent($parent) if $parent;
     $self->next::method($args);
+    $self->encoding($self->context->config->{encoding} || 'utf8');
     return $self;
 }
 

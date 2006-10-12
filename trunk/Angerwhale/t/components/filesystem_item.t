@@ -12,6 +12,8 @@ use ok 'Angerwhale::Model::Filesystem::Item';
 
 my $tmp  = Directory::Scratch->new; 
 my $c    = Test::MockObject->new;
+$c->set_always('config', {encoding => 'utf8'});
+
 my $path = $tmp->touch('article.txt', 
 		       "This is an article.", "I hope you like it.");
 

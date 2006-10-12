@@ -26,7 +26,7 @@ BEGIN {
 }
 
 ##
-use Test::More tests=>24;
+use Test::More tests=>20;
 ##
 
 use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
@@ -67,7 +67,6 @@ SKIP: {
     
     # post a comment
     $mech->follow_link_ok({text => 'Post a comment'}, 'trying to post a comment');
-    die $mech->content;
     
     ok($mech->submit_form(
 			  fields => { title => 'test comment',

@@ -206,9 +206,10 @@ sub add_comment {
     # /foo/bar/comment1337abc! -> /foo/bar/._tmp_.comment1337abc!
     # maybe make a random filename instead?
 
-    open my $comment, '>:utf8', $tmpname
+    open my $comment, '>:raw', $tmpname
       or die "unable to open $filename: $!";
     eval {
+	$self->to_encoding($body);
 	print {$comment} "$body\n" or die "io error: $!";
 	close $comment;
 	rename($tmpname => $filename) or 

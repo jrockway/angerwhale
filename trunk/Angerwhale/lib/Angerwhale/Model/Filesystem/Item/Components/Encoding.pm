@@ -17,7 +17,7 @@ sub _encoding {
 	$encoding = get_attribute_recursively($filename, $self->base, 'encoding');
 	return $encoding if $encoding; # '0' isn't a valid encoding :)
     }
-    return $self->encoding;
+    return $self->encoding || 'utf8';
 
 }
 
@@ -25,7 +25,7 @@ sub from_encoding {
     my $self = shift;
     my $encoding = $self->_encoding($_[1]);
 
-    $_[0] = Encode::decode($encoding, $_[0], 1);
+    $_[0] = Encode::decode($encoding, $_[0], 1) unless utf8::is_utf8($_[0]);
 }
 
 sub to_encoding {

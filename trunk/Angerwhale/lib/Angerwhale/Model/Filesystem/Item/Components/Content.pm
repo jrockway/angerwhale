@@ -7,15 +7,17 @@ use strict;
 use warnings;
 use Angerwhale::Format;
 use Digest::MD5 qw(md5_hex);
-use Encode;
 use File::Slurp;
+
+use Carp::Assert;
+
 use utf8; # for the elipsis later on
 my $ELIPSIS = '…';
 
 sub checksum {
     my $self = shift;
     my $text = $self->raw_text;
-    return md5_hex(Encode::encode_utf8($text));
+    return md5_hex(utf8::encode($text));
 }
 
 sub summary {
@@ -39,9 +41,11 @@ sub summary {
 sub raw_text {
     my $self     = shift;
     my $want_pgp = shift;
-    my $text     = shift || scalar read_file( $self->location,
+    my $text     = shift || scalar read_file( ''.$self->location,
 					      binmode => ":utf8");
-    $text = Encode::decode_utf8($text);
+
+    $self->from_encoding($text, $self->location);
+    assert(utf8::is_utf8($text), 'is text utf8');
     return $text if $want_pgp;
     
     my $data;

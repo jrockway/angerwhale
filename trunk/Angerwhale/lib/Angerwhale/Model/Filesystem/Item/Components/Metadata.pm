@@ -37,6 +37,7 @@ sub title {
 	$name = $self->name;
 	$name =~ s{[.]\w+$}{};
     }
+    $self->from_encoding($name, $self->location);
     return $name;
 }
 
@@ -56,7 +57,7 @@ sub mini {
     
     # if not overriden, read the attribute
     my $mini = eval {get_attribute($self->location, 'mini')};
-    return $mini;
+    return $mini ? 1 : 0;
 }
 
 sub creation_time {

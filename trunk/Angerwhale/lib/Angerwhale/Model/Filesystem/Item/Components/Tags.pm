@@ -72,10 +72,12 @@ sub tags {
     }
     my @taglist;
     foreach my $tag (sort keys %taglist){
-	# tags must be stored as utf8
-	push @taglist, Encode::decode_utf8($tag);
+	# tags must be stored as utf8    
+	my $copy = "$tag";
+	utf8::decode($copy);
+	push @taglist, $copy;
     }
-
+    
     if(wantarray){
 	return @taglist;
     }
