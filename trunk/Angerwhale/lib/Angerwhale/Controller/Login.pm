@@ -41,14 +41,20 @@ sub process : Local {
     my $keyserver = $c->model('UserStore')->keyserver;
     
     my $nonce_data = 
-      Angerwhale::Model::Filesystem::Item::Components::Signature->
-	  _signed_text($input);
+      eval {
+	  Angerwhale::Model::Filesystem::Item::Components::Signature->
+	      _signed_text($input);
+      };
+    if(!$nonce_data){
+	$c->stash->{error} = "I couldn't read the signature.  Try again?";
+	$c->detach('login_page');
+    }
     
     my $pgp = Crypt::OpenPGP->new(KeyServer => $keyserver,
 				  AutoKeyRetrieve => 1);
     my ($long_id, $sig) = $pgp->verify(Signature => $input);
     if(!$nonce_data || !$sig){
-	$c->stash->{error} = "You forgot to sign the message.";
+	$c->stash->{error} = "There was a problem verifying the signature.  Try again?";
 	$c->detach('login_page');
 	#$c->response->body('You forgot to sign the message.');
 	#return;
