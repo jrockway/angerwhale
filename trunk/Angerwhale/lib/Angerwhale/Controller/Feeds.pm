@@ -236,11 +236,9 @@ sub end : Private {
     undef $c->stash->{categories};
 
     if($type eq any(qw|xml atom rss|)){
-	die "Something's wrong" if !$c->stash->{items};
 	$c->forward('View::Feed::Atom', 'process');
     }
     elsif($type eq 'yaml') {
-	die "Something's wrong" if !$c->stash->{items};
     	$c->forward('View::Feed::YAML', 'process');
     }
     else {

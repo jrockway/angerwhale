@@ -61,7 +61,8 @@ sub prepare_items {
     
     # i don't know what to do!
     else {
-	die "invalid data ``$item_ref'' passed to View::Feed";
+	# no articles?
+	return;
     }
 
     return @result;
