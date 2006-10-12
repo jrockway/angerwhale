@@ -10,6 +10,7 @@ use Class::C3;
 
 # mixin our methods
 use base qw|
+	    Angerwhale::Model::Filesystem::Item::Components::Encoding
 	    Angerwhale::Model::Filesystem::Item::Components::Tags
 	    Angerwhale::Model::Filesystem::Item::Components::Comments
 	    Angerwhale::Model::Filesystem::Item::Components::Metadata
@@ -24,7 +25,7 @@ use base qw|
 __PACKAGE__->mk_accessors(qw|base location parent|);
 Class::C3::initialize();
 
-# make sort @articles sort by creation time
+# make C<sort @articles> sort by creation time
 use overload (q{<=>} => \&compare,
 	      q{cmp} => \&compare,
 	      # but still let other stuff work too	    
