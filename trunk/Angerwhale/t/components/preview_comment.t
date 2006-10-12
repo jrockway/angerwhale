@@ -39,7 +39,7 @@ ok(!$comment->uri, 'no uri');
 ok($comment->signed, 'signature exists');
 is($comment->author->fullname, 'Jonathan T. Rockway', "I'm the author");
 is($comment->signor, $id, 'uid exists');
-is($comment->checksum, 'd41d8cd98f00b204e9800998ecf8427e', 'checksum matches');
+is($comment->checksum, '120ea8a25e5d487bf68b5f7096440019', 'checksum matches');
 is($comment->id, '??', 'id is ??');
 like($comment->summary, qr/This is a test./, 'summary contains correct text');
 ok(!$comment->post_uri, 'post_uri undefined');

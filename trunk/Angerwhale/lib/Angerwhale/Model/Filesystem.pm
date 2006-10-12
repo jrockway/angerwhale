@@ -62,13 +62,15 @@ sub get_article {
       if $article =~ m{/};
 
     die "no such article" if !-r "$base/$article" || -d "$base/$article";
-    
-    return Angerwhale::Model::Filesystem::Article->
+
+    my $article = Angerwhale::Model::Filesystem::Article->
       new({
 	   location => "$base/$article",
 	   base     => $self->base,
 	   context  => $self->context,
 	  });
+    
+    return $article;
 }
 
 sub _ls {
@@ -85,11 +87,7 @@ sub _ls {
 	next if -d $entry;
 
 	#entry is acceptable
-	my $article = Angerwhale::Model::Filesystem::Article->
-	  new({location => $entry,
-	       base     => $self->base,
-	       context  => $self->context});
-
+	my $article = $self->get_article($article);
 	push @articles, $article;
 	
     }
