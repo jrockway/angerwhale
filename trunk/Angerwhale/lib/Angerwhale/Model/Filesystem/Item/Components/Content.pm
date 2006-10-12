@@ -47,9 +47,10 @@ sub raw_text {
 	eval {
 	    $data = $self->_signed_text($text);
 	};
-	return $data if !$@;
+	$text = $data if !$@;
     }
     
+    # XXX: bugbug in crypt::openpgp?
     $self->from_encoding($text, $self->location);
     return $text;
 }
