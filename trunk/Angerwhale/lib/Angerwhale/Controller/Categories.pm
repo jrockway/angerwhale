@@ -219,7 +219,7 @@ sub _split_articles {
     my @after;   # articles older than current ($after[-1] is oldest)
     
     # setup before
-    if(@date){
+    if(@date == 3){
 	die "invalid date @date" if @date != 3;
 	my $date = timelocal(59, 59, 23,$date[2], $date[1]-1, $date[0]-1900) 
 	              + 1; # always compare with <, not <=.
