@@ -20,6 +20,7 @@ requires
    'Catalyst::Plugin::Prototype'			    => 0,
    'Catalyst::Plugin::LogWarnings'                          => 0,
    'Catalyst::Plugin::Scheduler'			    => '0.07',
+   'Catalyst::Plugin::Setenv'			            => 0,
    'Catalyst::Plugin::Static::Simple'			    => 0,
    'Catalyst::Plugin::Unicode'				    => '0.2',
    'Catalyst::Model::XML::Feed'                             => '0.01',

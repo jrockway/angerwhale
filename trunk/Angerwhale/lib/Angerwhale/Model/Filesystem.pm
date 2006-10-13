@@ -63,14 +63,14 @@ sub get_article {
 
     die "no such article" if !-r "$base/$article" || -d "$base/$article";
 
-    my $article = Angerwhale::Model::Filesystem::Article->
+    my $result = Angerwhale::Model::Filesystem::Article->
       new({
 	   location => "$base/$article",
 	   base     => $self->base,
 	   context  => $self->context,
 	  });
     
-    return $article;
+    return $result;
 }
 
 sub _ls {
