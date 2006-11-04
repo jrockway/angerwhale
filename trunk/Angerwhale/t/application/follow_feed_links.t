@@ -5,7 +5,7 @@ use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
 use Test::More qw(no_plan);
 use strict;
 use warnings;
-use YAML;
+use YAML::Syck;
 
 my $mech = Test::WWW::Mechanize::Catalyst->new;
 $mech->get_ok('/feeds');

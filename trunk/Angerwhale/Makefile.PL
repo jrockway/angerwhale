@@ -62,6 +62,7 @@ requires
    'XML::Atom::SimpleFeed'				    => '0.8',
    'XML::Feed'                                              => '0.11',
    'YAML'						    => '0.60', 
+   'YAML::Syck'						    => '0.60', 
    'base'						    => 0,
    'version'						    => 0,
    'Crypt::IDEA'					    => 0, 

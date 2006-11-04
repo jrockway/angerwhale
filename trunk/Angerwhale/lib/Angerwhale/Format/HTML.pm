@@ -9,6 +9,7 @@ use Quantum::Superpositions;
 use Scalar::Util qw(blessed);
 use URI;
 use Text::Autoformat qw(autoformat break_TeX);
+use HTML::Tidy;
 
 use strict;
 use warnings;
@@ -169,12 +170,29 @@ sub _parse {
 		}
 	    }
 	    
-	    # one of these tags
-	    elsif($type eq any(qw(i b u pre blockquote code p ol ul li))){
-		$result .= qq{<$type>};
-		$result .= $self->_parse(@kids);
-		$result .= qq{</$type>};
+	    elsif($type eq 'blockquote'){
+		$result .= '<blockquote>';
+		foreach my $kid (@kids){
+		    if(blessed $kid && 
+		       $kid->tag eq any(qw|p blockquote ul|)){
+			$result .= $self->_parse($kid);
+		    }
+		    else{
+			$result .= "<p>". $self->_parse($kid). "</p>";
+		    }
+		}
+		$result .= '</blockquote>';
 	    }
+	    
+	    # one of these tags
+	    elsif($type eq any(qw(i strong b u pre samp code
+				  kbd p q ol ul li dt dl dd
+				  tt big small sub sup cite)))
+	      {
+		  $result .= qq{<$type>};
+		  $result .= $self->_parse(@kids);
+		  $result .= qq{</$type>};
+	      }
 	    
 	    # image
 	    elsif($type eq 'img'){
@@ -225,6 +243,8 @@ sub _escape {
     $text =~ s/&/&amp;/g;
     $text =~ s/</&lt;/g;
     $text =~ s/>/&gt;/g;
+    $text =~ s/"/&quot;/g;
+    $text =~ s/'/&apos;/g;
     return $text;
 }
 

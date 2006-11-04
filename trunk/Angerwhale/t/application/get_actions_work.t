@@ -8,7 +8,7 @@ use Test::More tests => 46;
 use HTML::Tidy;
 use Test::HTML::Tidy;
 use Test::XML::Valid;
-use YAML;
+use YAML::Syck;
 use Angerwhale;
 
 local $SIG{__WARN__} = sub {};
