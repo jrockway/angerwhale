@@ -73,7 +73,7 @@ SKIP: {
 
 my $request = request('/login/nonce');
 ok($request->is_success, 'requested a nonce OK');
-my $nonce   = YAML::Load($request->content);
+my $nonce   = Load($request->content);
 ok($nonce, 'nonce desearialized OK');
 isa_ok($nonce, 'Angerwhale::Challenge');
 ok($nonce->{nonce}, 'nonce has a nonce');
