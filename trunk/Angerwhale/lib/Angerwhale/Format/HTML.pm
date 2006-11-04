@@ -198,7 +198,7 @@ sub _parse {
 	    elsif($type eq 'img'){
 		my $alt = $element->attr('alt');
 		if($alt){
-		    $result .= "[$alt]";
+		    $result .= "<p>[$alt]</p>";
 		}
 	    }
 	    
