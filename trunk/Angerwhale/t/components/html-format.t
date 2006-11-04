@@ -35,6 +35,14 @@ $output =<<"END";
       xml:lang="en">
 <head><title>test</title></head><body>$output</body></html>
 END
+if(0){
+    my @pretty;
+    $output =~ s{</(\w+)>}{</$1>\n}g;
+    @pretty = split /$/m, $output;
+    my $i = 0;
+    @pretty = map { $i++; "$i: $_\n" } @pretty;
+    print @pretty;
+}
 
 my $tidy = HTML::Tidy->new({config_file => 'tidy_config'});
 html_tidy_ok($tidy, $output, 'html is tidy');
@@ -60,3 +68,15 @@ Blah.  Blah.  Text, some stuff.  Lorem ipsum.  Paragraph text.</p>
 <blockquote>
 This is <i>completely</i> invalid.
 </blockquote>
+<ul>
+<li>Hello</li>
+</ul>
+<ol>
+<li>Hi there</li>
+<li>And again</li>
+</ol>
+<!-- random junk -->
+<ol>Hi
+<img src="<>">
+>< foo <b>bold</b>.
+

@@ -94,7 +94,7 @@ sub format_text {
 		}
 		elsif($type eq 'img'){
 		    my $alt = $element->attr('alt');
-		    $result .= "[$alt]" if $alt ne '';
+		    $result .= "[$alt]" if $alt;
 		}
 		elsif($type =~ /^h(\d)/){
 		    my $level    = $1;
@@ -183,7 +183,24 @@ sub _parse {
 		}
 		$result .= '</blockquote>';
 	    }
-	    
+
+	    # lists need items
+	    elsif($type eq any(qw(ul ol))){
+		$result .= "<$type>";
+		foreach my $kid (@kids){
+		    if(blessed $kid && 
+		       $kid->tag eq 'li'){
+			$result .= $self->_parse($kid);
+		    }
+		    else{
+			my $content = $self->_parse($kid);
+			next unless $content;
+			$result .= "<li>$content</li>";
+		    }
+		}
+		$result .= "</$type>";
+	    }
+
 	    # one of these tags
 	    elsif($type eq any(qw(i strong b u pre samp code
 				  kbd p q ol ul li dt dl dd
