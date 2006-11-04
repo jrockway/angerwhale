@@ -44,7 +44,7 @@
     <div id="footer">
       [% USE Time %]
       <p id="angerwhale_blurb">Page generated
-      by <a href="http://www.jrock.us/trac/blog_software">AngerWhale</a>
+      by <a href="http://www.jrock.us/trac/blog_software">Angerwhale</a>
       version [% c.config.VERSION %] ([% INCLUDE revision.tt %]) on
       [% generated_at | time | html %].
       </p>

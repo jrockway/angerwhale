@@ -19,7 +19,7 @@ sub process {
 	  link      => $c->request->base,
 	  subtitle  => $c->config->{description} || 'Atom Feed',
 	  generator => {version => $c->config->{VERSION},
-			name    => 'AngerWhale',
+			name    => 'Angerwhale',
 			uri     => 'http://www.jrock.us/'},
 	 );
     
