@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base qw(Catalyst::Model);
 use NEXT;
-use YAML qw(LoadFile DumpFile);
+use YAML::Syck qw(LoadFile DumpFile);
 use Angerwhale::User;
 use File::Slurp qw(read_file write_file);
 use Carp;

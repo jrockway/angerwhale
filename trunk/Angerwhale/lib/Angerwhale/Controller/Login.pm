@@ -5,7 +5,7 @@ use warnings;
 use base 'Catalyst::Controller';
 use Angerwhale::Challenge;
 use Crypt::OpenPGP;
-use YAML;
+use YAML::Syck;
 
 # XXX: HACK, HACK, HACK ... !
 use Angerwhale::Model::Filesystem::Item::Components::Signature;

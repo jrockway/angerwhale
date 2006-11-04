@@ -6,7 +6,7 @@ use Catalyst::Test qw(Angerwhale);
 use strict;
 use warnings;
 use Test::More tests => 15;
-use YAML;
+use YAML::Syck;
 use Angerwhale;
 use URI::Escape;
 

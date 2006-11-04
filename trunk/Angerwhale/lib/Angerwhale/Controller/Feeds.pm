@@ -3,7 +3,7 @@ package Angerwhale::Controller::Feeds;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use YAML;
+use YAML::Syck;
 use Heap::Simple;
 use XML::Feed;
 use HTTP::Date;

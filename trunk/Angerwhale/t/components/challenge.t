@@ -4,7 +4,7 @@
 
 use Test::More tests => 10;
 use ok 'Angerwhale::Challenge';
-use YAML;
+use YAML::Syck;
 
 my $challenge = new Angerwhale::Challenge( {uri => 'test://test'} );
 ok($challenge->{nonce});

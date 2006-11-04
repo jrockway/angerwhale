@@ -7,7 +7,7 @@
 my $tmp;
 BEGIN {
     use Directory::Scratch;
-    use YAML qw(DumpFile Dump);
+    use YAML::Syck qw(DumpFile Dump);
     use FindBin qw($Bin);
     
     $tmp  = Directory::Scratch->new;

@@ -6,7 +6,7 @@ package Angerwhale::Challenge;
 use strict;
 use warnings;
 use Crypt::Random qw(makerandom);
-use YAML;
+use YAML::Syck;
 
 use overload (q{==} => "equals", q{""} => "raw_text");
 

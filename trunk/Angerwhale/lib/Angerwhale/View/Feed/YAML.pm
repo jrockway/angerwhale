@@ -3,7 +3,7 @@ package Angerwhale::View::Feed::YAML;
 use strict;
 use warnings;
 use base qw(Angerwhale::View::Feed Catalyst::View);
-use YAML;
+use YAML::Syck;
 use Scalar::Util qw(blessed);
 
 # TODO: not *quite* what we want

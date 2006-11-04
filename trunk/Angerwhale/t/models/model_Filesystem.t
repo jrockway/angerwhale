@@ -6,7 +6,7 @@ use Test::More tests => 19;
 use Test::MockObject;
 use Directory::Scratch;
 use Angerwhale::Model::Filesystem;
-use YAML;
+use YAML::Syck;
 use strict;
 use warnings;
 

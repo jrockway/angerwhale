@@ -7,7 +7,7 @@ package Angerwhale::View::Dump;
 use base qw(Catalyst::View);
 
 use strict;
-use YAML;
+use YAML::Syck;
 
 sub process {
     my $self = shift;

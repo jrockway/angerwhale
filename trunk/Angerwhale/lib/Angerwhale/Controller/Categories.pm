@@ -5,7 +5,7 @@ use warnings;
 use base 'Catalyst::Controller';
 use URI::Escape;
 use Time::Local;
-use YAML;
+use YAML::Syck;
 use Scalar::Util qw(blessed);
 
 =head1 NAME

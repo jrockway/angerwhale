@@ -7,7 +7,7 @@ use warnings;
 use Crypt::OpenPGP;
 use HTTP::Request;
 use LWP::UserAgent;
-use YAML;
+use YAML::Syck;
 
 =head1 NAME
 

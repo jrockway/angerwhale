@@ -7,7 +7,7 @@ use ok 'Angerwhale::Model::UserStore';
 use Test::MockObject;
 use Directory::Scratch;
 use File::Slurp qw(read_file write_file);
-use YAML;
+use YAML::Syck;
 
 my $c = Test::MockObject->new;
 

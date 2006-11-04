@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use base qw(Catalyst::Model);
 use NEXT;
-use YAML qw(LoadFile DumpFile);
+use YAML::Syck qw(LoadFile DumpFile);
 use Crypt::Random qw(makerandom);
 use Angerwhale::Challenge;
 use Angerwhale::User::Anonymous;
