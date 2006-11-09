@@ -39,7 +39,7 @@ unlike($result, qr/scum|forgot/, 'login successful');
 ok(!-e $noncefile, 'nonce went away');
 
 # try to fail also!
-ok((open my $nf, '>', $noncefile), 'open a noncefile');
+ok((open $nf, '>', $noncefile), 'open a noncefile');
 $nonce->{date} = 'foo bar baz';
 ok(print {$nf} $nonce);
 ok(close $nf);
