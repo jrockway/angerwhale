@@ -37,6 +37,7 @@ requires
    'Digest::MD5'					    => 0,
    'Digest::SHA1'					    => 0,
    'File::Attributes'					    => 0,
+   'File::Attributes::Recursive'			    => 0,
    'File::CreationTime'					    => '2.03',
    'File::Find'						    => 0,
    'File::Slurp'					    => '9999.12',
