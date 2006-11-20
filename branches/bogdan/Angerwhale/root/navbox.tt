@@ -1,0 +1,62 @@
+<div id="sidebar_box">
+  <div class="sidebar_navigation">
+   <div class="box">
+   <h3>Navigation</h3>
+    <p>
+      [% IF page != "home" %]
+      <a href="[% base %]">Home</a>
+      [% ELSE %]
+      Home
+      [% END %]
+      |
+      [% IF page != "article_list" %]
+      <a href="[% base %]articles/">Articles</a>
+      [% ELSE %]
+      Articles
+      [% END %]
+    </p>
+   </div>
+  </div>
+  [% IF root.get_categories %]
+   <div class="box">
+    <h3>Categories</h3>
+    <ul>
+      [% FOREACH category_name = root.get_categories %]
+      <li>
+       [% IF category_name != category %]
+          <a href="[% c.uri_for("/categories", category_name) | html %]">
+      	        [% category_name | html %]</a>
+       [% ELSE %]
+          <div class="selected"><b>[% category_name | html %]</b></div>
+       [% END %]
+       </li>
+      [% END %]
+    </ul>
+   </div>
+  [% END %]
+  [% IF root.get_tags %]
+   <div class="box">
+    <h3><a href="[% c.uri_for("/tags") %]" 
+    	   style="text-decoration: none;">Tags</a></h3>
+    <ul>
+    [% FOREACH tag = root.get_tags %]
+      <li>
+	[% IF tag == tags %]
+	   [% IF tag_count == 1 %]
+	     	<div class="selected"><b>[% tag | html %]</b></div>
+	   [% ELSE %]
+                <a href="[% c.uri_for("/tags", tag) | html%]">
+                   <b>[% tag | html %]</b>
+                </a>
+	   [% END %]
+	[% ELSE %]
+	<a href="[% c.uri_for("/tags", tag) | html %]">
+	   [% tag | html %]
+	</a>
+	[% END %]
+     </li>
+     [% END %]
+    </ul>
+   </div>
+  [% END %]
+</div>
