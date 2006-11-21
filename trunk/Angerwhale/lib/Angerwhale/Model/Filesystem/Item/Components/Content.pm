@@ -42,6 +42,8 @@ sub raw_text {
     my $want_pgp = shift;
     my $text     = shift || scalar read_file( ''.$self->location,
 					      binmode => ':raw' );
+    $text = ' ' if !$text;
+    
     if(!$want_pgp){
 	my $data;
 	eval {
