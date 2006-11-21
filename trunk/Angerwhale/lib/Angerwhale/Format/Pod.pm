@@ -5,14 +5,17 @@ package Angerwhale::Format::Pod;
 use strict;
 use warnings;
 use IO::String;
-use Pod::Xhtml;
+use base 'Pod::Xhtml';
 use Pod::Simple::Text;
 use Angerwhale::Format::HTML;
 
 sub new {
     my $class = shift;
-    my $self  = \my $scalar;
-    bless $self, $class;
+    my $self  = $class->SUPER::new(TopLinks => 0,
+				   MakeIndex => 0,
+				   FragmentOnly => 1,
+				   TopHeading => 3,
+				  );
 }
 
 sub can_format {
@@ -26,8 +29,8 @@ sub can_format {
 sub types {
     my $self = shift;
     return 
-      ({type       => 'pod', 
-       description => 'Perl POD (Plain Old Documentation)'});
+      ({type        => 'pod', 
+	description => 'Perl POD (Plain Old Documentation)'});
 }
 
 sub format {
@@ -40,14 +43,7 @@ sub format {
     my $input  = IO::String->new($text);
     my $result = IO::String->new;
     
-    my $parser = Pod::Xhtml->new(
-				 TopLinks => 0,
-				 MakeIndex => 0,
-				 FragmentOnly => 1,
-				 TopHeading => 3,
-				);
-
-    $parser->parse_from_filehandle($input, $result);
+    $self->parse_from_filehandle($input, $result);
     
     return ${$result->string_ref};
 }
@@ -63,7 +59,6 @@ sub format_text {
     $pod_format->output_string( \$output );
     $text = "=pod\n\n$text" unless $text =~ /\n=[a-z]+\s/;
     $pod_format->parse_string_document($text);
-    
     my $text_format = Angerwhale::Format::PlainText->new;
     return $text_format->format_text($output, 'text');
 }
