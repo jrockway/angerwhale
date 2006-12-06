@@ -91,29 +91,25 @@ in C<< config->{max_feed_comments} >> (defaults to 30).
 sub comments : Local {
     my ($self, $c, $type, $unlimited) = @_;
     my $max_comments = $c->config->{max_feed_comments} || 30;
-    my $heap = Heap::Simple->new(order => '>');
     
     my @todo = $c->model('Filesystem')->get_articles;
     # todo contains articles first, but comments are added inside the loop
     
+    my @candidates; # store comments to show here, then sort at the end
     while(my $item = shift @todo){
-	$heap->insert($item) if $item->isa('Angerwhale::Model::Filesystem::Comment');
-	my @comments = $item->comments;
-	unshift @todo, @comments; # depth first (sort of)
+	push @candidates, $item
+	  if $item->isa('Angerwhale::Model::Filesystem::Comment');
+	unshift @todo, ($item->comments); # depth first (sort of)
     }
-    
-    my @comments;
-    eval {
-	while($max_comments-- || $unlimited){
-	    push @comments, $heap->extract_top;
-	}
-    }; # stop pushing if there heap empties before $max_comments
-    
+    @candidates = sort @candidates;
+
     $c->stash->{feed_title} = $c->config->{title}. " Comment Feed"
       if $c->config->{title};
-    
+
     $c->stash->{type} = $type;
-    $c->stash->{items} = [@comments];
+    $c->stash->{items} = @candidates > $max_comments ? 
+                             [@candidates[0..$max_comments-1]] :
+			     \@candidates;
     return;
 }
 
