@@ -16,6 +16,7 @@ requires
    'Catalyst::View::TT::ForceUTF8'   		            => 0,
    'Catalyst::Plugin::Cache::FastMmap'			    => 0,
    'Catalyst::Plugin::ConfigLoader'			    => 0,
+   'Catalyst::Plugin::ConfigLoader::Environment'	    => '0.01',
    'Catalyst::Plugin::DefaultEnd'			    => 0,
    'Catalyst::Plugin::Prototype'			    => 0,
    'Catalyst::Plugin::LogWarnings'                          => 0,
