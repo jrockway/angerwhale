@@ -7,33 +7,21 @@
 my $tmp;
 BEGIN {
     use Directory::Scratch;
-    use YAML::Syck qw(DumpFile Dump);
-    use FindBin qw($Bin);
-    
     $tmp  = Directory::Scratch->new;
     my $base = $tmp->base;
-    $ENV{'ANGERWHALE_CONFIG_LOCAL_SUFFIX'} = 'test';
-    
-    my $config = { base        => $base,
-		   title       => 'Unit Tests Are Fun',
-		   description => 'You should not be seeing this',
-		   feeds       => []
-		 };
-    
-    # this script it ROOT/t/application/articles_and_comments.t
-    # config goes in ROOT (../../test.yml)
-    DumpFile("$Bin/../../angerwhale_test.yml", $config);
+    $ENV{'ANGERWHALE_description'} = 'You should not be seeing this';
+    $ENV{'ANGERWHALE_base'} = $base;
+    $ENV{'ANGERWHALE_title'} = 'Unit Tests Are Fun';
 }
 
 ##
-use Test::More tests=>20;
+use Test::More tests=>19;
 ##
 
 use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
 use File::Attributes qw(get_attribute list_attributes);
 my $mech = Test::WWW::Mechanize::Catalyst->new;
 
-ok(-e 'angerwhale_test.yml', 'created fake config ok');
 $mech->get_ok('/');
 $mech->has_tag('title', 'Unit Tests Are Fun', 'correct title');
 $mech->content_contains('No articles to display.', 'no articles yet');
