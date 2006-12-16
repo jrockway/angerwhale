@@ -1,0 +1,44 @@
+[% USE Time %]
+<div class="comment">
+  <div class="comment_header">
+    <p class="title">[% comment.title | html %]</p>
+    <p class="info">Written by
+      <span class="author">[% comment.author.fullname | html %]</span>
+      <span class="keyid">([% comment.author.nice_id | html %])</span>
+      [% IF comment.signed %]
+        <a href="[% c.uri_for("/$comment.uri") | html %]/raw">
+      	 <img src="/static/lock.png" alt="[SIGNED]" />
+        </a>
+      [% ELSIF comment.signed == 0 %]
+        <a href="[% c.uri_for("/$comment.uri") | html %]/raw">
+      	 <img src="/static/bad_lock.png" alt="[BAD SIGNATURE]" />
+        </a>
+      [% END %]
+      on
+      <span class="date">[% comment.creation_time | time | html %]</span>
+    </p>
+  </div>
+  <div class="comment_body">
+    [% comment.text %]
+  </div>
+  [% IF readonly != 1 %]
+  <div class="comment_footer"><p>
+    [ [% IF comment.parent.uri != article.uri %]
+      	 <a href="[% c.uri_for("/$comment.parent.uri") | html %]">Parent</a> | 
+      [% END %]
+      <a href="[% c.uri_for("/$comment.uri") | html%]">Link</a> |
+      <a href="[% base %]feeds/comment/xml/[% comment.path %]">XML</a> |
+      <a href="[% base %]feeds/comment/yaml/[% comment.path %]">YAML</a> |
+      <a href="[% c.uri_for("/$comment.post_uri") | html %]">Reply...</a> ]
+  </p></div>
+  [% IF comment.comments %]
+  <div class="comment_children">
+    <ul>
+      [% FOREACH child = comment.comments %]
+      <li> [% INCLUDE comment.tt comment = child %] </li>
+      [% END %]
+    </ul>
+  </div>
+  [% END %]
+  [% END %]
+</div>
