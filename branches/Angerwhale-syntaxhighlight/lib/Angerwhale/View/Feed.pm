@@ -6,7 +6,6 @@ package Angerwhale::View::Feed;
 use strict;
 use warnings;
 use Scalar::Util qw(blessed);
-use YAML::Syck qw(Dump); # for debugging
 
 =head1 NAME
 

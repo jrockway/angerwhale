@@ -35,7 +35,7 @@ Original author:
 	margin: 0;
 	padding: 0;
 }
-html, body {
+body {
        background-color: #4f4f4f;
        color: #fff;
 }
@@ -401,10 +401,6 @@ h2 {
 	color: #2392e4;
 }
 
-#sidebar li a b {
-    margin: -6px -15px;
-}
-
 /* Footer */
 
 #footer p {
@@ -459,8 +455,3 @@ h2 {
 
 /* Fixes
 *******************************************************************************/
-
-#content textarea, #content input[type=text] {
-  width: 481px;
-  }
-

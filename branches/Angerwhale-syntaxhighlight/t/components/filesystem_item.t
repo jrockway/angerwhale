@@ -4,10 +4,9 @@
 
 use strict;
 use warnings;
-use Test::More tests => 13;
+use Test::More tests => 11;
 use Test::MockObject;
 use Directory::Scratch;
-use File::Attributes qw(set_attribute);
 
 use ok 'Angerwhale::Model::Filesystem::Item';
 
@@ -34,8 +33,3 @@ like($item->raw_text, qr/is an article/, 'body is ok');
 
 ok(!$item->signed, 'no signature that I can see...');
 
-eval {
-    set_attribute($path, title => 'foo bar baz');
-};
-ok(!$@, 'set attribute OK');
-is($item->title, 'foo bar baz', 'title was read from attribute');

@@ -23,11 +23,7 @@ while (my $link = shift @links) {
 	    eval {
 		Load($content);
 	    };
-	  SKIP:
-	    {
-		skip "No content returned", 1 if !$content;
-		ok(!$@, "no YAML errors on feed $url");
-	    }
+	    ok(!$@, "no YAML errors on feed $url");
 	}
 	
 	else {
