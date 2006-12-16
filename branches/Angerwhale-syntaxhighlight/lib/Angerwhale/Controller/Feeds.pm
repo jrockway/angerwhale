@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use YAML::Syck;
-use Heap::Simple;
 use XML::Feed;
 use HTTP::Date;
 use DateTime;
