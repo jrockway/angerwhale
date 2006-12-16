@@ -103,12 +103,22 @@ sub write_revision {
 	}
 	
 	$revision =~ /(\d+)$/;
-	die "No revision in repository! (got: $1)" if !$1;
+	die "No revision in repository! (got: $revision)" if !$1;
 	
 	print {$r} "$1" or die "Write error: $!";
 	close $r or die "Couldn't close file: $!";
     };
-    warn $@ if $@;
+    if ($@){
+	warn $@;
+	eval { 
+	    open(my $r, '>', 'root/revision.tt') 
+	      or die "Couldn't open root/revision.tt: $!";
+	    print {$r} "UNKNOWN" or die "Write error: $!";
+	    close $r or die "Couldn't close file: $!";
+	}
+    }
+    warn $@ if $@; # from the second eval
+    
     # if this fails, we'll just use the revision.tt that is bundled.
 }
 
