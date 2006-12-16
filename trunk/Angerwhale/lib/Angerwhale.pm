@@ -31,7 +31,7 @@ __END__
 
 =head1 NAME
 
-Angerwhale - Starts up the Catalyst framework.
+Angerwhale - Blog software without the unsightly database.
 
 =head1 SYNOPSIS
 
