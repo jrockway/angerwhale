@@ -8,7 +8,6 @@ use IO::String;
 use base 'Pod::Xhtml';
 use Pod::Simple::Text;
 use Angerwhale::Format::HTML;
-#use Text::VimColor;
 
 sub new {
     my $class = shift;
@@ -63,19 +62,5 @@ sub format_text {
     my $text_format = Angerwhale::Format::PlainText->new;
     return $text_format->format_text($output, 'text');
 }
-
-#sub verbatim {
-#    my $parser    = shift;
-#    my $paragraph = shift;
-#    my $line_num  = shift;
-#    my $pod_para  = shift;
-#
-#    my $text = $pod_para->text;
-#    $Text::VimColor::DEBUG = 1;
-#    my $syntax = Text::VimColor->new(string => $text); 
-#    $pod_para->text($syntax->html);
-#    
-#    $parser->parse_tree->append($pod_para);
-#}
 
 1;
