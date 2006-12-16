@@ -117,7 +117,15 @@ sub end : Private {
     return if $c->response->status != 200; # don't cache server errors
 
     if(!($c->response->body || $c->response->redirect)){
-	$c->response->content_type('application/xhtml+xml; charset=utf-8');
+
+	if(defined $c->config->{'html'} && 1 == $c->config->{'html'}){
+	    # work around mech's inability to handle "XML"
+	    $c->response->content_type('text/html; charset=utf-8');
+	}
+	else {
+	    $c->response->content_type('application/xhtml+xml; charset=utf-8');
+	}
+	
  	$c->stash->{generated_at} = time();
  	my $articles = $c->stash->{articles};
  	my $article  = $c->stash->{article};
