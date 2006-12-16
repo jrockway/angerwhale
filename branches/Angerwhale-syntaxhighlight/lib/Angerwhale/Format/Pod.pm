@@ -8,7 +8,7 @@ use IO::String;
 use Pod::Xhtml;
 use Pod::Simple::Text;
 use Angerwhale::Format::HTML;
-use Text::VimColor;
+#use Text::VimColor;
 
 sub new {
     my $class = shift;
