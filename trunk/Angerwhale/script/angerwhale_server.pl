@@ -2,7 +2,7 @@
 
 BEGIN { 
     $ENV{CATALYST_ENGINE} ||= 'HTTP';
-    $ENV{CATALYST_SCRIPT_GEN} = 29;
+    $ENV{CATALYST_SCRIPT_GEN} = 30;
     require Catalyst::Engine::HTTP;
 }  
 
