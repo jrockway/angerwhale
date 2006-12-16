@@ -240,24 +240,6 @@ sub users {
 
 }
 
-=head2 keyring
-
-Retruns a Crypt::OpenPGP::Keyring of all the cached users.  The users
-are refreshed if they need to be.
-
-=cut
-
-sub keyring {
-    my $self    = shift;
-    my @users   = $self->users;
-    my $keyring = Crypt::OpenPGP::KeyRing->new;
-
-    foreach my $user (@users){
-	
-    }
-
-}
-
 =head1 NAME
 
 Angerwhale::Model::UserStore - Catalyst Model
