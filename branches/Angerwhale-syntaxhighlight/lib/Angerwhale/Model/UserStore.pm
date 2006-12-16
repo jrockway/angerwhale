@@ -85,7 +85,7 @@ sub new {
 
 =head2 create_user_by_nice_id
 
-Creates a new user in the user store (by the OpenPGP keyid 0xcafebabe
+Creates a new user in the user store (by the OpenPGP keyid "cafebabe"
 [nice] or the Crypt::OpenPGP representation of that number [real]).
 Returns the C<Angerwhale::User> on success, exception on failure.
 
