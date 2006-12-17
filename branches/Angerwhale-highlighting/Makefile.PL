@@ -123,5 +123,11 @@ sub write_revision {
 }
 
 sub MY::postamble {
-    return "run:\n\tscript/angerwhale_server.pl -r -d";
+    return <<"POSTAMBLE";
+run:
+	script/angerwhale_server.pl -r -d
+profile:
+	perl -d:DProf script/angerwhale_server.pl -d
+POSTAMBLE
+    
 }
