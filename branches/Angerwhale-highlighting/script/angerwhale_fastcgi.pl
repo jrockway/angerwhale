@@ -20,7 +20,7 @@ GetOptions(
     'pidfile|p=s' => \$pidfile,
     'manager|M=s' => \$manager,
     'daemon|d'    => \$detach,
-    'keeperr|e'   => \$keep_stderr
+    'keeperr|e'   => \$keep_stderr,
 );
 
 pod2usage(1) if $help;
