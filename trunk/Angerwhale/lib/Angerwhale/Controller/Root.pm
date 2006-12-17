@@ -101,7 +101,6 @@ sub default : Private {
 }
 
 # global ending action
-
 sub end : Private {
     my ($self, $c) = @_;
     
