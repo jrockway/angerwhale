@@ -11,13 +11,6 @@
  * That doesn't mean that HTML with this CSS in is public domain.
  */
 
-body { color: black; background: white none }
-
-A:link { color: #00F; background: white none }
-A:visited { color: #909; background: white none }
-A:hover { color: #F00; background: white none }
-A:active { color: #F00; background: white none }
-
 .synComment    { color: #0000FF }
 .synConstant   { color: #FF00FF }
 .synIdentifier { color: #008B8B }
