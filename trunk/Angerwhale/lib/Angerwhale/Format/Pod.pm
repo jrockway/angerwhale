@@ -9,6 +9,7 @@ use base 'Pod::Xhtml';
 use Pod::Simple::Text;
 use Angerwhale::Format::HTML;
 use Text::VimColor;
+use List::Util qw(min);
 
 sub new {
     my $class = shift;
@@ -82,12 +83,44 @@ sub verbatim {
     my $paragraph = shift;
     my $line_num  = shift;
     my $pod_para  = shift;
-    
     my $text = $pod_para->text;
-    $Text::VimColor::DEBUG = 1;
-    my $syntax = Text::VimColor->new(filetype => 'perl', string => $text); 
-    my $html   = $syntax->html;
-    $pod_para->text(\$html);
+
+    # strip unnecessary leading spaces
+    my $spaces = -1; # count of leading spaces
+    my @lines = split /\n/, $text;
+    
+    # figure out how many that is
+    for my $line (@lines){
+	next if $line =~ /^\s*$/; # skip lines that are all spaces
+	$line =~ /^(\s+)/;
+	if($spaces == -1){
+	    $spaces = length $1;
+	}
+	else {
+	    $spaces = min($spaces, length $1);
+	}
+    }
+    
+    # strip 'em
+    $text = "";
+    for my $line (@lines){
+	$text .= $line and next
+	  if ($line =~ /^\s*$/);
+	
+	$text .= substr $line, $spaces;
+	$text .= "\n";
+    }
+
+    eval {
+	my $syntax = Text::VimColor->new(filetype => 'perl', string => $text); 
+	my $html   = $syntax->html;
+	$pod_para->text(\$html);
+    };
+    if($@){
+	# vimcolor didn't work, so just show the regular text
+	$pod_para->text($text);
+    }
+    
     $parser->parse_tree->append($pod_para);
 }
 
