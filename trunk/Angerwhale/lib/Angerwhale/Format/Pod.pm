@@ -64,6 +64,19 @@ sub format_text {
     return $text_format->format_text($output, 'text');
 }
 
+# HACK!
+sub _handleSequence {
+    my $self = shift;
+    my $seq  = shift;
+    
+    if(ref $seq eq 'SCALAR'){
+	return $$seq; # skip escaping step, since this is already HTML
+    }
+    else {
+	return $self->SUPER::_handleSequence($seq);
+    }
+}
+
 sub verbatim {
     my $parser    = shift;
     my $paragraph = shift;
@@ -73,10 +86,8 @@ sub verbatim {
     my $text = $pod_para->text;
     $Text::VimColor::DEBUG = 1;
     my $syntax = Text::VimColor->new(filetype => 'perl', string => $text); 
-    warn $syntax->html;
-    
-    $pod_para->text($syntax->html);
-    return "123";
+    my $html   = $syntax->html;
+    $pod_para->text(\$html);
     $parser->parse_tree->append($pod_para);
 }
 
