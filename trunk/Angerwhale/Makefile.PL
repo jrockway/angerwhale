@@ -123,7 +123,7 @@ sub write_revision {
 }
 
 sub MY::postamble {
-    return <<'POSTAMBLE';
+    return <<"POSTAMBLE";
 run:
 	script/angerwhale_server.pl -r -d
 profile:
