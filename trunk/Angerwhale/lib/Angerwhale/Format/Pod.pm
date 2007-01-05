@@ -88,6 +88,14 @@ sub verbatim {
     # strip unnecessary leading spaces
     my $spaces = -1; # count of leading spaces
     my @lines = split /\n/, $text;
+
+    my $lang = shift @lines;
+    if($lang =~ /\s+lang:(\w+)\s*$/){
+	$lang = $1;
+    }
+    else {
+	unshift @lines, $lang;
+    }
     
     # figure out how many that is
     for my $line (@lines){
@@ -110,17 +118,19 @@ sub verbatim {
 	$text .= substr $line, $spaces;
 	$text .= "\n";
     }
-
-    eval {
-	my $syntax = Text::VimColor->new(filetype => 'perl', string => $text); 
-	my $html   = $syntax->html;
-	$pod_para->text(\$html);
-    };
-    if($@){
-	# vimcolor didn't work, so just show the regular text
-	$pod_para->text($text);
-    }
+    $text =~ s/^\n+//; # strip unnecessary newlines
+    $text =~ s/\n+$//; # strip unnecessary newlines
     
+    if($lang){
+	eval {
+	    my $syntax = 
+	      Text::VimColor->new(filetype => $lang, string => $text); 
+	    my $html   = $syntax->html;
+	    $text = \$html;
+	};
+    }
+    # if vimcolor didn't work, just show the regular text
+    $pod_para->text($text);
     $parser->parse_tree->append($pod_para);
 }
 
