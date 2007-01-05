@@ -12,19 +12,23 @@ BEGIN {
     use Directory::Scratch;
     $tmp  = Directory::Scratch->new;
     my $base = $tmp->base;
-    $ENV{'ANGERWHALE_description'} = 'You should not be seeing this';
-    $ENV{'ANGERWHALE_base'} = $base;
-    $ENV{'ANGERWHALE_title'} = 'Unit Tests Are Fun';
+    
+    $blog_title = "Unit Tests Are Fun - $$";
+    $blog_desc  = 'You should not be seeing this.';
+    
+    $ENV{'ANGERWHALE_description'}  = $blog_desc;
+    $ENV{'ANGERWHALE_base'}   = $base;
+    $ENV{'ANGERWHALE_title'}  = $blog_title;
+    $ENV{'ANGERWHALE_html'}   = 1;
 }
 
 ##
-use Test::More tests=>19;
+use Test::More tests=>181;
 ##
 
 use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
 use File::Attributes qw(get_attribute list_attributes);
 my $mech = Test::WWW::Mechanize::Catalyst->new;
-
 $mech->get_ok('/');
 $mech->has_tag('title', $blog_title, 'correct title');
 $mech->content_contains($blog_desc, 'description');
