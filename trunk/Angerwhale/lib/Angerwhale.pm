@@ -4,7 +4,8 @@ use strict;
 use warnings;
 use File::Temp qw(tempdir);
 use Catalyst qw/Unicode ConfigLoader Scheduler Static::Simple
-		Cache::FastMmap LogWarnings Setenv ConfigLoader::Environment/;
+		Cache::FastMmap LogWarnings Setenv 
+		ConfigLoader::Environment C3/;
 
 our $VERSION = '0.01_01';
 

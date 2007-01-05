@@ -72,9 +72,11 @@ sub verbatim {
     
     my $text = $pod_para->text;
     $Text::VimColor::DEBUG = 1;
-    my $syntax = Text::VimColor->new(string => $text); 
-    $pod_para->text($syntax->html);
+    my $syntax = Text::VimColor->new(filetype => 'perl', string => $text); 
+    warn $syntax->html;
     
+    $pod_para->text($syntax->html);
+    return "123";
     $parser->parse_tree->append($pod_para);
 }
 
