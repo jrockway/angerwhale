@@ -47,8 +47,9 @@ sub process : Local {
 	      _signed_text($input);
       };
     if(!$nonce_data){
-	$c->stash->{error} = "I couldn't read the signature.  Try again?";
-	$c->detach('login_page');
+	$c->flash->{error} = "I couldn't read the signature.  Try again?";
+	$c->res->redirect($c->uri_for('/login'));
+	$c->detach();
     }
     
     my $pgp = Crypt::OpenPGP->new(KeyServer       => $keyserver,
@@ -56,10 +57,9 @@ sub process : Local {
 				 );
     my ($long_id, $sig) = $pgp->verify(Signature => $input);
     if(!$nonce_data || !$sig){
-	$c->stash->{error} = "There was a problem verifying the signature.  Try again?";
-	$c->detach('login_page');
-	#$c->response->body('You forgot to sign the message.');
-	#return;
+	$c->flash->{error} = 'There was a problem verifying the signature.';
+	$c->res->redirect($c->uri_for('/login'));
+	$c->detach();
     }
 
     my $sig_ok = $sig && $long_id;
@@ -90,19 +90,22 @@ sub process : Local {
 	return;
     }
 
-    my $user = $c->model('UserStore')->get_user_by_real_id($key_id);
-    $c->model('UserStore')->refresh_user($user);
+    my $user;
+    eval {
+	$user = $c->model('UserStore')->get_user_by_real_id($key_id);
+	$c->model('UserStore')->refresh_user($user);
+    };
+    if($@){
+	$c->flash->{error} = 
+	  'Your data could not be loaded from a keyserver.'.
+	  '  Please push your key to one and try again.';
+	$c->res->redirect($c->uri_for('/login'));
+	$c->detach();
+    }
     $c->session->{user} = $user;
-    
     $c->log->info("successful login for ". $user->fullname.
 		  "($nice_key_id)");
-    
-    $c->response->body("Passed!  You are ". $user->fullname.
-		       " (0x". $user->nice_id. ").");
-    
     $c->response->redirect($c->uri_for('/'));
-    
-    return 1;
 }
 
 sub login_page : Private {

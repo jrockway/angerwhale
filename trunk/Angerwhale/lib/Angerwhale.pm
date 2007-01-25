@@ -13,6 +13,8 @@ our $VERSION = '0.01_01';
 
 binmode STDOUT, ':utf8';
 
+__PACKAGE__->config->{session} = {flash_to_stash => 1};
+
 __PACKAGE__->config({name => __PACKAGE__});
 __PACKAGE__->config->{static}->{mime_types} = 
   {
