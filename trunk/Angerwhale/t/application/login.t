@@ -34,8 +34,10 @@ ok(close $nf);
 
 $signed = uri_escape($signed);
 ok(get('/login'), 'can get login page');
-ok(my $result = get("/login/process?login=$signed"));
-unlike($result, qr/scum|forgot/, 'login successful');
+{
+    ok(my $result = get("/login/process?login=$signed"));
+    unlike($result, qr/scum|forgot/, 'login successful');
+}
 ok(!-e $noncefile, 'nonce went away');
 
 # try to fail also!
@@ -43,8 +45,10 @@ ok((open $nf, '>', $noncefile), 'open a noncefile');
 $nonce->{date} = 'foo bar baz';
 ok(print {$nf} $nonce);
 ok(close $nf);
-ok(my $result = get("/login/process?login=$signed"));
-like($result, qr/scum/, 'login UNsuccessful');
+{
+    ok(my $result = get("/login/process?login=$signed"));
+    like($result, qr/scum/, 'login UNsuccessful');
+}
 ok(!-e $noncefile, 'nonce went away');
 
 
