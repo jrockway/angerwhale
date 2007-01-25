@@ -11,19 +11,19 @@ span.Char {
  color: #ff00ff;
 }
 span.Comment {
- color: #aa7700;
+ color: #cc9900;
 }
 span.DataType {
  color: #00ff55;
 }
 span.DecVal {
- color: #00007f;
+ color: #00ffff;
 }
 span.Error {
  color: #ff0000;
 }
 span.Float {
- color: #00007f;
+ color: #5599ff;
 }
 span.Function {
  color: #3344ff;
@@ -33,6 +33,11 @@ span.IString {
 }
 span.Keyword {
  color: #11ffff;
+ font-weight: bold;
+}
+span.Operator {
+ color: #00ff33;
+ font-weight: bold;
 }
 span.Others {
  color: #b03060;
@@ -42,9 +47,10 @@ span.RegionMarker {
 }
 span.Reserved {
  color: #9b30ff;
+ font-weight: bold;
 }
 span.String {
- color: #ff0000;
+ color: #ffaa55;
 }
 span.Variable {
  color: #ffff00;

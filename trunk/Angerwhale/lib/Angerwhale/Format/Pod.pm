@@ -93,7 +93,7 @@ sub verbatim {
     my $spaces = -1; # count of leading spaces
     my @lines = split /\n/, $text;
     
-    if($lines[0] && $lines[0] =~ m{\s*lang:(\w+)\s*$}){
+    if($lines[0] && $lines[0] =~ m{\s*lang:([^.]+)\s*$}){
 	
 	if (!defined $1 || !$1 || $1 eq 'undef'){
 	    $parser->lang(0) 
