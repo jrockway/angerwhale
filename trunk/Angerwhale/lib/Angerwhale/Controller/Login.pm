@@ -23,9 +23,10 @@ See L<Angerwhale>
 sub nonce : Local {
     my ( $self, $c ) = @_;
     
-    my $nonce = Angerwhale::Challenge->new({uri => $c->request->base->as_string});    
-    $c->model('NonceStore')->new_nonce($nonce);
-    $c->stash->{nonce} = $nonce;
+    my $nonce = Angerwhale::Challenge->new({uri => 
+					    $c->request->base->as_string});    
+    $c->session->{nonce} = $nonce; # for verifier
+    $c->stash->{nonce}   = $nonce; # for template
     
     if(!$c->stash->{template}){
 	$c->response->content_type('text/plain');
@@ -50,8 +51,9 @@ sub process : Local {
 	$c->detach('login_page');
     }
     
-    my $pgp = Crypt::OpenPGP->new(KeyServer => $keyserver,
-				  AutoKeyRetrieve => 1);
+    my $pgp = Crypt::OpenPGP->new(KeyServer       => $keyserver,
+				  AutoKeyRetrieve => 1
+				 );
     my ($long_id, $sig) = $pgp->verify(Signature => $input);
     if(!$nonce_data || !$sig){
 	$c->stash->{error} = "There was a problem verifying the signature.  Try again?";
@@ -69,8 +71,10 @@ sub process : Local {
     eval {
 	my $challenge = Load($nonce_data) 
 	  or die "couldn't deserialize request";
-
-	my $nonce_ok = $c->model("NonceStore")->verify_nonce($challenge);
+	my $nonce = $c->session->{nonce};
+	$c->session->{nonce} = undef;
+	
+	my $nonce_ok = ($nonce == $challenge);
 	$c->log->debug("$nice_key_id: nonce verified OK (was $challenge)") 
 	  if $nonce_ok;
 	$c->log->debug("$nice_key_id: Signature was valid") 
@@ -85,23 +89,20 @@ sub process : Local {
 	$c->response->body("You cheating scum!  You are NOT $nice_key_id!");
 	return;
     }
-    else {
-	my $user = $c->model('UserStore')->get_user_by_real_id($key_id);
-	my $session_id = $c->model('NonceStore')->store_session($user);
-	$c->model('UserStore')->refresh_user($user);
-	
-	$c->log->info("successful login for ". $user->fullname.
-		      "($nice_key_id)");
-	$c->log->debug("new session $session_id created");
 
-	$c->response->body("Passed!  You are ". $user->fullname.
-			   " (0x". $user->nice_id. ").");
-
-	$c->response->cookies->{sid} = {value => "$session_id"};
-	$c->response->redirect($c->uri_for('/'));
-	
-	return 1;
-    }
+    my $user = $c->model('UserStore')->get_user_by_real_id($key_id);
+    $c->model('UserStore')->refresh_user($user);
+    $c->session->{user} = $user;
+    
+    $c->log->info("successful login for ". $user->fullname.
+		  "($nice_key_id)");
+    
+    $c->response->body("Passed!  You are ". $user->fullname.
+		       " (0x". $user->nice_id. ").");
+    
+    $c->response->redirect($c->uri_for('/'));
+    
+    return 1;
 }
 
 sub login_page : Private {

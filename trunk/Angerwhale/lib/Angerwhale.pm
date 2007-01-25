@@ -3,9 +3,11 @@ package Angerwhale;
 use strict;
 use warnings;
 use File::Temp qw(tempdir);
-use Catalyst qw/Unicode ConfigLoader Scheduler Static::Simple
-		Cache::FastMmap LogWarnings Setenv 
-		ConfigLoader::Environment C3/;
+use Catalyst qw/Unicode ConfigLoader Static::Simple
+		Cache::FastMmap Setenv
+                Session::Store::File Session::State::Cookie Session
+		ConfigLoader::Environment/;
+#XXX: add C3 and LogWarnings back
 
 our $VERSION = '0.01_01';
 
@@ -23,8 +25,6 @@ __PACKAGE__->config->{cache}->{expires} = 43200; # 12 hours
 __PACKAGE__->config({VERSION => $VERSION});
 
 __PACKAGE__->setup;
-__PACKAGE__->schedule( at    => '25 * * * *',
-		       event => '/scheduledevents/clean_sessions', );
 
 1;
 

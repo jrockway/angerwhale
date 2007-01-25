@@ -8,7 +8,7 @@ use warnings;
 use YAML::Syck;
 
 my $mech = Test::WWW::Mechanize::Catalyst->new;
-$mech->get_ok('/feeds');
+$mech->get_ok('http://localhost/feeds');
 
 my @links = $mech->followable_links();
 while (my $link = shift @links) {

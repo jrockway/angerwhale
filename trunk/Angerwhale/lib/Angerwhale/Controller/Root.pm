@@ -33,25 +33,8 @@ Root Controller for this Catalyst based application.
 
 sub auto : Private {
     my ($self, $c) = @_;
-    my $sid = $c->request->cookie("sid");
-    if(defined $sid){
-	eval {
-	    $sid = $sid->value;
-	    $c->log->debug("got session cookie $sid");
-	    my $uid = $c->model('NonceStore')->unstore_session($sid);
-	    $c->stash->{user} = $c->model("UserStore")->
-	      get_user_by_nice_id($uid);
-	    $c->log->debug("got user $uid, ". $c->stash->{user}->fullname);
-	};
-	if ($@){
-	    $c->log->debug("Failed to restore session $sid: $@");
-	    $c->response->cookies->{sid} = {value   => q{},
-					    expires => -1};
-
-	}
-    }
     $c->stash->{root} = $c->model('Filesystem');
-
+    $c->stash->{user} = $c->session->{user};
     
     # not implemented yet, sort of
 #     # update type information

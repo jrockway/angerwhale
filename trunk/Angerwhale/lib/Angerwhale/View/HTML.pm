@@ -6,7 +6,7 @@ use File::Temp;
 
 __PACKAGE__->config( 
 		    TOLERANT => 1,
-		    #TIMER => 1, 
+		    TIMER => 0, 
 		    STRICT_CONTENT_TYPE => 1,
 		    RECURSION => 1,
 		    DEBUG => 1,    

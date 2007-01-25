@@ -24,6 +24,9 @@ requires
    'Catalyst::Plugin::Setenv'			            => 0,
    'Catalyst::Plugin::Static::Simple'			    => 0,
    'Catalyst::Plugin::Unicode'				    => '0.2',
+   'Catalyst::Plugin::Session::Store::File'                 => 0,
+   'Catalyst::Plugin::Session::State::Cookie'               => 0,
+   'Catalyst::Plugin::Session'                              => 0,
    'Catalyst::Model::XML::Feed'                             => '0.01',
    'Class::C3'                                              => 0,
    'Crypt::Blowfish'					    => 0,
@@ -77,6 +80,8 @@ build_requires
    'Test::XML::Valid'					    => 0,
    'Test::WWW::Mechanize::Catalyst'                         => 0,
   );
+
+features( 'Syntax-highlight entires' => [ 'Text::VimColor' => 0 ] );
 
 catalyst();
 install_script(glob('script/*.pl'));

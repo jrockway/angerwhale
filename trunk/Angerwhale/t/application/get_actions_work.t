@@ -4,7 +4,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 46;
+use Test::More tests => 45;
 use HTML::Tidy;
 use Test::HTML::Tidy;
 use Test::XML::Valid;
@@ -24,7 +24,6 @@ use ok q"Angerwhale::Controller::Feeds";
 use ok q"Angerwhale::Controller::Login";
 use ok q"Angerwhale::Controller::Tags";
 use ok q"Angerwhale::Controller::Users";
-use ok q"Angerwhale::Controller::ScheduledEvents";
 use ok q"Angerwhale::Controller::Root";
 
 my @html_urls = qw(/ /tags /tags/fake /feeds/

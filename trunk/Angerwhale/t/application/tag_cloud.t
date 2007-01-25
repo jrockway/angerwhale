@@ -9,7 +9,7 @@ use warnings;
 use URI;
 
 my $mech = Test::WWW::Mechanize::Catalyst->new;
-$mech->get_ok('/tags');
+$mech->get_ok('http://localhost/tags');
 
 # sometimes tag cloud links link back to this page instead of the
 # right page.  test all links to make sure they don't go here.

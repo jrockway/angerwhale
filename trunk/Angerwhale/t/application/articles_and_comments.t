@@ -29,7 +29,7 @@ use Test::More tests=>181;
 use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
 use File::Attributes qw(get_attribute list_attributes);
 my $mech = Test::WWW::Mechanize::Catalyst->new;
-$mech->get_ok('/');
+$mech->get_ok('http://localhost/');
 $mech->has_tag('title', $blog_title, 'correct title');
 $mech->content_contains($blog_desc, 'description');
 $mech->content_contains('No articles to display.', 'no articles yet');
@@ -42,7 +42,7 @@ for my $round (1..3){ # 23 tests
     ok($article, 'created article OK');
     is(scalar list_attributes($article), 0, 'no attributes');
 
-    $mech->get_ok('/');
+    $mech->get_ok('http://localhost/');
 
     is(get_attribute($article, 'title'), undef, 'title was not set');
     my $guid = get_attribute($article, 'guid');
@@ -54,7 +54,7 @@ for my $round (1..3){ # 23 tests
     $mech->content_contains('This is a test article.', 'page contains article');
 
     # -- try the article page now
-    $mech->get_ok("/articles/$a_title");
+    $mech->get_ok("http://localhost/articles/$a_title");
     $mech->content_contains($a_title, 'article page contains its title');
     $mech->content_contains('This is a test article.', 'page contains article');
     $mech->content_contains('no comments', 'page contains no comments');
