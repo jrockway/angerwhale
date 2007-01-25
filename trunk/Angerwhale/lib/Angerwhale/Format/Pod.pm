@@ -5,7 +5,7 @@ package Angerwhale::Format::Pod;
 use strict;
 use warnings;
 use IO::String;
-use base 'Pod::Xhtml';
+use base qw(Pod::Xhtml Class::Accessor);
 use Pod::Simple::Text;
 use Angerwhale::Format::HTML;
 use List::Util qw(min);
@@ -15,6 +15,9 @@ eval {
     require Text::VimColor;
     Text::VimColor->import();
 };
+
+__PACKAGE__->mk_accessors('lang'); # what lang vimcolor should use
+
 
 sub new {
     my $class = shift;
@@ -93,13 +96,9 @@ sub verbatim {
     # strip unnecessary leading spaces
     my $spaces = -1; # count of leading spaces
     my @lines = split /\n/, $text;
-
-    my $lang = shift @lines;
-    if($lang =~ /\s+lang:(\w+)\s*$/){
-	$lang = $1;
-    }
-    else {
-	unshift @lines, $lang;
+    
+    if($lines[0] && $lines[0] =~ /\s+lang:(\w+)\s*$/){
+	$parser->lang($1);
     }
     
     # figure out how many that is
@@ -126,10 +125,10 @@ sub verbatim {
     $text =~ s/^\n+//; # strip unnecessary newlines
     $text =~ s/\n+$//; # strip unnecessary newlines
     
-    if($lang){
+    if($parser->lang){
 	eval {
 	    my $syntax = 
-	      Text::VimColor->new(filetype => $lang, string => $text); 
+	      Text::VimColor->new(filetype => $parser->lang, string => $text); 
 	    my $html   = $syntax->html;
 	    $text = \$html;
 	};
