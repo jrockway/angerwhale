@@ -8,8 +8,13 @@ use IO::String;
 use base 'Pod::Xhtml';
 use Pod::Simple::Text;
 use Angerwhale::Format::HTML;
-use Text::VimColor;
 use List::Util qw(min);
+
+# load VimColor if we have it
+eval { 
+    require Text::VimColor;
+    Text::VimColor->import();
+};
 
 sub new {
     my $class = shift;
