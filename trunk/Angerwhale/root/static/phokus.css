@@ -174,16 +174,17 @@ blockquote {
 	margin: 1em;
 	padding: 0 1em;
 }
-pre,
 code {
-        white-space: pre;
-	background: #e5f6ff;
-	color: #074f88;
-	font-family: Courier, monospace;
+	white-space: pre;
+	background: #c2e5ff;
 }
 pre {
-        font-size: 85%;
-	border: 1px solid #c2e5ff;
+        white-space: pre;
+	background: #0a0a0a;
+	color: #cccccc;
+	font-family: monospace;
+        font-size: 93%;
+	border: 1px solid #555555;
 	overflow: auto;
 	padding: 10px;
 	width: 479px;

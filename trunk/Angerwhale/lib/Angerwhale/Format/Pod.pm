@@ -93,7 +93,7 @@ sub verbatim {
     my $spaces = -1; # count of leading spaces
     my @lines = split /\n/, $text;
     
-    if($lines[0] && $lines[0] =~ /\s*lang:(.+)\s*$/){
+    if($lines[0] && $lines[0] =~ m{\s*lang:(\w+)\s*$}){
 	
 	if (!defined $1 || !$1 || $1 eq 'undef'){
 	    $parser->lang(0) 
@@ -141,26 +141,26 @@ sub verbatim {
 				 q{'} => "&apos;",
 				 q{"} => "&quot;",
 				},
-		format_table => {
+	       format_table => {
 				 Alert => ['<font color="#0000ff">', '</font>'],
 				 BaseN => ['<font color="#007f00">', '</font>'],
 				 BString => ['<font color="#c9a7ff">', '</font>'],
 				 Char => ['<font color="#ff00ff">', '</font>'],
-				 Comment => ['<font color="#7f7f7f"><i>', '</i></font>'],
-				 DataType => ['<font color="#0000ff">', '</font>'],
+				 Comment => ['<font color="#aa7700">', '</font>'],
+				 DataType => ['<font color="#00ff55">', '</font>'],
 				 DecVal => ['<font color="#00007f">', '</font>'],
 				 Error => ['<font color="#ff0000"><b><i>', '</i></b></font>'],
 				 Float => ['<font color="#00007f">', '</font>'],
-				 Function => ['<font color="#007f00">', '</font>'],
+				 Function => ['<font color="#3344ff">', '</font>'],
 				 IString => ['<font color="#ff0000">', ""],
-				 Keyword => ['<b>', '</b>'],
+				 Keyword => ['<font color="#11ffff"><b>', '</b></font>'],
 				 Normal => ["", ""],
 				 Operator => ['<font color="#ffa500">', '</font>'],
 				 Others => ['<font color="#b03060">', '</font>'],
 				 RegionMarker => ['<font color="#96b9ff"><i>', '</i></font>'],
 				 Reserved => ['<font color="#9b30ff"><b>', '</b></font>'],
 				 String => ['<font color="#ff0000">', '</font>'],
-				 Variable => ['<font color="#0000ff"><b>', '</b></font>'],
+				 Variable => ['<font color="#ffff00"><b>', '</b></font>'],
 				 Warning => ['<font color="#0000ff"><b><i>', '</b></i></font>'],
 				},
 	      );
