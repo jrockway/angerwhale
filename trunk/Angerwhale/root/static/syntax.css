@@ -1,0 +1,54 @@
+span.Alert {
+ color: #0000ff;
+}
+span.BaseN {
+ color: #007f00;
+}
+span.BString {
+ color: #c9a7ff;
+}
+span.Char {
+ color: #ff00ff;
+}
+span.Comment {
+ color: #aa7700;
+}
+span.DataType {
+ color: #00ff55;
+}
+span.DecVal {
+ color: #00007f;
+}
+span.Error {
+ color: #ff0000;
+}
+span.Float {
+ color: #00007f;
+}
+span.Function {
+ color: #3344ff;
+}
+span.IString {
+ color: #ff0000;
+}
+span.Keyword {
+ color: #11ffff;
+}
+span.Others {
+ color: #b03060;
+}
+span.RegionMarker {
+ color: #96b9ff;
+}
+span.Reserved {
+ color: #9b30ff;
+}
+span.String {
+ color: #ff0000;
+}
+span.Variable {
+ color: #ffff00;
+}
+span.Warning {
+ color: #0000ff;
+}

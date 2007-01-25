@@ -6,8 +6,10 @@
   <head>
     <title>[% title | html %]</title>
     <link rel="stylesheet" href="[% base %]static/phokus.css"
+    type="text/css" />    
+    <link rel="stylesheet" href="[% base %]static/syntax.css"
     type="text/css" />
-    
+
     <link rel="alternate" href="[% base %]feeds/articles/atom"
 	  type="application/atom+xml" title="RSS Feed"/>
     <link rel="alternate" href="[% base %]feeds/comments/atom"
