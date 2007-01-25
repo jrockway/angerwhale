@@ -9,14 +9,10 @@ use base qw(Pod::Xhtml Class::Accessor);
 use Pod::Simple::Text;
 use Angerwhale::Format::HTML;
 use List::Util qw(min);
+use Syntax::Highlight::Engine::Kate;
+use Syntax::Highlight::Engine::Kate::All;
 
-# load VimColor if we have it
-eval { 
-    require Text::VimColor;
-    Text::VimColor->import();
-};
-
-__PACKAGE__->mk_accessors('lang'); # what lang vimcolor should use
+__PACKAGE__->mk_accessors('lang'); # what lang highlighter should use
 
 
 sub new {
@@ -46,7 +42,7 @@ sub types {
 sub format {
     my $self = shift;
     my $text = shift;
-    my $type = shift;
+    my $type = shift; # TODO: copy this into lang?
 
     $text = "=pod\n\n$text" unless $text =~ /\n=[a-z]+\s/;
 
@@ -97,8 +93,16 @@ sub verbatim {
     my $spaces = -1; # count of leading spaces
     my @lines = split /\n/, $text;
     
-    if($lines[0] && $lines[0] =~ /\s+lang:(\w+)\s*$/){
-	$parser->lang($1);
+    if($lines[0] && $lines[0] =~ /\s*lang:(.+)\s*$/){
+	
+	if (!defined $1 || !$1 || $1 eq 'undef'){
+	    $parser->lang(0) 
+	}
+	else { 
+	    $parser->lang(ucfirst $1);
+	}
+	
+	shift @lines;
     }
     
     # figure out how many that is
@@ -125,14 +129,50 @@ sub verbatim {
     $text =~ s/^\n+//; # strip unnecessary newlines
     $text =~ s/\n+$//; # strip unnecessary newlines
     
+    warn "using lang: ". $parser->lang;
     if($parser->lang){
-	eval {
-	    my $syntax = 
-	      Text::VimColor->new(filetype => $parser->lang, string => $text); 
-	    my $html   = $syntax->html;
+	eval { 
+	    my $hl = Syntax::Highlight::Engine::Kate->new
+	      (language => 'Perl',
+	       substitutions => {
+				 "<"  => "&lt;",
+				 ">"  => "&gt;",
+				 "&"  => "&amp;",
+				 q{'} => "&apos;",
+				 q{"} => "&quot;",
+				},
+		format_table => {
+				 Alert => ['<font color="#0000ff">', '</font>'],
+				 BaseN => ['<font color="#007f00">', '</font>'],
+				 BString => ['<font color="#c9a7ff">', '</font>'],
+				 Char => ['<font color="#ff00ff">', '</font>'],
+				 Comment => ['<font color="#7f7f7f"><i>', '</i></font>'],
+				 DataType => ['<font color="#0000ff">', '</font>'],
+				 DecVal => ['<font color="#00007f">', '</font>'],
+				 Error => ['<font color="#ff0000"><b><i>', '</i></b></font>'],
+				 Float => ['<font color="#00007f">', '</font>'],
+				 Function => ['<font color="#007f00">', '</font>'],
+				 IString => ['<font color="#ff0000">', ""],
+				 Keyword => ['<b>', '</b>'],
+				 Normal => ["", ""],
+				 Operator => ['<font color="#ffa500">', '</font>'],
+				 Others => ['<font color="#b03060">', '</font>'],
+				 RegionMarker => ['<font color="#96b9ff"><i>', '</i></font>'],
+				 Reserved => ['<font color="#9b30ff"><b>', '</b></font>'],
+				 String => ['<font color="#ff0000">', '</font>'],
+				 Variable => ['<font color="#0000ff"><b>', '</b></font>'],
+				 Warning => ['<font color="#0000ff"><b><i>', '</b></i></font>'],
+				},
+	      );
+	    
+	    my $html   = $hl->highlightText($text);
 	    $text = \$html;
 	};
+	if($@){
+	  warn $@;
+      }
     }
+    
     # if vimcolor didn't work, just show the regular text
     $pod_para->text($text);
     $parser->parse_tree->append($pod_para);

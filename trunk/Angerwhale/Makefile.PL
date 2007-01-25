@@ -54,6 +54,7 @@ requires
    'Pod::Simple::Text'					    => 0,
    'Quantum::Superpositions'				    => 0,
    'Scalar::Util'					    => 0,
+   'Syntax::Highlight::Engine::Kate'                        => 0,
    'Template::Plugin::Lingua::EN::Inflect'		    => 0,
    'Template::Plugin::Filter'				    => 0,
    'Text::Autoformat'					    => 0,
@@ -81,7 +82,6 @@ build_requires
    'Test::WWW::Mechanize::Catalyst'                         => 0,
   );
 
-features( 'Syntax-highlight entires' => [ 'Text::VimColor' => 0 ] );
 
 catalyst();
 install_script(glob('script/*.pl'));
