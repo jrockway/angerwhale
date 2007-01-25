@@ -51,9 +51,6 @@ ok(close $nf);
 }
 ok(!-e $noncefile, 'nonce went away');
 
-
-
-
 sub get_data {
     return <<'NONCE', <<'SIGNED';
 --- !!perl/hash:Angerwhale::Challenge
