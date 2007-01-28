@@ -6,7 +6,7 @@ package Angerwhale::Filter::Time;
 use strict;
 use warnings;
 use base qw(Template::Plugin::Filter);
-#use Time::Duration qw(ago);
+use Time::Duration qw(ago);
 use utf8;
 
 my @daynames = qw(日 月 火 水 木 金 土);
@@ -42,13 +42,12 @@ sub filter {
     
     $wkday = $daynames[$wkday%7];
 
-#    my $ago = time() - $time;
-#    if($ago < 86_400){
-#	return ago($ago);
-#    }
-#    else {
-    return "$year-$month-$day at $hour:$minute $ampm";
-#    }
+    #my $ago = time() - $time;
+    #if($ago < 86_400){
+    #	return ago($ago);
+    #}
+    
+    return "$year-$month-$day ($wkday) at $hour:$minute $ampm";
 }
 
 1;
