@@ -106,8 +106,11 @@ sub post : Local {
 
 	    $c->stash->{preview_comment} = 
 	      Angerwhale::Model::Filesystem::PreviewComment->
-		  new($c, $title, $body, $type);
-	    
+		  new({context => $c
+		       title   => $title,
+		       body    => $body, 
+		       type    => $type });
+		      
 	    $c->stash->{body} = $body;
 	}
 	else {

@@ -26,7 +26,10 @@ $c->set_always('cache', $cache);
 
 my $body = do {local $/; <DATA> };
 my $comment = Angerwhale::Model::Filesystem::PreviewComment
-  ->new($c, 'test', $body, 'text');
+  ->new({context => $c,
+         title   => 'test', 
+	 body    => $body, 
+	 type    => 'text'});
 
 isa_ok($comment, 'Angerwhale::Model::Filesystem::PreviewComment');
 is($comment->type, 'text', 'type is text');

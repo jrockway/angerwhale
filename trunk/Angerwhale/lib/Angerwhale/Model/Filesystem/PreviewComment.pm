@@ -9,33 +9,21 @@ use base qw(Angerwhale::Model::Filesystem::Comment Class::Accessor);
 use Angerwhale::User::Anonymous;
 use Carp;
 
-__PACKAGE__->mk_accessors(qw|preview_title preview_body preview_type
+__PACKAGE__->mk_accessors(qw|title preview_body type
 			     cache userstore|);
 
 sub new {
     my $class	 = shift;
-    my $context	 = shift;
-    my $title	 = shift;
-    my $body	 = shift;
-    my $type	 = shift;
-    
-    my $self = {};    
+    my $self     = shift;
     bless $self, $class;    
     
-    $self->context($context);
-    $self->preview_title($title);
-    $self->preview_body($body);
-    $self->preview_type($type);
-    $self->cache($context->cache);
-    $self->userstore($context->model('UserStore'));
+    $self->preview_body($self->{body});
+    $self->cache($self->context->cache);
+    $self->userstore($self->context->model('UserStore'));
     
     return $self;
 }
 
-sub type {
-    my $self = shift;
-    return $self->preview_type;
-}
 
 sub creation_time {
     return time();
@@ -49,11 +37,6 @@ sub raw_text {
     my $self = shift;
     my $want_pgp = shift;
     return $self->SUPER::raw_text($want_pgp, $self->preview_body);
-}
-
-sub title {
-    my $self = shift;
-    return $self->preview_title;
 }
 
 sub uri {
