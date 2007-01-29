@@ -6,6 +6,7 @@ use NEXT;
 use Carp;
 use Angerwhale::Model::Filesystem::Article;
 use Crypt::OpenPGP;
+use File::Find qw(find);
 
 =head1 NAME
 
@@ -189,6 +190,26 @@ sub get_by_tag {
     
     return @matching;
 }
+
+=head2 revision
+
+This method returns a "revision number" for the entire blog.  It will
+increase over time, and will remain the same if nothing inside the
+blog directory changes.  The revision number will decrease if
+an article is removed, so don't remove them without restarting
+the application.  (Otherwise the cache will be stale.)
+
+=cut
+
+sub revision {
+    my $self = shift;
+    my $revision;
+    find(sub { $revision += (stat($File::Find::name))[9]
+		 if !-d $File::Find::name },
+	 ($self->base));
+    return $revision;
+}
+
 
 =head1 AUTHOR
 

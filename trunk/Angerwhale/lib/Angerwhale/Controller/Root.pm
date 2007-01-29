@@ -35,33 +35,25 @@ sub auto : Private {
     my ($self, $c) = @_;
     $c->stash->{root} = $c->model('Filesystem');
     $c->stash->{user} = $c->session->{user};
+
+    return 1
+      if $c->request->uri->as_string =~ m{/static/};
+
+    return 1
+      if 'GET' ne $c->request->method;
     
-    # not implemented yet, sort of
-#     # update type information
-#     my $uri = $c->request->uri->path;
-#     if($uri =~ /(\/?)(.*)[.]([a-zA-Z]+)$/){
-# 	my $slash = $1;
-# 	my $path  = $2;
-# 	my $type  = $3;
-	
-# 	# save the type
-# 	$c->stash->{requested_type} = $type;
-
-# 	# fix the URI
-# 	my $uri = $c->request->uri->as_string;
-# 	$uri =~ s{[.]$type}{};
-# 	$c->request->{uri}  = URI->new($uri);
-
-# 	# fix the path
-# 	$c->request->{path} = $path;
-
-# 	# fix the arguments
-# 	#$path =~ m{/(.+)[.]$type};
-# 	#$c->{request}->{arguments}->[-1] = "foo";
-
-#     }
-
+    # check to see if this page is cached
+    my $key  = $c->model('Filesystem')->revision;
+    $key .= ":". $c->request->uri->as_string;
     
+    my $document;
+    if( $document = $c->cache->get($key) ){
+	$c->log->info("serving ". $c->request->uri ." from cache $key");
+	$c->response->body($document->{body});
+	$c->detach();
+    }
+    
+    $c->stash->{cache_key} = $key;
     return 1;
 }
   
@@ -70,6 +62,7 @@ sub blog : Path('/') {
     $c->stash->{page}     = 'home';
     $c->stash->{title}    = $c->config->{title} || 'Blog';
     $c->stash->{category} = '/';
+    
     $c->forward('/categories/show_category', [@date]);
 }
 
@@ -111,18 +104,12 @@ sub end : Private {
  	$c->stash->{generated_at} = time();
  	my $articles = $c->stash->{articles};
  	my $article  = $c->stash->{article};
- 	my $key      = _global_uniq_id($c);
-	
- 	if(ref $articles eq 'ARRAY'){    
- 	    $key .= join '|', map {_article_uniq_id($_)} @{$articles};
- 	    _cache($c, $key);
- 	}
- 	elsif (ref $article && $c->request->uri =~ m{/articles/}){
- 	    $key .= _article_uniq_id($article);
- 	    _cache($c, $key);
- 	}
+
+	if($c->stash->{cache_key}){
+	    _cache($c, $c->stash->{cache_key});
+	}
 	else {
-	    # not cachable yet
+	    # not a page we know how to cache
 	    $c->forward('Angerwhale::View::HTML');
 	}
     }
@@ -130,28 +117,6 @@ sub end : Private {
     return;
 }
 
-sub _global_uniq_id {
-    my $c = shift;
-    # main page changes for:
-    # uri
-    # change in tags
-    # change in categories
-    # change in user
-    # changes in previous and newer articles
-    my $user;
-    eval {
-	$user = $c->stash->{user}->nice_id;
-    };
-    $user ||= 'anonymous';
-    
-    no warnings;
-    return 	
-      $c->request->uri->path. '|'. $user. '|'.
-	'(tags:'. (join ':', $c->model('Filesystem')->get_tags). ')|'.
-	'(cats:'. (join ':', $c->model('Filesystem')->get_categories). 
-	  ')|'. $c->stash->{newer_articles}. '|'. $c->stash->{older_articles}.
-	    '|' . $c->stash->{newest_is_newest}. '|';
-}
 
 sub _article_uniq_id {
     my $article = shift;
@@ -168,25 +133,36 @@ sub _article_uniq_id {
       '|'. $article->comment_count;
 }
 
+sub _serve_cache :Private {
+    my $self = shift;
+    my $c    = shift;
+    my $key  = shift;
+    my $document;
+    if( $document = $c->cache->get($key) ){
+	$c->log->info("serving ". $c->request->uri ." from cache $key");
+	$c->response->body($document->{body});
+	$c->detach();
+    }
+    $c->stash->{cache_key} = $key;
+    return 0;
+}
+
 sub _cache {
     my $c   = shift;
     my $key = shift;
     my $document;
     if( $document = $c->cache->get($key) ){
-	#$c->log->info("serving ". $c->request->uri ." from cache");
-	$c->response->body($document->{body});
+	$c->detach('_serve_cache', [$key]);
     }
     else {
-	#$c->log->debug("caching $key");
+	$c->log->debug("caching $key");
 	$c->forward('Angerwhale::View::HTML');
 	$document = { mtime => time(),
 		      body  => $c->response->body };
 	$c->cache->set($key, $document);
     }
     
-    my $h = $c->response->headers;
-    $h->header('E-Tag' => md5_hex(Encode::encode_utf8($key)));
-    $h->header('Last-Modified' => time2str($document->{mtime}));
+    my $h = $c->response->headers->header('E-Tag' => $key);
 }
 
 =head1 AUTHOR
