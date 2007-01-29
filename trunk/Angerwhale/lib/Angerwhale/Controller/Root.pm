@@ -56,14 +56,38 @@ sub auto : Private {
     $key .= ":". $c->request->uri->as_string;
     $key .= "@". $c->session->{user}->nice_id if $c->session->{user};
     
-    $c->response->headers->header('ETag' => $key);
+    $c->response->headers->header('ETag' => qq{"$key"});
     my $document;
     if( $document = $c->cache->get($key) ){
+
+	$c->response->headers($document->{headers});
+	$c->response->headers->header('Last-Modified' => 
+				      time2str($document->{mtime}));
+	
+	# check for conditional requests
+	my $cond_date = $c->req->header( 'If-Modified-Since' );
+	my $cond_etag = $c->req->header( 'If-None-Match' );
+	if( $cond_date || $cond_etag ) {
+	    
+	    # if both headers are present, both must match
+	    my $do_send_304 = 1;
+	    $do_send_304 = (str2time($cond_date) >= $document->{mtime})
+	      if( $cond_date );
+	    $do_send_304 &&= ($cond_etag eq qq{"$key"})
+	      if( $cond_etag );
+	    
+	    if( $do_send_304 ) {
+		$c->log->debug("304 not modified on ". $c->request->uri.
+			       " etag:'$cond_etag' date:'$cond_date'");
+		$c->res->status( 304 );
+		$c->detach();
+	    }
+	}
+	
 	$c->log->debug("serving ". $c->request->uri ." from cache $key");
 	$c->response->body($document->{body})
 	  unless 'HEAD' eq $c->request->method;
 	
-	$c->response->headers($document->{headers});
 	$c->detach();
     }
     
@@ -154,7 +178,7 @@ sub _cache {
     my $document;
     $c->log->debug("caching $key");
     $c->forward('Angerwhale::View::HTML');
-    $c->response->headers->header('ETag' => $key);
+    $c->response->headers->header('ETag' => qq{"$key"});
     $document = { mtime   => time(),
 		  headers => $c->response->headers,
 		  body    => $c->response->body };
