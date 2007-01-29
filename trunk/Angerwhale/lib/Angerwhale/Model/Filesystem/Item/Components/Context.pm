@@ -3,6 +3,8 @@
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 package Angerwhale::Model::Filesystem::Item::Components::Context;
+use strict;
+use warnings;
 use base qw(Class::Accessor);
 use Scalar::Util qw(blessed);
 use Carp;
@@ -10,16 +12,18 @@ use Carp;
 __PACKAGE__->mk_accessors('context');
 
 sub new {
-    my ($self, $args) = @_;
-    my $context = $args->{context};
+    my ($class, $self) = @_;
+    my $context = $self->{context};
     croak 'need a valid Angerwhale context'
       if(!defined $context);
     
-    croak('do not directly instantianate this class; '.
-	  'you need to mix it in with something else')
-      if !blessed $self;
+    bless $self, $class;
     
     $self->context($context);
+    $self->cache($context->cache);
+    $self->userstore($context->model('UserStore'));
+    $self->encoding($context->config->{encoding} || 'utf8');
+    
     return $self;
 }
 

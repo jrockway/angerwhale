@@ -22,7 +22,8 @@ use base qw|
 	   |; 
 
 # setup internal state
-__PACKAGE__->mk_accessors(qw|base location parent|);
+__PACKAGE__->mk_accessors(qw|base location parent
+			     cache userstore encoding|);
 #Class::C3::initialize();
 
 # make C<sort @articles> sort by creation time
@@ -79,13 +80,15 @@ sub new {
     croak "$location is not a valid path"     
       if(!defined $location || -d $location);
     
-    my $self = {};
+    my $self = $args;
     bless $self, $class;
     $self->base($base);
     $self->location($location);
     $self->parent($parent) if $parent;
-    $self->next::method($args);
-    $self->encoding($self->context->config->{encoding} || 'utf8');
+
+    $class->next::method($self);
+
+    $self->encoding($args->encoding || 'utf8');
     return $self;
 }
 
