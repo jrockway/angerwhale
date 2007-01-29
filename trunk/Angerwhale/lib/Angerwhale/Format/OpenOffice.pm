@@ -23,7 +23,9 @@ sub types {
     my $self = shift;
     return 
       ({type       => 'sxw', 
-       description => 'OpenOffice.org Writer Document'});
+	description => 'OpenOffice.org Writer Document'},
+       {type       => 'odt',
+	description => 'OpenOffice.org Text Document'} );
     
 }
 
