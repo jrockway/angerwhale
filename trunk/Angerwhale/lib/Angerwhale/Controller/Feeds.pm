@@ -36,8 +36,8 @@ sub index : Private {
     $c->stash->{template} = 'feeds.tt';
     
     # for the sidebar
-    my @c = $c->stash->{categories} = [$c->model('Filesystem')->get_categories];
-    my @t = $c->stash->{tags}       = [$c->model('Filesystem')->get_tags];
+    $c->stash->{feed_categories} = [$c->model('Filesystem')->get_categories];
+    $c->stash->{feed_tags}       = [$c->model('Filesystem')->get_tags];
      
 }
 

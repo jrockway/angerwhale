@@ -77,6 +77,7 @@ sub auto : Private {
 	      if( $cond_etag );
 	    
 	    if( $do_send_304 ) {
+		no warnings 'uninitialized';
 		$c->log->debug("304 not modified on ". $c->request->uri.
 			       " etag:'$cond_etag' date:'$cond_date'");
 		$c->res->status( 304 );

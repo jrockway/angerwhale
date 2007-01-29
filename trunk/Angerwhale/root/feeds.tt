@@ -27,10 +27,10 @@ All Things Feed!</p>
 	 %]
   </li>
 
-  [% IF categories.defined && categories.size > 0 %]
+  [% IF feed_categories.defined && feed_categories.size > 0 %]
   <li>Feeds of articles in a specific category:
     <ul>
-     [% FOREACH category = categories %]
+     [% FOREACH category = feed_categories %]
      <li>Latest articles in [% category | html %]
        	[% INCLUDE feedbox.tt 
 	   yaml_uri="/feeds/category/" _ category _ "/yaml" 
@@ -42,10 +42,10 @@ All Things Feed!</p>
    </li>
   [% END %]
 
-  [% IF tags.defined && tags.size > 0 %]
+  [% IF feed_tags.defined && feed_tags.size > 0 %]
   <li>Feeds of articles with a specific tag:
     <ul>
-     [% FOREACH tag = tags %]
+     [% FOREACH tag = feed_tags %]
      <li>Latest articles with tag [% tag | html %]
        	[% INCLUDE feedbox.tt 
 	   yaml_uri="/feeds/tags/" _ tag _ "/yaml" 
