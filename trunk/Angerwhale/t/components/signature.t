@@ -15,17 +15,17 @@ my $JROCK_ID = 'd0197853dd25e42f'; # author's key ID;
 my $id = pack 'H*', $JROCK_ID;
 my $us = Test::MockObject->new; # fake UserStore
 $us->set_always('keyserver', 'stinkfoot.org');
-my $c = Test::MockObject->new; # fake cat context
-$c->set_always('model', $us);
+
 my $data = do {local $/; <DATA>};
 my $sig = bless {}, 
   'Angerwhale::Model::Filesystem::Item::Components::Signature';
 $sig = Test::MockObject::Extends->new($sig);
 $sig->mock('raw_text', sub {if($_[1]){$data}else{" "}});
-$sig->set_always('context', $c);
-$sig->set_always('_cache_signature', '1');
+
+$sig->set_always('userstore', $us);
+$sig->set_always('_cache_signature', 1);
 $sig->set_always('_cached_signature', 0);
-$sig->set_always('_fix_author', '1');
+$sig->set_always('_fix_author', 1);
 
 # tests
 use ok qq[Angerwhale::Model::Filesystem::Item::Components::Signature];
