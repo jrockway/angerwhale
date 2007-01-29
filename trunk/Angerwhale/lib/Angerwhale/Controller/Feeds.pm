@@ -100,7 +100,7 @@ sub comments : Local {
 	  if $item->isa('Angerwhale::Model::Filesystem::Comment');
 	unshift @todo, ($item->comments); # depth first (sort of)
     }
-    @candidates = sort @candidates;
+    @candidates = reverse sort @candidates;
 
     $c->stash->{feed_title} = $c->config->{title}. " Comment Feed"
       if $c->config->{title};
