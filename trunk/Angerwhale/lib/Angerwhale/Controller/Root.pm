@@ -36,6 +36,13 @@ sub auto : Private {
     $c->stash->{root} = $c->model('Filesystem');
     $c->stash->{user} = $c->session->{user};
 
+    # conditions when we want to ignore the cache
+    return 1 
+      if keys %{$c->flash('error')||{}} > 0;
+    
+    return 1
+      if $c->request->uri->as_string =~ m{/login};
+    
     return 1
       if $c->request->uri->as_string =~ m{/static/};
 
@@ -43,16 +50,18 @@ sub auto : Private {
       if 'GET' ne $c->request->method &&
 	'HEAD' ne $c->request->method;
     
+    # now we can deal with the cache
     # check to see if this page is cached
     my $key  = $c->model('Filesystem')->revision;
     $key .= ":". $c->request->uri->as_string;
-
+    $key .= "@". $c->session->{user}->nice_id if $c->session->{user};
+    
     $c->response->headers->header('ETag' => $key);
     $c->detach() if 'HEAD' eq $c->request->method;
     
     my $document;
     if( $document = $c->cache->get($key) ){
-	$c->log->info("serving ". $c->request->uri ." from cache $key");
+	$c->log->debug("serving ". $c->request->uri ." from cache $key");
 	$c->response->body($document->{body});
 	$c->detach();
     }
@@ -145,7 +154,7 @@ sub _serve_cache :Private {
     my $key  = shift;
     my $document;
     if( $document = $c->cache->get($key) ){
-	$c->log->info("serving ". $c->request->uri ." from cache $key");
+	$c->log->debug("serving ". $c->request->uri ." from cache $key");
 	$c->response->body($document->{body});
 	$c->detach();
     }
