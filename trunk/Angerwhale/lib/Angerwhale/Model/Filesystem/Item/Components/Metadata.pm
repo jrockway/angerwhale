@@ -79,7 +79,7 @@ sub author {
     my $id = eval{ get_attribute($self->location, 'author')};
     
     if(defined $id){
-	my $user = $self->context->model('UserStore')->get_user_by_nice_id($id);
+	my $user = $self->userstore->get_user_by_nice_id($id);
 	return $user if $user;
     }
     
