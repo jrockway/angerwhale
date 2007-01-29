@@ -129,11 +129,10 @@ sub verbatim {
     $text =~ s/^\n+//; # strip unnecessary newlines
     $text =~ s/\n+$//; # strip unnecessary newlines
     
-    warn "using lang: ". $parser->lang;
     if($parser->lang){
 	eval { 
 	    my $hl = Syntax::Highlight::Engine::Kate->new
-	      (language => 'Perl',
+	      (language => $parser->lang,
 	       substitutions => {
 				 "<"  => "&lt;",
 				 ">"  => "&gt;",
