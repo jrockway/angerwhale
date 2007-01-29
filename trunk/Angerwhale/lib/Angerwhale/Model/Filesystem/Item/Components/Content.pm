@@ -8,16 +8,10 @@ use warnings;
 use Angerwhale::Format;
 use Digest::MD5 qw(md5_hex);
 use File::Slurp;
-__PACKAGE__->mk_ro_accessor('cache');
+use Carp;
 
 use utf8; # for the elipsis later on
 my $ELIPSIS = '…';
-
-sub new {
-    my ($class, $self) = @_;
-    bless $self => $class;
-    croak "No cache provided" if(!$self->{cache});
-}
 
 sub checksum {
     my $self = shift;

@@ -22,6 +22,7 @@ sub new {
     $self->context($context);
     $self->userstore($context->model('UserStore'));
     $self->encoding($context->config->{encoding} || 'utf8');
+    $self->cache($context->cache);
     
     return $self;
 }

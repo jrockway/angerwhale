@@ -23,7 +23,7 @@ use base qw|
 
 # setup internal state
 __PACKAGE__->mk_accessors(qw|base location parent
-			     userstore encoding|);
+			     userstore encoding cache|);
 #Class::C3::initialize();
 
 # make C<sort @articles> sort by creation time
@@ -82,13 +82,14 @@ sub new {
     
     my $self = $args;
     bless $self, $class;
+    
     $self->base($base);
     $self->location($location);
     $self->parent($parent) if $parent;
-
-    $class->next::method($self);
-
     $self->encoding($args->encoding || 'utf8');
+    
+    $class->next::method($self);
+    
     return $self;
 }
 

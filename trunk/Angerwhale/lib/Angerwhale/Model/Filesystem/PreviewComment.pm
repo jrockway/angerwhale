@@ -9,7 +9,8 @@ use base qw(Angerwhale::Model::Filesystem::Comment Class::Accessor);
 use Angerwhale::User::Anonymous;
 use Carp;
 
-__PACKAGE__->mk_accessors(qw|preview_title preview_body preview_type|);
+__PACKAGE__->mk_accessors(qw|preview_title preview_body preview_type
+			     cache |);
 
 sub new {
     my $class	 = shift;
@@ -25,6 +26,7 @@ sub new {
     $self->preview_title($title);
     $self->preview_body($body);
     $self->preview_type($type);
+    $self->cache($context->cache);
     
     return $self;
 }
