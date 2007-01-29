@@ -106,7 +106,7 @@ sub post : Local {
 
 	    $c->stash->{preview_comment} = 
 	      Angerwhale::Model::Filesystem::PreviewComment->
-		  new({context => $c
+		  new({context => $c,
 		       title   => $title,
 		       body    => $body, 
 		       type    => $type });
