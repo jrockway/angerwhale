@@ -40,11 +40,15 @@ sub auto : Private {
       if $c->request->uri->as_string =~ m{/static/};
 
     return 1
-      if 'GET' ne $c->request->method;
+      if 'GET' ne $c->request->method &&
+	'HEAD' ne $c->request->method;
     
     # check to see if this page is cached
     my $key  = $c->model('Filesystem')->revision;
     $key .= ":". $c->request->uri->as_string;
+
+    $c->response->headers->header('ETag' => $key);
+    $c->detach() if 'HEAD' eq $c->request->method;
     
     my $document;
     if( $document = $c->cache->get($key) ){
@@ -90,6 +94,8 @@ sub end : Private {
     #    }
 
     return if $c->response->status != 200; # don't cache server errors
+
+    return if('HEAD' eq $c->request->method);
 
     if(!($c->response->body || $c->response->redirect)){
 
