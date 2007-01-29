@@ -63,6 +63,7 @@ sub auto : Private {
     if( $document = $c->cache->get($key) ){
 	$c->log->debug("serving ". $c->request->uri ." from cache $key");
 	$c->response->body($document->{body});
+	$c->response->headers($document->{headers});
 	$c->detach();
     }
     
@@ -148,36 +149,19 @@ sub _article_uniq_id {
       '|'. $article->comment_count;
 }
 
-sub _serve_cache :Private {
-    my $self = shift;
-    my $c    = shift;
-    my $key  = shift;
-    my $document;
-    if( $document = $c->cache->get($key) ){
-	$c->log->debug("serving ". $c->request->uri ." from cache $key");
-	$c->response->body($document->{body});
-	$c->detach();
-    }
-    $c->stash->{cache_key} = $key;
-    return 0;
-}
-
 sub _cache {
     my $c   = shift;
     my $key = shift;
     my $document;
-    if( $document = $c->cache->get($key) ){
-	$c->detach('_serve_cache', [$key]);
-    }
-    else {
-	$c->log->debug("caching $key");
-	$c->forward('Angerwhale::View::HTML');
-	$document = { mtime => time(),
-		      body  => $c->response->body };
-	$c->cache->set($key, $document);
-    }
+    $c->log->debug("caching $key");
+    $c->forward('Angerwhale::View::HTML');
+    $c->response->headers->header('E-Tag' => $key);
+    $document = { mtime   => time(),
+		  headers => $c->response->headers,
+		  body    => $c->response->body };
+
+    $c->cache->set($key, $document);
     
-    my $h = $c->response->headers->header('E-Tag' => $key);
 }
 
 =head1 AUTHOR
