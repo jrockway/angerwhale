@@ -4,7 +4,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 13;
+use Test::More tests => 12;
 use Test::MockObject;
 use Directory::Scratch;
 use File::Attributes qw(set_attribute);
@@ -18,11 +18,11 @@ $c->set_always('config', {encoding => 'utf8'});
 my $path = $tmp->touch('article.txt', 
 		       "This is an article.", "I hope you like it.");
 
-my $args = { location => $path, base => "$tmp", context => $c };
+my $args = { location => $path, base => "$tmp", encoding => 'utf8',
+	     filesystem => $c, userstore => $c, cache => $c};
 my $item = Angerwhale::Model::Filesystem::Item->new($args);
 
 ok($item, 'created an item');
-is($item->context, $c, 'context stuck');
 is($item->location, $path, 'location stuck');
 is($item->base, "$tmp", 'base stuck');
 ok(!$item->parent, 'no parent');

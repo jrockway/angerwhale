@@ -22,9 +22,8 @@ sub categories {
     my $base = $self->base;
     my $name = $self->name;
     my $id   = $self->checksum; 
-    my $c    = $self->context;
     
-    my @categories = $c->model('Filesystem')->get_categories;
+    my @categories = $self->filesystem->get_categories;
     my @paths = map {$base."/$_/$name"} @categories;
 
     my @result;
@@ -32,9 +31,10 @@ sub categories {
     foreach my $path (@paths){
 	eval {
 	    my $obj = Angerwhale::Model::Filesystem::Article->
-	      new({base     => $base,
-		   location => $path,
-		   context  => $c     });
+	      new({ %{$self},
+		    base     => $base,
+		    location => $path,
+		  });
 	    
 	    my $myid = $obj->checksum;
 	    push @result, $categories[$i] if $myid eq $id;

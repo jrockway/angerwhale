@@ -135,11 +135,10 @@ sub comments {
 	next if $file =~ /^[.]/;
 
 	my $comment = Angerwhale::Model::Filesystem::Comment->
-	  new({
-	       base     => $self->base,
-	       location => $filename,
-	       parent   => $self,
-	       context  => $self->context,
+	  new({ %{$self},
+		base     => $self->base,
+		location => $filename,
+		parent   => $self,
 	      });
 
 	push @comments, $comment;

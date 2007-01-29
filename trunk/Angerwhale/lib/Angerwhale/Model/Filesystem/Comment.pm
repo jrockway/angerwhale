@@ -16,7 +16,7 @@ sub new {
       if !blessed $args->{parent} || 
 	!$args->{parent}->isa('Angerwhale::Model::Filesystem::Item');
 
-    shift->next::method(@_);
+    $class->next::method($args);
 }
 
 sub uri {

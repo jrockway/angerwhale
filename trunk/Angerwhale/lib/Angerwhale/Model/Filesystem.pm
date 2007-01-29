@@ -65,9 +65,12 @@ sub get_article {
 
     my $result = Angerwhale::Model::Filesystem::Article->
       new({
-	   location => "$base/$article",
-	   base     => $self->base,
-	   context  => $self->context,
+	   location    => "$base/$article",
+	   base        => $self->base,
+	   cache       => $self->context->cache,
+	   encoding    => $self->context->config->{encoding},
+	   userstore   => $self->context->model('UserStore'),
+	   filesystem  => $self,
 	  });
     
     return $result;

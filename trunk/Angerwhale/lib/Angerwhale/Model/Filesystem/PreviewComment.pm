@@ -10,7 +10,7 @@ use Angerwhale::User::Anonymous;
 use Carp;
 
 __PACKAGE__->mk_accessors(qw|title preview_body type
-			     cache userstore|);
+			     cache userstore context|);
 
 sub new {
     my $class	 = shift;

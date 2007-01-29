@@ -17,12 +17,11 @@ use base qw|
 	    Angerwhale::Model::Filesystem::Item::Components::Content
 	    Angerwhale::Model::Filesystem::Item::Components::GUID
 	    Angerwhale::Model::Filesystem::Item::Components::Signature
-	    Angerwhale::Model::Filesystem::Item::Components::Context
 	    Class::Accessor
 	   |; 
 
 # setup internal state
-__PACKAGE__->mk_accessors(qw|base location parent
+__PACKAGE__->mk_accessors(qw|base location parent filesystem
 			     userstore encoding cache|);
 #Class::C3::initialize();
 
@@ -74,22 +73,23 @@ sub new {
     my $base      = $args->{base};
     my $location  = $args->{location};
     my $parent    = $args->{parent};
+    my $cache     = $args->{cache};
+    my $userstore = $args->{userstore};
+    my $encoding  = $args->{encoding};
+    my $filesystem= $args->{filesystem};
     
     croak "$base is not a valid base directory" 
       if(!defined $base || !-d $base || !-r $base);
     croak "$location is not a valid path"     
       if(!defined $location || -d $location);
+    croak 'Need a userstore' unless $userstore;
+    croak 'Need a cache' unless $cache;
     
+    $args->{encoding} ||= 'utf8';
+
     my $self = $args;
     bless $self, $class;
-    
-    $self->base($base);
-    $self->location($location);
-    $self->parent($parent) if $parent;
-    $self->encoding($args->encoding || 'utf8');
-    
     $class->next::method($self);
-    
     return $self;
 }
 
