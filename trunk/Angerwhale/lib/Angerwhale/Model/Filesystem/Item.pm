@@ -23,7 +23,7 @@ use base qw|
 
 # setup internal state
 __PACKAGE__->mk_accessors(qw|base location parent
-			     cache userstore encoding|);
+			     userstore encoding|);
 #Class::C3::initialize();
 
 # make C<sort @articles> sort by creation time

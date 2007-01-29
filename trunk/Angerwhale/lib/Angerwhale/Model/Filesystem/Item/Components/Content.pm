@@ -8,9 +8,16 @@ use warnings;
 use Angerwhale::Format;
 use Digest::MD5 qw(md5_hex);
 use File::Slurp;
+__PACKAGE__->mk_ro_accessor('cache');
 
 use utf8; # for the elipsis later on
 my $ELIPSIS = '…';
+
+sub new {
+    my ($class, $self) = @_;
+    bless $self => $class;
+    croak "No cache provided" if(!$self->{cache});
+}
 
 sub checksum {
     my $self = shift;
@@ -64,12 +71,12 @@ sub text {
 
     my $key = "htmltext|".$self->type."|".$self->checksum;
     my $data;
-    if( $data = $self->context->cache->get($key) ){
+    if( $data = $self->cache->get($key) ){
 	$data = ${$data};
     }
     else {
 	$data = Angerwhale::Format::format($text, $self->type); 
-	$self->context->cache->set($key, \$data);
+	$self->cache->set($key, \$data);
     }
     return $data;
 }
@@ -81,12 +88,12 @@ sub plain_text {
     my $key = 'plaintext|'. $self->type. '|' .$self->checksum;
     
     my $data;
-    if( $data = $self->context->cache->get($key) ){
+    if( $data = $self->cache->get($key) ){
 	$data = ${$data};
     }
     else {
 	$data = Angerwhale::Format::format_text($text, $self->type); 
-	$self->context->cache->set($key, \$data);
+	$self->cache->set($key, \$data);
     }
     
     return $data;

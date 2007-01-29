@@ -20,7 +20,6 @@ sub new {
     bless $self, $class;
     
     $self->context($context);
-    $self->cache($context->cache);
     $self->userstore($context->model('UserStore'));
     $self->encoding($context->config->{encoding} || 'utf8');
     
