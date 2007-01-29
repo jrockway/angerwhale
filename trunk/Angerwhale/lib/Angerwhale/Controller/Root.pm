@@ -57,12 +57,12 @@ sub auto : Private {
     $key .= "@". $c->session->{user}->nice_id if $c->session->{user};
     
     $c->response->headers->header('ETag' => $key);
-    $c->detach() if 'HEAD' eq $c->request->method;
-    
     my $document;
     if( $document = $c->cache->get($key) ){
 	$c->log->debug("serving ". $c->request->uri ." from cache $key");
-	$c->response->body($document->{body});
+	$c->response->body($document->{body})
+	  unless 'HEAD' eq $c->request->method;
+	
 	$c->response->headers($document->{headers});
 	$c->detach();
     }
@@ -105,8 +105,6 @@ sub end : Private {
 
     return if $c->response->status != 200; # don't cache server errors
 
-    return if('HEAD' eq $c->request->method);
-
     if(!($c->response->body || $c->response->redirect)){
 
 	if(defined $c->config->{'html'} && 1 == $c->config->{'html'}){
@@ -116,6 +114,7 @@ sub end : Private {
 	else {
 	    $c->response->content_type('application/xhtml+xml; charset=utf-8');
 	}
+	return if('HEAD' eq $c->request->method);
 	
  	$c->stash->{generated_at} = time();
  	my $articles = $c->stash->{articles};
@@ -155,7 +154,7 @@ sub _cache {
     my $document;
     $c->log->debug("caching $key");
     $c->forward('Angerwhale::View::HTML');
-    $c->response->headers->header('E-Tag' => $key);
+    $c->response->headers->header('ETag' => $key);
     $document = { mtime   => time(),
 		  headers => $c->response->headers,
 		  body    => $c->response->body };
