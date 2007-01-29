@@ -10,7 +10,7 @@ use Angerwhale::User::Anonymous;
 use Carp;
 
 __PACKAGE__->mk_accessors(qw|preview_title preview_body preview_type
-			     cache |);
+			     cache userstore|);
 
 sub new {
     my $class	 = shift;
@@ -27,6 +27,7 @@ sub new {
     $self->preview_body($body);
     $self->preview_type($type);
     $self->cache($context->cache);
+    $self->userstore($context->model('UserStore'));
     
     return $self;
 }
