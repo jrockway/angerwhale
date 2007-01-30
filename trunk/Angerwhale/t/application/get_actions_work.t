@@ -8,7 +8,8 @@ use Test::More tests => 45;
 use HTML::Tidy;
 use Test::HTML::Tidy;
 use Test::XML::Valid;
-use YAML::Syck;
+use YAML::Syck qw(Load);
+use Test::YAML::Valid qw(-Syck);
 use Angerwhale;
 
 local $SIG{__WARN__} = sub {};
@@ -55,10 +56,7 @@ do {
 foreach my $url (@yaml_urls) {
     my $request = request($url);
     ok($request->is_success, "request $url OK");
-    eval {
-	Load($request->content);
-    };
-    ok(!$@, "YAML parsed OK");
+    yaml_string_ok($request->content, 'YAML is OK');
 }
 
 SKIP: {

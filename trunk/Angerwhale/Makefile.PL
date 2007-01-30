@@ -75,10 +75,11 @@ build_requires
   (
    'Test::More'						    => 0,
    'ok'							    => 0,
-   'Directory::Scratch'					    => '0.03',
+   'Directory::Scratch'					    => '0.12',
    'Test::HTML::Tidy'					    => 0,
    'HTML::Tidy'						    => 0,
    'Test::XML::Valid'					    => 0,
+   'Test::YAML::Valid'                                      => '0.02',
    'Test::WWW::Mechanize::Catalyst'                         => 0,
   );
 

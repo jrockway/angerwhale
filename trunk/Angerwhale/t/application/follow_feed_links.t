@@ -5,7 +5,7 @@ use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
 use Test::More qw(no_plan);
 use strict;
 use warnings;
-use YAML::Syck;
+use Test::YAML::Valid qw(-Syck);
 
 my $mech = Test::WWW::Mechanize::Catalyst->new;
 $mech->get_ok('http://localhost/feeds');
@@ -20,13 +20,11 @@ while (my $link = shift @links) {
 	if($url =~ /yaml$/){
 	    # YAML feed
 	    is($mech->ct, 'text/x-yaml', 'content type is YAML');
-	    eval {
-		Load($content);
-	    };
+	    
 	  SKIP:
 	    {
 		skip "No content returned", 1 if !$content;
-		ok(!$@, "no YAML errors on feed $url");
+		yaml_string_ok($content, "no YAML errors on feed $url");
 	    }
 	}
 	
