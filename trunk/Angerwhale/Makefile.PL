@@ -70,6 +70,7 @@ requires
    'base'						    => 0,
    'version'						    => 0,
    'Crypt::IDEA'					    => 0, 
+   'IO::String'						    => 0,
   );
 build_requires
   (
