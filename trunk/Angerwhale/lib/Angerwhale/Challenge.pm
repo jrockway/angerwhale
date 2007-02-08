@@ -29,6 +29,12 @@ sub equals {
     my $them = shift;
 
     return 
+      defined $them->{nonce} &&
+      defined $them->{uri} &&
+      defined $them->{date} &&
+      defined $self->{nonce} &&
+      defined $self->{uri} &&
+      defined $self->{date} &&
       ($self->{nonce} == $them->{nonce}) &&
       ($self->{uri}   eq $them->{uri}  ) &&
       ($self->{date}  eq $them->{date} ) ;
