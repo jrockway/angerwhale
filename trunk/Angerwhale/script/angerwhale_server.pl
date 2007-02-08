@@ -2,7 +2,7 @@
 
 BEGIN { 
     $ENV{CATALYST_ENGINE} ||= 'HTTP';
-    $ENV{CATALYST_SCRIPT_GEN} = 30;
+    $ENV{CATALYST_SCRIPT_GEN} = 31;
     require Catalyst::Engine::HTTP;
 }  
 
@@ -23,6 +23,8 @@ my $restart           = 0;
 my $restart_delay     = 1;
 my $restart_regex     = '\.yml$|\.yaml$|\.pm$';
 my $restart_directory = undef;
+my $background        = 0;
+my $pidfile           = "/tmp/Angerwhale.pid";
 
 my @argv = @ARGV;
 
@@ -37,6 +39,8 @@ GetOptions(
     'restartdelay|rd=s'   => \$restart_delay,
     'restartregex|rr=s'   => \$restart_regex,
     'restartdirectory=s'  => \$restart_directory,
+    'daemon'              => \$background,
+    'pidfile=s'           => \$pidfile,          
 );
 
 pod2usage(1) if $help;
@@ -60,6 +64,8 @@ Angerwhale->run( $port, $host, {
     restart_delay     => $restart_delay,
     restart_regex     => qr/$restart_regex/,
     restart_directory => $restart_directory,
+    background        => $background,
+    pidfile           => $pidfile,				
 } );
 
 1;
@@ -89,6 +95,10 @@ angerwhale_server.pl [options]
    -restartdirectory  the directory to search for
                       modified files
                       (defaults to '../')
+
+   -daemon            background the server
+   -pidfile=filename  store the pid if the server in filename, if
+                      daemonizing
 
  See also:
    perldoc Catalyst::Manual
