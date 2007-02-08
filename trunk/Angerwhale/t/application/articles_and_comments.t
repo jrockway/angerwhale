@@ -24,7 +24,7 @@ BEGIN {
 }
 
 ##
-use Test::More tests=>330;
+use Test::More tests=>372;
 ##
 
 use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
@@ -60,7 +60,10 @@ for my $round (1..3){
     $mech->content_contains('This is a test article.', 'page contains article');
     $mech->content_contains('no comments', 'page contains no comments');
     $mech->content_contains('Post a comment', 'page contains post comment link');
-
+    $mech->get_ok("http://localhost/articles/$a_title/raw");
+    is($mech->ct, 'application/octet-stream', 'got raw article');
+    $mech->back();
+    
     for my $cround (1..5){
 	my $c_title = "test comment $$ $round $cround";
 	my $c_body  = "This is a test comment: $$ $round $cround";
@@ -112,10 +115,13 @@ foreach my $link ($mech->find_all_links(url_regex => qr'/articles/.+$')){
 	    
 	  SKIP:
 	    {
-		skip "No content returned", 3 if !$content;
-		my $yaml = yaml_string_ok($content);
+		skip "No content returned", 4 if !$content;
+		my $yaml = yaml_string_ok($content, 'yaml is valid');
 		is($yaml->{type}, 'text', 'some data is in YAML');
-		$mech->get_ok($yaml->{uri});
+		$mech->get_ok($yaml->{uri}, 'get uri in YAML');
+		$mech->get_ok($yaml->{uri}. '/raw', 'get raw version');	    
+		is($mech->ct, 'application/octet-stream', 
+		   'content type of raw version is octet-stream');
 	    }
 	}
 	
