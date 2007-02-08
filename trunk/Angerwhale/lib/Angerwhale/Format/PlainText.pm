@@ -30,8 +30,6 @@ Handles 'text' which is plain text
 
 =head2 format_text
 
-=head
-
 =cut
 
 sub new {

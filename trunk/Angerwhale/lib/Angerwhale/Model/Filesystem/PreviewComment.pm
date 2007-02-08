@@ -27,6 +27,8 @@ cache object C<< $c->cache >> (so that if the user submits the comment
 unmodified we don't have to recache it).  userstore is
 C<< $c->model('UserStore') >> so we can look up PGP info.
 
+=cut
+
 sub new {
     my $class	 = shift;
     my $self     = shift;

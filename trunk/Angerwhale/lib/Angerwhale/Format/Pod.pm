@@ -45,8 +45,6 @@ make the first line C<lang:LanguageName>, like C<lang:Perl> or
 C<lang:Haskell>.  To turn off syntax highlighting until
 the next C<lang:> directive, do C<lang:0> or C<lang:undef>.
 
-=head
-
 =cut
 
 sub new {
