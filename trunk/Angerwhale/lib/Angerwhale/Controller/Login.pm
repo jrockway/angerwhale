@@ -47,7 +47,7 @@ sub process : Local {
 	      _signed_text($input);
       };
     if(!$nonce_data){
-	$c->flash->{error} = "I couldn't read the signature.  Try again?";
+	$c->flash(error => "I couldn't read the signature.  Try again?");
 	$c->res->redirect($c->uri_for('/login'));
 	$c->detach();
     }
@@ -57,7 +57,7 @@ sub process : Local {
 				 );
     my ($long_id, $sig) = $pgp->verify(Signature => $input);
     if(!$nonce_data || !$sig){
-	$c->flash->{error} = 'There was a problem verifying the signature.';
+	$c->flash(error => 'There was a problem verifying the signature.');
 	$c->res->redirect($c->uri_for('/login'));
 	$c->detach();
     }
@@ -96,9 +96,9 @@ sub process : Local {
 	$c->model('UserStore')->refresh_user($user);
     };
     if($@){
-	$c->flash->{error} = 
+	$c->flash(error => 
 	  'Your data could not be loaded from a keyserver.'.
-	  '  Please push your key to one and try again.';
+	  '  Please push your key to one and try again.');
 	$c->res->redirect($c->uri_for('/login'));
 	$c->detach();
     }

@@ -38,7 +38,7 @@ sub auto : Private {
 
     # conditions when we want to ignore the cache
     return 1 
-      if keys %{$c->flash('error')||{}} > 0;
+      if keys %{$c->flash||{}} > 0;
     
     return 1
       if $c->request->uri->as_string =~ m{/login};
