@@ -78,14 +78,14 @@ sub auto : Private {
 	    
 	    if( $do_send_304 ) {
 		no warnings 'uninitialized';
-		$c->log->debug("304 not modified on ". $c->request->uri.
-			       " etag:'$cond_etag' date:'$cond_date'");
+		$c->debug("304 not modified on ". $c->request->uri.
+			  " etag:'$cond_etag' date:'$cond_date'");
 		$c->res->status( 304 );
 		$c->detach();
 	    }
 	}
 	
-	$c->log->debug("serving ". $c->request->uri ." from cache $key");
+	$c->debug("serving ". $c->request->uri ." from cache $key");
 	$c->response->body($document->{body})
 	  unless 'HEAD' eq $c->request->method;
 	
@@ -177,7 +177,7 @@ sub _cache {
     my $c   = shift;
     my $key = shift;
     my $document;
-    $c->log->debug("caching $key");
+    $c->debug("caching $key");
     $c->forward('Angerwhale::View::HTML');
     $c->response->headers->header('ETag' => qq{"$key"});
     $document = { mtime   => time(),

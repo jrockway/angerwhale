@@ -244,7 +244,7 @@ sub end : Private {
     my $key = $c->stash->{cache_key};
     return unless $key;
     
-    $c->log->debug("caching (feed) $key");
+    $c->debug("caching (feed) $key");
     
     $document = { mtime   => time(),
 		  headers => $c->response->headers,

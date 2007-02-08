@@ -66,7 +66,7 @@ sub process : Local {
     my $key_id = $sig->key_id;
     my $nice_key_id = "0x". substr(unpack("H*", $key_id), -8, 8);
     
-    $c->log->debug("keyid $nice_key_id ($long_id) is presumably logging in");
+    $c->debug("keyid $nice_key_id ($long_id) is presumably logging in");
     
     eval {
 	my $challenge = Load($nonce_data) 
@@ -75,9 +75,9 @@ sub process : Local {
 	$c->session->{nonce} = undef;
 	
 	my $nonce_ok = ($nonce == $challenge);
-	$c->log->debug("$nice_key_id: nonce verified OK (was $challenge)") 
+	$c->debug("$nice_key_id: nonce verified OK (was $challenge)") 
 	  if $nonce_ok;
-	$c->log->debug("$nice_key_id: Signature was valid") 
+	$c->debug("$nice_key_id: Signature was valid") 
 	  if $sig_ok;
 	
 	die "bad nonce" if !$nonce_ok;
