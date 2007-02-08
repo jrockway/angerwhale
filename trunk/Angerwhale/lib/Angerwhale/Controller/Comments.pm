@@ -64,7 +64,7 @@ sub default : Private {
 	    $c->response->redirect($c->uri_for('/',$c->stash->{article}->uri));
 	}
 	elsif($c->request->uri->as_string =~ m{/raw$}){
-	    $c->response->content_type('text/plain');
+	    $c->response->content_type('application/octet-stream');
 	    $c->response->body($c->stash->{comment}->raw_text(1));
 	}
 	
