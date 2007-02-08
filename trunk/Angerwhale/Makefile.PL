@@ -84,10 +84,12 @@ build_requires
    'Test::WWW::Mechanize::Catalyst'                         => 0,
   );
 
+feature('Speed up crypto', ['Math::BigInt::GMP' => 0]);
 
 catalyst();
 install_script(glob('script/*.pl'));
 auto_install();
+license('GPL');
 tests('t/*/*.t');
 write_revision();
 WriteAll( sign => 1, meta => 1 );
