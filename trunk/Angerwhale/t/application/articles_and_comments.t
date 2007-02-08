@@ -4,6 +4,7 @@
 
 # tests posting of articles and comments against the real server
 use strict;
+use Test::YAML::Valid qw(-Syck);
 
 my $tmp;
 my $blog_title;
@@ -23,7 +24,7 @@ BEGIN {
 }
 
 ##
-use Test::More tests=>222;
+use Test::More tests=>330;
 ##
 
 use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
@@ -104,9 +105,25 @@ foreach my $link ($mech->find_all_links(url_regex => qr'/articles/.+$')){
     foreach my $feed ($mech->find_all_links(url_regex => qr'/feeds/.+')){
 	$mech->get_ok($feed->url(), 
 		      "get ". $feed->url(). " for ". $link->url());
-	$mech->back();
-	# feeds
+	my $content = $mech->content;
+	if($feed->url() =~ m{/yaml}){
+	    # YAML feed
+	    is($mech->ct, 'text/x-yaml', 'content type is YAML');
+	    
+	  SKIP:
+	    {
+		skip "No content returned", 3 if !$content;
+		my $yaml = yaml_string_ok($content);
+		is($yaml->{type}, 'text', 'some data is in YAML');
+		$mech->get_ok($yaml->{uri});
+	    }
+	}
+	
+	else {
+	    # must be XML
+	    like($mech->ct, qr{application/(rss|atom)[+]xml}, 
+		 'content type is feedlike (rss|atom)+xml');
+	    like($content, qr{^<[?]xml}, 'starts with an XML declaration');
+	}
     }
-    # article pages
-    $mech->back();
 }
