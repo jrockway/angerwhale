@@ -23,7 +23,7 @@ BEGIN {
 }
 
 ##
-use Test::More tests=>181;
+use Test::More tests=>222;
 ##
 
 use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
@@ -34,7 +34,7 @@ $mech->has_tag('title', $blog_title, 'correct title');
 $mech->content_contains($blog_desc, 'description');
 $mech->content_contains('No articles to display.', 'no articles yet');
 
-for my $round (1..3){ # 23 tests
+for my $round (1..3){
     my $a_title  = "This is a test article $$ $round";
     my $a_body = 'This is a test article.';
     $tmp->touch($a_title, $a_body);
@@ -94,4 +94,19 @@ for my $round (1..3){ # 23 tests
 	$mech->content_contains($c_title,'posted comment has title');
 	$mech->content_contains($c_body, 'comment has body');
     }
+}
+
+# now go to the article pages and subscribe to some feeds
+$mech->get_ok('http://localhost/articles/');
+$mech->content_like(qr/3 articles to display./, '3 articles to display');
+foreach my $link ($mech->find_all_links(url_regex => qr'/articles/.+$')){
+    $mech->get_ok($link->url(), "get article link ". $link->url());
+    foreach my $feed ($mech->find_all_links(url_regex => qr'/feeds/.+')){
+	$mech->get_ok($feed->url(), 
+		      "get ". $feed->url(). " for ". $link->url());
+	$mech->back();
+	# feeds
+    }
+    # article pages
+    $mech->back();
 }
