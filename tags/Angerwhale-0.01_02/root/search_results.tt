@@ -1,0 +1,29 @@
+[% WRAPPER page.tt %]
+[% USE Time %]
+[% USE infl = Lingua.EN.Inflect %]
+<div class="search_results">
+  <h2>[% title | html %]</h2>
+  
+    <p>[% infl.NO("article", article_count) %] to display.
+    </p>
+    [% IF article_count > 0 %]
+    <ul id="article_list">
+      [% FOREACH item = articles %]
+      <li>
+        <p>
+	  <a href="[% c.uri_for("/$item.uri") %]">[% item.title | html %]</a>
+	  <span class="postinfo">
+	  posted [% item.creation_time | time %]
+	  [% IF item.author.nice_id != 0 %]
+	  by [% item.author.fullname %]
+	  [% END %]
+	  </span>
+	</p>
+	<p>[% item.summary | html %]</p>
+      </li>
+      [% END %]
+    </ul>
+    [% END %]
+</div>
+<div class="after"><br /> <!-- css fucking sucks --></div>
+[% END %]

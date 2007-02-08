@@ -1,0 +1,63 @@
+[% WRAPPER page.tt title="Feed Me!" %]
+
+<div id="feeds">
+<h2>Feed Me!</h2>
+<p>Want to keep up on the latest posts or comments?  Want to write a
+script to use the blog comments as entropy for your random number
+generator?  Just really bored?  You're in luck!  Here you will find
+All Things Feed!</p>
+
+<div id="feedlist" class="feeds">
+<ul>
+
+  <li>
+	New articles (the standard &quot;RSS feed&quot;)
+
+       	[% INCLUDE feedbox.tt 
+	   yaml_uri="/feeds/articles/yaml"
+	   rss_uri="/feeds/articles/xml"
+	 %]
+
+  </li>
+  <li>
+	Feeds of the latest comments 
+        [% INCLUDE feedbox.tt 
+	   yaml_uri="/feeds/comments/yaml"
+	   rss_uri="/feeds/comments/xml"
+	 %]
+  </li>
+
+  [% IF feed_categories.defined && feed_categories.size > 0 %]
+  <li>Feeds of articles in a specific category:
+    <ul>
+     [% FOREACH category = feed_categories %]
+     <li>Latest articles in [% category | html %]
+       	[% INCLUDE feedbox.tt 
+	   yaml_uri="/feeds/category/" _ category _ "/yaml" 
+	   rss_uri="/feeds/category/" _ category _ "/xml"
+	 %]
+     </li>
+     [% END %]
+    </ul>
+   </li>
+  [% END %]
+
+  [% IF feed_tags.defined && feed_tags.size > 0 %]
+  <li>Feeds of articles with a specific tag:
+    <ul>
+     [% FOREACH tag = feed_tags %]
+     <li>Latest articles with tag [% tag | html %]
+       	[% INCLUDE feedbox.tt 
+	   yaml_uri="/feeds/tags/" _ tag _ "/yaml" 
+	   rss_uri="/feeds/tags/" _ tag _ "/xml"
+	 %]
+      </li>
+     [% END %]
+    </ul>
+   </li>
+  [% END %]
+</ul>
+</div>
+</div>
+<div class="after"><br /></div>
+[% END %]

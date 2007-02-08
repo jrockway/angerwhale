@@ -1,0 +1,98 @@
+
+.header h1 {font-weight: normal; text-align: center; margin: 0; padding: 0; font-family: "cmr10", "Times", serif;}
+.header p {text-align: center; margin: 0; padding: 0;}
+.header { margin-bottom: 1.5em; }
+#footer {clear: left; text-align: center; margin: 0; padding: 3px; font-size: 80%;}
+#footer.p {padding: 0; margin: 0;}
+
+span.postinfo  {font-size: 85%; }
+
+.mini_post {
+	   color: #000;
+	   background-color: #ccc;
+	   font-size: 80%;
+	   border: 1px dashed #311;
+	   padding: .2em;
+	   margin-bottom: 1em;
+	   }
+.mini_post p { padding: 0; margin: 0; }
+
+.post {text-align: justify; margin-bottom: 1em;}
+.post_title {text-align: right; margin: 0 0% 1em 3px;}
+.post_title h2 {padding: 0px; margin: 0; margin-bottom: 2px;}
+.post_date p {padding: 3px; margin: 0; font-size: 85%; 
+	     /*font-style: italic;*/ border-top: 1px solid black; }
+
+.post_date img {vertical-align: top;}
+
+.taglist {float: left; margin: 0; padding: 0; margin-top: 3px; margin-left: 3px;}
+.taglist p {float: left; font-size: 85%; margin: 0; padding: 0; margin-right: .5em;}
+.tag_plus {float: left; margin: 0;}
+
+/*.article_body :first-child :first-line {font-size: 250%; padding: 0; margin: 0; float: left;}*/
+
+.post_links  {float: right; text-align: right; margin: 0em 0% 0em 0%; font-size: 85%;}
+div.post_extrainfo { margin-top: 1em; margin-bottom: 0em; width: 80%;}
+.post_extrainfo p {
+		font-size: 85%; padding: 0; margin: 0; font-style: italic;}
+
+#content {margin-left: 19em; margin-right: 10%;}
+#sidebar {width: 15em; float: left; padding: 1em; margin: 0;}
+#sidebar_blurb {padding-left: 2px; padding-right: 2px; font-size: 80%;}
+
+#comments ul {list-style: none;}
+.comment {margin-top: .3em;} 
+.comment .comment_header {font-size: 85%; background-color: #dddddd; border: 1px solid black;}
+.comment p {margin-top: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0;}
+.comment .title {font-weight: bold; padding: 0;}
+.comment .comment_body {margin-top: .5em; margin-bottom: .5em;}
+
+.comments_header {background-color: #eeffee; border: 1px solid #ddffdd;}
+		 		    
+.comments_header p {padding: 0; margin: 0; text-align: center; font-size: 85%; font-weight: bold;}
+.comments_header .comment_count p {float: right;}
+.comment_footer p {font-size: 85%; }
+.comment_children {margin-top: 1em;}
+
+a {color: blue; }
+a.visited { color: blue; }
+
+.sidebar_navigation {font-weight: bold; text-align: center;}
+.sidebar_navigation p {padding: 0; margin: 0;}		 
+#sidebar ul {list-style: none; margin: 0em 0em .5em 1em; padding: 0;}
+#sidebar h3 {margin: 0; padding: 0; margin-top: .5em;}
+
+.box {padding: 3px; background-color: #eeffee; border: 1px solid #ddffdd;
+       margin-bottom: 1em; font-size: 85%; }
+
+.logged_in_as {font-size: 90%;}
+
+#error {
+    color: #ff0000;
+    font-weight: bold;
+}
+.info img {border: none;}
+
+#advice p {
+    font-size: 70%;
+}
+
+#preview_comment {
+    border: 1px solid #aaaaaa; 
+    background-color: #eee; 
+    padding: 5px; 
+}
+
+.message {font-size: 70%; }
+
+#tag_cloud {padding: 10%; text-align: justify;}
+.tag {padding: 5px;}
+.tag a {text-decoration: none;}
+
+.feeds  {padding-left: 10px;}
+.feeds img {border: none;}
+
+.feed_icon_box {padding: 0; margin: 0;}
+.feed_icon_box img {border: none; vertical-align: middle;}
+
+.sidebar_feed li {margin-top: 1em;}
