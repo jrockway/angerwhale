@@ -159,9 +159,11 @@ forever if you do!
 
 =head1 BUGS
 
-Although Angerwhale's not yet feature complete, the code is pretty
-solid.  If you'd like to request a feature or report a bug, either
-open an RT ticket, or join C<#angerwhale> on C<irc.perl.org>.
+Although Angerwhale's not yet feature complete, the code that exists
+is pretty solid (it's been in use for almost a year).  If you'd like
+to request a feature or report a bug, either open an RT ticket, or
+join C<#angerwhale> on C<irc.perl.org>.  Thanks in advance for your
+contribution.
 
 =head1 AUTHOR
 
@@ -181,6 +183,8 @@ patches when something didn't work quite right:
 Ash Berlin - L<http://perlitist.com/>
 
 =back
+
+Thanks!
 
 =head1 COPYRIGHT
 
