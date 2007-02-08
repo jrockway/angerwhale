@@ -14,6 +14,40 @@ use Syntax::Highlight::Engine::Kate::All;
 
 __PACKAGE__->mk_accessors('lang'); # what lang highlighter should use
 
+=head1 Angerwhale::Format::Pod
+
+Fomat POD documentation as XHTML.  Syntax-highlight code blocks.
+
+=head1 METHODS
+
+Standard methods implemented
+
+=head2 new
+
+=head2 can_format
+
+Can format *.pod.
+
+=head2 types
+
+Handles 'pod' which is perl's Plain Old Documenation.  See L<perlpod>.
+
+=head2 format
+
+=head2 format_text
+
+=head2 verbatim
+
+Overrides Pod::Xhtml to provide syntax-highlighting of code blocks.
+
+To specify a language for a code block, and all remaining code blocks,
+make the first line C<lang:LanguageName>, like C<lang:Perl> or
+C<lang:Haskell>.  To turn off syntax highlighting until
+the next C<lang:> directive, do C<lang:0> or C<lang:undef>.
+
+=head
+
+=cut
 
 sub new {
     my $class = shift;

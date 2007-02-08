@@ -15,7 +15,7 @@ use YAML::Syck;
 
 =head1 METHODS
 
-=head1 signor
+=head2 signor
 
 Returns the key id of the message's signor, or 0 if the message is not
 signed.
@@ -29,7 +29,7 @@ sub signor {
 }
 
 
-=head1 signed
+=head2 signed
 
 Returns true if the signature is good, false otherwise.
 

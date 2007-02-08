@@ -13,11 +13,17 @@ Angerwhale::Controller::Articles - Catalyst Controller
 
 See L<Angerwhale>
 
+Core article manager, for displaying archives, and blog pages.
+
 =head1 DESCRIPTION
 
 Catalyst Controller.
 
 =head1 METHODS
+
+=head2 article_list
+
+Stashes all articles in reverse order.
 
 =cut
 
@@ -33,6 +39,14 @@ sub article_list : Private {
     $c->stash->{articles}	= [@articles];
     $c->stash->{article_count}	= scalar @articles;
 }
+
+=head2 single_article(['raw'])
+
+Displays a single article (with comments, etc.).  If 'raw' is passed
+as the argument, then the raw unformatted text is returned as an octet
+stream.
+
+=cut
 
 sub single_article : Private  {
     my ($self, $c, @args) = @_;
@@ -63,6 +77,15 @@ sub single_article : Private  {
 	return;
     }
 }
+
+=head2 default 
+
+XXX: Fix me
+
+Shows all articles at C</articles/> or shows a single
+article at C</articles/Article name.format(/raw)?>.
+
+=cut
 
 sub default : Private {
     my ($self, $c, @args) = @_;

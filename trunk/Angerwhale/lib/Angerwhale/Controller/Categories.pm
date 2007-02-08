@@ -288,6 +288,12 @@ sub _date_of {
     return sprintf('%d/%0d/%0d', $a[0]+1900, $a[1]+1, $a[2]);
 }
 
+=head2 list_categories
+
+ XXX: todo.
+
+=cut
+
 sub list_categories : Private {
     my ($self, $c) = @_;
 
@@ -297,6 +303,12 @@ sub list_categories : Private {
 
     return;
 }
+
+=head2 default($category)
+
+Display the C<$category> or an error message if it doesn't exist.
+
+=cut
 
 # XXX: change show_category to do this directly
 sub default : Private {

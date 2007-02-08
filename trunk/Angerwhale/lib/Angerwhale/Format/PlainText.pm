@@ -7,6 +7,33 @@ use strict;
 use warnings;
 use Text::Autoformat qw(autoformat break_TeX);
 
+=head1 Angerwhale::Format::PlainText
+
+Format plain text files as pretty HTML (and nicely-formated plain
+text via Text::AutoFormat)
+
+=head1 METHODS
+
+Standard methods implemented
+
+=head2 new
+
+=head2 can_format
+
+Can format *.txt and *.text.
+
+=head2 types
+
+Handles 'text' which is plain text
+
+=head2 format
+
+=head2 format_text
+
+=head
+
+=cut
+
 sub new {
     my $class = shift;
     my $self  = \my $scalar;

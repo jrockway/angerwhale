@@ -7,6 +7,21 @@ use strict;
 use base qw(Angerwhale::View::Feed);
 use XML::Atom::SimpleFeed;
 
+=head1 NAME
+
+Angerwhale::View::Feed::Atom - render Atom feed
+
+=head1 METHODS
+
+=head2 process
+
+Standard process method.
+
+XXX: list accepted stash args
+
+=cut
+
+
 sub process {
     my ($self, $c) = @_;
     my @header;
@@ -60,12 +75,6 @@ sub process {
     return $output;
 }
 
-sub stash_rss_header {
-    my ($self, $c) = @_;
-    
-
-    return;
-}
 
 1;
 

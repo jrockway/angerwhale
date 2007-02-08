@@ -20,6 +20,10 @@ Catalyst Controller.
 
 =head1 METHODS
 
+=head2 find_by_uri_path(@path)
+
+Find a comment based on the current URI.
+
 =cut
 
 sub find_by_uri_path : Private {
@@ -30,6 +34,13 @@ sub find_by_uri_path : Private {
     
     return $c->forward('find_by_path', [@path]);
 }
+
+=head2 find_by_path(@path)
+
+Get a comment based on filesystem (UUID) path.
+
+=cut
+
 
 sub find_by_path : Private {
     my ($self, $c, @path) = @_;
@@ -46,6 +57,12 @@ sub find_by_path : Private {
     $c->stash->{comment} = $article;    
     return $article;
 }
+
+=head2 default
+
+Display a comment based on the current URL
+
+=cut
 
 sub default : Private {
     my ( $self, $c ) = @_;
@@ -75,6 +92,12 @@ sub default : Private {
     
     return;
 }
+
+=head2 post
+
+Display "post a comment" form, handle posting and previewing.
+
+=cut
 
 sub post : Local {
     my ( $self, $c, @path ) = @_;

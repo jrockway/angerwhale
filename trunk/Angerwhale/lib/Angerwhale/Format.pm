@@ -88,6 +88,10 @@ should return the text formatted as HTML.
 
 Like C<format>, but return plain text instead of HTML.
 
+=head2 format_html
+
+Alias.
+
 =head2 types
 
 Returns a list of hashrefs, where each hashref consists of:

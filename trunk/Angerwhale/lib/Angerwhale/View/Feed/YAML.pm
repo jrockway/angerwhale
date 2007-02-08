@@ -31,6 +31,13 @@ L<YAML|YAML> Ain't Markup Language.
 
 Outputs articles as YAML
 
+=head1 METHODS
+
+=head2 process
+
+Prepares items, and then dumps the result as YAML into the body as
+C<text/x-yaml>.
+
 =head1 AUTHOR
 
 Jonathan Rockway

@@ -11,7 +11,20 @@ use File::Slurp;
 use Carp;
 
 use utf8; # for the elipsis later on
-my $ELIPSIS = 'â€¦';
+my $ELIPSIS = 'â€¦';
+
+=head1 Content
+
+Mix this into Filesystem::Item to get support for content
+in the entries.  You probably want that.
+
+=head1 METHODS
+
+=head2 checksum
+
+MD5 hash of the content
+
+=cut
 
 sub checksum {
     my $self = shift;
@@ -19,6 +32,12 @@ sub checksum {
     utf8::encode($text);
     return md5_hex($text);
 }
+
+=head2 summary
+
+Returns the first ten words of the content.
+
+=cut
 
 sub summary {
     my $self = shift;
@@ -37,7 +56,12 @@ sub summary {
     return $summary;
 }
 
-# returns unformatted text, strips OpenPGP armour etc. if necessary
+=head2 raw_text
+
+Returns unformatted text, stripped of any PGP headers, armour, etc.
+
+=cut
+
 sub raw_text {
     my $self     = shift;
     my $want_pgp = shift;
@@ -58,7 +82,12 @@ sub raw_text {
     return $text;
 }
 
-# returns HTML-formatted data
+=head2 text
+
+Returns HTML-formated text
+
+=cut
+
 sub text {
     my $self = shift;
     my $text = $self->raw_text;
@@ -75,7 +104,12 @@ sub text {
     return $data;
 }
 
-# returns plain text formatted data
+=head2 plain_text
+
+Returns plain text version of the item
+
+=cut
+
 sub plain_text {
     my $self = shift;
     my $text = $self->raw_text;
@@ -93,7 +127,12 @@ sub plain_text {
     return $data;
 }
 
-# returns a word count
+=head2 words
+
+Returns a word count of the item
+
+=cut
+
 sub words {
     my $self = shift;
     my $text = $self->plain_text;

@@ -14,6 +14,40 @@ use HTML::Tidy;
 use strict;
 use warnings;
 
+=head1 Angerwhale::Format::HTML
+
+Format valid or invalid HTML into valid XHTML or plain text.
+
+For example:
+
+   <p>Foo <script>hack()</script><b>bar<i>baz
+   </p></a>
+
+is formatted to:
+
+   <p>Foo <b>bar<i>baz</i></b></p>
+
+=head1 METHODS
+
+Standard methods implemented
+
+=head2 new
+
+=head2 can_format
+
+Can format *.html.
+
+=head2 types
+
+Handles 'html' which is the w3c's hypertext markup language.  You
+may have heard of it.
+
+=head2 format
+
+=head2 format_text
+
+=cut
+
 sub new {
     my $class = shift;
     my $self  = \my $scalar;

@@ -9,6 +9,18 @@ use base qw(Catalyst::View);
 use strict;
 use YAML::Syck;
 
+=head1 View::Dump
+
+Return a page as a YAML dump of the stash.
+
+=head1 METHODS
+
+=head2 process
+
+Standard process method.
+
+=cut
+
 sub process {
     my $self = shift;
     my $c    = shift;

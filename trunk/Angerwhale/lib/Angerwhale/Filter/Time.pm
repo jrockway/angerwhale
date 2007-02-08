@@ -13,6 +13,27 @@ my @daynames = qw(日 月 火 水 木 金 土);
 
 # Historical note.  I am an idiot for using DateTime for this!!!
 
+=head1 Filter::Time
+
+Format times (in seconds past the epochs) from TT
+
+example:
+
+   [% SET seconds = 123 %]
+   [% seconds | time %]
+
+=head1 METHODS
+
+=head2 init
+
+Called by TT to create the formatted.
+
+=head2 filter
+
+Does the actual conversion at template runtime.
+
+=cut
+
 sub init {
     my $self = shift;
     $self->{ _DYNAMIC } = 1;

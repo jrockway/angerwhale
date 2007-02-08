@@ -18,6 +18,15 @@ Angerwhale::Controller::Login - Handles logins
 
 See L<Angerwhale>
 
+=head2 nonce
+
+Generate a textual challenge.
+
+=head2 process
+
+Process a signed challenge, and log the user in if the challenge is
+valid.
+
 =cut
 
 sub nonce : Local {
@@ -108,11 +117,23 @@ sub process : Local {
     $c->response->redirect($c->uri_for('/'));
 }
 
+=head2 login_page
+
+Render the login page
+
+=cut
+
 sub login_page : Private {
     my ( $self, $c ) = @_;
     $c->stash->{template} = 'login.tt';
     $c->forward('nonce');
 }
+
+=head2 default
+
+Forward to the login page.
+
+=cut
 
 sub default : Private {
     my ( $self, $c ) = @_;    

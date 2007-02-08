@@ -69,6 +69,21 @@ sub prepare_items {
     return @result;
 }
 
+=head2 serialize_item($item, $recursive?)
+
+Serialize $item by converting it into a hashref.  Normally
+Articles/Comments are lazy loaded, but this forces everything
+to be evaluated and added to a hashref.
+
+Attributes in the retured hashref are: title, type, summary, signed,
+xhtml, text, raw, guid, uri, date (Created), modified, tags,
+C<categories> the article is in (if possible),  and an arrayref of
+C<comments> (if $recursive).
+
+TODO: make this automatic.
+
+=cut
+
 sub serialize_item {
     my ($self, $c, $item, $recursive) = @_;
     
@@ -108,7 +123,11 @@ sub serialize_item {
     return $data;
 }
 
+=head2 time2str
 
+Format times as per Atom spec
+
+=cut
 
 sub time2str {
     my $localtime = shift;
@@ -126,12 +145,10 @@ sub time2str {
     return "$year-$mon-${mday}T$hour:$min:${sec}Z";
 }
 
-1;
-
-__END__
-
 =head1 AUTHOR
 
 Jonathan Rockway
 
+=cut
 
+1;

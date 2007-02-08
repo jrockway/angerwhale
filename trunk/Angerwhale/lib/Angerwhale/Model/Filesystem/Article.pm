@@ -9,6 +9,27 @@ use base qw(Angerwhale::Model::Filesystem::Item);
 use Class::C3;
 use Carp;
 
+=head1 Filesystem::Article
+
+Represents a C<Filesystem::Item> that's an article (not a comment or
+preview comment).
+
+=head1 METHODS
+
+=head2 new
+
+Create an article, see C<Filesystem::Item::new> for details.
+
+=head2 categories
+
+Return a list of categories that the article is in.
+
+=head2 uri
+
+Return the URI of this article.
+
+=cut
+
 sub new {
     my ($class, $args) = @_;
     croak "Articles cannot have a parent" 

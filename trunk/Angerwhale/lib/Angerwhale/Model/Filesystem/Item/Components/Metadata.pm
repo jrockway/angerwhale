@@ -17,8 +17,9 @@ metadata support.
 
 =head2 title
 
-Returns 
-the title of the article.
+Returns the title of the article.
+
+Attribute: title.
 
 =cut
 
@@ -42,8 +43,13 @@ sub title {
 }
 
 
+=head2 mini
 
-# returns true if the article is a "mini-article"
+Returns true if the article is a "mini-article"
+
+Attribute: mini.
+
+=cut
 sub mini {
     my $self = shift;
 
@@ -60,17 +66,36 @@ sub mini {
     return $mini ? 1 : 0;
 }
 
+=head2 creation_time
+
+See L<File::CreationTime>.
+
+=cut
+
 sub creation_time {
     my $self = shift;
     my $ct = File::CreationTime::creation_time($self->location);
     return $ct;
 }
 
+=head2 modification_time
+
+mtime
+
+=cut
+
 sub modification_time {
     my $self = shift;
     my $time = (stat($self->location))[9];
     return $time;
 }
+
+=head2 author
+
+Returns the L<Angerwhale::User> object for the author of this item, or
+L<Angerwhale::User::Anonymous> if there is none.
+
+=cut
 
 sub author {
     my $self = shift;
@@ -86,6 +111,14 @@ sub author {
     return Angerwhale::User::Anonymous->new();
 }
 
+=head2 type
+
+Returns the type (format) of this article, based on the file's
+extension or the attribute if it exists.
+
+Attribute: type.
+
+=cut
 
 sub type {
     my $self = shift;

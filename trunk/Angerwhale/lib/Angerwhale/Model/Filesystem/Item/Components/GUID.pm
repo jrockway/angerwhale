@@ -8,6 +8,21 @@ use warnings;
 use Data::GUID;
 use File::Attributes qw(get_attribute set_attribute);
 
+=head1 GUID
+
+GUID component for Filesystem::Item.  Mix in to get a GUID
+for each item.
+
+=head1 METHODS
+
+=head2 id
+
+Returns the GUID for this item.
+
+Attribute: guid
+
+=cut
+
 sub id {
     my $self = shift;
     my $path = (-l $self->location) ? readlink($self->location) 

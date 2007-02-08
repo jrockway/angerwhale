@@ -21,6 +21,12 @@ Catalyst Controller.
 
 =head1 METHODS
 
+=head2 check_tag_access
+
+Checks to see if the current user is allowed to tag.  Sets response
+code to HTTP 401 is access is denied and returns false to Perl, or
+true if the user is allowed to tag.
+
 =cut
 
 sub check_tag_access : Private {
@@ -37,8 +43,17 @@ sub check_tag_access : Private {
     }
 }
 
-# get a list for ajax if no params,
-# otherwise apply the tags
+=head2 do_tag($article, @args)
+
+If called without C<@args>, returns a textual list of tags.  Otherwise
+tags the article with the POSTed tags.  (Called by AJAX tagging
+system.)
+
+Returns false and sets HTTP error to 404 if an invalid article
+is specified.
+
+=cut
+
 sub do_tag : Local {
     my ($self, $c, @args) = @_;
 
@@ -76,6 +91,12 @@ sub do_tag : Local {
     }
 }
 
+=head2 show_tagged_articles(@tags)
+
+Renders a page showing all article tagged with all of C<@tags>.
+
+=cut
+
 sub show_tagged_articles : Path('/tags') {
     my ($self, $c, @tags) = @_;
 
@@ -101,6 +122,12 @@ sub show_tagged_articles : Path('/tags') {
     $c->stash->{article_count} = scalar @{$c->stash->{articles}};
 
 }
+
+=head2 tag_list
+
+Renders a tag cloud.  Forwarded to by index (below).
+
+=cut
 
 sub tag_list : Private {
     my ($self, $c) = @_;
@@ -136,6 +163,12 @@ sub tag_list : Private {
     $c->stash->{template}   = 'tag_list.tt';
 }
 
+=head2 get_nav_box
+
+Used by AJAX editor to update the sidebar after tagging.
+
+=cut
+
 sub get_nav_box : Local {
     my ($self, $c) = @_;
     if ($c->request->param('_home')){ 
@@ -147,6 +180,13 @@ sub get_nav_box : Local {
     $c->stash->{tags} = [$c->model('Filesystem')->get_tags];
     $c->stash->{template} = 'navbox.tt';
 }
+
+=head2 index
+
+Show all tags.  Currently dispatches to C<tag_list> to render
+a Web 2.0 compliant Tag Cloud.  Yay.
+
+=cut
 
 sub index : Private {
     my ($self, $c) = @_;

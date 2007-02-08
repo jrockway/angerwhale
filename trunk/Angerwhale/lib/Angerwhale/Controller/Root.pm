@@ -27,7 +27,13 @@ Root Controller for this Catalyst based application.
 
 =cut
 
+=head2 auto
+
+Handle caching
+
 =head2 default
+
+global 404 page
 
 =cut
 
@@ -96,6 +102,13 @@ sub auto : Private {
     return 1;
 }
   
+=head2 blog
+
+Render the main blog page, and blog archives at
+L<http://blog/yyyy/mm/dd>.
+
+=cut
+
 sub blog : Path('/') {
     my ( $self, $c, @date ) = @_;
     $c->stash->{page}     = 'home';
@@ -114,6 +127,14 @@ sub default : Private {
 	$c->response->redirect($c->uri_for('/'));
     }
 }
+
+=head2 end
+
+Global end action (except for L<Angerwhale::Model::Feeds>).  Renders
+template and caches result if possible.
+
+=cut
+
 
 # global ending action
 sub end : Private {

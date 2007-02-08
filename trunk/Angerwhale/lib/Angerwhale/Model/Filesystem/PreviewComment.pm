@@ -12,6 +12,21 @@ use Carp;
 __PACKAGE__->mk_accessors(qw|title preview_body type
 			     cache userstore context|);
 
+=head1 PreviewComment
+
+A fake comment to display to the user as a preview.  Backed
+by memory instead of a file, but otherwise works like a 
+regular comment (formatting, PGP, etc. works).
+
+=head1 METHODS
+
+=head2 new({body => ..., cache => ..., userstore => ...})
+
+All args are required.  Body is the text to format.  Cache is the
+cache object C<< $c->cache >> (so that if the user submits the comment
+unmodified we don't have to recache it).  userstore is
+C<< $c->model('UserStore') >> so we can look up PGP info.
+
 sub new {
     my $class	 = shift;
     my $self     = shift;
@@ -89,3 +104,65 @@ sub tags {}
 sub tag_count {0;}
 sub name {}
 1;
+
+__END__
+
+=head2 creation_time 
+
+Now
+
+=head2 modification_time 
+
+Now
+
+=head2 uri 
+
+Nothing
+
+=head2 raw_text 
+
+Passed body
+
+=head2 uri 
+
+Nothing
+
+=head2 author 
+
+Based on PGP, or Anonymous Coward otherwise
+
+=head2 id
+
+=head2 comment_count 
+
+0
+
+=head2 add_comment 
+
+Disabled
+
+=head2 set_tag 
+
+Disabled
+
+=head2 post_uri 
+
+Nothing
+
+=head2 comments 
+
+C<[]>
+
+=head2 tag_count 
+
+0
+
+=head2 tags
+
+None
+
+=head2 name 
+
+None
+
+=cut

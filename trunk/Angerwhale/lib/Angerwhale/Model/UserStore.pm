@@ -51,7 +51,7 @@ __PACKAGE__->mk_accessors(qw|update_interval keyserver|);
 
 =head2 new
 
-=head2 new_user
+Called by Catalyst to create and initialize userstore.
 
 =cut
 
@@ -80,7 +80,6 @@ sub new {
     return $self;
 }
 
-
 =head2 create_user_by_real_id
 
 =head2 create_user_by_nice_id
@@ -104,6 +103,14 @@ sub create_user_by_nice_id {
     my $nice_id = shift;
     return $self->get_user_by_nice_id($nice_id);
 }
+
+=head2 get_user_by_real_id
+
+=head2 get_user_by_nice_id
+
+Retrieves the user, creating it if necessary.
+
+=cut
 
 sub get_user_by_real_id {
     my $self = shift;
@@ -169,6 +176,12 @@ sub _user_ok {
     return 1;
 }
 
+=head2 refresh_user
+
+Refresh the user's details from the keyserver
+
+=cut
+
 sub refresh_user {
     my $self = shift;
     my $user = shift;
@@ -177,6 +190,14 @@ sub refresh_user {
     $self->store_user($user);
     $user->{refreshed} = 1;
 }
+
+=head2 store_user
+
+Write the user's data to disk, so that attributes can be
+changed and so that the blog will work if the keyserver goes
+offline.
+
+=cut
 
 # stores by nice id
 sub store_user {
@@ -202,6 +223,12 @@ sub store_user {
     
     return 1;
 }
+
+=head2 last_updated
+
+Returns the time of the most recent refresh of all users.
+
+=cut
 
 sub last_updated {
     my $self = shift;
