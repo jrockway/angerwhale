@@ -11,7 +11,7 @@ use File::Slurp;
 use Carp;
 
 use utf8; # for the elipsis later on
-my $ELIPSIS = 'Å‚ÄÅ¶';
+my $ELIPSIS = "\x{2026}";
 
 =head1 Content
 
