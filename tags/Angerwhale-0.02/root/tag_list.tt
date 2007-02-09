@@ -1,0 +1,19 @@
+[% WRAPPER page.tt title='All Tags' %]
+<div id="tag_cloud">
+[% IF tag_count > 0 %]
+<p>Articles have been tagged with the following tags:</p>
+
+[% FOREACH tag = tags %]
+
+<span class="tag" style="font-size: [% tag_data.$tag.count %]%">
+  <a href="[% c.uri_for("/tags", "$tag") | html %]">
+    [% tag | html %]
+  </a>
+</span>	 
+
+[% END %]
+[% ELSE %]
+<p>No tags.</p>
+[% END %]
+</div><div class="after"><br /></div>
+[% END %]

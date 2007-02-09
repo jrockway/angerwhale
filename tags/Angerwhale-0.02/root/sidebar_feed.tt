@@ -1,0 +1,14 @@
+[% feed = c.model("Feeds").get(feed_name) %]
+<div class="box">
+<h3>[% feed_name %]</h3>
+<ul class="sidebar_feed_entries">
+[% count = c.config.max_feeds || 10 %]
+[% FOREACH entry = feed.entries %]
+   <li><a href="[% entry.link | html %]">   
+      [% entry.title %]
+   </a></li>
+   [% count = count - 1 %]	
+   [% LAST IF !count %]	
+[% END %]
+</ul>
+</div>

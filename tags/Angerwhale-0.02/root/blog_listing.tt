@@ -1,0 +1,35 @@
+[% WRAPPER page.tt %]
+  [% IF message %]<div id="message"><p>[% message %]</p></div>[% END %]
+
+  [% FOREACH article = articles %]
+   [% IF article.mini %]
+     [% INCLUDE mini_post.tt %]
+   [% ELSE %]
+     [% INCLUDE post.tt %]
+   [% END %]
+  [% END %]
+
+[% IF newer_articles.defined || older_articles.defined %]
+<div id="nav_footer">
+<p>
+ [% IF newer_articles %]
+   [% IF newest_is_newest %] 
+     <a href="[% c.uri_for("$category") %]">
+   [% ELSE %]
+     <a href="[% c.uri_for("$category/$newer_articles") | html %]">
+   [% END %]
+        &lt; Newer articles</a>
+ [% END %]
+ [% IF newer_articles && older_articles %]
+   |
+ [% END %]
+ [% IF older_articles %]   
+   <a href="[% c.uri_for("$category/$older_articles") | html%]">
+     Older articles &gt;</a>
+ [% END %]
+</p>
+</div>
+<div class="after"><br /></div>
+[% END %]
+
+[% END %]

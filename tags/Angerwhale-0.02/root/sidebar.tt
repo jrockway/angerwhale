@@ -1,0 +1,30 @@
+<!-- sidebar.tt -->
+<div id="sidebar"> 
+  <!-- sidebar blurb + image -->
+  [% IF c.config.description %]
+  <div class="box">
+  <p id="sidebar_blurb">
+    [% IF c.config.sidebar_picture %]
+  <img id="sidebar_picture" src="[% c.config.sidebar_picture %]" alt="[LOGO]"/>
+  [% END %]
+   [% c.config.description %]
+  </p>		
+  </div>
+  [% END %]
+  
+  <!-- navigation box -->
+  [% INCLUDE navbox.tt %]		
+
+  <!-- login box -->
+  [% INCLUDE login_box.tt %]
+  
+  <!-- sidebar feeds -->
+  <div id="sidebar_feeds">
+   [% FOREACH feed_name = c.model("Feeds").names %]
+    <div class="sidebar_feed">
+     [% INCLUDE sidebar_feed.tt feed_name=feed_name %]
+    </div>
+   [% END %]
+  </div>
+</div>
+<!-- end sidebar.tt -->
