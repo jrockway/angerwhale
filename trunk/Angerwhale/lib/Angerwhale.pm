@@ -187,6 +187,10 @@ Ash Berlin - L<http://perlitist.com/>
 
 Bogdan Lucaciu - L<http://blog.wiz.ro/>
 
+=item *
+
+Florian Ragwitz L<http://perldition.org/>
+
 =back
 
 Thanks!
