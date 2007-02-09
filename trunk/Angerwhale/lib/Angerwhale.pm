@@ -97,7 +97,7 @@ channel!  Enjoy!
 
 Angerwhale is a L<Catalyst|Catalyst> application, so if you'd like to
 run it in a production environment, check out the
-L<Catalyst::Manual::Deployment|Catalyst deployment manual>.
+L<Catalyst deployment manual|Catalyst::Manual::Deployment>.
 Basically, you can run it as a FastCGI, mod_perl, or plain CGI.
 
 =head1 RESOURCES
@@ -160,10 +160,11 @@ forever if you do!
 =head1 BUGS
 
 Although Angerwhale's not yet feature complete, the code that exists
-is pretty solid (it's been in use for almost a year).  If you'd like
-to request a feature or report a bug, either open an RT ticket, or
-join C<#angerwhale> on C<irc.perl.org>.  Thanks in advance for your
-contribution.
+is pretty solid (it's been in use for almost a year).  
+
+If you'd like to request a feature or report a bug, either open an RT
+ticket, or join C<#angerwhale> on C<irc.perl.org>.  Thanks in advance
+for your contribution.
 
 =head1 AUTHOR
 
@@ -182,13 +183,17 @@ patches when something didn't work quite right:
 
 Ash Berlin - L<http://perlitist.com/>
 
+=item *
+
+Bogdan Lucaciu - L<http://blog.wiz.ro/>
+
 =back
 
 Thanks!
 
 =head1 COPYRIGHT
 
-Copyright (C) 2006 Jonathan Rockway and Contributors
+Copyright (C) 2007 Jonathan Rockway and Contributors
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
