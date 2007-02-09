@@ -38,7 +38,6 @@ sub index : Private {
     # for the sidebar
     $c->stash->{feed_categories} = [$c->model('Filesystem')->get_categories];
     $c->stash->{feed_tags}       = [$c->model('Filesystem')->get_tags];
-     
 }
 
 =head2 article

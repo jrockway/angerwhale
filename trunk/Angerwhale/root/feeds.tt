@@ -38,6 +38,7 @@ All Things Feed!</p>
 	 %]
      </li>
      [% END %]
+     [% SET category = "" %][% # no current category %]
     </ul>
    </li>
   [% END %]
