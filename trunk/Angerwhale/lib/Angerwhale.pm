@@ -9,7 +9,7 @@ use Catalyst qw/Unicode ConfigLoader Static::Simple
 		ConfigLoader::Environment/;
 #XXX: add C3 and LogWarnings back
 
-our $VERSION = '0.01_02';
+our $VERSION = '0.02';
 
 binmode STDOUT, ':utf8';
 

@@ -119,11 +119,12 @@ sub write_revision {
     };
     if ($@){
 	warn $@;
-	eval { 
-	    open(my $r, '>', 'root/revision.tt') 
-	      or die "Couldn't open root/revision.tt: $!";
-	    print {$r} "UNKNOWN" or die "Write error: $!";
-	    close $r or die "Couldn't close file: $!";
+	# commented for release version, which ships with revision.tt
+	#eval { 
+	#    open(my $r, '>', 'root/revision.tt') 
+	#      or die "Couldn't open root/revision.tt: $!";
+	#    print {$r} "UNKNOWN" or die "Write error: $!";
+	#    close $r or die "Couldn't close file: $!";
 	}
     }
     warn $@ if $@; # from the second eval
