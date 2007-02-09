@@ -125,7 +125,7 @@ sub write_revision {
 	#      or die "Couldn't open root/revision.tt: $!";
 	#    print {$r} "UNKNOWN" or die "Write error: $!";
 	#    close $r or die "Couldn't close file: $!";
-	}
+	#}
     }
     warn $@ if $@; # from the second eval
     
