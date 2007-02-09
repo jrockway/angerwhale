@@ -6,6 +6,7 @@ package Angerwhale::Format::Textile;
 use strict;
 use warnings;
 use Text::Textile;
+use Angerwhale::Format::HTML;
 
 =head1 Angerwhale::Format::Textile
 
@@ -60,7 +61,19 @@ sub format {
     my $text = shift;
     my $type = shift;
 
-    return $$self->process($text);
+    my $html_format = Angerwhale::Format::HTML->new;
+    my $textile_as_html = $$self->process($text);
+    return $html_format->format($textile_as_html, 'html');
+}
+
+sub format_text {
+    my $self = shift;
+    my $text = shift;
+    my $type = shift;
+    
+    my $html_format = Angerwhale::Format::HTML->new;
+    my $textile_as_html = $$self->process($text);
+    return $html_format->format_text($textile_as_html, 'html');
 }
 
 1;
