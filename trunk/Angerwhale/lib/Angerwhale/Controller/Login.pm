@@ -94,7 +94,7 @@ sub process : Local {
     };
     
     if($@){
-	$c->log->warn("Failed login for $nice_key_id: $@");
+	$c->debug("Failed login for $nice_key_id: $@");
 	$c->response->body("You cheating scum!  You are NOT $nice_key_id!");
 	return;
     }
@@ -112,8 +112,8 @@ sub process : Local {
 	$c->detach();
     }
     $c->session->{user} = $user;
-    $c->log->info("successful login for ". $user->fullname.
-		  "($nice_key_id)");
+    $c->debug("successful login for ". $user->fullname.
+	      "($nice_key_id)");
     $c->response->redirect($c->uri_for('/'));
 }
 
