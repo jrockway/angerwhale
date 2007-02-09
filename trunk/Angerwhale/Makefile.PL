@@ -91,7 +91,7 @@ install_script(glob('script/*.pl'));
 auto_install();
 license('GPL');
 tests('t/*/*.t');
-write_revision();
+write_revision() if !-e 'root/revision.tt';
 WriteAll( sign => 1, meta => 1 );
 catalyst_par_core();
 catalyst_par();  
@@ -119,13 +119,12 @@ sub write_revision {
     };
     if ($@){
 	warn $@;
-	# commented for release version, which ships with revision.tt
-	#eval { 
-	#    open(my $r, '>', 'root/revision.tt') 
-	#      or die "Couldn't open root/revision.tt: $!";
-	#    print {$r} "UNKNOWN" or die "Write error: $!";
-	#    close $r or die "Couldn't close file: $!";
-	#}
+	eval { 
+	    open(my $r, '>', 'root/revision.tt') 
+	      or die "Couldn't open root/revision.tt: $!";
+	    print {$r} "UNKNOWN" or die "Write error: $!";
+	    close $r or die "Couldn't close file: $!";
+	}
     }
     warn $@ if $@; # from the second eval
     
