@@ -103,14 +103,16 @@ sub format_text {
     
     $html->delete;
 
-    my @links = map { autoformat($_) } @links;
-    chomp @links;
-    chomp @links;
-    my $links = join "\n", @links;
-    
-    $result = autoformat($result, {break=>break_TeX, all=>1});
-    
-    return "$result\n-- \n$links\n";
+    if(@links){
+	@links = map { autoformat($_) } @links;
+	chomp @links;
+	chomp @links;
+	my $links = join "\n", @links;
+	
+	$result = autoformat($result, {break=>break_TeX, all=>1});
+	$result .= "\n-- \n$links\n";
+    }
+    return $result;
 }
 
 sub _clear_links {
