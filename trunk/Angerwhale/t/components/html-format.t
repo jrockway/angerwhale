@@ -2,7 +2,7 @@
 # html-format.t 
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 12;
+use Test::More tests => 15;
 use ok 'Angerwhale::Format::HTML';
 use Test::HTML::Tidy;
 use Test::XML::Valid;
@@ -22,6 +22,13 @@ like($output, qr/[\d].*http:/m, 'the links themselves exist');
 unlike($output, qr/<b>/, 'no bold');
 unlike($output, qr/<i>/, 'no italic');
 unlike($output, qr/<p>/, 'no p tags');
+
+my $old;
+for(1..3){
+    $old = $output;
+    my $output = $html->format_text($input);
+    is($old, $output, 'same output each time');
+}
 
 # to HTML
 
@@ -65,18 +72,25 @@ Yay.  This is a new line, but in the same paragraph.  What will happen?</p>
 <h2>New section 2</h2>
 <p>Text, text, text, text.  Blah blah blah blah.
 Blah.  Blah.  Text, some stuff.  Lorem ipsum.  Paragraph text.</p>
-<blockquote>
-This is <i>completely</i> invalid.
-</blockquote>
-<ul>
-<li>Hello</li>
-</ul>
-<ol>
-<li>Hi there</li>
-<li>And again</li>
-</ol>
-<!-- random junk -->
-<ol>Hi
-<img src="<>">
->< foo <b>bold</b>.
+<h1>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</h1>
+
+<blockquote> This is <i>completely</i> invalid.  </blockquote> <ul>
+<li>Hello</li> </ul> <ol> <li>Hi there</li> <li>And again</li> </ol>
+<!-- random junk --> <ol>Hi <img src="<>"> >< foo <b>bold</b>.
+<br />
+<h1>Using perl</h1> 
+
+Lorem ipsum dollar ($) sit amit.  Lorem ipsum
+dollar ($) sit amit.  Lorem ipsum dollar ($) sit amit.  Lorem ipsum
+dollar ($) sit amit.  Lorem ipsum dollar ($) sit amit.  Lorem ipsum
+dollar ($) sit amit.  Lorem ipsum dollar ($) sit amit.  Lorem ipsum
+dollar ($) sit amit.  Lorem ipsum dollar ($) sit amit.  Lorem ipsum
+dollar ($) sit amit.  Lorem ipsum dollar ($) sit amit.  Lorem ipsum
+dollar ($) sit amit.  Lorem ipsum dollar ($) sit amit.  Lorem ipsum
+dollar ($) sit amit.  Lorem ipsum dollar ($) sit amit.  Lorem ipsum
+dollar ($) sit amit.  Lorem ipsum dollar ($) sit amit.  Lorem ipsum
+dollar ($) sit amit.  Lorem ipsum dollar ($) sit amit.  Lorem ipsum
+dollar ($) sit amit.  Lorem ipsum dollar ($) sit amit.  Lorem ipsum
+dollar ($) sit amit.  Lorem ipsum dollar ($) sit amit.  Lorem ipsum
+dollar ($) sit amit.
 
