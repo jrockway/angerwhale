@@ -88,7 +88,15 @@ sub show_category : Private {
     else {
 	$c->stash->{title} = "Entries in $category";
     
-	@articles = reverse sort $c->stash->{root}->get_by_category($category);
+	eval {
+	    @articles = reverse sort $c->stash->{root}->get_by_category($category);
+	};
+
+	if ($@) {
+	    $c->stash->{message} = 'Category does not exist';
+	    return;
+	}
+
     }
 
     # mini-ize small articles
