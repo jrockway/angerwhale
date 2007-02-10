@@ -28,13 +28,7 @@ __PACKAGE__->config({VERSION => $VERSION});
 
 __PACKAGE__->setup;
 
-package Catalyst::Log;
-no warnings 'redefine';
-sub debug {
-    my $log = shift;
-    return unless $log->is_debug;
-    return $log->NEXT::debug(@_);
-}
+__PACKAGE__->log->disable('debug') if !__PACKAGE__->debug;
 
 1;
 
