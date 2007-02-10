@@ -214,20 +214,32 @@ sub _parse {
 		}
 	    }
 	    
+	    elsif($type eq 'cite'){
+		# save cite for the next blockquote		
+		delete $self->{cite};
+		foreach my $kid (@kids){
+		    $self->{cite} = $self->_parse($kid);
+		}
+	    }
 	    elsif($type eq 'blockquote'){
-		$result .= '<blockquote>';
+		my $quote;
+
 		foreach my $kid (@kids){
 		    if(blessed $kid && 
 		       $kid->tag eq any(qw|p blockquote ul|)){
-			$result .= $self->_parse($kid);
+			$quote .= $self->_parse($kid);
+		    }
+		    elsif(blessed $kid && $kid->tag eq 'cite'){
+			$self->{cite} = $self->_parse($kid);
 		    }
 		    else{
-			$result .= "<p>". $self->_parse($kid). "</p>";
+			$quote .= "<p>". $self->_parse($kid). "</p>";
 		    }
 		}
-		$result .= '</blockquote>';
+		my $cite = $self->{cite};
+		$result .= qq{<blockquote cite="$cite">$quote</blockquote>};
 	    }
-
+	    
 	    # lists need items
 	    elsif($type eq any(qw(ul ol))){
 		$result .= "<$type>";
@@ -248,7 +260,7 @@ sub _parse {
 	    # one of these tags
 	    elsif($type eq any(qw(i strong b u pre samp code
 				  kbd p q ol ul li dt dl dd
-				  tt big small sub sup cite)))
+				  tt big small sub sup)))
 	      {
 		  $result .= qq{<$type>};
 		  $result .= $self->_parse(@kids);
