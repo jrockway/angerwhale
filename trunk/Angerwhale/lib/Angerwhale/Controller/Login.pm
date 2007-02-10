@@ -75,7 +75,7 @@ sub process : Local {
     my $key_id = $sig->key_id;
     my $nice_key_id = "0x". substr(unpack("H*", $key_id), -8, 8);
     
-    $c->debug("keyid $nice_key_id ($long_id) is presumably logging in");
+    $c->log->debug("keyid $nice_key_id ($long_id) is presumably logging in");
     
     eval {
 	my $challenge = Load($nonce_data) 
@@ -84,9 +84,9 @@ sub process : Local {
 	$c->session->{nonce} = undef;
 	
 	my $nonce_ok = ($nonce == $challenge);
-	$c->debug("$nice_key_id: nonce verified OK (was $challenge)") 
+	$c->log->debug("$nice_key_id: nonce verified OK (was $challenge)") 
 	  if $nonce_ok;
-	$c->debug("$nice_key_id: Signature was valid") 
+	$c->log->debug("$nice_key_id: Signature was valid") 
 	  if $sig_ok;
 	
 	die "bad nonce" if !$nonce_ok;
@@ -94,7 +94,7 @@ sub process : Local {
     };
     
     if($@){
-	$c->debug("Failed login for $nice_key_id: $@");
+	$c->log->debug("Failed login for $nice_key_id: $@");
 	$c->response->body("You cheating scum!  You are NOT $nice_key_id!");
 	return;
     }
@@ -112,7 +112,7 @@ sub process : Local {
 	$c->detach();
     }
     $c->session->{user} = $user;
-    $c->debug("successful login for ". $user->fullname.
+    $c->log->debug("successful login for ". $user->fullname.
 	      "($nice_key_id)");
     $c->response->redirect($c->uri_for('/'));
 }

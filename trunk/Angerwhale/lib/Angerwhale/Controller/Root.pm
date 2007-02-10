@@ -84,14 +84,14 @@ sub auto : Private {
 	    
 	    if( $do_send_304 ) {
 		no warnings 'uninitialized';
-		$c->debug("304 not modified on ". $c->request->uri.
+		$c->log->debug("304 not modified on ". $c->request->uri.
 			  " etag:'$cond_etag' date:'$cond_date'");
 		$c->res->status( 304 );
 		$c->detach();
 	    }
 	}
 	
-	$c->debug("serving ". $c->request->uri ." from cache $key");
+	$c->log->debug("serving ". $c->request->uri ." from cache $key");
 	$c->response->body($document->{body})
 	  unless 'HEAD' eq $c->request->method;
 	
@@ -148,11 +148,9 @@ sub end : Private {
     # 	$c->forward('Angerwhale::View::Dump');
     # 	print {*STDERR} $c->response->body;
     #    }
-
-    return if $c->response->status != 200; # don't cache server errors
-
+    
     if(!($c->response->body || $c->response->redirect)){
-
+	
 	if(defined $c->config->{'html'} && 1 == $c->config->{'html'}){
 	    # work around mech's inability to handle "XML"
 	    $c->response->content_type('text/html; charset=utf-8');
@@ -163,10 +161,8 @@ sub end : Private {
 	return if('HEAD' eq $c->request->method);
 	
  	$c->stash->{generated_at} = time();
- 	my $articles = $c->stash->{articles};
- 	my $article  = $c->stash->{article};
-
-	if($c->stash->{cache_key}){
+	
+	if($c->stash->{cache_key} && $c->res->status == 200){
 	    _cache($c, $c->stash->{cache_key});
 	}
 	else {
@@ -174,7 +170,7 @@ sub end : Private {
 	    $c->forward('Angerwhale::View::HTML');
 	}
     }
-
+    
     return;
 }
 
@@ -198,7 +194,7 @@ sub _cache {
     my $c   = shift;
     my $key = shift;
     my $document;
-    $c->debug("caching $key");
+    $c->log->debug("caching $key");
     $c->forward('Angerwhale::View::HTML');
     $c->response->headers->header('ETag' => qq{"$key"});
     $document = { mtime   => time(),
