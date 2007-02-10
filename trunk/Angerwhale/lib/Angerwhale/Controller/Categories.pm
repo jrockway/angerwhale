@@ -307,22 +307,6 @@ sub _date_of {
     return sprintf( '%d/%0d/%0d', $a[0] + 1900, $a[1] + 1, $a[2] );
 }
 
-=head2 list_categories
-
- XXX: todo.
-
-=cut
-
-sub list_categories : Private {
-    my ( $self, $c ) = @_;
-
-    $c->response->body(<<'    EOF');
-    The list of categories is conveniently located to your left.
-    EOF
-
-    return;
-}
-
 =head1 AUTHOR
 
 Jonathan Rockway
