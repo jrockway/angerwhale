@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# view_YAML.t 
+# view_YAML.t
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 use strict;
 use warnings;

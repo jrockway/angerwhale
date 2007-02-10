@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# tag_cloud.t 
+# tag_cloud.t
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
@@ -15,12 +15,12 @@ $mech->get_ok('http://localhost/tags');
 # right page.  test all links to make sure they don't go here.
 
 my @links = $mech->followable_links();
-foreach my $link (@links){
+foreach my $link (@links) {
     my $url  = $link->url;
     my $text = $link->text;
-    
-    if($url =~ m{/tags/.*}){
-	my $should = URI->new(qq{http://localhost/tags/$text});
-	is($url, $should->as_string, "$text link is $should");
+
+    if ( $url =~ m{/tags/.*} ) {
+        my $should = URI->new(qq{http://localhost/tags/$text});
+        is( $url, $should->as_string, "$text link is $should" );
     }
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# html-format.t 
+# html-format.t
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 use Test::More tests => 15;
@@ -7,34 +7,38 @@ use ok 'Angerwhale::Format::HTML';
 use Test::HTML::Tidy;
 use Test::XML::Valid;
 
-
 my $html = Angerwhale::Format::HTML->new;
-ok($html, 'created parser OK');
+ok( $html, 'created parser OK' );
 
 # to plain text
-my $input  = do { local $/; <DATA> };
+my $input = do { local $/; <DATA> };
 my $output = $html->format_text($input);
-like($output, qr/THIS IS SOME TEXT/m, 'h1 works');
-like($output, qr/THIS IS A LEVEL 2 HEADING/m, 'h2 works');
-unlike($output, qr/This is a document.  Isn't that wonderful?  This line is getting pretty long, I hope someone cuts me off./m, 'text is cut');
-like($output, qr/[\d]/m, 'number link refs exist');
-like($output, qr/[\d].*http:/m, 'the links themselves exist');
-unlike($output, qr/<b>/, 'no bold');
-unlike($output, qr/<i>/, 'no italic');
-unlike($output, qr/<p>/, 'no p tags');
+like( $output, qr/THIS IS SOME TEXT/m,         'h1 works' );
+like( $output, qr/THIS IS A LEVEL 2 HEADING/m, 'h2 works' );
+unlike(
+    $output,
+qr/This is a document.  Isn't that wonderful?  This line is getting pretty long, I hope someone cuts me off./m,
+    'text is cut'
+);
+like( $output, qr/[\d]/m,        'number link refs exist' );
+like( $output, qr/[\d].*http:/m, 'the links themselves exist' );
+unlike( $output, qr/<b>/, 'no bold' );
+unlike( $output, qr/<i>/, 'no italic' );
+unlike( $output, qr/<p>/, 'no p tags' );
 
 my $old;
-for(1..3){
+for ( 1 .. 3 ) {
     $old = $output;
     my $output = $html->format_text($input);
-    is($old, $output, 'same output each time');
+    is( $old, $output, 'same output each time' );
 }
 
 # to HTML
 
 $output = $html->format($input);
+
 # make output tidier for tidy:
-$output =<<"END";
+$output = <<"END";
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
                       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -42,7 +46,7 @@ $output =<<"END";
       xml:lang="en">
 <head><title>test</title></head><body>$output</body></html>
 END
-if(0){
+if (0) {
     my @pretty;
     $output =~ s{</(\w+)>}{</$1>\n}g;
     @pretty = split /$/m, $output;
@@ -51,10 +55,9 @@ if(0){
     print @pretty;
 }
 
-my $tidy = HTML::Tidy->new({config_file => 'tidy_config'});
-html_tidy_ok($tidy, $output, 'html is tidy');
-xml_string_ok($output, 'html is valid xml');
-
+my $tidy = HTML::Tidy->new( { config_file => 'tidy_config' } );
+html_tidy_ok( $tidy, $output, 'html is tidy' );
+xml_string_ok( $output, 'html is valid xml' );
 
 __DATA__
 <h1>This is some <b>text</b></h1>

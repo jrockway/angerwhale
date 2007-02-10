@@ -8,13 +8,13 @@ use Test::HTML::Tidy;
 use Test::XML::Valid;
 
 my $markdown = Angerwhale::Format::Markdown->new;
-isa_ok($markdown, 'Angerwhale::Format::Markdown', 'created parser');
+isa_ok( $markdown, 'Angerwhale::Format::Markdown', 'created parser' );
 
 my $input = do { local $/; <DATA> };
 my $output = $markdown->format($input);
 
 # make output tidier for tidy:
-$output =<<"END";
+$output = <<"END";
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
                       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -23,9 +23,9 @@ $output =<<"END";
 <head><title>test</title></head><body>$output</body></html>
 END
 
-my $tidy = HTML::Tidy->new({config_file => 'tidy_config'});
-html_tidy_ok($tidy, $output, 'html is tidy');
-xml_string_ok($output, 'html is valid xml');
+my $tidy = HTML::Tidy->new( { config_file => 'tidy_config' } );
+html_tidy_ok( $tidy, $output, 'html is tidy' );
+xml_string_ok( $output, 'html is valid xml' );
 
 __DATA__
 A First Level Header

@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# login.t 
+# login.t
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 use strict;
@@ -12,8 +12,9 @@ use Angerwhale;
 use URI::Escape;
 
 BEGIN {
+
     sub get_data {
-	return <<'NONCE', <<'SIGNED';
+        return <<'NONCE', <<'SIGNED';
 --- !!perl/hash:Angerwhale::Challenge
 date: 1157434506
 nonce: 238616936879130799031760863652778411418
@@ -32,27 +33,29 @@ NWvqjCjZObzX7zkv+Tt9098p3WUF7HKqN4VnqHXu976frn8yxs/0kMDchQ6FGV/W
 =iMfI
 -----END PGP MESSAGE-----
 SIGNED
-}
+    }
 }
 
-my ($nonce, $signed);
+my ( $nonce, $signed );
+
 BEGIN {
-    ($nonce, $signed) = get_data();
+    ( $nonce, $signed ) = get_data();
     $nonce = Load($nonce);
-    isa_ok($nonce, 'Angerwhale::Challenge');
-    
-    {no warnings 'redefine';
-     *Angerwhale::Challenge::new   = sub {$nonce};
+    isa_ok( $nonce, 'Angerwhale::Challenge' );
+
+    {
+        no warnings 'redefine';
+        *Angerwhale::Challenge::new = sub { $nonce };
     }
 }
 
 use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
-my $mech = Test::WWW::Mechanize::Catalyst->new(cookie_jar => {});
+my $mech = Test::WWW::Mechanize::Catalyst->new( cookie_jar => {} );
 $signed = uri_escape($signed);
 
-$mech->get_ok('http://localhost/login', 'can get login page');
+$mech->get_ok( 'http://localhost/login', 'can get login page' );
 $mech->get_ok("/login/process?login=$signed");
-$mech->content_unlike(qr/scum|forgot/, 'login successful');
+$mech->content_unlike( qr/scum|forgot/, 'login successful' );
 $mech->get_ok("/login/process?login=$signed");
-$mech->content_like(qr/scum/, 'login UNsuccessful');
+$mech->content_like( qr/scum/, 'login UNsuccessful' );
 
