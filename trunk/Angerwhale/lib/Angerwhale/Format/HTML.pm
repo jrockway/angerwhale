@@ -237,7 +237,11 @@ sub _parse {
 		    }
 		}
 		my $cite = $self->{cite};
-		$result .= qq{<blockquote cite="$cite">$quote</blockquote>};
+		$result .= $cite ? 
+		  qq{<blockquote cite="$cite">} :
+		    q{<blockquote>};
+		
+		$result .= qq{$quote</blockquote>};
 	    }
 	    
 	    # lists need items
