@@ -72,6 +72,7 @@ requires
    'Crypt::IDEA'					    => 0, 
    'IO::String'						    => 0,
    'Text::Textile'					    => 0,
+   'Text::Markdown'					    => 0,
   );
 build_requires
   (
