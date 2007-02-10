@@ -21,9 +21,9 @@ Catalyst Controller.
 
 =head1 METHODS
 
-=head2 article_list
+=head2 index
 
-Stashes all articles in reverse order.
+Shows every article.
 
 =cut
 
