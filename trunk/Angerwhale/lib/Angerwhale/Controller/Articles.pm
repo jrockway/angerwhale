@@ -27,9 +27,9 @@ Stashes all articles in reverse order.
 
 =cut
 
-sub article_list : Private {
+sub index : Private {
     my ( $self, $c ) = @_;
-
+    
     $c->stash->{page}     = 'article_list';
     $c->stash->{template} = 'search_results.tt';
     $c->stash->{title}    = 'Archives - ' . $c->config->{title};
@@ -48,7 +48,7 @@ stream.
 
 =cut
 
-sub single_article : Private {
+sub single_article : Path {
     my ( $self, $c, @args ) = @_;
     my $name = shift @args;
     my $type = shift @args;
@@ -75,27 +75,6 @@ sub single_article : Private {
         $c->response->body( $c->stash->{article}->raw_text(1) );
         return;
     }
-}
-
-=head2 default 
-
-XXX: Fix me
-
-Shows all articles at C</articles/> or shows a single
-article at C</articles/Article name.format(/raw)?>.
-
-=cut
-
-sub default : Private {
-    my ( $self, $c, @args ) = @_;
-    my $page = shift @args;
-    die unless $page eq 'articles';    # assert.
-
-    if (@args) {
-        $c->detach( 'single_article', [@args] );
-    }
-
-    $c->detach('article_list');
 }
 
 =head1 AUTHOR
