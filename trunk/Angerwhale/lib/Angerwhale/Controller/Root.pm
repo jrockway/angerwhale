@@ -31,10 +31,6 @@ Root Controller for this Catalyst based application.
 
 Handle caching
 
-=head2 default
-
-global 404 page
-
 =cut
 
 sub auto : Private {
@@ -110,23 +106,30 @@ L<http://blog/yyyy/mm/dd>.
 
 =cut
 
-sub blog : Path('/') {
+sub blog : Path  {
     my ( $self, $c, @date ) = @_;
     $c->stash->{page}     = 'home';
     $c->stash->{title}    = $c->config->{title} || 'Blog';
-    $c->stash->{category} = '/';
 
-    $c->forward( '/categories/show_category', [@date] );
+    $c->forward( '/categories/show_category', ['/', @date] );
 }
+
+
+=head2 default
+
+global 404 page
+
+=cut
 
 sub default : Private {
     my ( $self, $c, @args ) = @_;
-    if ( @args == 3 ) {
-        $c->forward( 'blog', [@args] );
-    }
-    else {
-        $c->response->redirect( $c->uri_for('/') );
-    }
+    $c->res->status(404);
+    
+    # XXX: blog archives
+    $c->detach('blog', [@args])
+      if(@args == 3 && 3 == scalar grep { /^\d+$/ } @args);
+
+    $c->stash( template => 'error.tt' );
 }
 
 =head2 end
@@ -139,18 +142,8 @@ template and caches result if possible.
 # global ending action
 sub end : Private {
     my ( $self, $c ) = @_;
-
-    #  not implemented yet
-    # my $requested_type = $c->stash->{requested_type};
-
-    #    if($c->debug){
-    # 	my $res = $c->response->body;
-    # 	$c->forward('Angerwhale::View::Dump');
-    # 	print {*STDERR} $c->response->body;
-    #    }
-
+    
     if ( !( $c->response->body || $c->response->redirect ) ) {
-
         if ( defined $c->config->{'html'} && 1 == $c->config->{'html'} ) {
 
             # work around mech's inability to handle "XML"
@@ -167,7 +160,6 @@ sub end : Private {
             _cache( $c, $c->stash->{cache_key} );
         }
         else {
-
             # not a page we know how to cache
             $c->forward('Angerwhale::View::HTML');
         }

@@ -97,7 +97,8 @@ sub show_category : Path('/categories') {
         };
 
         if ($@) {
-            $c->stash->{message} = 'Category does not exist';
+	    $c->response->status(404);
+	    $c->stash( template => 'error.tt' );
             return;
         }
 
