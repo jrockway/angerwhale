@@ -261,7 +261,7 @@ sub end : Private {
 
 =head1 AUTHOR
 
-Jonathan Rockway,,,
+Jonathan Rockway
 
 =head1 LICENSE
 

@@ -57,13 +57,13 @@ sub find_by_path : Private {
     return $article;
 }
 
-=head2 default
+=head2 comment
 
 Display a comment based on the current URL
 
 =cut
 
-sub default : Private {
+sub comment : Path {
     my ( $self, $c ) = @_;
     $c->forward('find_by_uri_path');
 
