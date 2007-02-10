@@ -12,9 +12,7 @@ use Catalyst qw/Unicode ConfigLoader Static::Simple
 our $VERSION = '0.02';
 
 binmode STDOUT, ':utf8';
-
 __PACKAGE__->config->{session} = {flash_to_stash => 1};
-
 __PACKAGE__->config({name => __PACKAGE__});
 __PACKAGE__->config->{static}->{mime_types} = 
   {
@@ -23,11 +21,8 @@ __PACKAGE__->config->{static}->{mime_types} =
   };
 __PACKAGE__->config->{cache}->{storage} = tempdir(CLEANUP => 1);
 __PACKAGE__->config->{cache}->{expires} = 43200; # 12 hours
-
 __PACKAGE__->config({VERSION => $VERSION});
-
 __PACKAGE__->setup;
-
 __PACKAGE__->log->disable('debug') if !__PACKAGE__->debug;
 
 1;
