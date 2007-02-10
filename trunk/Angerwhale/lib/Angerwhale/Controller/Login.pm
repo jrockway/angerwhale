@@ -116,27 +116,16 @@ sub process : Local {
     $c->response->redirect( $c->uri_for('/') );
 }
 
-=head2 login_page
+=head2 index
 
 Render the login page
 
 =cut
 
-sub login_page : Private {
+sub index : Private {
     my ( $self, $c ) = @_;
     $c->stash->{template} = 'login.tt';
     $c->forward('nonce');
-}
-
-=head2 default
-
-Forward to the login page.
-
-=cut
-
-sub default : Private {
-    my ( $self, $c ) = @_;
-    $c->forward('login_page');
 }
 
 =head1 AUTHOR
