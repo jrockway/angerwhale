@@ -63,12 +63,15 @@ to the dates of newer and older articles.
 =cut
 
 # this is a little messy.  i should probably clean this up.
-sub show_category : Private {
-    my ( $self, $c, @start_date ) = @_;
+sub show_category : Path('/categories') {
+    my ( $self, $c, $category, @start_date ) = @_;
     $c->stash->{template} = q{blog_listing.tt};
     if ( @start_date == 3 ) {
         $c->stash->{page} = "home, but with date";    # for navbar
     }
+
+    $category = '/' if !$category;
+    $c->stash(category => $category);
 
     # how many (non-mini) articles to return?
     my $ARTICLES_PER_PAGE = $c->stash->{articles_desired}
@@ -79,7 +82,6 @@ sub show_category : Private {
     my $MINI_CUTOFF = $c->config->{mini_cutoff} || 120;
 
     # get the articles
-    my $category = $c->stash->{category};
     my $article;    # tmp counter variable in a few places
     my @articles;
 
@@ -319,29 +321,6 @@ sub list_categories : Private {
     EOF
 
     return;
-}
-
-=head2 default($category)
-
-Display the C<$category> or an error message if it doesn't exist.
-
-=cut
-
-# XXX: change show_category to do this directly
-sub default : Private {
-    my ( $self, $c, @args ) = @_;
-
-    my $action   = shift @args;
-    my $category = shift @args;
-    my @date     = @args;
-
-    if ( !$category || $action ne 'categories' ) {
-        $c->forward('list_categories');    # 404'd.
-    }
-    else {
-        $c->stash->{category} = $category;
-        $c->forward( 'show_category', [@date] );
-    }
 }
 
 =head1 AUTHOR
