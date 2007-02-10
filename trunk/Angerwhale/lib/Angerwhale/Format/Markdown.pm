@@ -48,9 +48,12 @@ sub can_format {
 
 sub types {
     my $self = shift;
-    return
-        ({type        => 'markdown',
-          description => 'Markdown formatted text'});
+    return (
+        {
+            type        => 'markdown',
+            description => 'Markdown formatted text'
+        }
+    );
 }
 
 sub format {
@@ -58,9 +61,9 @@ sub format {
     my $text = shift;
     my $type = shift;
 
-    my $html_format = Angerwhale::Format::HTML->new;
+    my $html_format      = Angerwhale::Format::HTML->new;
     my $markdown_as_html = $$self->markdown($text);
-    return $html_format->format($markdown_as_html, 'html');
+    return $html_format->format( $markdown_as_html, 'html' );
 }
 
 sub format_text {
@@ -68,9 +71,9 @@ sub format_text {
     my $text = shift;
     my $type = shift;
 
-    my $html_format = Angerwhale::Format::HTML->new;
+    my $html_format      = Angerwhale::Format::HTML->new;
     my $markdown_as_html = $$self->markdown($text);
-    return $html_format->format_text($markdown_as_html, 'html');
+    return $html_format->format_text( $markdown_as_html, 'html' );
 }
 
 1;

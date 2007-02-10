@@ -61,22 +61,22 @@ Called by Catalyst to create and initialize userstore.
 sub new {
     my ( $self, $c ) = @_;
     $self = $self->NEXT::new(@_);
-    my $dir = $self->{users} = $c->config->{base}. '/.users';
+    my $dir = $self->{users} = $c->config->{base} . '/.users';
 
     # read the config, first from $self->whatever, then from
     # c->config->whatever, and finally fall back to some
     # clever defaults
-    $self->update_interval($c->config->{update_interval} || 3600)
+    $self->update_interval( $c->config->{update_interval} || 3600 )
       if !$self->update_interval;
-    $self->keyserver($c->config->{keyserver} || "stinkfoot.org")
+    $self->keyserver( $c->config->{keyserver} || "stinkfoot.org" )
       if !$self->keyserver;
-    
+
     mkdir $dir;
-    if(!-d $dir || !-w _){
-	$c->log->fatal("no user store at $dir ($!)");
-	die "no user store at $dir";
+    if ( !-d $dir || !-w _ ) {
+        $c->log->fatal("no user store at $dir ($!)");
+        die "no user store at $dir";
     }
-    
+
     return $self;
 }
 
@@ -93,8 +93,8 @@ Returns the C<Angerwhale::User> on success, exception on failure.
 sub create_user_by_real_id {
     my $self    = shift;
     my $real_id = shift;
-    my $nice_id = unpack('H*', $real_id);
-    
+    my $nice_id = unpack( 'H*', $real_id );
+
     return $self->create_user_by_nice_id($nice_id);
 }
 
@@ -113,65 +113,64 @@ Retrieves the user, creating it if necessary.
 =cut
 
 sub get_user_by_real_id {
-    my $self = shift;
+    my $self    = shift;
     my $real_id = shift;
-    my $nice_id = unpack('H*', $real_id);
-    
+    my $nice_id = unpack( 'H*', $real_id );
+
     return $self->get_user_by_nice_id($nice_id);
 }
 
 sub get_user_by_nice_id {
     my $self    = shift;
     my $nice_id = shift;
-    my $real_id = pack('H*', $nice_id);
-    
-    my $dir = $self->{users};
-    my $base = "$dir/$nice_id";
-    my $user = {};
+    my $real_id = pack( 'H*', $nice_id );
+
+    my $dir          = $self->{users};
+    my $base         = "$dir/$nice_id";
+    my $user         = {};
     my $last_updated = 0;
-    
+
     $user->{nice_id} = $nice_id;
-    eval {$user->{public_key}  = read_file("$base/key")};
-    eval {$user->{fullname}    = read_file("$base/fullname")};
-    eval {$user->{fingerprint} = read_file("$base/fingerprint")};
-    eval {$user->{email}       = read_file("$base/email")};
-    eval {$last_updated        = read_file("$base/last_updated")};
+    eval { $user->{public_key}  = read_file("$base/key") };
+    eval { $user->{fullname}    = read_file("$base/fullname") };
+    eval { $user->{fingerprint} = read_file("$base/fingerprint") };
+    eval { $user->{email}       = read_file("$base/email") };
+    eval { $last_updated        = read_file("$base/last_updated") };
     bless $user, 'Angerwhale::User';
     $user->{keyserver} = $self->{keyserver};
 
-    my $outdated = ((time() - $last_updated) > $self->{update_interval});
-    eval {
-	_user_ok($user);
-    };
+    my $outdated = ( ( time() - $last_updated ) > $self->{update_interval} );
+    eval { _user_ok($user); };
 
-    if(!$@ && !$outdated){
-	# refreshed OK
-	return $user;
+    if ( !$@ && !$outdated ) {
+
+        # refreshed OK
+        return $user;
     }
-    
+
     # create a user if the data was bad
     # or it's time to update
     eval {
-	delete $user->{public_key};
-	delete $user->{fullname};
-	delete $user->{fingerprint};
-	delete $user->{email};
-	$user->refresh;
-	$self->store_user($user);
-	_user_ok($user);
+        delete $user->{public_key};
+        delete $user->{fullname};
+        delete $user->{fingerprint};
+        delete $user->{email};
+        $user->refresh;
+        $self->store_user($user);
+        _user_ok($user);
     };
-    
+
     confess "Could not refresh or retrieve user 0x$nice_id!" if $@;
     confess "user isnta a user" if !$user->isa('Angerwhale::User');
-    
+
     return $user;
 }
 
 sub _user_ok {
     my $user = shift;
-    die "no name" if !$user->fullname;
-    die "no key"  if !$user->public_key;
-    die "no email"if !$user->email;
+    die "no name"        if !$user->fullname;
+    die "no key"         if !$user->public_key;
+    die "no email"       if !$user->email;
     die "no fingerprint" if !$user->key_fingerprint;
     return 1;
 }
@@ -208,19 +207,19 @@ sub store_user {
     my $uid = $user->nice_id;
 
     my $base = "$dir/$uid";
-    mkdir $base if !-d $base;
+    mkdir $base                                      if !-d $base;
     confess "couldn't create userdir $base for $uid" if !-d $base;
     eval {
-	write_file("$base/key", $user->public_key);
-	write_file("$base/fullname", $user->fullname);
-	write_file("$base/fingerprint", $user->key_fingerprint);
-	write_file("$base/email", $user->email);
-	write_file("$base/last_updated", time());
+        write_file( "$base/key",          $user->public_key );
+        write_file( "$base/fullname",     $user->fullname );
+        write_file( "$base/fingerprint",  $user->key_fingerprint );
+        write_file( "$base/email",        $user->email );
+        write_file( "$base/last_updated", time() );
     };
-    if($@){
-	confess "Error writing user: $!";
+    if ($@) {
+        confess "Error writing user: $!";
     }
-    
+
     return 1;
 }
 
@@ -236,11 +235,9 @@ sub last_updated {
     my $dir  = $self->{users};
     my $uid  = $user->nice_id;
     my $base = "$dir/$uid";
-    
+
     my $updated;
-    eval {
-	$updated = read_file("$base/last_updated");
-    };
+    eval { $updated = read_file("$base/last_updated"); };
     return $updated;
 }
 
@@ -255,13 +252,13 @@ sub users {
     my $self = shift;
     my $dir  = $self->{users};
     my @users;
-    opendir(my $dirhandle, $dir) or die "Couldn't open $dir for reading";
-    while(my $uid = readdir $dirhandle){
-	next if $uid =~ /^[.][.]?$/; # .. and . aren't users :)
-	eval {
-	    my $user = $self->get_user_by_nice_id($uid);
-	    push @users, $user;
-	};
+    opendir( my $dirhandle, $dir ) or die "Couldn't open $dir for reading";
+    while ( my $uid = readdir $dirhandle ) {
+        next if $uid =~ /^[.][.]?$/;    # .. and . aren't users :)
+        eval {
+            my $user = $self->get_user_by_nice_id($uid);
+            push @users, $user;
+        };
     }
     return @users;
 

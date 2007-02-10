@@ -26,7 +26,7 @@ the binary representation of that integer as a string of eight bytes)
 
 sub id {
     my $self = shift;
-    my $id = pack('H*', $self->nice_id);
+    my $id = pack( 'H*', $self->nice_id );
 }
 
 =head2 nice_id
@@ -50,10 +50,10 @@ initialized by UserStore.
 =cut
 
 sub _keyserver {
-    my $self = shift;
+    my $self      = shift;
     my $keyserver = shift;
     $self->{keyserver} = $keyserver if $keyserver;
-    return $self->{keyserver}; 
+    return $self->{keyserver};
 }
 
 =head2 key
@@ -68,15 +68,15 @@ testing.  Be careful.
 
 sub key {
     my $self = shift;
-    my $ks = Crypt::OpenPGP::KeyServer->new(Server => $self->_keyserver);
-    my $kb = $ks->find_keyblock_by_keyid($self->id);
-    
+    my $ks   = Crypt::OpenPGP::KeyServer->new( Server => $self->_keyserver );
+    my $kb   = $ks->find_keyblock_by_keyid( $self->id );
+
     # try to get the key if we don't have it
 
-    if(!$kb){
-	carp "No public key found for ". $self->nice_id;
+    if ( !$kb ) {
+        carp "No public key found for " . $self->nice_id;
     }
-    
+
     return $kb;
 }
 
@@ -102,10 +102,10 @@ as what keyservers and GPG call the fingerprint.)
 =cut
 
 sub key_fingerprint {
-    my $self   = shift;
-    my $key    = shift;
+    my $self = shift;
+    my $key  = shift;
     return $self->{fingerprint} if $self->{fingerprint};
-    
+
     my $signer = $key->signing_key;
     return unpack 'H*', $signer->fingerprint;
 }
@@ -122,13 +122,13 @@ sub fullname {
     return $self->{fullname} if $self->{fullname};
 
     my $name = eval {
-	my @uids = @{$key->{pkt}->{'Crypt::OpenPGP::UserID'}};
-	my $uid = $uids[0]->id; # XXX: best idea?
-	$uid =~ s/\s*<.+>\s*//g;
-	$uid =~ s/\s*[(].+[)]\s*//g;
-	return ($self->{fullname} = $uid);
+        my @uids = @{ $key->{pkt}->{'Crypt::OpenPGP::UserID'} };
+        my $uid = $uids[0]->id;    # XXX: best idea?
+        $uid =~ s/\s*<.+>\s*//g;
+        $uid =~ s/\s*[(].+[)]\s*//g;
+        return ( $self->{fullname} = $uid );
     };
-    return "Unknown Name" if($@);
+    return "Unknown Name" if ($@);
     return $name;
 }
 
@@ -143,8 +143,8 @@ sub email {
     my $key  = shift;
     return $self->{email} if defined $self->{email};
 
-    my @uids = @{$key->{pkt}->{"Crypt::OpenPGP::UserID"}};
-    my $uid = $uids[0]->id; # XXX: best idea?
+    my @uids = @{ $key->{pkt}->{"Crypt::OpenPGP::UserID"} };
+    my $uid  = $uids[0]->id;                                   # XXX: best idea?
     $uid =~ s/<(.+)>//g;
     return $1;
 }
@@ -166,23 +166,25 @@ Refreshes the key from the network.
 =cut
 
 sub refresh {
+
     # doesn't do anything anymore
     my $self = shift;
-    my $key  = $self->key; # throws a good error on E_KEYNOTFOUND
+    my $key  = $self->key;    # throws a good error on E_KEYNOTFOUND
     $self->{public_key}  = $self->public_key($key);
     $self->{fullname}    = $self->fullname($key);
     $self->{email}       = $self->email($key);
     $self->{fingerprint} = $self->key_fingerprint($key);
-#    $self->{photo} = $self->photo($key);
+
+    #    $self->{photo} = $self->photo($key);
 }
 
 # only for testing
 sub _new {
-    my ($class, $id) = @_;
+    my ( $class, $id ) = @_;
     my $user = {};
     die "specify id" if !$id;
-    $user->{nice_id} = unpack('H*', $id);
-    $user = bless $user, $class;    
+    $user->{nice_id} = unpack( 'H*', $id );
+    $user = bless $user, $class;
     $user->_keyserver("stinkfoot.org");
     $user->refresh;
     return $user;

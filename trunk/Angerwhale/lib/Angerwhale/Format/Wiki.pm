@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Wiki.pm 
+# Wiki.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 package Angerwhale::Format::Wiki;
@@ -31,6 +31,7 @@ format.
 =head2 format_text
 
 =cut
+
 sub new {
     my $class = shift;
     my $self  = \my $scalar;
@@ -40,26 +41,29 @@ sub new {
 sub can_format {
     my $self    = shift;
     my $request = shift;
-    
+
     return 100 if defined $request && $request eq 'wiki';
 }
 
 sub types {
     my $self = shift;
-    return 
-      ({type        => 'wiki', 
-       description => 'Text::WikiFormat formatted text'});
+    return (
+        {
+            type        => 'wiki',
+            description => 'Text::WikiFormat formatted text'
+        }
+    );
 }
 
 sub format {
     my $self = shift;
     my $text = shift;
     my $type = shift;
-    
+
     $text =~ s/&/&amp;/g;
     $text =~ s/>/&gt;/g;
     $text =~ s/</&lt;/g;
-    
+
     return Text::WikiFormat::format($text);
 }
 

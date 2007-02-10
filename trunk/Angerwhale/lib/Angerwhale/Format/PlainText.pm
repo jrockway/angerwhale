@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# PlainText.pm 
+# PlainText.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 package Angerwhale::Format::PlainText;
@@ -42,16 +42,19 @@ sub can_format {
     my $self    = shift;
     my $request = shift;
 
-    return 100 if($request =~ /te?xt/);
-    return 1; # everything is text, so let this match a little
+    return 100 if ( $request =~ /te?xt/ );
+    return 1;    # everything is text, so let this match a little
 }
 
 sub types {
     my $self = shift;
-    return 
-      ({type       => 'text', 
-       description => 'Plain text'});
-    
+    return (
+        {
+            type        => 'text',
+            description => 'Plain text'
+        }
+    );
+
 }
 
 sub format {
@@ -66,8 +69,8 @@ sub format {
     $text =~ s/"/&quot;/g;
 
     my @paragraphs = split /\n+/m, $text;
-    @paragraphs = grep {$_ !~ /^\s*$/} @paragraphs;
-    return join(' ', map {"<p>$_</p>"} @paragraphs);
+    @paragraphs = grep { $_ !~ /^\s*$/ } @paragraphs;
+    return join( ' ', map { "<p>$_</p>" } @paragraphs );
 }
 
 sub format_text {
@@ -75,7 +78,7 @@ sub format_text {
     my $text = shift;
     my $type = shift;
 
-    return autoformat($text, {break=>break_TeX, all=>1});
+    return autoformat( $text, { break => break_TeX, all => 1 } );
 }
 
 1;

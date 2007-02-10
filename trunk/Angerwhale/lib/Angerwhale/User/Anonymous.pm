@@ -42,8 +42,8 @@ Anonymous Coward
 
 sub new {
     my $class = shift;
-    my $self = {};
-    
+    my $self  = {};
+
     return bless $self, $class;
 }
 
@@ -63,6 +63,5 @@ sub email {
     return q{};
 }
 
-			
 1;
 

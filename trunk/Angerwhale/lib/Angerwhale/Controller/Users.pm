@@ -26,16 +26,15 @@ Shows a list of all users that have logged in or posted a comment.
 
 sub default : Private {
     my ( $self, $c ) = @_;
-    
+
     my @users = $c->model('UserStore')->users;
 
-    foreach my $user (@users){
-	$user->refresh;
+    foreach my $user (@users) {
+        $user->refresh;
     }
-    $c->stash->{users} = [@users];
+    $c->stash->{users}    = [@users];
     $c->stash->{template} = "users.tt";
 }
-
 
 =head1 AUTHOR
 

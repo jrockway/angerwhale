@@ -10,26 +10,32 @@ use Class::C3;
 
 # mixin our methods
 use base qw|
-	    Angerwhale::Model::Filesystem::Item::Components::Encoding
-	    Angerwhale::Model::Filesystem::Item::Components::Tags
-	    Angerwhale::Model::Filesystem::Item::Components::Comments
-	    Angerwhale::Model::Filesystem::Item::Components::Metadata
-	    Angerwhale::Model::Filesystem::Item::Components::Content
-	    Angerwhale::Model::Filesystem::Item::Components::GUID
-	    Angerwhale::Model::Filesystem::Item::Components::Signature
-	    Class::Accessor
-	   |; 
+  Angerwhale::Model::Filesystem::Item::Components::Encoding
+  Angerwhale::Model::Filesystem::Item::Components::Tags
+  Angerwhale::Model::Filesystem::Item::Components::Comments
+  Angerwhale::Model::Filesystem::Item::Components::Metadata
+  Angerwhale::Model::Filesystem::Item::Components::Content
+  Angerwhale::Model::Filesystem::Item::Components::GUID
+  Angerwhale::Model::Filesystem::Item::Components::Signature
+  Class::Accessor
+  |;
 
 # setup internal state
-__PACKAGE__->mk_accessors(qw|base location parent filesystem
-			     userstore encoding cache|);
+__PACKAGE__->mk_accessors(
+    qw|base location parent filesystem
+      userstore encoding cache|
+);
+
 #Class::C3::initialize();
 
 # make C<sort @articles> sort by creation time
-use overload (q{<=>} => \&compare,
-	      q{cmp} => \&compare,
-	      # but still let other stuff work too	    
-	      fallback => "TRUE");
+use overload (
+    q{<=>} => \&compare,
+    q{cmp} => \&compare,
+
+    # but still let other stuff work too
+    fallback => "TRUE"
+);
 
 =head1 NAME
 
@@ -67,24 +73,24 @@ The object that this I<Item> is attached to, if any.
 =cut
 
 sub new {
-    my ($class, $args) = @_;
-    
+    my ( $class, $args ) = @_;
+
     croak "Unexpected path: $args->{path}" if $args->{path};
-    my $base      = $args->{base};
-    my $location  = $args->{location};
-    my $parent    = $args->{parent};
-    my $cache     = $args->{cache};
-    my $userstore = $args->{userstore};
-    my $encoding  = $args->{encoding};
-    my $filesystem= $args->{filesystem};
-    
-    croak "$base is not a valid base directory" 
-      if(!defined $base || !-d $base || !-r $base);
-    croak "$location is not a valid path"     
-      if(!defined $location || -d $location);
+    my $base       = $args->{base};
+    my $location   = $args->{location};
+    my $parent     = $args->{parent};
+    my $cache      = $args->{cache};
+    my $userstore  = $args->{userstore};
+    my $encoding   = $args->{encoding};
+    my $filesystem = $args->{filesystem};
+
+    croak "$base is not a valid base directory"
+      if ( !defined $base || !-d $base || !-r $base );
+    croak "$location is not a valid path"
+      if ( !defined $location || -d $location );
     croak 'Need a userstore' unless $userstore;
-    croak 'Need a cache' unless $cache;
-    
+    croak 'Need a cache'     unless $cache;
+
     $args->{encoding} ||= 'utf8';
 
     my $self = $args;
@@ -105,7 +111,7 @@ sub name {
 
     $self->location =~ m{([^/]+)$};
     $name = $1;
-        
+
     return $name;
 }
 

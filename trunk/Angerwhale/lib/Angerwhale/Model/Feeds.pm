@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Feeds.pm 
+# Feeds.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 package Angerwhale::Model::Feeds;

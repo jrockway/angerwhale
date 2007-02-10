@@ -9,6 +9,7 @@ use base qw(Angerwhale::Model::Filesystem::Item);
 use Class::C3;
 use Carp;
 use Scalar::Util qw(blessed);
+
 =head1 Filesystem::Article
 
 Represents a C<Filesystem::Item> that's a comment (not an Article).
@@ -26,19 +27,18 @@ Return the URI of this comment.
 =cut
 
 sub new {
-    my ($class, $args) = @_;
+    my ( $class, $args ) = @_;
     croak 'Comments must have a parent'
-      if !blessed $args->{parent} || 
-	!$args->{parent}->isa('Angerwhale::Model::Filesystem::Item');
+      if !blessed $args->{parent}
+      || !$args->{parent}->isa('Angerwhale::Model::Filesystem::Item');
 
     $class->next::method($args);
 }
 
 sub uri {
     my $self = shift;
-    return 'comments/'. $self->path;
+    return 'comments/' . $self->path;
 }
-
 
 1;
 

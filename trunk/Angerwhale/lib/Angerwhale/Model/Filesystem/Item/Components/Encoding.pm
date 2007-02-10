@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Encoding.pm 
+# Encoding.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 package Angerwhale::Model::Filesystem::Item::Components::Encoding;
@@ -13,27 +13,28 @@ __PACKAGE__->mk_accessors(qw|encoding|);
 sub _encoding {
     my $self     = shift;
     my $filename = shift;
-    if($filename){
-	$encoding = get_attribute_recursively($filename, $self->base, 'encoding');
-	return $encoding if $encoding; # '0' isn't a valid encoding :)
+    if ($filename) {
+        $encoding =
+          get_attribute_recursively( $filename, $self->base, 'encoding' );
+        return $encoding if $encoding;    # '0' isn't a valid encoding :)
     }
     return $self->encoding || 'utf8';
 
 }
 
 sub from_encoding {
-    my $self = shift;
-    my $encoding = $self->_encoding($_[1]);
+    my $self     = shift;
+    my $encoding = $self->_encoding( $_[1] );
 
-    $_[0] = Encode::decode($encoding, $_[0], 1) unless utf8::is_utf8($_[0]);
+    $_[0] = Encode::decode( $encoding, $_[0], 1 ) unless utf8::is_utf8( $_[0] );
 }
 
 sub to_encoding {
-    
-    my $self = shift;
-    my $encoding = $self->_encoding($_[1]);
 
-    $_[0] = Encode::encode($encoding, $_[0], 1);
+    my $self     = shift;
+    my $encoding = $self->_encoding( $_[1] );
+
+    $_[0] = Encode::encode( $encoding, $_[0], 1 );
 }
 
 =head1 METHODS

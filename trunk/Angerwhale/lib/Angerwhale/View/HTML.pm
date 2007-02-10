@@ -4,15 +4,15 @@ use strict;
 use base 'Catalyst::View::TT::ForceUTF8';
 use File::Temp;
 
-__PACKAGE__->config( 
-		    TOLERANT => 1,
-		    TIMER => 0, 
-		    STRICT_CONTENT_TYPE => 1,
-		    RECURSION => 1,
-		    DEBUG => 1,    
-		    COMPILE_DIR => File::Temp::tempdir(CLEANUP => 1),
-		    PLUGIN_BASE => 'Angerwhale::Filter',
-		   );
+__PACKAGE__->config(
+    TOLERANT            => 1,
+    TIMER               => 0,
+    STRICT_CONTENT_TYPE => 1,
+    RECURSION           => 1,
+    DEBUG               => 1,
+    COMPILE_DIR         => File::Temp::tempdir( CLEANUP => 1 ),
+    PLUGIN_BASE         => 'Angerwhale::Filter',
+);
 
 =head1 NAME
 

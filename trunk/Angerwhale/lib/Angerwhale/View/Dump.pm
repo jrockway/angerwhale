@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Dump.pm 
+# Dump.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 package Angerwhale::View::Dump;
@@ -24,10 +24,10 @@ Standard process method.
 sub process {
     my $self = shift;
     my $c    = shift;
-    
+
     $c->response->content_type('text/plain');
-    $c->response->body(YAML::Dump($c->stash));
-    
+    $c->response->body( YAML::Dump( $c->stash ) );
+
     return;
 }
 

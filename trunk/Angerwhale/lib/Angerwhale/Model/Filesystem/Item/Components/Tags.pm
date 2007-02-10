@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Tags.pm 
+# Tags.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 package Angerwhale::Model::Filesystem::Item::Components::Tags;
@@ -23,15 +23,15 @@ its count is incremented
 
 sub set_tag {
     my $self = shift;
-    my @tags = @_;  
-    map {s{(?:\s|[_;,!.])}{}g;} @tags; # destructive map
-    
+    my @tags = @_;
+    map { s{(?:\s|[_;,!.])}{}g; } @tags;    # destructive map
+
     foreach my $tag (@tags) {
-	my $count = $self->tag_count($tag);
-	$count = 0 if($count < 0);
-	set_attribute($self->location, "tags.$tag", ++$count);
+        my $count = $self->tag_count($tag);
+        $count = 0 if ( $count < 0 );
+        set_attribute( $self->location, "tags.$tag", ++$count );
     }
-    
+
     return $self->tags;
 }
 
@@ -41,11 +41,10 @@ Returns the number of times C<$tag> has been applied to this Item.
 
 =cut
 
-
 sub tag_count {
     my $self = shift;
     my $tag  = shift;
-    return eval { get_attribute($self->location, "tags.$tag") };
+    return eval { get_attribute( $self->location, "tags.$tag" ) };
 }
 
 =head2 tags
@@ -55,35 +54,34 @@ Returns a list of all tags that have been applied to this Item.
 =cut
 
 sub tags {
-    my $self = shift;
+    my $self     = shift;
     my $filename = $self->location;
-    
+
     my @attributes;
-    eval {
-	@attributes = list_attributes($filename);
-    };
-    
-    my %taglist; # hash to avoid duplicates (due to case)
-    foreach my $attribute (@attributes){
-	$attribute = lc $attribute;
-	if($attribute =~ /^tags[.](.+)$/){
-	    $taglist{$1} = 1;
-	}
+    eval { @attributes = list_attributes($filename); };
+
+    my %taglist;    # hash to avoid duplicates (due to case)
+    foreach my $attribute (@attributes) {
+        $attribute = lc $attribute;
+        if ( $attribute =~ /^tags[.](.+)$/ ) {
+            $taglist{$1} = 1;
+        }
     }
     my @taglist;
-    foreach my $tag (sort keys %taglist){
-	# tags must be stored as utf8    
-	my $copy = "$tag";
-	utf8::decode($copy);
-	push @taglist, $copy;
+    foreach my $tag ( sort keys %taglist ) {
+
+        # tags must be stored as utf8
+        my $copy = "$tag";
+        utf8::decode($copy);
+        push @taglist, $copy;
     }
-    
-    if(wantarray){
-	return @taglist;
+
+    if (wantarray) {
+        return @taglist;
     }
     else {
-	return join ';', @taglist;
+        return join ';', @taglist;
     }
 }
 
-1; # magic true value
+1;    # magic true value

@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Comments.pm 
+# Comments.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 package Angerwhale::Model::Filesystem::Item::Components::Comments;
@@ -25,14 +25,14 @@ order).
 =cut
 
 sub path_to_top {
-    my $self = shift;
+    my $self   = shift;
     my $parent = $self->parent;
-    
+
     my @path;
-    if($parent){
-	@path = $parent->path_to_top();
+    if ($parent) {
+        @path = $parent->path_to_top();
     }
-    
+
     push @path, $self->id;
     return @path;
 }
@@ -57,9 +57,9 @@ stored.
 
 sub comment_dir {
     my $self = shift;
-    my $base = $self->base. "/.comments/";
-    
-    return $base. join '/', $self->path_to_top;
+    my $base = $self->base . "/.comments/";
+
+    return $base . join '/', $self->path_to_top;
 }
 
 =head2 comment_count
@@ -69,14 +69,14 @@ Returns the number of comments attached to this Item.
 =cut
 
 sub comment_count {
-    my $self = shift;
+    my $self        = shift;
     my $comment_dir = $self->comment_dir;
-    return 0 if !-e $comment_dir; # return 0 quickly
+    return 0 if !-e $comment_dir;    # return 0 quickly
 
     my $count = 0;
-    find( sub { $count ++ if $self->_comment_counter($File::Find::name) }, 
-	  $comment_dir);
-    
+    find( sub { $count++ if $self->_comment_counter($File::Find::name) },
+        $comment_dir );
+
     return $count;
 }
 
@@ -92,23 +92,23 @@ sub _comment_counter {
 }
 
 sub _create_comment_dir {
-    my $self = shift;
+    my $self        = shift;
     my $comment_dir = $self->comment_dir;
 
-    if(!-d $self->base){
-	die "base ". $self->base. " does not exist!";
+    if ( !-d $self->base ) {
+        die "base " . $self->base . " does not exist!";
     }
-    
-    if(!-e $self->base. "/.comments"){
-	mkdir $self->base. "/.comments" 
-	  or die "unable to create root commentdir: $!";
+
+    if ( !-e $self->base . "/.comments" ) {
+        mkdir $self->base . "/.comments"
+          or die "unable to create root commentdir: $!";
     }
-    
-    if(!-d $comment_dir){
-	mkdir $comment_dir or
-	  die "unable to create commentdir $comment_dir: $!";
-    }  
-    
+
+    if ( !-d $comment_dir ) {
+        mkdir $comment_dir
+          or die "unable to create commentdir $comment_dir: $!";
+    }
+
     return;
 }
 
@@ -120,31 +120,33 @@ a L<Angerwhale::Model::Filesystem::Comment> object).
 =cut
 
 sub comments {
-    my $self = shift;
+    my $self        = shift;
     my $comment_dir = $self->comment_dir;
-    
+
     $self->_create_comment_dir;
 
-    opendir my $dir, $comment_dir 
+    opendir my $dir, $comment_dir
       or die "unable to open commentdir $comment_dir: $!";
 
     my @comments;
-    while(my $file = readdir($dir)){
-	my $filename = "$comment_dir/$file";
-	next if -d $filename;
-	next if $file =~ /^[.]/;
+    while ( my $file = readdir($dir) ) {
+        my $filename = "$comment_dir/$file";
+        next if -d $filename;
+        next if $file =~ /^[.]/;
 
-	my $comment = Angerwhale::Model::Filesystem::Comment->
-	  new({ %{$self},
-		base     => $self->base,
-		location => $filename,
-		parent   => $self,
-	      });
+        my $comment = Angerwhale::Model::Filesystem::Comment->new(
+            {
+                %{$self},
+                base     => $self->base,
+                location => $filename,
+                parent   => $self,
+            }
+        );
 
-	push @comments, $comment;
+        push @comments, $comment;
     }
     closedir $dir;
-    
+
     return @comments;
 }
 
@@ -178,76 +180,78 @@ text, wiki.  (See L<Angerwhale::TODO::Formatter>.)
 =cut
 
 sub add_comment {
-    my $self = shift;
+    my $self  = shift;
     my $title = shift;
-    my $body = shift;
-    my $user = shift;
-    my $type = shift;
-    
-    die "no data" if (!$title || !$body);
-    
+    my $body  = shift;
+    my $user  = shift;
+    my $type  = shift;
+
+    die "no data" if ( !$title || !$body );
+
     $self->_create_comment_dir;
     my $comment_dir = $self->comment_dir;
-    die "no comment dir $comment_dir" 
+    die "no comment dir $comment_dir"
       if !-d $comment_dir;
 
     my $safe_title = $title;
-    $safe_title =~ s{[^A-Za-z_]}{}g; # kill anything unusual
+    $safe_title =~ s{[^A-Za-z_]}{}g;    # kill anything unusual
 
     my $filename = "$comment_dir/$safe_title";
-    while(-e $filename){ # make names unique
-	$filename .= " [". int(rand(10000)). "]";
+    while ( -e $filename ) {            # make names unique
+        $filename .= " [" . int( rand(10000) ) . "]";
     }
 
     ## write the comment atomically ##
     my $tmpname = $filename;
     $tmpname =~ s{/([^/]+)$}{._tmp_.$1};
+
     # /foo/bar/comment1337abc! -> /foo/bar/._tmp_.comment1337abc!
     # maybe make a random filename instead?
 
     open my $comment, '>:raw', $tmpname
       or die "unable to open $filename: $!";
     eval {
-	$self->to_encoding($body);
-	print {$comment} "$body\n" or die "io error: $!";
-	close $comment;
-	rename($tmpname => $filename) or 
-	  die "Couldn't rename $tmpname to $filename: $!";
+        $self->to_encoding($body);
+        print {$comment} "$body\n" or die "io error: $!";
+        close $comment;
+        rename( $tmpname => $filename )
+          or die "Couldn't rename $tmpname to $filename: $!";
     };
-    if($@){
-	close $comment;
-	unlink $tmpname;
-	unlink $filename; # partial rename !?
-	die $@; # propagate the message up
+    if ($@) {
+        close $comment;
+        unlink $tmpname;
+        unlink $filename;    # partial rename !?
+        die $@;              # propagate the message up
     }
-    
+
     # set attributes: (TODO: atomic also)
     eval {
-	# finally, attribute the comment to someone, if possible
-	if($user) {
-	    set_attribute($filename, 'author', $user);
-	}
-	
-	# and if the safe title and real title don't match, set 
-	# the title attribute
-	
-	$filename =~ m{/([^/]+)$}; # take into account the [##] that we added
-	$safe_title = $1;
-	
-	if($title ne $safe_title){
-	    set_attribute($filename, 'title', $title);
-	}
-	
-	# finally, set the type
-	if(defined $type){
-	    set_attribute($filename, 'type', $type);
-	}
+
+        # finally, attribute the comment to someone, if possible
+        if ($user) {
+            set_attribute( $filename, 'author', $user );
+        }
+
+        # and if the safe title and real title don't match, set
+        # the title attribute
+
+        $filename =~ m{/([^/]+)$};    # take into account the [##] that we added
+        $safe_title = $1;
+
+        if ( $title ne $safe_title ) {
+            set_attribute( $filename, 'title', $title );
+        }
+
+        # finally, set the type
+        if ( defined $type ) {
+            set_attribute( $filename, 'type', $type );
+        }
     };
-    if($@){
-	unlink $filename;
-	die "Problems seting attributes: $@";
+    if ($@) {
+        unlink $filename;
+        die "Problems seting attributes: $@";
     }
-    
+
     return;
 }
 
@@ -265,4 +269,4 @@ sub post_uri {
     return $uri;
 }
 
-1; # magic true value
+1;    # magic true value

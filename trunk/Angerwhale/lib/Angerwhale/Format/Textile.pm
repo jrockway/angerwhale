@@ -51,9 +51,12 @@ sub can_format {
 
 sub types {
     my $self = shift;
-    return
-        ({type        => 'textile',
-          description => 'Textile formatted text'});
+    return (
+        {
+            type        => 'textile',
+            description => 'Textile formatted text'
+        }
+    );
 }
 
 sub format {
@@ -61,19 +64,19 @@ sub format {
     my $text = shift;
     my $type = shift;
 
-    my $html_format = Angerwhale::Format::HTML->new;
+    my $html_format     = Angerwhale::Format::HTML->new;
     my $textile_as_html = $$self->process($text);
-    return $html_format->format($textile_as_html, 'html');
+    return $html_format->format( $textile_as_html, 'html' );
 }
 
 sub format_text {
     my $self = shift;
     my $text = shift;
     my $type = shift;
-    
-    my $html_format = Angerwhale::Format::HTML->new;
+
+    my $html_format     = Angerwhale::Format::HTML->new;
     my $textile_as_html = $$self->process($text);
-    return $html_format->format_text($textile_as_html, 'html');
+    return $html_format->format_text( $textile_as_html, 'html' );
 }
 
 1;

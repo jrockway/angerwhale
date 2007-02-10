@@ -48,9 +48,12 @@ sub can_format {
 
 sub types {
     my $self = shift;
-    return
-        ({type        => 'sbc',
-          description => 'Simple Blog Code'});
+    return (
+        {
+            type        => 'sbc',
+            description => 'Simple Blog Code'
+        }
+    );
 }
 
 sub format {
@@ -60,7 +63,7 @@ sub format {
 
     my $html_format = Angerwhale::Format::HTML->new;
     my $sbc_as_html = $$self->sbc($text);
-    return $html_format->format($sbc_as_html, 'html');
+    return $html_format->format( $sbc_as_html, 'html' );
 }
 
 sub format_text {
@@ -70,7 +73,7 @@ sub format_text {
 
     my $html_format = Angerwhale::Format::HTML->new;
     my $sbc_as_html = $$self->sbc($text);
-    return $html_format->format_text($sbc_as_html, 'html');
+    return $html_format->format_text( $sbc_as_html, 'html' );
 }
 
 1;

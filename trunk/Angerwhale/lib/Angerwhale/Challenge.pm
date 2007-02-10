@@ -8,7 +8,7 @@ use warnings;
 use Crypt::Random qw(makerandom);
 use YAML::Syck;
 
-use overload (q{==} => "equals", q{""} => "raw_text");
+use overload ( q{==} => "equals", q{""} => "raw_text" );
 
 =head1 Angerwhale::Challenge
 
@@ -24,12 +24,12 @@ random number are used for the time and the nonce, respectively.
 =cut
 
 sub new {
-    my ($class, $args) = @_;
+    my ( $class, $args ) = @_;
     my $self = {};
-    
-    my $random = makerandom(Size => 128, Strength => 0);
-    my $now    = time();
- 
+
+    my $random = makerandom( Size => 128, Strength => 0 );
+    my $now = time();
+
     $self->{nonce} = "$random";
     $self->{uri}   = $args->{uri} || die "specify URI";
     $self->{date}  = "$now";
@@ -47,16 +47,15 @@ sub equals {
     my $self = shift;
     my $them = shift;
 
-    return 
-      defined $them->{nonce} &&
-      defined $them->{uri} &&
-      defined $them->{date} &&
-      defined $self->{nonce} &&
-      defined $self->{uri} &&
-      defined $self->{date} &&
-      ($self->{nonce} == $them->{nonce}) &&
-      ($self->{uri}   eq $them->{uri}  ) &&
-      ($self->{date}  eq $them->{date} ) ;
+    return defined $them->{nonce}
+      && defined $them->{uri}
+      && defined $them->{date}
+      && defined $self->{nonce}
+      && defined $self->{uri}
+      && defined $self->{date}
+      && ( $self->{nonce} == $them->{nonce} )
+      && ( $self->{uri} eq $them->{uri} )
+      && ( $self->{date} eq $them->{date} );
 }
 
 =head2 raw_text (stringification)
@@ -70,6 +69,5 @@ sub raw_text {
     my $self = shift;
     return Dump($self);
 }
-
 
 1;

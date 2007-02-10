@@ -64,44 +64,46 @@ to the dates of newer and older articles.
 
 # this is a little messy.  i should probably clean this up.
 sub show_category : Private {
-    my ($self, $c, @start_date) = @_;
+    my ( $self, $c, @start_date ) = @_;
     $c->stash->{template} = q{blog_listing.tt};
-    if(@start_date == 3){
-	$c->stash->{page} = "home, but with date"; # for navbar 
+    if ( @start_date == 3 ) {
+        $c->stash->{page} = "home, but with date";    # for navbar
     }
 
     # how many (non-mini) articles to return?
-    my $ARTICLES_PER_PAGE = $c->stash->{articles_desired} || 
-      $c->config->{articles_per_page} || 5;
+    my $ARTICLES_PER_PAGE = $c->stash->{articles_desired}
+      || $c->config->{articles_per_page}
+      || 5;
 
     # how many words must an article contain to be non-mini?
-    my $MINI_CUTOFF = $c->config->{mini_cutoff} || 120; 
+    my $MINI_CUTOFF = $c->config->{mini_cutoff} || 120;
 
     # get the articles
     my $category = $c->stash->{category};
-    my $article; # tmp counter variable in a few places
+    my $article;    # tmp counter variable in a few places
     my @articles;
-    
-    if($category eq '/'){ # redirected from Root.pm
-	@articles = reverse sort $c->stash->{root}->get_articles();
+
+    if ( $category eq '/' ) {    # redirected from Root.pm
+        @articles = reverse sort $c->stash->{root}->get_articles();
     }
     else {
-	$c->stash->{title} = "Entries in $category";
-    
-	eval {
-	    @articles = reverse sort $c->stash->{root}->get_by_category($category);
-	};
+        $c->stash->{title} = "Entries in $category";
 
-	if ($@) {
-	    $c->stash->{message} = 'Category does not exist';
-	    return;
-	}
+        eval {
+            @articles =
+              reverse sort $c->stash->{root}->get_by_category($category);
+        };
+
+        if ($@) {
+            $c->stash->{message} = 'Category does not exist';
+            return;
+        }
 
     }
 
     # mini-ize small articles
-    foreach my $article (@articles){
-	$article->mini(1) if $article->words < $MINI_CUTOFF;
+    foreach my $article (@articles) {
+        $article->mini(1) if $article->words < $MINI_CUTOFF;
     }
 
     # first article can never be mini.  too ugly.
@@ -112,72 +114,77 @@ sub show_category : Private {
     $config->{articles_per_page} = $ARTICLES_PER_PAGE;
     $config->{date} = [@start_date] if @start_date;
 
-    my ($too_new, $current, $too_old) 
-      = $self->_split_articles([@articles], $config);
-    
+    my ( $too_new, $current, $too_old ) =
+      $self->_split_articles( [@articles], $config );
+
     my @too_new = @{$too_new};
     my @current = @{$current};
     my @too_old = @{$too_old};
 
     ## no articles to display
-    if(@current == 0){
-	$c->stash->{message} = 'No articles to display.';
-	# TODO: generate "click here for new articles" message if
-	# that's why there aren't any articles to show
-	return;
-    } 
-    
+    if ( @current == 0 ) {
+        $c->stash->{message} = 'No articles to display.';
+
+        # TODO: generate "click here for new articles" message if
+        # that's why there aren't any articles to show
+        return;
+    }
+
     ## find the date of the older articles page
-    if($too_old[0]){
-	$c->stash->{older_articles} = _date_of($too_old[0]);
+    if ( $too_old[0] ) {
+        $c->stash->{older_articles} = _date_of( $too_old[0] );
     }
 
     ## find the date of the newer articles page
     @too_new = reverse @too_new;
     my @previous_page;
     {
-	my $max = $ARTICLES_PER_PAGE;
-	my $article;
-	while($article = shift @too_new){
-	    last if !$max;
-	    $max-- if !$article->mini;
-	    
-	    push @previous_page, $article;
-	}
-	unshift @too_new, $article;
+        my $max = $ARTICLES_PER_PAGE;
+        my $article;
+        while ( $article = shift @too_new ) {
+            last   if !$max;
+            $max-- if !$article->mini;
+
+            push @previous_page, $article;
+        }
+        unshift @too_new, $article;
     }
-    
+
     my $last  = $previous_page[-1];
     my $first = $previous_page[0];
     my $after = $too_new[0];
-    
-    if(!$after && $first && $last){
-	$c->stash->{newer_articles}   = _date_of($last);
-	$c->stash->{newest_is_newest} = 1;
+
+    if ( !$after && $first && $last ) {
+        $c->stash->{newer_articles}   = _date_of($last);
+        $c->stash->{newest_is_newest} = 1;
     }
-    elsif(!$after && !$first && !$last){
-	# nothing newer
+    elsif ( !$after && !$first && !$last ) {
+
+        # nothing newer
     }
+
     # the nested else handles one of these cases... maybe i should split?
-    elsif(_on_same_day($first, $after) || _on_same_day($after, $last)){
-	# step through previous page, oldest -> newest, looking for a
-	# date that won't spill (the first date != to date_of(i)
-	my $article;
-	foreach $article (reverse @previous_page){
-	    last if !_on_same_day($article, $last);
-	}
-	if($article){
-	    $c->stash->{newer_articles} = _date_of($article);
-	}
-	else {
-	    # just to be safe, do $first, not $last.
-	    $c->stash->{newer_articles} = _date_of($first);
-	}
+    elsif ( _on_same_day( $first, $after ) || _on_same_day( $after, $last ) ) {
+
+        # step through previous page, oldest -> newest, looking for a
+        # date that won't spill (the first date != to date_of(i)
+        my $article;
+        foreach $article ( reverse @previous_page ) {
+            last if !_on_same_day( $article, $last );
+        }
+        if ($article) {
+            $c->stash->{newer_articles} = _date_of($article);
+        }
+        else {
+
+            # just to be safe, do $first, not $last.
+            $c->stash->{newer_articles} = _date_of($first);
+        }
     }
     else {
-	$c->stash->{newer_articles} = _date_of($last);
+        $c->stash->{newer_articles} = _date_of($last);
     }
-    
+
     $c->stash->{articles} = [@current];
     return [@current];
 }
@@ -217,71 +224,73 @@ Throws an exception if the date is not valid.
 =cut
 
 sub _split_articles {
-    my ($self, $articles, $config) = @_;
+    my ( $self, $articles, $config ) = @_;
     my $ARTICLES_PER_PAGE = $config->{articles_per_page} || die;
-    my @articles = @{$articles};
-    my @date     = @{$config->{date}} if ref $config->{date};
-    
-    my @before;  # articles *newer* than current ($before[0] is newest)
-    my @current; # current articles (to display)
-    my @after;   # articles older than current ($after[-1] is oldest)
-    
+    my @articles          = @{$articles};
+    my @date              = @{ $config->{date} } if ref $config->{date};
+
+    my @before;     # articles *newer* than current ($before[0] is newest)
+    my @current;    # current articles (to display)
+    my @after;      # articles older than current ($after[-1] is oldest)
+
     # setup before
-    if(@date == 3){
-	die "invalid date @date" if @date != 3;
-	my $date = timelocal(59, 59, 23,$date[2], $date[1]-1, $date[0]-1900) 
-	              + 1; # always compare with <, not <=.
+    if ( @date == 3 ) {
+        die "invalid date @date" if @date != 3;
+        my $date =
+          timelocal( 59, 59, 23, $date[2], $date[1] - 1, $date[0] - 1900 ) +
+          1;        # always compare with <, not <=.
       before:
-	while(my $article = shift @articles){
-	    if($article->creation_time > $date){
-		push @before, $article;
-	    }
-	    else {
-		unshift @articles, $article;
-		last before;
-	    }
-	}
+        while ( my $article = shift @articles ) {
+            if ( $article->creation_time > $date ) {
+                push @before, $article;
+            }
+            else {
+                unshift @articles, $article;
+                last before;
+            }
+        }
     }
-    
+
     # setup current
     {
-	my $max = $ARTICLES_PER_PAGE;
-	my $article;
+        my $max = $ARTICLES_PER_PAGE;
+        my $article;
       current:
-	while($article = shift @articles){
-	    last if !$max;
-	    $max-- if !$article->mini;
+        while ( $article = shift @articles ) {
+            last   if !$max;
+            $max-- if !$article->mini;
 
-	    push @current, $article;
-	}
-	unshift @articles, $article; # shouldn't have been shifted
+            push @current, $article;
+        }
+        unshift @articles, $article;    # shouldn't have been shifted
 
-	# check to see if all the articles from $date are on the page
-	if(@date){
-	    while(($article = shift @articles) &&
-		  _on_same_day($current[0], $article)){
-		push @current, $article;
-	    }
-	    unshift @articles, $article; # shouldn't have been shifted
-	}
+        # check to see if all the articles from $date are on the page
+        if (@date) {
+            while ( ( $article = shift @articles )
+                && _on_same_day( $current[0], $article ) )
+            {
+                push @current, $article;
+            }
+            unshift @articles, $article;    # shouldn't have been shifted
+        }
     }
-    
+
     @after = @articles;
-    
-    return ([@before], [@current], [@after]);
+
+    return ( [@before], [@current], [@after] );
 }
 
 sub _on_same_day {
-    my ($a, $b) = @_;
+    my ( $a, $b ) = @_;
 
     return 0 if !blessed($a) || !blessed($b);
 
-    my @a = (localtime($a->creation_time))[3,4,5];
-    my @b = (localtime($b->creation_time))[3,4,5];
+    my @a = ( localtime( $a->creation_time ) )[ 3, 4, 5 ];
+    my @b = ( localtime( $b->creation_time ) )[ 3, 4, 5 ];
 
-    return ($a[0] == $b[0]) &&
-           ($a[1] == $b[1]) &&
-	   ($a[2] == $b[2]);
+    return ( $a[0] == $b[0] )
+      && ( $a[1] == $b[1] )
+      && ( $a[2] == $b[2] );
 }
 
 =head2 _date_of
@@ -292,8 +301,8 @@ Given an article, returns the date in yyyy/mm/dd format.
 
 sub _date_of {
     my $article = shift;
-    my @a = (localtime($article->creation_time))[5,4,3];
-    return sprintf('%d/%0d/%0d', $a[0]+1900, $a[1]+1, $a[2]);
+    my @a = ( localtime( $article->creation_time ) )[ 5, 4, 3 ];
+    return sprintf( '%d/%0d/%0d', $a[0] + 1900, $a[1] + 1, $a[2] );
 }
 
 =head2 list_categories
@@ -303,7 +312,7 @@ sub _date_of {
 =cut
 
 sub list_categories : Private {
-    my ($self, $c) = @_;
+    my ( $self, $c ) = @_;
 
     $c->response->body(<<'    EOF');
     The list of categories is conveniently located to your left.
@@ -320,21 +329,20 @@ Display the C<$category> or an error message if it doesn't exist.
 
 # XXX: change show_category to do this directly
 sub default : Private {
-    my ($self, $c, @args) = @_;    
+    my ( $self, $c, @args ) = @_;
 
-    my $action   = shift @args; 
+    my $action   = shift @args;
     my $category = shift @args;
     my @date     = @args;
-    
-    if(!$category || $action ne 'categories'){
-	$c->forward('list_categories');  # 404'd.
+
+    if ( !$category || $action ne 'categories' ) {
+        $c->forward('list_categories');    # 404'd.
     }
     else {
-	$c->stash->{category} = $category;
-	$c->forward('show_category', [@date]);
+        $c->stash->{category} = $category;
+        $c->forward( 'show_category', [@date] );
     }
 }
-
 
 =head1 AUTHOR
 

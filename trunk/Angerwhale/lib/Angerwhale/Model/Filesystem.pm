@@ -33,17 +33,18 @@ Used by Catalyst to initialize the article store
 =cut
 
 sub new {
-    my ($self, $c) = @_;
+    my ( $self, $c ) = @_;
     $self = $self->NEXT::new(@_);
-    
+
     $self->context($c);
-    $self->base($c->config->{base}) if !$self->base;
-    
+    $self->base( $c->config->{base} ) if !$self->base;
+
     my $base = $self->base;
+
     # die if base isn't readable or isn't a directory
     die "$base is not a valid data directory"
-      if (!-r $base || !-d $base);
-    
+      if ( !-r $base || !-d $base );
+
     return $self;
 }
 
@@ -55,45 +56,46 @@ it in a C<Angerwhale::Model::Filesystem::Article> object.
 =cut
 
 sub get_article {
-    my $self	 = shift;
-    my $article	 = shift;
-    my $base     = $self->base;
+    my $self    = shift;
+    my $article = shift;
+    my $base    = $self->base;
 
     die "article name contains weird characters"
       if $article =~ m{/};
 
     die "no such article" if !-r "$base/$article" || -d "$base/$article";
 
-    my $result = Angerwhale::Model::Filesystem::Article->
-      new({
-	   location    => "$base/$article",
-	   base        => $self->base,
-	   cache       => $self->context->cache,
-	   encoding    => $self->context->config->{encoding},
-	   userstore   => $self->context->model('UserStore'),
-	   filesystem  => $self,
-	  });
-    
+    my $result = Angerwhale::Model::Filesystem::Article->new(
+        {
+            location   => "$base/$article",
+            base       => $self->base,
+            cache      => $self->context->cache,
+            encoding   => $self->context->config->{encoding},
+            userstore  => $self->context->model('UserStore'),
+            filesystem => $self,
+        }
+    );
+
     return $result;
 }
 
 sub _ls {
     my $self = shift;
     my $base = shift;
-    
-    opendir my $dir, $base or die "cannot open $base: $!";
-    
-    my @articles;
-    while(my $article = readdir $dir){
-	my $entry = "$base/$article";
-	next if $article =~ m{^[.]}; # hidden files are also ignored
-	next if !-r $entry;
-	next if -d $entry;
 
-	#entry is acceptable
-	my $article = $self->get_article($article);
-	push @articles, $article;
-	
+    opendir my $dir, $base or die "cannot open $base: $!";
+
+    my @articles;
+    while ( my $article = readdir $dir ) {
+        my $entry = "$base/$article";
+        next if $article =~ m{^[.]};    # hidden files are also ignored
+        next if !-r $entry;
+        next if -d $entry;
+
+        #entry is acceptable
+        my $article = $self->get_article($article);
+        push @articles, $article;
+
     }
     closedir $dir;
     return @articles;
@@ -110,7 +112,7 @@ sub get_articles {
     my $self = shift;
     my $base = $self->base;
 
-    return _ls($self, $base);
+    return _ls( $self, $base );
 }
 
 =head2 get_categories
@@ -125,11 +127,11 @@ sub get_categories {
 
     my @categories;
     opendir my $dir, $base or die "cannot open $base: $!";
-    while(my $file = readdir($dir)){
-	my $filename = "$base/$file";
-	next if $file =~ /^[.]/;
-	
-	push @categories, $file if (-d $filename && -r $filename);
+    while ( my $file = readdir($dir) ) {
+        my $filename = "$base/$file";
+        next if $file =~ /^[.]/;
+
+        push @categories, $file if ( -d $filename && -r $filename );
     }
     return sort @categories;
 }
@@ -141,11 +143,11 @@ Returns a sorted list of all tags that have been used
 =cut
 
 sub get_tags {
-    my $self = shift;
+    my $self     = shift;
     my @articles = $self->get_articles;
-    my @tags = map {$_->tags} @articles; 
+    my @tags     = map { $_->tags } @articles;
     my %found;
-    @tags = grep {!$found{$_}++} @tags;
+    @tags = grep { !$found{$_}++ } @tags;
     return sort @tags;
 }
 
@@ -156,14 +158,14 @@ Retruns an unsorted list of all articles in a category.
 =cut
 
 sub get_by_category {
-    my $self = shift;
+    my $self     = shift;
     my $category = shift;
 
     my $base = $self->base;
     my $path = "$base/$category";
     die "No category $category" if !-d $path;
 
-    return _ls($self, $path);
+    return _ls( $self, $path );
 }
 
 =head2 get_by_tag
@@ -175,19 +177,19 @@ certain tag.  Multiple tags are also OK.
 
 sub get_by_tag {
     my $self = shift;
-    my @tags = map {lc} @_;
+    my @tags = map { lc } @_;
     my @matching;
 
     my @articles = $self->get_articles();
-  article: 
-    foreach my $article (@articles){
-	my $tags = $article->tags();
-	foreach my $asked_for (@tags){
-	    next article if $tags !~ /(?:\A|;)$asked_for(?:\Z|;)/;
-	}
-	push @matching, $article;
+  article:
+    foreach my $article (@articles) {
+        my $tags = $article->tags();
+        foreach my $asked_for (@tags) {
+            next article if $tags !~ /(?:\A|;)$asked_for(?:\Z|;)/;
+        }
+        push @matching, $article;
     }
-    
+
     return @matching;
 }
 
@@ -204,12 +206,15 @@ the application.  (Otherwise the cache will be stale.)
 sub revision {
     my $self = shift;
     my $revision;
-    find(sub { $revision += (stat($File::Find::name))[9]
-		 if !-d $File::Find::name },
-	 ($self->base));
+    find(
+        sub {
+            $revision += ( stat($File::Find::name) )[9]
+              if !-d $File::Find::name;
+        },
+        ( $self->base )
+    );
     return $revision;
 }
-
 
 =head1 AUTHOR
 
