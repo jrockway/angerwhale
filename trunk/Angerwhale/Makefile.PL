@@ -73,6 +73,7 @@ requires
    'IO::String'						    => 0,
    'Text::Textile'					    => 0,
    'Text::Markdown'					    => 0,
+   'HTML::SBC'						    => 0,
   );
 build_requires
   (
