@@ -4,6 +4,8 @@
 
 use Test::More tests => 8;
 use ok 'Angerwhale::Format';
+use strict;
+use warnings;
 
 my @types = Angerwhale::Format::types;
 ok( @types > 0, 'do we have some formatters?' );

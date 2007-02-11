@@ -6,6 +6,8 @@ use Test::More tests => 4;
 use ok 'Angerwhale::Format::SBC';
 use Test::HTML::Tidy;
 use Test::XML::Valid;
+use strict;
+use warnings;
 
 my $sbc = Angerwhale::Format::SBC->new;
 isa_ok( $sbc, 'Angerwhale::Format::SBC', 'created parser' );

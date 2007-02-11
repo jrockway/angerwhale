@@ -81,9 +81,13 @@ This method will be called if your module returned the highest value
 for C<can_format>.  It is passed the text to format, and the type.  It
 should return the text formatted as HTML.
 
+Alternatively, you may return an L<Angerwhale::VirtualComment>.
+
 =head2 format_text(text, type)
 
-Like C<format>, but return plain text instead of HTML.
+Like C<format>, but return plain text instead of HTML.  If format_html
+or format returns a VirtualComment, this method should return the same
+one.
 
 =head2 format_html
 

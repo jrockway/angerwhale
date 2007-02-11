@@ -4,6 +4,8 @@
 
 use Test::Strict;
 use Path::Class;
+use strict;
+use warnings;
 use FindBin qw($Bin);
 
 my $root = dir($Bin, '..', '..');

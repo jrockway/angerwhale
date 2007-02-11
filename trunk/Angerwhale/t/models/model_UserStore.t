@@ -8,6 +8,8 @@ use Test::MockObject;
 use Directory::Scratch;
 use File::Slurp qw(read_file write_file);
 use YAML::Syck;
+use strict;
+use warnings;
 
 my $c = Test::MockObject->new;
 

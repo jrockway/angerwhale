@@ -6,6 +6,8 @@ use Test::More tests => 15;
 use ok 'Angerwhale::Format::HTML';
 use Test::HTML::Tidy;
 use Test::XML::Valid;
+use strict;
+use warnings;
 
 my $html = Angerwhale::Format::HTML->new;
 ok( $html, 'created parser OK' );

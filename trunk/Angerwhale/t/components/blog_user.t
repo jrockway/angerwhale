@@ -4,6 +4,8 @@
 
 use Test::More tests => 8;
 use ok qw(Angerwhale::User);    # 1
+use strict;
+use warnings;
 
 #diag q{These tests will fail if you can't contact a keyserver.};
 my $keyid = 'd0197853dd25e42f';    # key id of the author

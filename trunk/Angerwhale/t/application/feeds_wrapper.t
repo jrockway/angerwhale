@@ -3,14 +3,16 @@
 # Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
 
 use Test::More tests => 2;
+use strict;
+use warnings;
 
 BEGIN {
     use Directory::Scratch;
-    $tmp = Directory::Scratch->new;
+    my $tmp = Directory::Scratch->new;
     my $base = $tmp->base;
 
-    $blog_title = "Unit Tests Are Fun - $$";
-    $blog_desc  = 'You should not be seeing this.';
+    my $blog_title = "Unit Tests Are Fun - $$";
+    my $blog_desc  = 'You should not be seeing this.';
 
     $tmp->mkdir('foo');
     $tmp->mkdir('bar');

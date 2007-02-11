@@ -6,6 +6,8 @@ use Test::More tests => 21;
 use Test::MockObject;
 use ok 'Angerwhale::Model::Filesystem::PreviewComment';
 use Angerwhale::User;
+use strict;
+use warnings;
 
 my $user_store = Test::MockObject->new;
 $user_store->set_always( 'keyserver', 'stinkfoot.org' );

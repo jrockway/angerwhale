@@ -6,6 +6,8 @@ use Test::More tests => 4;
 use ok 'Angerwhale::Format::Textile';
 use Test::HTML::Tidy;
 use Test::XML::Valid;
+use strict;
+use warnings;
 
 my $textile = Angerwhale::Format::Textile->new;
 isa_ok( $textile, 'Angerwhale::Format::Textile', 'created parser' );

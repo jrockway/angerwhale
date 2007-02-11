@@ -6,6 +6,8 @@ use Test::More tests => 4;
 use ok 'Angerwhale::Format::Markdown';
 use Test::HTML::Tidy;
 use Test::XML::Valid;
+use strict;
+use warnings;
 
 my $markdown = Angerwhale::Format::Markdown->new;
 isa_ok( $markdown, 'Angerwhale::Format::Markdown', 'created parser' );

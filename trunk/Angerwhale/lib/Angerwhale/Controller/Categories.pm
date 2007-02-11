@@ -97,8 +97,8 @@ sub show_category : Path('/categories') {
         };
 
         if ($@) {
-	    $c->response->status(404);
-	    $c->stash( template => 'error.tt' );
+            $c->response->status(404);
+            $c->stash( template => 'error.tt' );
             return;
         }
 
