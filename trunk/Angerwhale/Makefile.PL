@@ -81,6 +81,8 @@ build_requires
    'ok'							    => 0,
    'Directory::Scratch'					    => '0.12',
    'Test::HTML::Tidy'					    => 0,
+   'Test::Strict'                                           => 0,
+   'Test::NoTabs'                                           => 0,
    'HTML::Tidy'						    => 0,
    'Test::XML::Valid'					    => 0,
    'Test::YAML::Valid'                                      => '0.02',
