@@ -5,7 +5,7 @@ use warnings;
 use File::Temp qw(tempdir);
 use Catalyst qw/Unicode ConfigLoader Static::Simple
   Cache::FastMmap Setenv
-  Session::Store::File Session::State::Cookie Session
+  Session::Store::FastMmap Session::State::Cookie Session
   ConfigLoader::Environment/;
 
 #XXX: add C3 and LogWarnings back

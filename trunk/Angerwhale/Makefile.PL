@@ -17,14 +17,11 @@ requires
    'Catalyst::Plugin::Cache::FastMmap'			    => 0,
    'Catalyst::Plugin::ConfigLoader'			    => 0,
    'Catalyst::Plugin::ConfigLoader::Environment'	    => '0.01',
-   'Catalyst::Plugin::DefaultEnd'			    => 0,
-   'Catalyst::Plugin::Prototype'			    => 0,
    'Catalyst::Plugin::LogWarnings'                          => 0,
-   'Catalyst::Plugin::Scheduler'			    => '0.07',
    'Catalyst::Plugin::Setenv'			            => 0,
    'Catalyst::Plugin::Static::Simple'			    => 0,
    'Catalyst::Plugin::Unicode'				    => '0.2',
-   'Catalyst::Plugin::Session::Store::File'                 => 0,
+   'Catalyst::Plugin::Session::Store::FastMmap'             => 0,
    'Catalyst::Plugin::Session::State::Cookie'               => 0,
    'Catalyst::Plugin::Session'                              => 0,
    'Catalyst::Model::XML::Feed'                             => '0.01',
@@ -75,6 +72,8 @@ requires
    'Text::Markdown'					    => 0,
    'HTML::SBC'						    => 0,
    'GD::SecurityImage'                                      => 0,
+   'Catalyst::View::JSON'                                   => 0,
+   'Catalyst::View::Jemplate'                               => 0,
   );
 build_requires
   (
