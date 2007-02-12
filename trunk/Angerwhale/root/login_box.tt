@@ -1,10 +1,12 @@
 <div id="login_box" class="box">
      <h3>Login</h3>
-      <p class="logged_in_as">
-       [% IF user.id %]
-	Logged in as <b>[% user.fullname | html %]</b>.
-       [% ELSE %]
+      <p id="logged_in_as" class="logged_in_as">
         Not logged in.  <a href="[% c.uri_for("/login") %]">Login</a>.
-       [% END %]
       </p>
+<script>
+// <![CDATA[
+  Jemplate.process('logged_in_as.tt', '[% c.uri_for('/users/current') %]', '#login_box');
+// ]]>
+</script>
+
 </div>

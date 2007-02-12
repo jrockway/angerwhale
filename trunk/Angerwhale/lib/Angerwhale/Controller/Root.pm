@@ -56,7 +56,7 @@ sub auto : Private {
     # check to see if this page is cached
     my $key = $c->model('Filesystem')->revision;
     $key .= ":" . $c->request->uri->as_string;
-    $key .= "@" . $c->session->{user}->nice_id if $c->session->{user};
+    #$key .= "@" . $c->session->{user}->nice_id if $c->session->{user};
 
     $c->response->headers->header( 'ETag' => qq{"$key"} );
     my $document;

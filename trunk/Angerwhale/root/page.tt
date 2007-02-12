@@ -25,6 +25,8 @@
     <script type="text/javascript" src="/static/dragdrop.js" />
     <script type="text/javascript" src="/static/effects.js" />
     <script type="text/javascript" src="/static/slider.js" />
+    <script type="text/javascript" src="/static/Jemplate.js" />
+    <script type="text/javascript" src="/jemplate/logged_in_as.tt" />
   </head>
   <body>
    <div id="page"> <!-- for typo themes -->
