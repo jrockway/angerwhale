@@ -2,8 +2,9 @@
 # model_Filesystem.t
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 19;
+use Test::More tests => 23;
 use Test::MockObject;
+use Test::Exception;
 use Directory::Scratch;
 use Angerwhale::Model::Filesystem;
 use YAML::Syck;
@@ -70,11 +71,21 @@ ok( $article->summary =~ /This is a test/,          'summary exists' );
 ok( $article->text    =~ /This is a new paragraph/, 'full text exists' );
 is( $article->comment_count, 0, 'no comments yet' );
 
-eval {
-    $article->add_comment( 'Test comment', 'This comments is a test comment.',
-        0, 'text' );
-};
-ok( !$@, 'added a comment without triggering a FATAL ERROR!!!!!!! :)' );
-diag($@) if $@;
+lives_ok (sub {
+        $article->add_comment( 'Test comment', 'This comments is a test comment.',
+            0, 'text' );
+}, 'added a comment without triggering a FATAL ERROR!!!!!!! :)' );
+
+is( $article->comment_count, 1, 'comment stuck' );
+
+dies_ok (sub {
+        $article->add_comment( 'Test comment', '', 0, 'text' );
+}, 'adding comment without body fails');
+
+is( $article->comment_count, 1, 'comment stuck' );
+
+dies_ok (sub {
+        $article->add_comment( '', 'This comment is a test comment.', 0, 'text' );
+}, 'adding comment without title fails');
 
 is( $article->comment_count, 1, 'comment stuck' );
