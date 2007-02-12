@@ -1,3 +1,4 @@
+angerwhale.par
 angerwhale.yml
 Build.PL
 Changes
@@ -55,8 +56,11 @@ lib/Angerwhale/User/Anonymous.pm
 lib/Angerwhale/View/Dump.pm
 lib/Angerwhale/View/Feed.pm
 lib/Angerwhale/View/Feed/Atom.pm
+lib/Angerwhale/View/Feed/JSON.pm
 lib/Angerwhale/View/Feed/YAML.pm
 lib/Angerwhale/View/HTML.pm
+lib/Angerwhale/View/Jemplate.pm
+lib/Angerwhale/View/JSON.pm
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
@@ -73,6 +77,7 @@ root/error.tt
 root/favicon.ico
 root/feedbox.tt
 root/feeds.tt
+root/jemplate/logged_in_as.tt
 root/login.tt
 root/login_box.tt
 root/message.tt
@@ -81,9 +86,6 @@ root/navbox.tt
 root/page.tt
 root/post.tt
 root/post_comment.tt
-root/posts/.comments/04277D72-BA70-11DB-B231-E264B14CF25F/7A856204-BA7A-11DB-854F-416AB14CF25F/8034582C-BA7A-11DB-854F-416AB14CF25F/ReReReWelcometoAngerwhale
-root/posts/.comments/04277D72-BA70-11DB-B231-E264B14CF25F/7A856204-BA7A-11DB-854F-416AB14CF25F/ReReWelcometoAngerwhale
-root/posts/.comments/04277D72-BA70-11DB-B231-E264B14CF25F/ReWelcometoAngerwhale
 root/posts/.users/d0197853dd25e42f/email
 root/posts/.users/d0197853dd25e42f/fingerprint
 root/posts/.users/d0197853dd25e42f/fullname
@@ -152,6 +154,7 @@ root/static/images/XML.svg
 root/static/images/yaml.png
 root/static/images/YAML.svg
 root/static/images/yaml_square.png
+root/static/Jemplate.js
 root/static/jon.jpg
 root/static/lock.png
 root/static/lock.svg
@@ -202,6 +205,8 @@ t/models/model_UserStore.t
 t/style/notabs.t
 t/style/strict.t
 t/testdata/raw
+t/view_Jemplate.t
+t/view_JSON.t
 t/views/view_Atom.t
 t/views/view_HTML.t
 t/views/view_YAML.t
