@@ -4,7 +4,7 @@
 package Angerwhale::View::Feed::Atom;
 
 use strict;
-use base qw(Angerwhale::View::Feed);
+use base qw(Angerwhale::View::Feed Catalyst::View);
 use XML::Atom::SimpleFeed;
 
 =head1 NAME
