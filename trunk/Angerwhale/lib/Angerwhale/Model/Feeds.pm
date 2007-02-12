@@ -6,8 +6,6 @@ package Angerwhale::Model::Feeds;
 use strict;
 use warnings;
 
-__PACKAGE__->config->{feeds} = Angerwhale->config->{feeds};
-
 use base qw(Catalyst::Model::XML::Feed);
 
 =head1 Angerwhale::Model::Feeds
@@ -18,7 +16,9 @@ See L<Catalyst::Model::XML::Feed> and L<Angerwhale>.
 
 =head1 METHODS
 
-=head1 COMPONENT
+=head2 COMPONENT
+
+Merge "feeds" global config key into local config.
 
 =cut
 
