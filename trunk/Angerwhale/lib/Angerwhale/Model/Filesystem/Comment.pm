@@ -9,6 +9,7 @@ use base qw(Angerwhale::Model::Filesystem::Item);
 use Class::C3;
 use Carp;
 use Scalar::Util qw(blessed);
+use Angerwhale::Format;
 
 =head1 Filesystem::Article
 
@@ -32,7 +33,14 @@ sub new {
       if !blessed $args->{parent}
       || !$args->{parent}->isa('Angerwhale::Model::Filesystem::Item');
 
-    $class->next::method($args);
+    my $self = $class->next::method($args);
+
+    if($self->type =~ /virtual/){
+        warn "debug: virtual comment";
+        $self = Angerwhale::Format::format($self->raw_text, $self->type);
+    }
+
+    return $self;
 }
 
 sub uri {
