@@ -82,7 +82,7 @@ sub check_captcha : Private {
 
     return unless ref $c->session->{captcha};
     
-    if($c->session->{got_captcha} || $c->session->{captcha}->{rnd} == $guess){
+    if($c->session->{got_captcha} || $c->session->{captcha}->{rnd} eq $guess){
         $c->session->{got_captcha} = 1; # only need to guess one per session
         return 1;
     }
