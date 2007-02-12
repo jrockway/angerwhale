@@ -9,7 +9,7 @@ my $tmp;
 my $blog_title;
 my $blog_desc;
 
-use Test::More tests => 12;
+use Test::More tests => 16;
 BEGIN {
     use Directory::Scratch;
     $tmp = Directory::Scratch->new;
@@ -58,3 +58,10 @@ $mech->content_contains( 'Please enter the text in the security image.',
 ok( $mech->submit_form( button => 'Post' ), 'post the comment for real' );
 $mech->get_ok("http://localhost/articles/$a_title");
 $mech->content_contains( 'no comments', 'page contains no comments' );
+
+$mech->get_ok("http://localhost/captcha");
+like($mech->ct, qr/^image/, 'content is an image');
+my $content = $mech->content();
+$mech->get_ok("http://localhost/captcha");
+is($content, $mech->content, 'same captcha returned each time');
+
