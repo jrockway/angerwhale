@@ -7,6 +7,7 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use GD::SecurityImage;
+use HTTP::Date;
 
 =head1 NAME
 
@@ -14,7 +15,7 @@ Angerwhale::Controller::Captcha - generate and validate captchas
 
 =head1 METHODS
 
-=head2 gen_captch
+=head2 gen_captcha
 
 Generate a security image and store it in the session
 
