@@ -8,8 +8,6 @@ use warnings;
 use File::Find;
 use File::Attributes qw(get_attribute set_attribute);
 
-# requries attributes to be mixed in to child
-
 =head1 SYNOPSIS
 
 Mix this into Angerwhale::Model::Filesystem::Item to get commenting
@@ -17,20 +15,20 @@ support.
 
 =head1 METHODS
 
-=head2 path_to_top
+=head2 _path_to_top
 
 Returns a list of comment IDs that this comment is a child of (in
 order).
 
 =cut
 
-sub path_to_top {
+sub _path_to_top {
     my $self   = shift;
     my $parent = $self->parent;
 
     my @path;
     if ($parent) {
-        @path = $parent->path_to_top();
+        @path = $parent->_path_to_top();
     }
 
     push @path, $self->id;
@@ -39,27 +37,27 @@ sub path_to_top {
 
 =head2 path
 
-Like C<path_to_top>, but joined with C</>s.
+Like C<_path_to_top>, but joined with C</>s.
 
 =cut
 
 sub path {
     my $self = shift;
-    return join '/', $self->path_to_top;
+    return join '/', $self->_path_to_top;
 }
 
-=head2 comment_dir
+=head2 _comment_dir
 
 Returns the location where comments attached to this Item should be
 stored.
 
 =cut
 
-sub comment_dir {
+sub _comment_dir {
     my $self = shift;
     my $base = $self->base . "/.comments/";
 
-    return $base . join '/', $self->path_to_top;
+    return $base . join '/', $self->_path_to_top;
 }
 
 =head2 comment_count
@@ -70,7 +68,7 @@ Returns the number of comments attached to this Item.
 
 sub comment_count {
     my $self        = shift;
-    my $comment_dir = $self->comment_dir;
+    my $comment_dir = $self->_comment_dir;
     return 0 if !-e $comment_dir;    # return 0 quickly
 
     my $count = 0;
@@ -93,7 +91,7 @@ sub _comment_counter {
 
 sub _create_comment_dir {
     my $self        = shift;
-    my $comment_dir = $self->comment_dir;
+    my $comment_dir = $self->_comment_dir;
 
     if ( !-d $self->base ) {
         die "base " . $self->base . " does not exist!";
@@ -121,7 +119,7 @@ a L<Angerwhale::Model::Filesystem::Comment> object).
 
 sub comments {
     my $self        = shift;
-    my $comment_dir = $self->comment_dir;
+    my $comment_dir = $self->_comment_dir;
 
     $self->_create_comment_dir;
 
@@ -189,7 +187,7 @@ sub add_comment {
     die "no data" if ( !$title || !$body );
 
     $self->_create_comment_dir;
-    my $comment_dir = $self->comment_dir;
+    my $comment_dir = $self->_comment_dir;
     die "no comment dir $comment_dir"
       if !-d $comment_dir;
 

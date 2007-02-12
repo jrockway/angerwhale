@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# Comment.pm - [description]
+# Comment.pm
 # Copyright (c) 2006 Jonathan T. Rockway
 
 package Angerwhale::Model::Filesystem::Comment;
