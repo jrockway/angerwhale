@@ -180,7 +180,7 @@ sub post : Local {
        #     $errors++;
        # }
 
-        if($c->stash->{captcha}){ # captcha required
+        if($c->stash->{captcha} && !$c->config->{ignore_captcha}){ # captcha required
             my $ok = $c->forward('/captcha/check_captcha', [$captcha]);
             if(!$ok){
                 $c->stash->{error} = 'Please enter the text in the security image.';
