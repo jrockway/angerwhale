@@ -74,6 +74,7 @@ requires
    'Text::Textile'					    => 0,
    'Text::Markdown'					    => 0,
    'HTML::SBC'						    => 0,
+   'GD::SecurityImage'                                      => 0,
   );
 build_requires
   (
