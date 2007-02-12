@@ -4,34 +4,28 @@
 
 # tests posting of articles and comments against the real server
 use strict;
+use warnings;
+use Test::More tests => 372;
 use Test::YAML::Valid qw(-Syck);
+use File::Attributes qw(get_attribute list_attributes);
 
-my $tmp;
 my $blog_title;
 my $blog_desc;
 
 BEGIN {
-    use Directory::Scratch;
-    $tmp = Directory::Scratch->new;
-    my $base = $tmp->base;
 
     $blog_title = "Unit Tests Are Fun - $$";
     $blog_desc  = 'You should not be seeing this.';
-
-    $ENV{'ANGERWHALE_description'} = $blog_desc;
-    $ENV{'ANGERWHALE_base'}        = $base;
-    $ENV{'ANGERWHALE_title'}       = $blog_title;
-    $ENV{'ANGERWHALE_html'}        = 1;
-    $ENV{'ANGERWHALE_ignore_captcha'} = 1;
 }
 
-##
-use Test::More tests => 372;
-##
+use Angerwhale::Test (description    => $blog_desc,
+                      title          => $blog_title,
+                      html           => 1,
+                      ignore_captcha => 1,);
 
-use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
-use File::Attributes qw(get_attribute list_attributes);
-my $mech = Test::WWW::Mechanize::Catalyst->new;
+my $mech = Angerwhale::Test->new;
+my $tmp  = $mech->tmp;
+
 $mech->get_ok('http://localhost/');
 $mech->has_tag( 'title', $blog_title, 'correct title' );
 $mech->content_contains( $blog_desc, 'description' );
