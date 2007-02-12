@@ -64,7 +64,8 @@ sub do_tag : Local {
 
     my $article_name = shift @args;
     my $tags         = $c->request->param('value');
-    my @tags         = split /\s+/, $tags;
+    my @tags;
+    @tags = split /\s+/, $tags if defined $tags;
 
     my $article;
     eval { $article = $c->stash->{root}->get_article($article_name); };
