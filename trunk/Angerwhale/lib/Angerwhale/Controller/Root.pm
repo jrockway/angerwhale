@@ -7,6 +7,9 @@ use URI;
 use HTTP::Date;
 use Digest::MD5 qw(md5_hex);
 use Encode;
+use Algorithm::IncludeExclude;
+
+__PACKAGE__->mk_ro_accessors('ie');
 
 # this was auto-generated and is apparently essential
 __PACKAGE__->config->{namespace} = q{};
@@ -27,6 +30,30 @@ Root Controller for this Catalyst based application.
 
 =cut
 
+=head2 COMPONENT
+
+initialize the controller
+
+=cut
+
+sub COMPONENT {
+    my $class = shift;
+    my $app   = shift;
+    my $args  = shift;
+
+    my $ie = Algorithm::IncludeExclude->new;
+    $ie->include();
+    $ie->exclude('comments', 'post');
+    $ie->exclude('static');
+    $ie->exclude('login');
+    $ie->exclude('captcha');
+    $ie->exclude('users', 'current');
+    $args->{ie} = $ie;
+    
+    $class->NEXT::COMPONENT($app, $args, @_);
+}
+    
+
 =head2 auto
 
 Handle caching
@@ -41,13 +68,13 @@ sub auto : Private {
     # conditions when we want to ignore the cache
     return 1
       if keys %{ $c->flash || {} } > 0;
-
-    return 1
-      if $c->request->uri->as_string =~ m{/login};
-
-    return 1
-      if $c->request->uri->as_string =~ m{/static/};
-
+    
+    my @path = split m{/}, $c->req->uri->path;
+    shift @path;
+    my $include = $self->ie->evaluate(@path);
+    
+    return 1 if !$include; # excluded from caching
+    
     return 1
       if 'GET'  ne $c->request->method
       && 'HEAD' ne $c->request->method;
@@ -110,7 +137,7 @@ sub blog : Path  {
     my ( $self, $c, @date ) = @_;
     $c->stash->{page}     = 'home';
     $c->stash->{title}    = $c->config->{title} || 'Blog';
-
+    
     $c->forward( '/categories/show_category', ['/', @date] );
 }
 
@@ -155,32 +182,32 @@ template and caches result if possible.
 # global ending action
 sub end : Private {
     my ( $self, $c ) = @_;
+
+    return if $c->response->body;
+    return if $c->response->redirect;
+    return if 304 == $c->response->status; # no body
     
-    if ( !( $c->response->body || $c->response->redirect ) ) {
-        if ( defined $c->config->{'html'} && 1 == $c->config->{'html'} ) {
-
-            # work around mech's inability to handle "XML"
-            $c->response->content_type('text/html; charset=utf-8');
-        }
-        else {
-            $c->response->content_type('application/xhtml+xml; charset=utf-8');
-        }
-        return if ( 'HEAD' eq $c->request->method );
-
-        $c->stash->{generated_at} = time();
-
-        if ( $c->stash->{cache_key} && $c->res->status == 200 ) {
-            _cache( $c, $c->stash->{cache_key} );
-        }
-        else {
-            # not a page we know how to cache
-            $c->forward('Angerwhale::View::HTML');
-        }
+    if ( defined $c->config->{'html'} && 1 == $c->config->{'html'} ) {
+        
+        # work around mech's inability to handle "XML"
+        $c->response->content_type('text/html; charset=utf-8');
     }
-
-    return;
+    else {
+        $c->response->content_type('application/xhtml+xml; charset=utf-8');
+    }
+    return if ( 'HEAD' eq $c->request->method );
+    
+    $c->stash->{generated_at} = time();
+    
+    if ( $c->stash->{cache_key} && $c->res->status == 200 ) {
+        _cache( $c, $c->stash->{cache_key} );
+    }
+    else {
+        # not a page we know how to cache
+        $c->forward('Angerwhale::View::HTML');
+    }
 }
-
+  
 sub _article_uniq_id {
     my $article = shift;
 

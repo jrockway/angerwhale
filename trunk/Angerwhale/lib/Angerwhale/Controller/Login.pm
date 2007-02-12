@@ -129,6 +129,18 @@ sub index : Private {
     $c->forward('nonce');
 }
 
+=head2 logout
+
+Delete the current session and user
+
+=cut
+
+sub logout : Local {
+    my ($self, $c) = @_;
+    $c->delete_session('logout');
+    $c->res->redirect($c->uri_for('/'));
+}
+
 =head1 AUTHOR
 
 Jonathan Rockway
