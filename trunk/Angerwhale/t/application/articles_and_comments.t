@@ -22,6 +22,7 @@ BEGIN {
     $ENV{'ANGERWHALE_base'}        = $base;
     $ENV{'ANGERWHALE_title'}       = $blog_title;
     $ENV{'ANGERWHALE_html'}        = 1;
+    $ENV{'ANGERWHALE_ignore_captcha'} = 1;
 }
 
 ##
