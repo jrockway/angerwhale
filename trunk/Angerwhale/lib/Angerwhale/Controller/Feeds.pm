@@ -246,6 +246,7 @@ sub end : Private {
     my $document;
     my $key = $c->stash->{cache_key};
     return unless $key;
+    return if !$c->response->body;
 
     $c->log->debug("caching (feed) $key");
 
