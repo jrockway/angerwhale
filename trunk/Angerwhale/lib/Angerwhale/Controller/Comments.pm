@@ -6,6 +6,9 @@ use base 'Catalyst::Controller';
 use Angerwhale::ContentItem::PreviewComment;
 use Angerwhale::Format;
 use Scalar::Util qw(blessed);
+use SpamMonkey;
+
+__PACKAGE__->mk_ro_accessors(qw/monkey/);
 
 =head1 NAME
 
@@ -20,6 +23,25 @@ See L<Angerwhale>
 Catalyst Controller.
 
 =head1 METHODS
+
+=head2 COMPONENT
+
+Setup spam filtering
+
+=cut
+
+#sub COMPONENT {
+#    my $class = shift;
+#    my $app   = shift;
+#    my $args  = shift;
+#    
+#    # setup spammonkey
+#    my $rules = $app->path_to($app->config->{base}, '.spamrules!!!');
+#    my $monkey = SpamMonkey->new(rule_dir => "/usr/share/spamassassin");
+#    $monkey->ready;
+#    $args->{monkey} = $monkey;
+#    $class->NEXT::COMPONENT($app, $args, @_);
+#}
 
 =head2 find_by_uri_path(@path)
 
@@ -109,7 +131,12 @@ sub post : Local {
     my ( $self, $c, @path ) = @_;
 
     my $method = $c->request->method;
-
+    
+    $c->stash->{template} = 'post_comment.tt';
+    $c->stash->{action}   = $c->uri_for( "/comments/post/" . join '/', @path );
+    $c->stash->{types}    = [ Angerwhale::Format::types() ];
+    $c->stash->{captcha}  = $c->forward('/captcha/captcha_uri');
+    
     # find what we're replying to
     $c->forward( 'find_by_path', [@path] );
     my $article = $c->stash->{article};
@@ -124,38 +151,64 @@ sub post : Local {
     my $title;
     if ( $method eq 'POST' ) {
         $title = $c->request->param('title');
-        my $body = $c->request->param('body');
+        my $body = $c->request->param('body') || ' ';
         my $type = $c->request->param('type');
+        my $captcha = $c->request->param('captcha');
         my $user = $c->stash->{user};
         my $uid  = $user->nice_id if ( $user && $user->can('nice_id') );
 
+
+        my $comment = Angerwhale::ContentItem::PreviewComment->
+          new({
+               context => $c,
+               title   => $title,
+               body    => $body,
+               type    => $type
+              }
+             );
+
+
+        my $errors = 0;
+        # spam filter
+       # my $text = $comment->plain_text();
+       # my $spam_result = $self->monkey->test($body);
+       # warn "hits: ". $spam_result->hits;
+       # warn "details". $spam_result->describe_hits;
+        
+       # if($spam_result->is_spam()){
+       #     $c->stash->{error} = 'This comment looks like SPAM!  Posting aborted.';
+       #     $errors++;
+       # }
+
+        if($c->stash->{captcha}){ # captcha required
+            my $ok = $c->forward('/captcha/check_captcha', [$captcha]);
+            if(!$ok){
+                $c->stash->{error} = 'Please enter the text in the security image.';
+                $errors++;
+            }
+            # get rid of captcha if it validated
+            $c->stash->{captcha}  = $c->forward('/captcha/captcha_uri');
+        }
+
+        if($body =~ /^\s*$/){
+            $c->stash->{error} = 'The comment must not be empty.  Say something!';
+            $errors++;
+        }
+        
         my $preview = $c->request->param('Preview');
-        if ($preview) {
-            $c->stash->{post_title} = $title;
-            $c->stash->{type}       = $type;
-
-            $c->stash->{preview_comment} =
-              Angerwhale::ContentItem::PreviewComment->new(
-                {
-                    context => $c,
-                    title   => $title,
-                    body    => $body,
-                    type    => $type
-                }
-              );
-
-            $c->stash->{body} = $body;
+        if ($preview || $errors > 0) {
+            $c->stash->{post_title}      = $title;
+            $c->stash->{type}            = $type;
+            $c->stash->{preview_comment} = $comment;
+            $c->stash->{body}            = $body;
         }
         else {
             $object->add_comment( $title, $body, $uid, $type );
             $c->response->redirect(
-                $c->uri_for( q\/\ . $c->stash->{article}->uri ) );
+                                   $c->uri_for( q\/\ . $c->stash->{article}->uri ) );
         }
     }
 
-    $c->stash->{template} = 'post_comment.tt';
-    $c->stash->{action}   = $c->uri_for( "/comments/post/" . join '/', @path );
-    $c->stash->{types}    = [ Angerwhale::Format::types() ];
     return;
 }
 

@@ -293,9 +293,9 @@ h2 {
               width: 20em;
 }
 
-.comment { 
+/*.comment { 
    background-color: #eeffff;
- }
+ }*/
 
 .comment_header p.title {  margin: 0; padding-left: 3px; color: #fff; font-weight: bold; background-color: #1381d4; }
 .comment_header p.info { margin: 0; padding-left: 2px; color: #000; font-weight: bold; font-size: 80%; background-color: #c2e5ff;
