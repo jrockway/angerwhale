@@ -236,7 +236,7 @@ sub end : Private {
         $c->forward( 'View::Feed::YAML', 'process' );
     }
     elsif ( $type eq 'json' ) {
-	$c->forward( 'View::Feed::JSON', 'process' );
+        $c->forward( 'View::Feed::JSON', 'process' );
     }
     else {
         $c->detach('/end');    # back to the main end
