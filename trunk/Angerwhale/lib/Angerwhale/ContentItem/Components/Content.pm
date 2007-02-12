@@ -15,7 +15,7 @@ my $ELIPSIS = "\x{2026}";
 
 =head1 Content
 
-Mix this into Filesystem::Item to get support for content
+Mix this into a C<Angerwhale::ContentItem> to get support for content
 in the entries.  You probably want that.
 
 =head1 METHODS

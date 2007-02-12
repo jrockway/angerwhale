@@ -10,7 +10,7 @@ use File::Attributes qw(get_attribute set_attribute);
 
 =head1 GUID
 
-GUID component for Filesystem::Item.  Mix in to get a GUID
+GUID component for ContentItem.  Mix in to get a GUID
 for each item.
 
 =head1 METHODS

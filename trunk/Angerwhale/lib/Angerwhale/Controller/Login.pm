@@ -8,7 +8,7 @@ use Crypt::OpenPGP;
 use YAML::Syck;
 
 # XXX: HACK, HACK, HACK ... !
-use Angerwhale::Model::Filesystem::Item::Components::Signature;
+use Angerwhale::ContentItem::Components::Signature;
 
 =head1 NAME
 
@@ -51,7 +51,7 @@ sub process : Local {
     my $keyserver = $c->model('UserStore')->keyserver;
 
     my $nonce_data = eval {
-        Angerwhale::Model::Filesystem::Item::Components::Signature
+        Angerwhale::Model::ContentItem::Components::Signature
           ->_signed_text($input);
     };
     if ( !$nonce_data ) {

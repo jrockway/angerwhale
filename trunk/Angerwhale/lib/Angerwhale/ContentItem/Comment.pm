@@ -11,15 +11,16 @@ use Carp;
 use Scalar::Util qw(blessed);
 use Angerwhale::Format;
 
-=head1 Filesystem::Article
+=head1 NAME
 
-Represents a C<Filesystem::Item> that's a comment (not an Article).
+Angerwhale::ContentItem::Comment - Represents a C<ContentItem> that's
+a comment (not an Article).
 
 =head1 METHODS
 
 =head2 new
 
-Create a comment, see C<Filesystem::Item::new> for details.
+Create a comment, see L<Angerwhale::ContentItem> for details.
 
 =head2 uri
 

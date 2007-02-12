@@ -113,7 +113,7 @@ sub _create_comment_dir {
 =head2 comments
 
 Returns a list of all comments attached to this article (each item is
-a L<Angerwhale::Model::Filesystem::Comment> object).
+a L<Angerwhale::ContentItem::Comment> object).
 
 =cut
 
@@ -132,7 +132,7 @@ sub comments {
         next if -d $filename;
         next if $file =~ /^[.]/;
 
-        my $comment = Angerwhale::Model::Filesystem::Comment->new(
+        my $comment = Angerwhale::ContentItem::Comment->new(
             {
                 %{$self},
                 base     => $self->base,

@@ -98,7 +98,7 @@ sub comments : Local {
     my @candidates;    # store comments to show here, then sort at the end
     while ( my $item = shift @todo ) {
         push @candidates, $item
-          if $item->isa('Angerwhale::Model::Filesystem::Comment');
+          if $item->isa('Angerwhale::ContentItem::Comment');
         unshift @todo, ( $item->comments );    # depth first (sort of)
     }
     @candidates = reverse sort @candidates;

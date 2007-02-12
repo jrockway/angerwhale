@@ -48,8 +48,8 @@ to attach other C<ContentItem>s to itself
 
 =head2 new( \%arguments )
 
-Creates a new Filesystem::Item; but you probably want
-C<Filesystem::ContentItem::Article> or C<Filesystem::ContentItem::Comment> instead.
+Creates a new ContentItem; but you probably want
+C<Angerwhale::ContentItem::Article> or C<Angerwhale::ContentItem::Comment> instead.
 
 Arguments:
 

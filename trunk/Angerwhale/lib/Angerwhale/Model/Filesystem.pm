@@ -4,7 +4,7 @@ use warnings;
 use base 'Catalyst::Model';
 use NEXT;
 use Carp;
-use Angerwhale::Model::Filesystem::Article;
+use Angerwhale::ContentItem:Article;
 use Crypt::OpenPGP;
 use File::Find qw(find);
 
@@ -51,7 +51,7 @@ sub new {
 =head2 get_article
 
 Given the name of an article, retrieves it from the store and returns
-it in a C<Angerwhale::Model::Filesystem::Article> object.
+it in a L<Angerwhale::ContentItem::Article> object.
 
 =cut
 
@@ -65,7 +65,7 @@ sub get_article {
 
     die "no such article" if !-r "$base/$article" || -d "$base/$article";
 
-    my $result = Angerwhale::Model::Filesystem::Article->new(
+    my $result = Angerwhale::ContentItem::Article->new(
         {
             location   => "$base/$article",
             base       => $self->base,
@@ -104,7 +104,7 @@ sub _ls {
 =head2 get_articles
 
 Returns a list of all articles in the store.  The articles are
-C<Angerwhale::Model::Filesystem::Article>s.
+C<Angerwhale::ContentItem::Article>s.
 
 =cut
 

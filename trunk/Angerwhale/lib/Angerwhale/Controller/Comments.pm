@@ -3,6 +3,7 @@ package Angerwhale::Controller::Comments;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
+use Angerwhale::ContentItem::PreviewComment;
 use Angerwhale::Format;
 use Scalar::Util qw(blessed);
 
@@ -68,7 +69,7 @@ sub comment : Path {
     $c->forward('find_by_uri_path');
 
     if (   !blessed $c->stash->{comment}
-        || !$c->stash->{comment}->isa('Angerwhale::Model::Filesystem::Item') )
+        || !$c->stash->{comment}->isa('Angerwhale::ContentItem') )
     {
         $c->stash->{template} = "error.tt";
         $c->response->status(404);
@@ -77,7 +78,7 @@ sub comment : Path {
 
         # handle cases where the find_by_uri_path item is the actual article
         if (
-            !$c->stash->{comment}->isa('Angerwhale::Model::Filesystem::Comment')
+            !$c->stash->{comment}->isa('Angerwhale::ContentItem::Comment')
           )
         {
 
@@ -134,7 +135,7 @@ sub post : Local {
             $c->stash->{type}       = $type;
 
             $c->stash->{preview_comment} =
-              Angerwhale::Model::Filesystem::PreviewComment->new(
+              Angerwhale::ContentItem::PreviewComment->new(
                 {
                     context => $c,
                     title   => $title,
