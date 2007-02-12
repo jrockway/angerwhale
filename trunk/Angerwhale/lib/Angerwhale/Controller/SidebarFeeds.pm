@@ -17,16 +17,17 @@ Angerwhale::Controller::SidebarFeeds - return sidebar feeds as JSON
 
 Returns the JSON of all feeds in the config file
 
-   - title
-     name
-     link
-     entires
-       - title
-         link
-       - title2
-         ...
-   - title2
-     ...
+    [[title
+      name
+      link
+      entires
+         [[title
+           link]
+          [title2
+           ...]]
+      ]
+     [title2
+      ...
 
 =head2 end
 
