@@ -12,12 +12,12 @@ use Encode;
 use File::Attributes qw(set_attribute);
 use File::Attributes::Recursive qw(get_attribute_recursively);
 
-use ok 'Angerwhale::Model::Filesystem::Item::Components::Encoding';
+use ok 'Angerwhale::ContentItem::Components::Encoding';
 
 my $wide = '日本語';
 my $tmp  = Directory::Scratch->new;
 my $test = bless {},
-  'Angerwhale::Model::Filesystem::Item::Components::Encoding';
+  'Angerwhale::ContentItem::Components::Encoding';
 $test = Test::MockObject::Extends->new($test);
 $test->set_always( 'base', $tmp->base . q{} );
 $test->encoding('euc-jp');

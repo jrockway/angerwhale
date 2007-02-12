@@ -18,7 +18,7 @@ $us->set_always( 'keyserver', 'stinkfoot.org' );
 
 my $data = do { local $/; <DATA> };
 my $sig = bless {},
-  'Angerwhale::Model::Filesystem::Item::Components::Signature';
+  'Angerwhale::ContentItem::Components::Signature';
 $sig = Test::MockObject::Extends->new($sig);
 $sig->mock(
     'raw_text',
@@ -34,7 +34,7 @@ $sig->set_always( '_cached_signature', 0 );
 $sig->set_always( '_fix_author',       1 );
 
 # tests
-use ok qq[Angerwhale::Model::Filesystem::Item::Components::Signature];
+use ok qq[Angerwhale::ContentItem::Components::Signature];
 my $text = $sig->_signed_text($data);
 is( $text, "This is a test PGP-signed message.\n", "Got the message text" );
 is( $sig->signor, $id, "Signature is by jrock" );

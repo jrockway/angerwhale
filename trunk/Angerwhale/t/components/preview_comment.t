@@ -4,7 +4,7 @@
 
 use Test::More tests => 21;
 use Test::MockObject;
-use ok 'Angerwhale::Model::Filesystem::PreviewComment';
+use ok 'Angerwhale::ContentItem::PreviewComment';
 use Angerwhale::User;
 use strict;
 use warnings;
@@ -27,7 +27,7 @@ my $config = {};
 $c->set_always( 'cache', $cache );
 
 my $body = do { local $/; <DATA> };
-my $comment = Angerwhale::Model::Filesystem::PreviewComment->new(
+my $comment = Angerwhale::ContentItem::PreviewComment->new(
     {
         context => $c,
         title   => 'test',
@@ -36,7 +36,7 @@ my $comment = Angerwhale::Model::Filesystem::PreviewComment->new(
     }
 );
 
-isa_ok( $comment, 'Angerwhale::Model::Filesystem::PreviewComment' );
+isa_ok( $comment, 'Angerwhale::ContentItem::PreviewComment' );
 is( $comment->type, 'text', 'type is text' );
 ok( $comment->creation_time,     'creation time is set' );
 ok( $comment->modification_time, 'mod type is set' );

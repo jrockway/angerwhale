@@ -52,7 +52,7 @@ foreach my $a (@articles) {
 }
 diag $config->{base};
 
-isa_ok( $article, 'Angerwhale::Model::Filesystem::Article' );
+isa_ok( $article, 'Angerwhale::ContentItem::Article' );
 is( $article->title, 'Another Article', 'title is correct' );
 is( $article->categories, (), 'not in any categories yet' );
 is( $article->uri, 'articles/Another Article.pod' );

@@ -9,7 +9,7 @@ use Test::MockObject;
 use Directory::Scratch;
 use File::Attributes qw(set_attribute);
 
-use ok 'Angerwhale::Model::Filesystem::Item';
+use ok 'Angerwhale::ContentItem';
 
 my $tmp = Directory::Scratch->new;
 my $c   = Test::MockObject->new;
@@ -26,7 +26,7 @@ my $args = {
     userstore  => $c,
     cache      => $c
 };
-my $item = Angerwhale::Model::Filesystem::Item->new($args);
+my $item = Angerwhale::ContentItem->new($args);
 
 ok( $item, 'created an item' );
 is( $item->location, $path, 'location stuck' );
