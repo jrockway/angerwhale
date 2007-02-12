@@ -36,10 +36,11 @@ sub new {
     my $self  = shift;
     bless $self, $class;
 
+    $self->{type} ||= 'text';
     $self->preview_body( $self->{body} );
     $self->cache( $self->context->cache );
     $self->userstore( $self->context->model('UserStore') );
-
+    
     return $self;
 }
 
