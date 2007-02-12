@@ -115,6 +115,19 @@ sub blog : Path  {
 }
 
 
+=head2 jemplate
+
+Compile and serve jemplate templates.
+
+=cut
+
+sub jemplate : Global {
+    my($self, $c, $file) = @_;
+    $c->stash->{jemplate} = { key   =>  $file,
+                              files => [$file]};
+    $c->detach('View::Jemplate');
+}
+
 =head2 default
 
 global 404 page
