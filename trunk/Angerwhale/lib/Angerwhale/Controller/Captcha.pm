@@ -3,8 +3,22 @@
 # Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
 
 package Angerwhale::Controller::Captcha;
+use strict;
+use warnings;
 use base 'Catalyst::Controller';
 use GD::SecurityImage;
+
+=head1 NAME
+
+Angerwhale::Controller::Captcha - generate and validate captchas
+
+=head1 METHODS
+
+=head2 gen_captch
+
+Generate a security image and store it in the session
+
+=cut
 
 sub gen_captcha : Private {
     my ($self, $c) = @_;
@@ -21,6 +35,13 @@ sub gen_captcha : Private {
                              };
 }
 
+=head2 captcha
+
+Return the captcha to the browser
+
+=cut
+
+
 sub captcha : Path {
     my ($self, $c) = @_;
 
@@ -35,6 +56,13 @@ sub captcha : Path {
     $c->detach();
 }
   
+=head2 captcha_uri
+
+Return the URI for the captcha, or nothing if the user has 
+already used the captcha successfully, or he's logged in.
+
+=cut
+
 sub captcha_uri : Private {
     my ($self, $c) = @_;
     return if $c->stash->{user}; # XXX user
@@ -42,6 +70,12 @@ sub captcha_uri : Private {
     return $c->uri_for('/captcha/captcha');
 }
   
+=head2 check_captcha($guess)
+
+Returns true if the guess is the text in the captcha.
+
+=cut
+
 sub check_captcha : Private {
     my ($self, $c, $guess) = @_;
 
