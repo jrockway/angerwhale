@@ -111,7 +111,7 @@ sub blog : Path  {
     $c->stash->{page}     = 'home';
     $c->stash->{title}    = $c->config->{title} || 'Blog';
 
-    $c->forward( '/categories/show_category', ['/', @date] );
+    $c->detach( '/categories/show_category', ['/', @date] );
 }
 
 

@@ -3,7 +3,7 @@ title: Angerwhale
 description: Welcome to Angerwhale.  You should change this.
 author: Your Name
 contact: nobody@example.com
-base: /var/blog
+base: __path_to(root/posts)__
 sidebar_picture: ~
 date_format: %c
 language: en-us

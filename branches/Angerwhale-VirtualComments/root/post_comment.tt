@@ -28,6 +28,10 @@ ASCII-armored is OK).
   <div id="post_box">
   <p> Title: <input type="text" name="title" size="60" value="[% post_title | html %]" /></p> 
   <p><textarea name="body" rows="25" cols="60">[% body | html %]</textarea></p>
+  [% IF captcha %]
+   <p>Captcha text: <input type="text" name="captcha" size="60" /></p>
+   <p><img src="[% captcha %]" alt="captcha -- if you can't see it, log in instead" /></p>
+  [% END %]
   [% IF types %]
   <p>Format: <select name="type">
    [% FOREACH atype = types %]

@@ -48,9 +48,9 @@ sub prepare_items {
     my $item_ref = $c->stash->{items};
     my @result;
 
-    # single item
+    # single item; one article with comments, or a comment with comments
     if ( blessed $item_ref
-         && $item_ref->isa('Angerwhale::ContentItem::Article') )
+         && $item_ref->isa('Angerwhale::ContentItem') )
       {
           push @result, $self->serialize_item( $c, $item_ref, 'recursive' );
       }

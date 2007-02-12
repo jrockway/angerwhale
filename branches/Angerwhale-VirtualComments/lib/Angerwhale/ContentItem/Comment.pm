@@ -35,12 +35,6 @@ sub new {
       || !$args->{parent}->isa('Angerwhale::ContentItem');
 
     my $self = $class->next::method($args);
-
-    if($self->type =~ /virtual/){
-        warn "debug: virtual comment";
-        $self = Angerwhale::Format::format($self->raw_text, $self->type);
-    }
-
     return $self;
 }
 
