@@ -36,8 +36,9 @@ Forward to the JSON view
 
 sub all : Local {
     my ($self, $c) = @_;
+    my $max_entries = $c->config->{max_feed_entries} || 10;
     my @names = $c->model('Feeds')->names();
-
+    
     $c->{stash} = {};
     my @feeds; # processed feeds
     foreach my $name (@names){
@@ -51,6 +52,7 @@ sub all : Local {
             my $entry_data = { title => $entry->title,
                                link  => $entry->link, };
             push @entries, $entry_data;
+            last if scalar @entries >= $max_entries;
         }
         $feed_data->{entries} = [@entries];
         push @feeds, $feed_data;
