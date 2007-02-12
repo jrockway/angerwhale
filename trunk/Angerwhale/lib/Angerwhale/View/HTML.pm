@@ -1,8 +1,8 @@
 package Angerwhale::View::HTML;
 use NEXT;
 use strict;
-use base 'Catalyst::View::TT::ForceUTF8';
-use File::Temp;
+use base 'Catalyst::View::TT';
+use File::Spec;
 
 __PACKAGE__->config(
     TOLERANT            => 1,
@@ -10,7 +10,8 @@ __PACKAGE__->config(
     STRICT_CONTENT_TYPE => 1,
     RECURSION           => 1,
     DEBUG               => 1,
-    COMPILE_DIR         => File::Temp::tempdir( CLEANUP => 1 ),
+    COMPILE_DIR         => File::Spec->catfile(File::Spec->tmpdir, 
+                                               'angerwhale', 'templates'),
     PLUGIN_BASE         => 'Angerwhale::Filter',
 );
 

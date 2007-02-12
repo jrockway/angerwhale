@@ -14,7 +14,7 @@ requires
   (
    'Algorithm::IncludeExclude'                              => '0.01',
    'Catalyst'						    => '5.7',	  
-   'Catalyst::View::TT::ForceUTF8'   		            => 0,
+#   'Catalyst::View::TT::ForceUTF8'   		            => 0,
    'Catalyst::Plugin::Cache'     			    => 0.02,
    'Catalyst::Plugin::Cache::Store::FastMmap'               => 0.01,
    'Catalyst::Plugin::ConfigLoader'			    => 0,
