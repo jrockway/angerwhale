@@ -1,10 +1,12 @@
 Angerwhale changes
 
 0.03  XXX
+       - add JSON feeds
        - more formatters; SBC, Markdown, and Textile
        - CAPTCHA to prevent spam
        - refactoring (Articles/Comments/etc. no longer dependent on Model)
        - ships with default blog dir, with a welcome post
+       - move "logged in as" to the client, to increase cache hits
 
 0.02  09 Feb 2007
         - initial release
