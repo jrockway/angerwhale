@@ -64,7 +64,7 @@ sub get_article {
       if $article =~ m{/};
 
     die "no such article" if !-r "$base/$article" || -d "$base/$article";
-
+    
     my $result = Angerwhale::ContentItem::Article->new(
         {
             location   => "$base/$article",
@@ -91,13 +91,14 @@ sub _ls {
         next if $article =~ m{^[.]};    # hidden files are also ignored
         next if !-r $entry;
         next if -d $entry;
-
+        
         #entry is acceptable
         my $article = $self->get_article($article);
         push @articles, $article;
 
     }
     closedir $dir;
+
     return @articles;
 }
 
@@ -112,7 +113,7 @@ sub get_articles {
     my $self = shift;
     my $base = $self->base;
 
-    return _ls( $self, $base );
+    return $self->_ls($base);
 }
 
 =head2 get_categories
@@ -191,6 +192,20 @@ sub get_by_tag {
     }
 
     return @matching;
+}
+
+=head2 ACCEPT_CONTEXT 
+
+Get the context (for caching)
+
+=cut
+
+sub ACCEPT_CONTEXT {
+    my $self = shift;
+    my $c    = shift;
+    $self->context($c);
+    $self->NEXT::ACCEPT_CONTEXT($c, @_);
+    return $self;
 }
 
 =head2 revision

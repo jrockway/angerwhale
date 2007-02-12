@@ -37,7 +37,7 @@ sub auto : Private {
     my ( $self, $c ) = @_;
     $c->stash->{root} = $c->model('Filesystem');
     $c->stash->{user} = $c->session->{user};
-
+    
     # conditions when we want to ignore the cache
     return 1
       if keys %{ $c->flash || {} } > 0;
@@ -111,7 +111,7 @@ sub blog : Path  {
     $c->stash->{page}     = 'home';
     $c->stash->{title}    = $c->config->{title} || 'Blog';
 
-    $c->detach( '/categories/show_category', ['/', @date] );
+    $c->forward( '/categories/show_category', ['/', @date] );
 }
 
 

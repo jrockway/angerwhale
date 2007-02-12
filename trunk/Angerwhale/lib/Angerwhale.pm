@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use File::Temp qw(tempdir);
 use Catalyst qw/Unicode ConfigLoader Static::Simple
-  Cache::FastMmap Setenv
+  Cache Cache::Store::FastMmap  Setenv
   Session::Store::FastMmap Session::State::Cookie Session
   ConfigLoader::Environment/;
 
@@ -18,7 +18,25 @@ __PACKAGE__->config( { name => __PACKAGE__ } );
 __PACKAGE__->config->{static}->{mime_types} = {
     svg => 'image/svg+xml',
     js  => 'text/javascript',
-};
+};         
+__PACKAGE__->config(
+             cache => {
+                 backends => {
+                     jemplate => {
+                         # Your cache backend of choice
+                         store => "FastMmap",
+                     }
+                 }
+             }
+         );
+
+__PACKAGE__->config('View::Jemplate'=> {
+                                        jemplate_dir => 
+                                            __PACKAGE__->path_to('root','jemplate'),
+                                        jemplate_ext => '.tt',
+                                       },
+                   );
+
 __PACKAGE__->config->{cache}->{storage} = tempdir( CLEANUP => 1 );
 __PACKAGE__->config->{cache}->{expires} = 43200;    # 12 hours
 __PACKAGE__->config( { VERSION => $VERSION } );
