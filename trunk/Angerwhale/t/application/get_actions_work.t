@@ -57,7 +57,10 @@ do {
 foreach my $url (@yaml_urls) {
     my $request = request($url);
     ok( $request->is_success, "request $url OK" );
-    yaml_string_ok( $request->content, 'YAML is OK' );
+  SKIP: {
+        skip 'no content', 1 if !$request->content;
+        yaml_string_ok( $request->content, 'YAML is OK' );
+    }
 }
 
 SKIP: {
