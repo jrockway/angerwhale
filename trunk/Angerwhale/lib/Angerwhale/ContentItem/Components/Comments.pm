@@ -2,7 +2,7 @@
 # Comments.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-package Angerwhale::Model::Filesystem::Item::Components::Comments;
+package Angerwhale::ContentItem::Components::Comments;
 use strict;
 use warnings;
 use File::Find;
@@ -10,7 +10,7 @@ use File::Attributes qw(get_attribute set_attribute);
 
 =head1 SYNOPSIS
 
-Mix this into Angerwhale::Model::Filesystem::Item to get commenting
+Mix this into Angerwhale::ContentItem to get commenting
 support.
 
 =head1 METHODS

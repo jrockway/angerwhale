@@ -2,7 +2,7 @@
 # Item.pm - a Filesystem item (Article or Comment, usually)
 # Copyright (c) 2006 Jonathan Rockway
 
-package Angerwhale::Model::Filesystem::Item;
+package Angerwhale::ContentItem;
 use strict;
 use warnings;
 use Carp;
@@ -10,13 +10,13 @@ use Class::C3;
 
 # mixin our methods
 use base qw|
-  Angerwhale::Model::Filesystem::Item::Components::Encoding
-  Angerwhale::Model::Filesystem::Item::Components::Tags
-  Angerwhale::Model::Filesystem::Item::Components::Comments
-  Angerwhale::Model::Filesystem::Item::Components::Metadata
-  Angerwhale::Model::Filesystem::Item::Components::Content
-  Angerwhale::Model::Filesystem::Item::Components::GUID
-  Angerwhale::Model::Filesystem::Item::Components::Signature
+  Angerwhale::ContentItem::Components::Encoding
+  Angerwhale::ContentItem::Components::Tags
+  Angerwhale::ContentItem::Components::Comments
+  Angerwhale::ContentItem::Components::Metadata
+  Angerwhale::ContentItem::Components::Content
+  Angerwhale::ContentItem::Components::GUID
+  Angerwhale::ContentItem::Components::Signature
   Class::Accessor
   |;
 
@@ -39,8 +39,8 @@ use overload (
 
 =head1 NAME
 
-Angerwhale::Model::Filesystem::Item - a filesystem item that knows how
-to attach other C<Item>s to itself
+Angerwhale::ContentItem - a filesystem item that knows how
+to attach other C<ContentItem>s to itself
 
 =head1 SYNOPSIS
 
@@ -49,7 +49,7 @@ to attach other C<Item>s to itself
 =head2 new( \%arguments )
 
 Creates a new Filesystem::Item; but you probably want
-C<Filesystem::Item::Article> or C<Filesystem::Item::Comment> instead.
+C<Filesystem::ContentItem::Article> or C<Filesystem::ContentItem::Comment> instead.
 
 Arguments:
 

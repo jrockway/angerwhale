@@ -2,23 +2,23 @@
 # Article.pm
 # Copyright (c) 2006 Jonathan T. Rockway
 
-package Angerwhale::Model::Filesystem::Article;
+package Angerwhale::ContentItem::Article;
 use strict;
 use warnings;
-use base qw(Angerwhale::Model::Filesystem::Item);
+use base qw(Angerwhale::ContentItem);
 use Class::C3;
 use Carp;
 
-=head1 Filesystem::Article
+=head1 NAME
 
-Represents a C<Filesystem::Item> that's an article (not a comment or
-preview comment).
+Angerwhale::ContentOtem::Article - Represents a C<ContentItem> that's
+an article (not a comment or preview comment).
 
 =head1 METHODS
 
 =head2 new
 
-Create an article, see C<Filesystem::Item::new> for details.
+Create an article, see L<Angerwhale::ContentItem> for details.
 
 =head2 categories
 
@@ -51,7 +51,7 @@ sub categories {
     my $i = 0;
     foreach my $path (@paths) {
         eval {
-            my $obj = Angerwhale::Model::Filesystem::Article->new(
+            my $obj = Angerwhale::ContentItem::Article->new(
                 {
                     %{$self},
                     base     => $base,

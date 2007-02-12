@@ -2,10 +2,10 @@
 # PreviewComment.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-package Angerwhale::Model::Filesystem::PreviewComment;
+package Angerwhale::ContentItem::PreviewComment;
 use strict;
 use warnings;
-use base qw(Angerwhale::Model::Filesystem::Comment Class::Accessor);
+use base qw(Angerwhale::ContentItem::Comment Class::Accessor);
 use Angerwhale::User::Anonymous;
 use Carp;
 

@@ -2,7 +2,7 @@
 # Content.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-package Angerwhale::Model::Filesystem::Item::Components::Content;
+package Angerwhale::ContentItem::Components::Content;
 use strict;
 use warnings;
 use Angerwhale::Format;

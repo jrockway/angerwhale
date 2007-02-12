@@ -2,7 +2,7 @@
 # Encoding.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-package Angerwhale::Model::Filesystem::Item::Components::Encoding;
+package Angerwhale::ContentItem::Components::Encoding;
 
 use Encode;
 use File::Attributes::Recursive qw(get_attribute_recursively);

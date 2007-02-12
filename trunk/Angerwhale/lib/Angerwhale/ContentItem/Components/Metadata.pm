@@ -2,7 +2,7 @@
 # Metadata.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-package Angerwhale::Model::Filesystem::Item::Components::Metadata;
+package Angerwhale::ContentItem::Components::Metadata;
 use strict;
 use warnings;
 require File::CreationTime;
@@ -10,7 +10,7 @@ use File::Attributes qw(get_attribute set_attribute);
 
 =head1 SYNOPSIS
 
-Mix this into Angerwhale::Model::Filesystem::Item to get basic
+Mix this into Angerwhale::ContentItem to get basic
 metadata support.
 
 =head1 METHODS

@@ -2,10 +2,10 @@
 # Comment.pm
 # Copyright (c) 2006 Jonathan T. Rockway
 
-package Angerwhale::Model::Filesystem::Comment;
+package Angerwhale::ContentItem::Comment;
 use strict;
 use warnings;
-use base qw(Angerwhale::Model::Filesystem::Item);
+use base qw(Angerwhale::ContentItem::Item);
 use Class::C3;
 use Carp;
 use Scalar::Util qw(blessed);
@@ -31,7 +31,7 @@ sub new {
     my ( $class, $args ) = @_;
     croak 'Comments must have a parent'
       if !blessed $args->{parent}
-      || !$args->{parent}->isa('Angerwhale::Model::Filesystem::Item');
+      || !$args->{parent}->isa('Angerwhale::ContentItem::Item');
 
     my $self = $class->next::method($args);
 

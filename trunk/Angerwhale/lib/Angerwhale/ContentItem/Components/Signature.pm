@@ -2,7 +2,7 @@
 # Signature.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-package Angerwhale::Model::Filesystem::Item::Components::Signature;
+package Angerwhale::ContentItem::Components::Signature;
 use strict;
 use warnings;
 use Crypt::OpenPGP;
