@@ -50,11 +50,11 @@ sub prepare_items {
 
     # single item
     if ( blessed $item_ref
-        && $item_ref->isa('Angerwhale::ContentItem') )
-    {
-        push @result, $self->serialize_item( $c, $item_ref, 'recursive' );
-    }
-
+         && $item_ref->isa('Angerwhale::ContentItem::Article') )
+      {
+          push @result, $self->serialize_item( $c, $item_ref, 'recursive' );
+      }
+    
     # multiple items (probably articles)
     elsif ( ref $item_ref eq 'ARRAY' ) {
         foreach my $item ( @{$item_ref} ) {

@@ -8,6 +8,8 @@ use warnings;
 use Angerwhale::ContentItem::VirtualComment;
 use LWP::UserAgent;
 use YAML;
+use Time::Local;
+use DateTime;
 
 =head1 NAME
 
@@ -96,11 +98,18 @@ sub _parse_article {
     foreach my $comment (@$comments){
         push @comments, _parse_article($comment);
     } 
+    
+    warn sprintf "Got %d comments\n", scalar @comments;
+
     my $result = Angerwhale::ContentItem::VirtualComment->
       new( { title    => $article->{title},
              raw_text => $article->{raw},
              type     => $article->{type},
-             author   => $article->{author}->{keyid},
+             author   => $article->{author},
+             uri      => $article->{uri},
+             guid     => $article->{guid},
+             ctime    => eval{_str2time($article->{date})}     || time(),
+             mtime    => eval{_str2time($article->{modified})} || time(),
              comments => \@comments,
            } );
     
@@ -110,6 +119,17 @@ sub _parse_article {
 sub format_text {
     my $self = shift;
     return $self->format(@_);
+}
+
+sub _str2time {
+    my $date = shift;
+    $date =~ /(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)(Z)?/;
+    if($7){
+        return timegm($6, $5, $4, $3, $2-1, $1);
+    }
+    else {
+        return timelocal($6, $5, $4, $3, $2-1, $1);
+    }
 }
 
 1;

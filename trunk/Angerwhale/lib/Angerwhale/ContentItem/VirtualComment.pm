@@ -5,6 +5,7 @@
 package Angerwhale::ContentItem::VirtualComment;
 use strict;
 use warnings;
+use Angerwhale::User::Anonymous;
 use base 'Angerwhale::ContentItem';
 
 =head1 NAME
@@ -24,6 +25,21 @@ sub comment_dir {
     return;
 }
 
+# XXX: fixme
+
+sub cache {
+    use Test::MockObject;
+    my $cache = Test::MockObject->new;
+    $cache->set_always('get' => undef);
+    $cache->set_always('set' => undef);
+    return $cache;
+}
+
+sub id {
+    my $self = shift;
+    return $self->{guid};
+}
+
 sub parent {
     my $self = shift;
     return $self->{parent};
@@ -35,16 +51,18 @@ sub title {
 }
 
 sub creation_time {
-    return time();
+    my $self = shift;
+    return $self->{ctime};
 }
 
 sub modification_time {
-    return time();
+    my $self = shift;
+    return $self->{mtime};
 }
 
 sub raw_text {
     my $self = shift;
-    return $self->{raw_text};
+    return $self->NEXT::raw_text($_[0], $self->{raw_text});
 }
 
 sub type {
@@ -52,10 +70,13 @@ sub type {
     return $self->{type};
 }
 
-sub author {
+sub signor {
     my $self = shift;
-    return $self->{author};
+    return $self->{author}->{key_id};
 }
+
+sub _fix_author {}
+sub _cache_signature {}
 
 sub comments {
     my $self = shift;
@@ -71,8 +92,9 @@ sub add_comment {
     return; # no.
 }
 
-sub post_uri {
-    return "I don't know.";
+sub uri {
+    my $self = shift;
+    return $self->{uri};
 }
 
 1;
