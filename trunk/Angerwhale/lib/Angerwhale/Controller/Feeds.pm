@@ -3,10 +3,6 @@ package Angerwhale::Controller::Feeds;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use YAML::Syck;
-use XML::Feed;
-use HTTP::Date;
-use DateTime;
 use Quantum::Superpositions;
 
 =head1 NAME
@@ -61,7 +57,7 @@ sub article : Local {
 
     $c->stash->{type} = $type;
 
-    if ( $type ne 'yaml' ) {
+    if ( $type ne 'yaml' && $type ne 'json' ) {
 
         # flatten comments
         my @todo = $article;
@@ -238,6 +234,9 @@ sub end : Private {
     }
     elsif ( $type eq 'yaml' ) {
         $c->forward( 'View::Feed::YAML', 'process' );
+    }
+    elsif ( $type eq 'json' ) {
+	$c->forward( 'View::Feed::JSON', 'process' );
     }
     else {
         $c->detach('/end');    # back to the main end
