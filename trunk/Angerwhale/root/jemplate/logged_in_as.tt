@@ -3,7 +3,7 @@
 [% IF user_id != 0 %]
 Logged in as [% fullname | html %] ([% user_id | html %]).
 [% ELSE %]
-Not logged in. <a href="[% c.uri_for('/login') %]">Log in</a>.
+Not logged in. <a href="[% login_uri %]">Log in</a>.
 [% END %]
 </p>
 

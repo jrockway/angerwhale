@@ -53,6 +53,7 @@ sub current : Local {
     $c->stash->{user_id}  = $user->nice_id;
     $c->stash->{fullname} = $user->fullname;
     $c->stash->{email}    = $user->email;
+    $c->stash->{login_uri}= q{}.$c->uri_for('/login');
     
     $c->detach('View::JSON');
 }
