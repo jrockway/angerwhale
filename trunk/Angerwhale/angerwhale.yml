@@ -7,8 +7,8 @@ base: __path_to(root/posts)__
 sidebar_picture: ~
 date_format: %c
 language: en-us
-#feeds: ~
-feeds:
- - title: "delicious"
-   location: "http://del.icio.us/rss"
-max_feed_entries: 5
+feeds: ~
+#feeds:
+# - title: "delicious"
+#   location: "http://del.icio.us/rss"
+#max_feed_entries: 5
