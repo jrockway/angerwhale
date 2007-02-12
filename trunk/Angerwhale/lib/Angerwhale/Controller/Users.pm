@@ -3,6 +3,7 @@ package Angerwhale::Controller::Users;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
+use Angerwhale::User::Anonymous;
 
 =head1 NAME
 
@@ -34,6 +35,26 @@ sub index : Private {
     }
     $c->stash->{users}    = [@users];
     $c->stash->{template} = "users.tt";
+}
+
+=head2 current
+
+Return information about the current user
+
+=cut
+
+sub current : Local {
+    my ( $self, $c ) = @_;
+    my $user = $c->stash->{user}; # XXX: user
+
+    $user = Angerwhale::User::Anonymous->new if !$user;
+
+    $c->{stash} = {};
+    $c->stash->{user_id}  = $user->nice_id;
+    $c->stash->{fullname} = $user->fullname;
+    $c->stash->{email}    = $user->email;
+    
+    $c->detach('View::JSON');
 }
 
 =head1 AUTHOR
