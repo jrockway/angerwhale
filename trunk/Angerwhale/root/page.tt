@@ -25,6 +25,7 @@
     <script type="text/javascript" src="/static/slider.js"></script>
     <script type="text/javascript" src="/static/Jemplate.js"></script>
     <script type="text/javascript" src="/jemplate/logged_in_as.tt"></script>
+    <script type="text/javascript" src="/jemplate/sidebar_feed.tt"></script>
   </head>
   <body>
    <div id="page"> <!-- for typo themes -->

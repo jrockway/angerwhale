@@ -17,14 +17,15 @@
 
   <!-- login box -->
   [% INCLUDE login_box.tt %]
-  
+
   <!-- sidebar feeds -->
-  <div id="sidebar_feeds">
-   [% FOREACH feed_name = c.model("Feeds").names %]
-    <div class="sidebar_feed">
-     [% INCLUDE sidebar_feed.tt feed_name=feed_name %]
-    </div>
-   [% END %]
-  </div>
+  <div id="sidebar_feeds" />
+  <script type="text/javascript">
+  // <![CDATA[
+  Jemplate.process('sidebar_feed.tt', '[% c.uri_for('/sidebarfeeds/all') %]',
+                   '#sidebar_feeds');
+  // ]]>
+  </script>
+
 </div>
 <!-- end sidebar.tt -->
