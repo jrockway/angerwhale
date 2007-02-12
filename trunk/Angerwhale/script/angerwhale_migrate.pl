@@ -26,12 +26,8 @@ my $feed = XML::Feed->parse( URI->new($ARGV[0]) )
 
 for my $entry ($feed->entries) {
     my $path = $base_dir;
-
-    if (my $category = $entry->category) {
-        $path = $path->subdir($category);
-    }
-
     $path = $path->file($entry->title. '.html');
+    print "Writing ". $entry->title. "\n";
 
     my $file = IO::File->new($path, 'w')
         or die "Unable to open $path for writing";
@@ -39,6 +35,13 @@ for my $entry ($feed->entries) {
     $file->print($entry->content->body);
     $file->close;
 
+
+    if (my $category = $entry->category) {
+        my $category = dir($path->parent, $category);
+        mkdir($category);
+        symlink file($path), file($category, $path->basename());
+    }
+    
     my $atime = $entry->issued ? $entry->issued->epoch : time;
     if (!utime $atime, $atime, $path) {
         print "Could not set article creation time: $!\n";
