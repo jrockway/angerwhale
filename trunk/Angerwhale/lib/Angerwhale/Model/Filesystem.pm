@@ -4,7 +4,7 @@ use warnings;
 use base 'Catalyst::Model';
 use NEXT;
 use Carp;
-use Angerwhale::ContentItem:Article;
+use Angerwhale::ContentItem::Article;
 use Crypt::OpenPGP;
 use File::Find qw(find);
 

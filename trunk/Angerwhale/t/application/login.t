@@ -55,7 +55,7 @@ $signed = uri_escape($signed);
 
 $mech->get_ok( 'http://localhost/login', 'can get login page' );
 $mech->get_ok("/login/process?login=$signed");
-$mech->content_unlike( qr/scum|forgot/, 'login successful' );
+$mech->content_unlike( qr/scum|forgot|couldn't read/, 'login successful' );
 $mech->get_ok("/login/process?login=$signed");
 $mech->content_like( qr/scum/, 'login UNsuccessful' );
 

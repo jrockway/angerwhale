@@ -50,10 +50,11 @@ sub process : Local {
     my $input     = $c->request->param('login');
     my $keyserver = $c->model('UserStore')->keyserver;
 
-    my $nonce_data = eval {
-        Angerwhale::Model::ContentItem::Components::Signature
-          ->_signed_text($input);
-    };
+    my $nonce_data = 
+      eval {
+          Angerwhale::ContentItem::Components::Signature->_signed_text($input);
+      };
+    
     if ( !$nonce_data ) {
         $c->flash( error => "I couldn't read the signature.  Try again?" );
         $c->res->redirect( $c->uri_for('/login') );

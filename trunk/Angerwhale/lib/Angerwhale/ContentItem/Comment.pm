@@ -5,7 +5,7 @@
 package Angerwhale::ContentItem::Comment;
 use strict;
 use warnings;
-use base qw(Angerwhale::ContentItem::Item);
+use base qw(Angerwhale::ContentItem);
 use Class::C3;
 use Carp;
 use Scalar::Util qw(blessed);
@@ -32,7 +32,7 @@ sub new {
     my ( $class, $args ) = @_;
     croak 'Comments must have a parent'
       if !blessed $args->{parent}
-      || !$args->{parent}->isa('Angerwhale::ContentItem::Item');
+      || !$args->{parent}->isa('Angerwhale::ContentItem');
 
     my $self = $class->next::method($args);
 
