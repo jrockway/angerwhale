@@ -1,0 +1,58 @@
+[% USE infl = Lingua.EN.Inflect %]
+[% USE Time %]
+<div class="post">
+  <div class="post_title">
+    <h2> [% article.title | html %]</h2>
+  </div>
+  <div class="post_info">
+       [% INCLUDE tags.tt %]  
+     <p>
+        Posted on [% article.creation_time | time | html %]
+        [% IF article.author.nice_id != 0 %]
+	by [% article.author.fullname %]
+	[% END %]
+	[% IF article.signed %]
+	    <a href="[% c.uri_for("/articles/$article.name") %]/raw">
+	      <img style="border: none;"
+	      	   src="[% base %]static/lock.png" alt="[SIGNED]" />
+	    </a>	
+     	[% END %]
+     </p>    
+    [% IF article.categories %]
+    <p class="categories">Posted in: 
+      [% FOREACH category = article.categories %]
+      <a href="[% c.uri_for("/categories/$category") %]">
+      	 [% category | html %]
+      </a>
+      [% END %]
+    </p>
+    [% END %]	
+  </div>
+  
+  <div class="article_body">
+    [% article.text %]
+  </div>
+
+  <div class="post_extrainfo">
+   [% IF !standalone %]
+    <p class="post_links">
+     <a href="[% c.uri_for("/articles/$article.name") %]#comments">
+      [% infl.NO("comment", article.comment_count) %]</a> |
+     <a href="[% c.uri_for("/articles/$article.name") %]">Read more...</a>
+    </p>
+   [% ELSE %]
+   <br />
+   [% END %]
+
+    [% IF article.modification_time != article.creation_time %]
+    [% SET foo = 1 %]
+    <p class="last_modified">
+    Last modified: [% article.modification_time | time | html  %] 
+    </p>
+    [% ELSE %]
+    <br />
+    [% END %]
+  </div>
+
+</div>
+

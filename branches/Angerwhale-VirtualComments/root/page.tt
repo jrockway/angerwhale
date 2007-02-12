@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en">
+  <head>
+    <title>[% title | html %]</title>
+    <link rel="stylesheet" href="[% base %]static/phokus.css"
+    type="text/css" />    
+    <link rel="stylesheet" href="[% base %]static/syntax.css"
+    type="text/css" />
+
+    <link rel="alternate" href="[% base %]feeds/articles/atom"
+	  type="application/atom+xml" title="RSS Feed"/>
+    <link rel="alternate" href="[% base %]feeds/comments/atom"
+	  type="application/atom+xml" title="RSS Comment Feed"/>
+    
+    <link rel="alternate" href="[% base %]feeds/articles/yaml" type="text/x-yaml" />
+    
+    <!-- you can't close tags like this in tag soup mode, but you
+	 can in XML! -->
+    <script type="text/javascript" src="/static/prototype.js" />
+    <script type="text/javascript" src="/static/builder.js" />
+    <script type="text/javascript" src="/static/controls.js" />
+    <script type="text/javascript" src="/static/dragdrop.js" />
+    <script type="text/javascript" src="/static/effects.js" />
+    <script type="text/javascript" src="/static/slider.js" />
+  </head>
+  <body>
+   <div id="page"> <!-- for typo themes -->
+    <div id="header" class="header">
+      <h1>[% c.config.title | html %]</h1>
+    </div>
+
+    [% INCLUDE sidebar.tt %]
+    
+    <div id="content">
+      [% IF error %]
+      <div id="error">
+	[% error %]
+      </div>
+      [% END %]
+
+      [% content %]
+    </div>
+    <div id="footer">
+      [% USE Time %]
+      <p id="angerwhale_blurb">Page generated
+      by <a href="http://www.jrock.us/trac/blog_software">Angerwhale</a>
+      version [% c.config.VERSION %] ([% INCLUDE revision.tt %]) on
+      [% generated_at | time | html %].
+      </p>
+      <div id="logos">
+	  <object data="[% base %]static/images/valid-xhtml11-blue-v.svg"
+		  type="image/svg+xml" height="30" width="100">
+	    Valid XHTML.
+	  </object>
+	  <object data="[% base %]static/images/valid-css-blue-v.svg"
+		  type="image/svg+xml" height="30" width="100">
+	    Valid CSS.
+	  </object>
+	  <object data="[% base %]static/images/valid-svg11-blue-v.svg"
+		  type="image/svg+xml" height="30" width="100">
+	    Valid SVG.  (If you're seeing this, though, you need a
+	    better browser so you can actually see them!)
+	  </object>
+      </div>
+    </div>
+   </div>
+  </body>
+</html>
+

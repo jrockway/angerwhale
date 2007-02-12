@@ -1,0 +1,17 @@
+[% WRAPPER page.tt %]
+<div id="login">
+<h2>Login</h2>
+<p>Please authenticate yourself to this weblog by signing the
+following message with your PGP key.  Be sure to have cookies enabled,
+otherwise the login will fail.</p>
+
+<form action="[% base %]login/process" method="post" enctype="utf-8">
+  <div id="login_form">
+   <textarea rows="18" cols="63" name="login">[% nonce | html %]</textarea>
+   <br />
+   <input type="submit" name="submit" />
+  </div>
+</form>
+</div>
+<div class="after"><br /></div>
+[% END %]

@@ -1,0 +1,16 @@
+---
+title: Angerwhale
+description: Welcome to Angerwhale.  You should change this.
+author: Your Name
+contact: nobody@example.com
+base: /var/blog
+sidebar_picture: ~
+date_format: %c
+language: en-us
+feeds: ~
+#feeds:
+# - title: "delicious"
+#   location: "http://del.icio.us/rss/jrockway"
+# - name: "my TODO List"
+#   location: http://hiveminder.com/let/jon%40jrock.us/feed/format/atom/tokens/not%20complete%20owner%20me%20starts%20before%20tomorrow%20accepted%20but_first%20nothing/e6334a62afaa66e6
+max_feeds: 15
