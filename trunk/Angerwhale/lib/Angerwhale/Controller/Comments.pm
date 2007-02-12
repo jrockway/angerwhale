@@ -6,7 +6,7 @@ use base 'Catalyst::Controller';
 use Angerwhale::ContentItem::PreviewComment;
 use Angerwhale::Format;
 use Scalar::Util qw(blessed);
-use SpamMonkey;
+#use SpamMonkey;
 
 __PACKAGE__->mk_ro_accessors(qw/monkey/);
 
