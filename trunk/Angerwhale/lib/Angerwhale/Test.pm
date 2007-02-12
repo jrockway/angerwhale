@@ -11,6 +11,21 @@ use Directory::Scratch;
 
 Angerwhale::Test - Test Angerwhale
 
+=head1 SYNOPSIS
+
+   use Angerwhale::Test (description => 'test blog',
+                         title       => 'test blog',);
+
+   my $mech = Angerwhale::Test->new;
+   my $tmp  = $mech->tmp;
+
+   # post an article
+   $tmp->touch('article1', "This is an article."); 
+   $mech->get_ok('http://localhost/articles/article1');
+
+   return;
+   # article is cleaned up automatically
+
 =head1 METHODS
 
 Subclasses Test::WWW::Mechanize::Catalyst.
@@ -18,6 +33,10 @@ Subclasses Test::WWW::Mechanize::Catalyst.
 =head2 import
 
 Import the module, setup config, create tmp basedir.
+
+=head2 new
+
+Create a new Mech object (etc.).
 
 =head2 tmp
 
