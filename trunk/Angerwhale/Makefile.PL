@@ -45,6 +45,7 @@ requires
    'File::Find'                                             => 0,
    'File::Slurp'                                            => '9999.12',
    'File::Temp'                                             => 0,
+   'File::Remove'                                           => 0,
    'HTML::TreeBuilder'                                      => 0,
    'HTTP::Date'                                             => 0,
    'Module::Pluggable'                                      => 0,
