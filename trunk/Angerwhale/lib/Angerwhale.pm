@@ -2,9 +2,10 @@ package Angerwhale;
 
 use strict;
 use warnings;
-use File::Temp qw(tempdir);
+use File::Spec;
+use File::Remove;
 use Catalyst qw/Unicode ConfigLoader Static::Simple
-  Cache Cache::Store::FastMmap  Setenv
+  Cache Cache::Store::FastMmap Setenv
   Session::Store::FastMmap Session::State::Cookie Session
   ConfigLoader::Environment/;
 
@@ -12,23 +13,29 @@ use Catalyst qw/Unicode ConfigLoader Static::Simple
 
 our $VERSION = '0.02';
 
+my $tmp = File::Spec->catdir(File::Spec->tmpdir, 'angerwhale');
+File::Remove::remove(\1, $tmp);
+
 binmode STDOUT, ':utf8';
-__PACKAGE__->config->{session} = { flash_to_stash => 1 };
+__PACKAGE__->config->{session} = 
+  { 
+   flash_to_stash => 1,
+  };
+
 __PACKAGE__->config( { name => __PACKAGE__ } );
 __PACKAGE__->config->{static}->{mime_types} = {
     svg => 'image/svg+xml',
     js  => 'text/javascript',
-};         
-__PACKAGE__->config(
-             cache => {
-                 backends => {
-                     jemplate => {
-                         # Your cache backend of choice
-                         store => "FastMmap",
-                     }
-                 }
-             }
-         );
+}; 
+
+__PACKAGE__->config(cache => {
+                              backends => {
+                                           jemplate => {
+                                                        store => "FastMmap",
+                                                       }
+                                          }
+                             }
+                   );
 
 __PACKAGE__->config('View::Jemplate'=> {
                                         jemplate_dir => 
@@ -37,7 +44,6 @@ __PACKAGE__->config('View::Jemplate'=> {
                                        },
                    );
 
-__PACKAGE__->config->{cache}->{storage} = tempdir( CLEANUP => 1 );
 __PACKAGE__->config->{cache}->{expires} = 43200;    # 12 hours
 __PACKAGE__->config( { VERSION => $VERSION } );
 __PACKAGE__->setup;
