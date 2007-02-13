@@ -8,6 +8,7 @@ use HTTP::Date;
 use Digest::MD5 qw(md5_hex);
 use Encode;
 use Algorithm::IncludeExclude;
+use Time::Local;
 
 __PACKAGE__->mk_ro_accessors('ie');
 
@@ -167,8 +168,9 @@ sub default : Private {
     
     # XXX: blog archives
     $c->detach('blog', [@args])
-      if(@args == 3 && 3 == scalar grep { /^\d+$/ } @args);
-
+      if(@args == 3 && 3 == scalar grep { /^\d+$/ } @args
+         && eval { timelocal(0, 0, 0, reverse @args) } );
+    
     $c->stash( template => 'error.tt' );
 }
 
