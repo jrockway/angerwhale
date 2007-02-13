@@ -47,6 +47,8 @@ Setup spam filtering
 
 Find a comment based on the current URI.
 
+Puts article and comment in the stash.
+
 =cut
 
 sub find_by_uri_path : Private {
@@ -54,7 +56,8 @@ sub find_by_uri_path : Private {
 
     my $path = $c->request->uri->path;
     my @path = grep { /[-]/ } ( split m{/}, $path );
-
+    return unless @path;
+    
     return $c->forward( 'find_by_path', [@path] );
 }
 
@@ -62,10 +65,14 @@ sub find_by_uri_path : Private {
 
 Get a comment based on filesystem (UUID) path.
 
+Puts article and comment in the stash.
+
 =cut
 
 sub find_by_path : Private {
     my ( $self, $c, @path ) = @_;
+    return unless @path;
+
     my @articles = $c->model('Filesystem')->get_articles;
     my $article = ( grep { $_->id eq $path[0]; } @articles )[0];
     $c->stash->{article} = $article;
@@ -90,23 +97,19 @@ sub comment : Path {
     my ( $self, $c ) = @_;
     $c->forward('find_by_uri_path');
 
-    if (   !blessed $c->stash->{comment}
+    if (!defined $c->stash->{comment} || !blessed $c->stash->{comment}
         || !$c->stash->{comment}->isa('Angerwhale::ContentItem') )
-    {
-        $c->stash->{template} = "error.tt";
-        $c->response->status(404);
-    }
+      {
+          $c->stash->{template} = "error.tt";
+          $c->response->status(404);
+      }
     else {
 
         # handle cases where the find_by_uri_path item is the actual article
-        if (
-            !$c->stash->{comment}->isa('Angerwhale::ContentItem::Comment')
-          )
-        {
-
+        if (!$c->stash->{comment}->isa('Angerwhale::ContentItem::Comment')){
             # handle getting articles by their GUID (instead of name)
             $c->response->redirect(
-                $c->uri_for( '/', $c->stash->{article}->uri ) );
+                 $c->uri_for( '/', $c->stash->{article}->uri ) );
         }
         elsif ( $c->request->uri->as_string =~ m{/raw$} ) {
             $c->response->content_type('application/octet-stream');
