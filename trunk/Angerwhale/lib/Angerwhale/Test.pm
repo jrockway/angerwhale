@@ -6,6 +6,7 @@ package Angerwhale::Test;
 use strict;
 use warnings;
 use Directory::Scratch;
+use File::Attributes qw(set_attribute);
 
 =head1 NAME
 
@@ -67,6 +68,22 @@ sub new {
 
 sub tmp {
     return $tmp;
+}
+
+=head2 article(\%args)
+
+Post a new article.  Args are title, body, type ...
+
+=cut
+
+sub article {
+    my $self = shift;
+    my $args = shift;
+    my $file = $args->{title};
+    $file =~ s/\//_/g;
+    $self->tmp->touch($file, $args->{body});
+    set_attribute($self->tmp->exists($file), 'type', $args->{type}||'text');
+    set_attribute($self->tmp->exists($file), 'title', $args->{title});
 }
 
 1;
