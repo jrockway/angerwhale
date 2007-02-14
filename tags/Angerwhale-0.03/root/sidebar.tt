@@ -1,0 +1,31 @@
+<!-- sidebar.tt -->
+<div id="sidebar"> 
+  <!-- sidebar blurb + image -->
+  [% IF c.config.description %]
+  <div class="box">
+  <p id="sidebar_blurb">
+    [% IF c.config.sidebar_picture %]
+  <img id="sidebar_picture" src="[% c.config.sidebar_picture %]" alt="[LOGO]"/>
+  [% END %]
+   [% c.config.description %]
+  </p>		
+  </div>
+  [% END %]
+  
+  <!-- navigation box -->
+  [% INCLUDE navbox.tt %]		
+
+  <!-- login box -->
+  [% INCLUDE login_box.tt %]
+
+  <!-- sidebar feeds -->
+  <div id="sidebar_feeds" />
+  <script type="text/javascript">
+  // <![CDATA[
+  Jemplate.process('sidebar_feed.tt', '[% c.uri_for('/sidebarfeeds/all') %]',
+                   '#sidebar_feeds');
+  // ]]>
+  </script>
+
+</div>
+<!-- end sidebar.tt -->

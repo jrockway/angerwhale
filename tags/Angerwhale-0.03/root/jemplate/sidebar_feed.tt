@@ -1,0 +1,12 @@
+[% FOREACH feed = feeds %]
+<div class="box">
+<h3>[% feed.name | html %]</h3>
+<ul class="sidebar_feed_entries">
+[% FOREACH entry = feed.entries %]
+   <li><a href="[% entry.link | html %]">   
+      [% entry.title | html %]
+   </a></li>
+[% END %]
+</ul>
+</div>
+[% END %]
