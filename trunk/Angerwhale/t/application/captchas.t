@@ -4,27 +4,12 @@
 
 use strict;
 use warnings;
-use Test::More;
-my $tmp;
-my $blog_title;
-my $blog_desc;
-
 use Test::More tests => 16;
-BEGIN {
-    use Directory::Scratch;
-    $tmp = Directory::Scratch->new;
-    my $base = $tmp->base;
+use Angerwhale::Test;
 
-    $blog_title = "Unit Tests Are Fun - $$";
-    $blog_desc  = 'You should not be seeing this.';
+my $mech = Angerwhale::Test->new;
+my $tmp  = $mech->tmp;
 
-    $ENV{'ANGERWHALE_description'} = $blog_desc;
-    $ENV{'ANGERWHALE_base'}        = $base;
-    $ENV{'ANGERWHALE_title'}       = $blog_title;
-    $ENV{'ANGERWHALE_html'}        = 1;
-}
-use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
-my $mech = Test::WWW::Mechanize::Catalyst->new;
 $mech->get_ok('http://localhost/');
 my $a_title = "This is a test article for you.";
 my $a_body  = 'This is a test article. Yayyy.';
