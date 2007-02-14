@@ -75,11 +75,16 @@ sub tmp {
 
 Post a new article.  Args are title, body, type ...
 
+Optionally you can pass a string instead of args, in which case the
+string will be the title and the body.
+
 =cut
 
 sub article {
     my $self = shift;
     my $args = shift;
+    $args = {title => $args, body => $args} unless ref $args;
+    
     my $file = $args->{title};
     $file =~ s/\//_/g;
     $self->tmp->touch($file, $args->{body});
