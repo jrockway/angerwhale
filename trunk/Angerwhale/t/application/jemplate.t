@@ -12,4 +12,4 @@ $mech->content_like(qr'Ingy');
 $mech->get_ok('http://localhost/jemplate/sidebar_feed.tt');
 $mech->content_like(qr'Ingy');
 $mech->get('http://localhost/jemplate/this_does_not_exist.tt');
-ok($mech->status != 200, "can't get template that doesn't exist");
+is($mech->status, 404, "can't get template that doesn't exist");

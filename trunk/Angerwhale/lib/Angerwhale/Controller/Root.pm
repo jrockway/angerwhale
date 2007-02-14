@@ -153,7 +153,13 @@ sub jemplate : Global {
     my($self, $c, $file) = @_;
     $c->stash->{jemplate} = { key   =>  $file,
                               files => [$file]};
-    $c->detach('View::Jemplate');
+    $c->forward('View::Jemplate');
+    $c->detach if $c->res->body;
+
+    # no template, 404'd.
+    $c->clear_errors;
+    $c->res->status('404');
+    $c->stash->{template} = 'error.tt';
 }
 
 =head2 default
