@@ -11,7 +11,7 @@ use Catalyst qw/Unicode ConfigLoader Static::Simple
 
 #XXX: add C3 and LogWarnings back
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 my $tmp = File::Spec->catdir(File::Spec->tmpdir, 'angerwhale');
 File::Remove::remove(\1, $tmp);
@@ -81,31 +81,31 @@ CPAN, and extract it.  Then, run
 
    $ perl Makefile.PL
    $ make
-
-This will install any necessary dependencies (there are a few).  Once
-that's finished, open up the config file C<angerwhale.yml> and change
-the C<base> to where you want to store blog posts -- the directory
-must exist or the tests will fail.
-
-After that, run
-
    $ make test
 
-which will run the test suite to make sure Angerwhale works on your
-system.  If all goes well, open up the config file, C<angerwhale.yml>,
-and customize the other options to your heart's content.  (There are
-more config options than those listed; for now grep the source for
-"config" to find them all.  You shouldn't need to change the defaults,
-though; they're reasonable.)
-
-The final step is to run:
+C<make test> will run the test suite to make sure Angerwhale works on your
+system.  You can then run the test server:
 
    $ perl script/angerwhale_server.pl
 
 You'll then be able to connect to L<http://localhost:3000> and see
-your blog.  Add a file to the C<base> you set up earlier, and you'll
-see it rendered as a blog post.  Edit it, and watch Angerwhale update
-the modification time (but preserve the creation time).  Sign it, and
+your blog.  There's already a sample post, so that should show up
+and you should be able to leave a comment or log in.
+
+If all goes well, open up the config file, C<angerwhale.yml>, and
+customize the options to your heart's content.  You specifically might
+want to set C<base> to some place more convenient than the
+C<root/posts> directory that ships with Angerwhale.
+
+(There are more config options than those listed; for now grep the
+source for "config" to find them all.  You shouldn't need to change
+the defaults, though; they're reasonable.)
+
+=head2 Playing with Angerwhale a bit
+
+Add a file to the C<base> you set up earlier, and you'll see it
+rendered as a blog post.  Edit it, and watch Angerwhale update the
+modification time (but preserve the creation time).  Sign it, and
 watch your name show up on the post.  Log in (on the login page), and
 add tags.  Create a subdirectory in C<base>, symlink some posts into
 it, and watch them show up in a new category.  Try posting some
@@ -118,7 +118,7 @@ channel!  Enjoy!
 
 Angerwhale is a L<Catalyst|Catalyst> application, so if you'd like to
 run it in a production environment, check out the
-L<Catalyst deployment manual|Catalyst::Manual::Deployment>.
+L<Catalyst deployment manual|http://search.cpan.org/~jrockway/Catalyst-Manual-5.700501/lib/Catalyst/Manual/Cookbook.pod#Deployment>.
 Basically, you can run it as a FastCGI, mod_perl, or plain CGI.
 
 =head1 RESOURCES
@@ -128,7 +128,7 @@ Basically, you can run it as a FastCGI, mod_perl, or plain CGI.
 =item *
 
 IRC channel at L<irc://irc.perl.org/#angerwhale> or perhaps
-L<irc://irc.perl.org/#catalyst>.  (The author is "jrockway".)
+L<irc://irc.perl.org/#catalyst>.
 
 =item *
 
@@ -159,10 +159,6 @@ and then resize them to look nice at web resolution.
 
 ACLs.  Based on the logged-in user's key, restrict posting or allow
 them to post.  Allow administrators to delete SPAM posts, etc.
-
-=item *
-
-Spam filtering.
 
 =item *
 
