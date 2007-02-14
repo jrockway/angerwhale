@@ -52,6 +52,7 @@ sub import {
     
     $tmp = Directory::Scratch->new;
     $ENV{"ANGERWHALE_base"} = $tmp->base;
+    $ENV{"ANGERWHALE_html"} = 1;
     foreach my $key (keys %config){
         $ENV{"ANGERWHALE_$key"} = $config{$key};
     }
