@@ -11,7 +11,7 @@ use Carp;
 
 =head1 NAME
 
-Angerwhale::ContentOtem::Article - Represents a C<ContentItem> that's
+Angerwhale::ContentItem::Article - Represents a C<ContentItem> that's
 an article (not a comment or preview comment).
 
 =head1 METHODS
