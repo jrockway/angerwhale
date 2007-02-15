@@ -5,8 +5,10 @@
 # tests posting of articles and comments against the real server
 use strict;
 use warnings;
-use Test::More tests => 372;
+use Test::More tests => 393;
 use Test::YAML::Valid qw(-Syck);
+use JSON;
+use Test::JSON;
 use File::Attributes qw(get_attribute list_attributes);
 
 my $blog_title;
@@ -123,6 +125,24 @@ foreach my $link ( $mech->find_all_links( url_regex => qr'/articles/.+$' ) ) {
                 is( $yaml->{type}, 'text', 'some data is in YAML' );
                 $mech->get_ok( $yaml->{uri}, 'get uri in YAML' );
                 $mech->get_ok( $yaml->{uri} . '/raw', 'get raw version' );
+                is( $mech->ct, 'application/octet-stream',
+                    'content type of raw version is octet-stream' );
+            }
+        }
+
+        elsif ($feed->url() =~ m{/json} ) {
+            
+            # JSON feed
+            is( $mech->ct, 'application/json', 'content type is JSON' );
+
+          SKIP:
+            {
+                skip "No content returned", 4 if !$content;
+                is_valid_json( $content, 'json is valid' );
+                my $json = @{jsonToObj($content)||[]}[0];
+                is( $json->{type}, 'text', 'some data is in JSON' );
+                $mech->get_ok( $json->{uri}, 'get uri in JSON' );
+                $mech->get_ok( $json->{uri} . '/raw', 'get raw version' );
                 is( $mech->ct, 'application/octet-stream',
                     'content type of raw version is octet-stream' );
             }
