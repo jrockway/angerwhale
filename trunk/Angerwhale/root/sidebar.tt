@@ -18,6 +18,7 @@
   <!-- login box -->
   [% INCLUDE login_box.tt %]
 
+  [% IF c.config.feeds %]
   <!-- sidebar feeds -->
   <div id="sidebar_feeds" />
   <script type="text/javascript">
@@ -26,6 +27,7 @@
                    '#sidebar_feeds');
   // ]]>
   </script>
+  [% END %]
 
 </div>
 <!-- end sidebar.tt -->
