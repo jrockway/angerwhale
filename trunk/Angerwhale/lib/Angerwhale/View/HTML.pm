@@ -37,7 +37,7 @@ sub process {
 
 =head1 NAME
 
-Angerwhale::View::HTML - Catalyst TT View
+Angerwhale::View::HTML - Format stash into XHTML page via TT template
 
 =head1 SYNOPSIS
 
@@ -46,6 +46,12 @@ See L<Angerwhale>
 =head1 DESCRIPTION
 
 Catalyst TT View.
+
+=head1 METHODS
+
+=head2 process
+
+Install filters, then process the template.
 
 =head1 AUTHOR
 
