@@ -5,7 +5,7 @@ author: Your Name
 contact: nobody@example.com
 base: __path_to(root/posts)__
 sidebar_picture: ~
-date_format: %c
+#date_format: %c
 language: en-us
 feeds: ~
 #feeds:

@@ -1,5 +1,4 @@
 [% USE infl = Lingua.EN.Inflect %]
-[% USE Time %]
 <div class="post">
   <div class="post_title">
     <h2> [% article.title | html %]</h2>

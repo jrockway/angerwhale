@@ -96,6 +96,7 @@ build_requires
   );
 
 feature('Speed up crypto', ['Math::BigInt::GMP' => 0]);
+feature('Custom date formats', ['POSIX' => 0]);
 
 catalyst();
 install_script(glob('script/*.pl'));

@@ -1,4 +1,3 @@
-[% USE Time %]
 <div class="comment">
   <div class="comment_header">
     <p class="title">[% comment.title | html %]</p>

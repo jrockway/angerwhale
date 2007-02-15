@@ -5,7 +5,6 @@
 package Angerwhale::Filter::Time;
 use strict;
 use warnings;
-use base qw(Template::Plugin::Filter);
 use Time::Duration qw(ago);
 use utf8;
 
@@ -24,30 +23,26 @@ example:
 
 =head1 METHODS
 
-=head2 init
-
-Called by TT to create the formatted.
-
 =head2 filter
 
 Does the actual conversion at template runtime.
 
 =cut
 
-sub init {
-    my $self = shift;
-    $self->{_DYNAMIC} = 1;
-
-    # first arg can specify filter name
-    $self->install_filter( $self->{_ARGS}->[0] || 'time' );
-
-    return $self;
-}
-
 # converts seconds past the epoch, localtime, to a pretty string
 sub filter {
-    my ( $self, $time, $args, $config ) = @_;
+    my ( $class, $time, $args, $format ) = @_;
     my @time  = localtime($time);
+
+    my $formatted = eval {
+        if($format){
+            require POSIX;
+            return POSIX::strftime($format, @time);
+        }
+    };
+    return $formatted if defined $formatted;
+      
+
     my $year  = $time[5] + 1900;
     my $month = $time[4] + 1;
     my $day   = $time[3];
@@ -55,6 +50,8 @@ sub filter {
 
     my $hour   = $time[2];
     my $minute = $time[1];
+    my $sec = $time[0];
+
     $minute = "0$minute" if $minute < 10;
 
     my $ampm = ( $hour < 11 ) ? "am" : "pm";

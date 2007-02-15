@@ -1,5 +1,4 @@
 [% WRAPPER page.tt %]
-[% USE Time %]
 [% USE infl = Lingua.EN.Inflect %]
 <div class="search_results">
   <h2>[% title | html %]</h2>
