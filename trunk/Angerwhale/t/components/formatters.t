@@ -10,7 +10,8 @@ use warnings;
 my @types = Angerwhale::Format::types;
 ok( @types > 0, 'do we have some formatters?' );
 
-my $txt = "This is some plain old text.\n\nThis is a new paragraph\n";
+my $txt = "This is some plain old text.\n\nThis is a new paragraph\n".
+  "Here is a link to http://www.google.com.  I hope it's clickable.\n";
 my $pod = <<'ENDPOD';
 
 =head1 PLAIN OLD DOCUMENTATION
