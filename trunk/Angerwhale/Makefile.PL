@@ -76,6 +76,7 @@ requires
    'HTML::SBC'                                              => 0,
    'GD::SecurityImage'                                      => 0,
    'Catalyst::View::JSON'                                   => 0,
+   'JSON'                                                   => 0,
    'Catalyst::View::Jemplate'                               => 0,
   );
 build_requires
@@ -90,6 +91,7 @@ build_requires
    'HTML::Tidy'                                             => 0,
    'Test::XML::Valid'                                       => 0,
    'Test::YAML::Valid'                                      => '0.02',
+   'Test::JSON'                                             => 0,
    'Test::WWW::Mechanize::Catalyst'                         => 0,
   );
 

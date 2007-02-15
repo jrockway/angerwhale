@@ -3,9 +3,10 @@
 use strict;
 use warnings;
 use YAML::Syck;
+use JSON;
 use Angerwhale::Test (ignore_captcha => 1);
 use File::Attributes qw(get_attribute);
-use Test::More tests => 49;
+use Test::More tests => 52;
 
 my $mech = Angerwhale::Test->new;
 $mech->article('Test Article 1');
@@ -69,7 +70,30 @@ for my $a (1..2){
     }
 }
 
-is_deeply([sort @found_paths], [sort @paths], 'found paths match');
+is_deeply([sort @found_paths], [sort @paths], 'found paths match (yaml)');
+
+## and test JSON too
+@found_paths = ();
+for my $a (1..2){
+    $mech->get_ok("http://localhost/feeds/article/Test Article $a/json");
+    my $json = $mech->content;
+    my $article = @{jsonToObj($json) || []}[0];
+    
+    foreach my $comment (@{$article->{comments}||[]}){
+        my $path = join '/', $article->{guid}, $comment->{guid};
+        push @found_paths, $path;
+        foreach my $comment2 (@{$comment->{comments}||[]}){
+            my $path2 = join '/', $path, $comment2->{guid};
+            push @found_paths, $path2;
+            foreach my $comment3 (@{$comment2->{comments}||[]}){
+                my $path3 = join '/', $path2, $comment3->{guid};
+                push @found_paths, $path3;
+            }
+        }
+    }
+}
+is_deeply([sort @found_paths], [sort @paths], 'found paths match (json)');
+
 
 =head2 $new_path = post_comment_to($mech, $path)
 

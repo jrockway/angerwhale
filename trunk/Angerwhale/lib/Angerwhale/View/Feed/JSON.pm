@@ -6,16 +6,15 @@ package Angerwhale::View::Feed::JSON;
 use strict;
 use warnings;
 use base qw(Angerwhale::View::Feed Catalyst::View);
+use JSON;
 
 sub process {
     my ( $self, $c ) = @_;
     my @items = $self->prepare_items($c);
 
     my $stash = $c->stash;
-    $c->{stash} = {};
-    $c->stash->{items} = [@items];
-    $c->forward('View::JSON');
-    $c->{stash} = $stash;
+    $c->res->content_type('application/json');
+    $c->res->body(objToJson([@items]));
 }
 
 1;
