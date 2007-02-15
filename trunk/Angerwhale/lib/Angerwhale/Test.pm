@@ -50,7 +50,7 @@ sub import {
     my $class = shift;
     my %config = @_;
     
-    $tmp = Directory::Scratch->new;
+    $tmp = Directory::Scratch->new(TEMPLATE => 'angerXXXXXXXXXX');
     $ENV{"ANGERWHALE_base"} = $tmp->base;
     $ENV{"ANGERWHALE_html"} = 1;
     foreach my $key (keys %config){
