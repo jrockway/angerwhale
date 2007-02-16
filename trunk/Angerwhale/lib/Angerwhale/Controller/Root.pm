@@ -9,6 +9,7 @@ use Digest::MD5 qw(md5_hex);
 use Encode;
 use Algorithm::IncludeExclude;
 use Time::Local;
+use Compress::Zlib;
 
 __PACKAGE__->mk_ro_accessors('ie');
 
@@ -117,9 +118,7 @@ sub auto : Private {
         }
 
         $c->log->debug( "serving " . $c->request->uri . " from cache $key" );
-        $c->response->body( $document->{body} )
-          unless 'HEAD' eq $c->request->method;
-
+        _do_response($c, $document) if ('HEAD' ne $c->request->method);
         $c->detach();
     }
 
@@ -208,14 +207,31 @@ sub end : Private {
     $c->stash->{generated_at} = time();
     
     if ( $c->stash->{cache_key} && $c->res->status == 200 ) {
-        _cache( $c, $c->stash->{cache_key} );
+        my $doc = _cache( $c, $c->stash->{cache_key} );
+        _do_response($c, $doc); # handle gzip for non-cached request too
     }
     else {
         # not a page we know how to cache
         $c->forward('Angerwhale::View::HTML');
     }
 }
-  
+
+sub _do_response {
+    my $c = shift;
+    my $document = shift;
+
+    my $encoding = $c->request->header('accept-encoding');
+    if (defined $encoding && $encoding =~ /gzip/i)  {
+        $c->response->body( $document->{gzip} );
+        $c->response->content_encoding('gzip');
+        $c->response->headers->push_header( 'Vary', 'Accept-Encoding' );
+        $c->log->debug('gzipping response to '. $c->req->uri->as_string);
+    }
+    else {
+        $c->response->body( $document->{body} )
+    }
+}
+
 sub _article_uniq_id {
     my $article = shift;
 
@@ -242,11 +258,12 @@ sub _cache {
     $document = {
         mtime   => time(),
         headers => $c->response->headers,
-        body    => $c->response->body
+        body    => $c->response->body,
+        gzip    => Compress::Zlib::memGzip( $c->response->body ),
     };
 
     $c->cache->set( $key, $document );
-
+    return $document;
 }
 
 =head1 AUTHOR
