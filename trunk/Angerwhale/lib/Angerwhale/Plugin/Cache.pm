@@ -253,6 +253,8 @@ Get the cache key for a given revision/URI pair
 
 sub _key {
     my ($c, $revision, $uri) = @_;
+    $revision ||= 0;
+    $uri      ||= "NOURL";
     return "$revision:$uri";
 }
 
