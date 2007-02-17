@@ -172,7 +172,7 @@ sub finalize {
             $doc->{mtime}    = time();
             $doc->{headers} = $c->response->headers();
         }
-
+        
         if (!$c->_is_304($key, $doc)) {
 
             ## BODY
@@ -193,7 +193,8 @@ sub finalize {
                 $c->response->headers->push_header( 'Vary', 'Accept-Encoding' );
             }
             
-            if (defined $key && defined $doc && ref $doc eq 'HASH'){
+            # XXX: we can do better than this
+            if ($c->req->method ne 'HEAD'){
                 $c->cache('pages')->set($key, $doc); 
             }
         }
