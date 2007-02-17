@@ -3,8 +3,9 @@
 
 use strict;
 use warnings;
-use Test::More tests => 13;
+use Test::More tests => 19;
 use Angerwhale::Test;
+use Compress::Zlib;
 
 my $mech = Angerwhale::Test->new;
 $mech->article({title => 'This is a test', 
@@ -32,6 +33,7 @@ is($response->header('ETag'), $et, 'same etag');
 is($response->header('Last-Modified'), $lm, 'same mtime');
 is($response->content, $content, 'same content');
 
+# test 304 not modified
 $mech->add_header('If-None-Match' => $et);
 $mech->get('http://localhost/');
 is($mech->response->code, 304, '304 Not Modified (with etag)');
@@ -48,3 +50,27 @@ $mech->get('http://localhost/');
 is($mech->response->code, 304, '304 Not Modified (with both)');
 $mech->delete_header('If-Modified-Since');
 $mech->delete_header('If-None-Match');
+
+$mech->add_header('If-None-Match' => "fake$et");
+$mech->add_header('If-Modified-Since' => $lm);
+$mech->get('http://localhost/');
+is($mech->response->code, 200, '200 with bad etag');
+$mech->delete_header('If-Modified-Since');
+$mech->delete_header('If-None-Match');
+
+$mech->add_header('If-None-Match' => $et);
+$mech->add_header('If-Modified-Since' => "bad $lm");
+$mech->get('http://localhost/');
+is($mech->response->code, 200, '200 with bad mtime');
+$mech->delete_header('If-Modified-Since');
+$mech->delete_header('If-None-Match');
+
+# test another page
+$mech->get_ok('http://localhost/articles/');
+isnt($mech->content, $content, "new page doesn't have old content");
+
+# test gzip
+$mech->add_header( 'Accept-Encoding' => 'gzip' );
+$mech->get_ok('http://localhost/');
+my $zip = $mech->content;
+is(Compress::Zlib::memGunzip($zip), $content, 'ungzipped content is correct');
