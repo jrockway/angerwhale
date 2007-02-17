@@ -98,12 +98,12 @@ sub prepare {
     my $c = $class->NEXT::prepare(@args);
     
     # clear out old data
-    $c->cache_key(undef);
-    $c->cached_document(undef);
+    $c->cache_key(0);
+    $c->cached_document(0);
 
     # get callback/revision for this request
     my $callback = $c->cache_callback();
-    my $revision = $callback->($c);
+    my $revision = $callback->($c, $c->req->uri);
         
     my @path = split m{/}, $c->req->uri->path;
     shift @path;

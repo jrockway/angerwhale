@@ -44,7 +44,16 @@ __PACKAGE__->config->{cache}{backends} =
     store => "FastMmap",
    },
   };
-__PACKAGE__->config('revision_callback' => sub { $_[0]->model('Filesystem')->revision });
+__PACKAGE__->config('revision_callback' => 
+                    sub { 
+                        my $c   = shift;
+                        my $uri = shift;
+                        
+                        return 1 if $uri->path =~ m{/jemplate/}; # never expires
+                        return $c->model('Filesystem')->revision;
+                    }
+                   );
+
 __PACKAGE__->config('View::Jemplate'=> 
                     {
                      jemplate_dir => 
