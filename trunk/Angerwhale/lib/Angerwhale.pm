@@ -7,7 +7,7 @@ use File::Remove;
 use Catalyst qw/Unicode ConfigLoader Static::Simple
   Cache Cache::Store::FastMmap Setenv
   Session::Store::FastMmap Session::State::Cookie Session
-  ConfigLoader::Environment/;
+  ConfigLoader::Environment +Angerwhale::Plugin::Cache/;
 
 #XXX: add C3 and LogWarnings back
 
@@ -22,26 +22,35 @@ __PACKAGE__->config->{session} =
    flash_to_stash => 1,
   };
 
-__PACKAGE__->config( { name => __PACKAGE__ } );
-__PACKAGE__->config->{static}->{mime_types} = {
-    svg => 'image/svg+xml',
-    js  => 'text/javascript',
-}; 
+__PACKAGE__->config(name => __PACKAGE__);
+__PACKAGE__->config->{static}->{mime_types} = 
+  {
+   svg => 'image/svg+xml',
+   js  => 'text/javascript',
+  }; 
 
-__PACKAGE__->config(cache => {
-                              backends => {
-                                           jemplate => {
-                                                        store => "FastMmap",
-                                                       }
-                                          }
-                             }
-                   );
-
-__PACKAGE__->config('View::Jemplate'=> {
-                                        jemplate_dir => 
-                                            __PACKAGE__->path_to('root','jemplate'),
-                                        jemplate_ext => '.tt',
-                                       },
+__PACKAGE__->config->{cache}{backends} = 
+  {
+   jemplate => 
+   {
+    store => "FastMmap",
+   },
+   pages => 
+   {
+    store => "FastMmap",
+   },
+   formatted => 
+   {
+    store => "FastMmap",
+   },
+  };
+__PACKAGE__->config('revision_callback' => sub { $_[0]->model('Filesystem')->revision });
+__PACKAGE__->config('View::Jemplate'=> 
+                    {
+                     jemplate_dir => 
+                     __PACKAGE__->path_to('root','jemplate'),
+                     jemplate_ext => '.tt',
+                    },
                    );
 
 __PACKAGE__->config->{cache}->{expires} = 43200;    # 12 hours

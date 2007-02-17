@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 15;
+use Test::More tests => 13;
 use Angerwhale::Test;
 
 my $mech = Angerwhale::Test->new;
@@ -33,17 +33,18 @@ is($response->header('Last-Modified'), $lm, 'same mtime');
 is($response->content, $content, 'same content');
 
 $mech->add_header('If-None-Match' => $et);
-$mech->get_ok('http://localhost/');
+$mech->get('http://localhost/');
 is($mech->response->code, 304, '304 Not Modified (with etag)');
 $mech->delete_header('If-None-Match');
 
 $mech->add_header('If-Modified-Since' => $lm);
-$mech->get_ok('http://localhost/');
+$mech->get('http://localhost/');
 is($mech->response->code, 304, '304 Not Modified (with mtime)');
 $mech->delete_header('If-Modified-Since');
 
 $mech->add_header('If-None-Match' => $et);
 $mech->add_header('If-Modified-Since' => $lm);
+$mech->get('http://localhost/');
 is($mech->response->code, 304, '304 Not Modified (with both)');
 $mech->delete_header('If-Modified-Since');
 $mech->delete_header('If-None-Match');
