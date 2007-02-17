@@ -237,7 +237,7 @@ sub _is_304 {
     if ( $cond_date || $cond_etag ) {
         # if both headers are present, both must match
         $do_send_304 = 1;
-        $do_send_304 = ( str2time($cond_date) >= $document->{mtime} )
+        $do_send_304 = ( (str2time($cond_date)||0) >= $document->{mtime} )
           if ($cond_date);
         $do_send_304 &&= ( $cond_etag eq qq{"$key"} )
           if ($cond_etag);
