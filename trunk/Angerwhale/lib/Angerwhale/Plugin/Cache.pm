@@ -104,7 +104,7 @@ sub prepare {
     # get callback/revision for this request
     my $callback = $c->cache_callback();
     my $revision = $callback->($c, $c->req->uri);
-        
+    
     my @path = split m{/}, $c->req->uri->path;
     shift @path;
     my $include = $c->cache_ie_list->evaluate(@path);
@@ -141,7 +141,7 @@ sub dispatch {
     my ($c, @args) = @_;
     my $doc = $c->cached_document();
     
-    if (exists $doc->{headers} && exists $doc->{body} ) {
+    if (ref $doc && exists $doc->{headers} && exists $doc->{body} ) {
         $c->log->debug("skipping the request cycle! fast!");
         return;
     }
