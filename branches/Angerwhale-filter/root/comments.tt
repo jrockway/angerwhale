@@ -1,0 +1,9 @@
+[% WRAPPER page.tt %]
+[% SET readonly = 0 %]
+<div id="comments">
+     [% INCLUDE comments_header.tt %]
+     <br />
+     [% INCLUDE comment.tt %]
+</div>
+<div class="after"><br /></div>
+[% END %]

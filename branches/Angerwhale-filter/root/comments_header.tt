@@ -1,0 +1,19 @@
+[% USE infl = Lingua.EN.Inflect %]
+    <div class="comments_header">
+      <p>Comments on
+       <a href="[% c.uri_for("/articles/$article.name") | html %]">
+      		[% article.title | html %]
+	</a>
+	| [% infl.NO("comment", article.comment_count) %]
+	|
+	<a href="[% c.uri_for("/comments/post/$article.id") | html %]">
+	Post a comment</a>
+        </p>
+	<p class="feedbox">
+     [% INCLUDE feedbox.tt 
+      yaml_uri="/feeds/article/" _ article.name _ "/yaml"
+      rss_uri="/feeds/article/" _ article.name _ "/xml" 
+           %]
+    </p>
+   </div>
+   <div class="after"><br /></div>
