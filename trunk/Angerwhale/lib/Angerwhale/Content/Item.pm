@@ -35,7 +35,7 @@ sub store_attribute {
     my $value= shift;
 
     $self->metadata->{$attr} = $value;
-    $self->next::method($attr,$value);
+    #$self->next::method($attr,$value);
     return;
 }
 
@@ -50,7 +50,7 @@ sub store_data {
     my $data = shift;
     
     $self->data($data);
-    $self->next::method($data);
+    #$self->next::method($data);
 
     return;
 }

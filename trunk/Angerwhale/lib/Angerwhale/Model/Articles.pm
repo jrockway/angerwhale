@@ -3,9 +3,11 @@
 package Angerwhale::Model::Articles;
 use strict;
 use warnings;
-use Class::C3;
+use Class::C3; 
 use Carp;
 use base 'Catalyst::Model';
+use Scalar::Util qw(blessed);
+our @ISA;
 
 __PACKAGE__->mk_accessors(qw/storage_class storage_args source context filters/);
 
@@ -15,7 +17,7 @@ sub new {
     $self->storage_class('Filesystem') if !$self->storage_class;
     
     my $sclass = "Angerwhale::Content::ContentProvider::".$self->storage_class;
-    eval "use $sclass";
+    eval "require $sclass";
     croak "can't load $sclass" if $@;
     
     my $s = $sclass->new($self->storage_args);
@@ -27,6 +29,7 @@ sub new {
                    ]);
     
     $self->source($s);
+    return $self;
 }
 
 sub get_articles {
@@ -36,28 +39,40 @@ sub get_articles {
 
 sub _apply_filters {
     my $self    = shift;
-    my $article = shift;
+    warn @_;
+   my @articles= @_;
     
-    foreach my $filter (@{$self->filters||[]}) {
-        # curry the filter
-        my $f = sub { my $item = shift; $filter->($filter, $self->context, $item) };
-        
-        $article = $f->($article);
-
-        my @children = @{$article->children()||[]};
-        foreach my $child (@children) {
-            $child = $f->($child);
+    foreach my $article (@articles) {
+        foreach my $filter (@{$self->filters||[]}) {
+            # curry the filter
+            my $f = sub { my $item = shift; 
+                          my $r = $filter->($filter, $self->context, $item);
+                          if (blessed $r) {
+                              return $r;
+                          }
+                          else {
+                              return $item;
+                          }
+                      };
+            
+            $article = $f->($article);
+            
+            #my @children = @{$article->children()||[]};
+            #foreach my $child (@children) {
+            #    $child = $f->($child);
+            #}
+            #$article->children([@children]);
         }
-        $article->children([@children]);
     }
     
+    return @articles;
 }
 
-sub ACCEPT_CONTEXT {
-    my ($self, $c) = @_;
-    $self->context($c);
-    return $self;
-}
+#sub ACCEPT_CONTEXT {
+#    my ($self, $c) = @_;
+#    $self->context($c);
+#    return $self;
+#}
 
 1;
 

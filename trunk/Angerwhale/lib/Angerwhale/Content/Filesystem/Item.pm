@@ -9,6 +9,7 @@ use File::Attributes qw(get_attributes set_attribute);
 use Path::Class ();
 use Data::UUID;
 use File::CreationTime qw(creation_time);
+use Class::C3;
 use base 'Angerwhale::Content::Item';
 
 __PACKAGE__->mk_accessors(qw/root file/);
@@ -76,12 +77,16 @@ sub new {
     
     my $file = q{}. $self->file; # stringify filename for IO()
     $self->data(read_file( $file )); 
-
-    my $ctime = creation_time($file);
+    my %attributes = get_attributes ($file);
     
-    $self->metadata ( { get_attributes ( $file ), 
-                        creation_time => $ctime ,
-                        name          => $file->basename
+    # filter out empty attributes (BUG IN FILE::EXTATTR)
+    map { delete $attributes{$_} }
+      grep { 1 if !defined $attributes{$_} }
+        keys %attributes;
+
+    $self->metadata ( { %attributes,
+                        creation_time => creation_time($file),
+                        name          => $self->file->basename
                       } );
     $self->children ( [ $self->_children ] );
     return $self;
@@ -92,7 +97,7 @@ sub store_attribute {
     my $attr  = shift;
     my $value = shift;
 
-    set_attribute($self->file, $attr, $value); # store to disk
+    set_attribute(q{}.$self->file, $attr, $value); # store to disk
     $self->next::method($attr, $value);
     
     return;

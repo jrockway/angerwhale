@@ -5,9 +5,9 @@ use warnings;
 use File::Spec;
 use File::Remove;
 use Catalyst qw/Unicode ConfigLoader Static::Simple
-  Cache Cache::Store::FastMmap Setenv
-  Session::Store::FastMmap Session::State::Cookie Session
-  ConfigLoader::Environment +Angerwhale::Plugin::Cache/;
+                Cache Cache::Store::FastMmap Setenv
+                Session::Store::FastMmap Session::State::Cookie Session
+                ConfigLoader::Environment +Angerwhale::Plugin::Cache/;
 
 #XXX: add C3 and LogWarnings back
 
