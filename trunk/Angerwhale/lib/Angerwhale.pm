@@ -17,6 +17,13 @@ my $tmp = File::Spec->catdir(File::Spec->tmpdir, 'angerwhale');
 File::Remove::remove(\1, $tmp);
 
 binmode STDOUT, ':utf8';
+__PACKAGE__->config->{'Model::Articles'}{storage_class} = 'Filesystem';
+__PACKAGE__->config->{'Model::Articles'}{storage_args} = 
+  { 
+   root => __PACKAGE__->path_to("root/posts")
+  };
+
+
 __PACKAGE__->config->{session} = 
   { 
    flash_to_stash => 1,
