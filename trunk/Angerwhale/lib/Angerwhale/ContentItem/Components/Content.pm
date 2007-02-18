@@ -5,10 +5,12 @@
 package Angerwhale::ContentItem::Components::Content;
 use strict;
 use warnings;
-use Angerwhale::Format;
 use Digest::MD5 qw(md5_hex);
 use File::Slurp;
 use Carp;
+use base 'Class::Accessor';
+
+__PACKAGE__->mk_accessors(qw|plain_text text|);
 
 use utf8;    # for the elipsis later on
 my $ELIPSIS = "\x{2026}";
@@ -86,21 +88,6 @@ Returns HTML-formated text
 
 =cut
 
-sub text {
-    my $self = shift;
-    my $text = $self->raw_text;
-
-    my $key = "htmltext|" . $self->type . "|" . $self->checksum;
-    my $data;
-    if ( $data = $self->cache->get($key) ) {
-        $data = ${$data};
-    }
-    else {
-        $data = Angerwhale::Format::format( $text, $self->type );
-        $self->cache->set( $key, \$data );
-    }
-    return $data;
-}
 
 =head2 plain_text
 
@@ -108,22 +95,6 @@ Returns plain text version of the item
 
 =cut
 
-sub plain_text {
-    my $self = shift;
-    my $text = $self->raw_text;
-    my $key  = 'plaintext|' . $self->type . '|' . $self->checksum;
-
-    my $data;
-    if ( $data = $self->cache->get($key) ) {
-        $data = ${$data};
-    }
-    else {
-        $data = Angerwhale::Format::format_text( $text, $self->type );
-        $self->cache->set( $key, \$data );
-    }
-
-    return $data;
-}
 
 =head2 words
 

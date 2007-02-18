@@ -7,6 +7,8 @@ use Carp;
 use Angerwhale::ContentItem::Article;
 use Crypt::OpenPGP;
 use File::Find qw(find);
+use Angerwhale::Format;
+
 
 =head1 NAME
 
@@ -69,14 +71,30 @@ sub get_article {
         {
             location   => "$base/$article",
             base       => $self->base,
-            cache      => $self->context->cache,
             encoding   => $self->context->config->{encoding},
             userstore  => $self->context->model('UserStore'),
             filesystem => $self,
         }
     );
-
+    
+    $self->_format($result);
     return $result;
+}
+
+=head2 _format(@comments)
+
+Format recursively, in-place.
+
+=cut
+
+sub _format {
+    my $self = shift;
+    foreach my $comment (@_) {
+        $comment = Angerwhale::Format::format($comment);
+        my @comments = $self->_format($comment->comments);
+        $comment->comments(@comments);
+    }
+    return @_;
 }
 
 sub _ls {

@@ -7,6 +7,7 @@ use strict;
 use warnings;
 use base qw(Angerwhale::ContentItem::Comment Class::Accessor);
 use Angerwhale::User::Anonymous;
+use Angerwhale::Format;
 use Carp;
 
 __PACKAGE__->mk_accessors(
@@ -66,7 +67,6 @@ sub uri {
 # a few hacks here to prevent setting attributes on this fake comment
 
 sub _fix_author {
-
     # no-op
 }
 
@@ -75,9 +75,7 @@ sub _cached_signature {
 }
 
 sub _cache_signature {
-
     # i'll get right on that...
-    return;
 }
 
 sub author {
@@ -88,7 +86,7 @@ sub author {
     }
     elsif ( $self->signed ) {
         my $id = $self->signor;
-        return $self->context->model('UserStore')->get_user_by_real_id($id);
+        return $self->userstore->get_user_by_real_id($id);
     }
     else {
         return Angerwhale::User::Anonymous->new;
@@ -97,6 +95,41 @@ sub author {
 
 sub id {
     return q!??!;
+}
+
+# XXX: hack
+
+sub _format {
+    return if $_[0]->{_format};
+    $_[0]->{_format} = 1;
+    $_[0] = Angerwhale::Format::format($_[0]);
+    return;
+}
+
+=head2 text
+
+Invoke formatter, return HTML.
+
+=head2 plain_text
+
+Invoke formatter, return plain text.
+
+=cut
+
+sub text {
+    my $self = shift;
+    my $txt = shift;
+    $self->{text} = $txt if $txt;
+    $self->_format();
+    return $self->{text};
+}
+
+sub plain_text {
+    my $self = shift;
+    my $txt = shift;
+    $self->{plain_text} = $txt if $txt;
+    $self->_format();
+    return $self->{plain_text};
 }
 
 # here so that SUPER doesn't get called

@@ -115,10 +115,24 @@ sub _create_comment_dir {
 Returns a list of all comments attached to this article (each item is
 a L<Angerwhale::ContentItem::Comment> object).
 
+If you store comments to this method, they'll be returned instead of being
+read from disk.  This way you can format the raw comments, store them back,
+and then the whole unit is formatted.
+
 =cut
 
 sub comments {
-    my $self        = shift;
+    my $self = shift;
+    my @args = @_;
+
+    if(@args){
+        $self->{comments} = [@args];
+    }
+    
+    return @{$self->{comments}||[]} if exists $self->{comments};
+
+    # nothing stored, read them from disk
+
     my $comment_dir = $self->_comment_dir;
 
     $self->_create_comment_dir;

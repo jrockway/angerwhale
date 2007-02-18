@@ -23,7 +23,7 @@ use base qw|
 # setup internal state
 __PACKAGE__->mk_accessors(
     qw|base location parent filesystem
-      userstore encoding cache|
+      userstore encoding|
 );
 
 #Class::C3::initialize();
@@ -79,7 +79,6 @@ sub new {
     my $base       = $args->{base};
     my $location   = $args->{location};
     my $parent     = $args->{parent};
-    my $cache      = $args->{cache};
     my $userstore  = $args->{userstore};
     my $encoding   = $args->{encoding};
     my $filesystem = $args->{filesystem};
@@ -89,8 +88,7 @@ sub new {
     croak "$location is not a valid path"
       if ( !defined $location || -d $location );
     croak 'Need a userstore' unless $userstore;
-    croak 'Need a cache'     unless $cache;
-
+    
     $args->{encoding} ||= 'utf8';
 
     my $self = $args;
