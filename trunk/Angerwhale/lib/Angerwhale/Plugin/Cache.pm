@@ -160,7 +160,7 @@ sub finalize {
     my $key = $c->cache_key();
     my $doc = $c->cached_document();
 
-    if ($key) {
+    if ($key && !scalar @{$c->error||[]} && $c->res->status == 200) {
         ## HEADERS
         
         if (exists $doc->{headers}) {
