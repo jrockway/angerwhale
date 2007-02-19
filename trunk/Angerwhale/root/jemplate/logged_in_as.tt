@@ -1,0 +1,9 @@
+<h3>Login</h3>
+<p class="logged_in_as">
+[% IF user_id != 0 %]
+Logged in as [% fullname | html %] ([% user_id | html %]).
+[% ELSE %]
+Not logged in. <a href="[% login_uri %]">Log in</a>.
+[% END %]
+</p>
+

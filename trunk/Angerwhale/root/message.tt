@@ -1,0 +1,9 @@
+<html>
+  <head><title>[% c.name %]</title></head>
+  <body>
+    <p>A message has been generated for you: 
+      <span class="message">[% message %]</span>
+    </p>
+    <p>That is all.</p>
+  </body>
+</head>
