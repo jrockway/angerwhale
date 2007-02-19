@@ -13,8 +13,10 @@ sub filter {
 
           my $path = $item->metadata->{path};
           my $name = $item->metadata->{name};
-          
-          if ($item->metadata->{comments}) {
+
+          warn "path is $path, $name is name";
+
+          if ($item->metadata->{comment}) {
               $item->metadata->{uri} = 
                 $context->uri_for("/comments/$path");
           }

@@ -104,6 +104,8 @@ sub new {
     # set type from filename
     $self->{metadata}{type} ||= $self->{metadata}{name} =~ m{[.](\w+)$} ?
       $1 : 'text';
+
+    $self->{metadata}->{comment} = defined $self->{comment} ? 1 : 0;
     
     return $self;
 }
@@ -181,7 +183,7 @@ sub _children {
                     base    => $commentdir,
                     file    => $file,
                     comment => 1,
-                    path    => $self->metadata->{path}. '/'. $self->id,
+                    parent  => $self->metadata->{path},
                   });
       } grep {
           # skip directories
@@ -282,7 +284,7 @@ sub add_comment {
                 base    => $comment_dir,
                 file    => Path::Class::file($filename),
                 comment => 1,
-                parent  => $self->metadata->{path}. '/'. $self->id,
+                parent  => $self->metadata->{path},
               });
 
         # attribute the comment to someone, if possible

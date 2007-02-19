@@ -16,7 +16,7 @@ use overload (
 
 __PACKAGE__->mk_ro_accessors(qw/title name type author signed comment_count
                                 checksum post_uri uri path path
-                                summary text plain_text raw_text words
+                                summary text plain_text words
                                 creation_time modification_time encoding
                                /);
 
@@ -44,7 +44,7 @@ sub isa {
       if $what eq any(qw|Angerwhale::Content::Item
                          Angerwhale::Content::Article|);
     
-    return $self->SUPER::isa(@_);
+    return $self->SUPER::isa($what, @_);
 }
 
 sub new {
@@ -118,6 +118,13 @@ sub categories {
 sub add_comment {
     my $self = shift;
     return $self->{item}->add_comment(@_);
+}
+
+sub raw_text {
+    my $self = shift;
+    warn "Ignoring arguments for now";
+
+    return $self->{item}->data;
 }
 
 1;
