@@ -127,5 +127,16 @@ sub raw_text {
     return $self->{item}->data;
 }
 
+sub tags {
+    my $self = shift;
+    my %tags = %{$self->{item}{metadata}{tags}||{}};
+    return keys %tags;
+}
+
+sub tag_count {
+    my $self = shift;
+    return $self->{item}{metadata}{tags}{$_[1]} || 0;
+}
+
 1;
 

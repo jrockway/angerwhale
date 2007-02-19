@@ -77,6 +77,11 @@ sub get_articles {
     return $self->_apply_filters($self->source->get_articles);
 }
 
+sub get_by_category {
+    my $self = shift;
+    return $self->_apply_filters($self->source->get_by_category(@_));
+}
+
 sub get_by_tag {
     my $self = shift;
     return;

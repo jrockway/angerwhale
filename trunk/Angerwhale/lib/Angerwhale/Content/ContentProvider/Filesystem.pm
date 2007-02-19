@@ -72,19 +72,18 @@ sub get_categories {
 }
 
 sub get_tags {
-#    my $self     = shift;
-#    my @articles = $self->get_articles;
-#    my @tags     = map { $_->tags } @articles;
-#    my %found;
-#    @tags = grep { !$found{$_}++ } @tags;
-#    return sort @tags;
-    return qw/fake tags/;
+    my $self     = shift;
+    my @articles = $self->get_articles;
+    my @tags     = map { keys %{$_->{metadata}{tags}||{}} } @articles;
+    my %found;
+    @tags = grep { !$found{$_}++ } @tags;
+    return sort @tags;
 }
 
 sub get_by_category {
     my $self = shift;
     my $category = shift;
-    return $self->get_articles($self->root->dir($category));
+    return $self->get_articles($self->root->subdir($category));
 }
 
 sub get_by_tag {

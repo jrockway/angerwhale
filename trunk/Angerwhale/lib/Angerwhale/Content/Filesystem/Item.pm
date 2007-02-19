@@ -105,7 +105,15 @@ sub new {
     $self->{metadata}{type} ||= $self->{metadata}{name} =~ m{[.](\w+)$} ?
       $1 : 'text';
 
+    # is this a comment?
     $self->{metadata}->{comment} = defined $self->{comment} ? 1 : 0;
+
+    # setup tags
+    foreach my $t (grep {/tags[.]\w+/} keys %{$self->{metadata}}) {
+        $t =~ /tags[.](\w+)/;
+        my $tag = $1;
+        $self->{metadata}{tags}{$tag} = $self->{metadata}{$t};
+    }
     
     return $self;
 }

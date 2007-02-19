@@ -16,6 +16,8 @@ sub filter {
           my $summary = $item->metadata->{formatted}{text} || q{};
           
           my @words = split /\s+/, $summary;
+          $item->metadata->{words}   = scalar @words;
+          
           if ( @words > 10 ) {
               @words = @words[ 0 .. 9 ];
               $summary = join q{ }, @words;
