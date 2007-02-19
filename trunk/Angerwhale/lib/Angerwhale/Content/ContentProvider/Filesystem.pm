@@ -5,7 +5,6 @@ use strict;
 use warnings;
 use Angerwhale::Content::Filesystem::Item;
 use Carp;
-use Object::Deadly;
 use File::Find;
 
 use base 'Angerwhale::Content::ContentProvider';
