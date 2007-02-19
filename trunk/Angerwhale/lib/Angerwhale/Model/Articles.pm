@@ -5,11 +5,19 @@ use strict;
 use warnings;
 use Class::C3; 
 use Carp;
-use base 'Catalyst::Model';
+use base qw(Catalyst::Component::ACCEPT_CONTEXT Catalyst::Model);
 use Scalar::Util qw(blessed);
+use Scalar::Defer;
+
+# filters
+use Angerwhale::Content::Filter::Encoding;
+use Angerwhale::Content::Filter::Checksum;
+use Angerwhale::Content::Filter::Format;
+use Angerwhale::Content::Filter::Finalize;
+
 our @ISA;
 
-__PACKAGE__->mk_accessors(qw/storage_class storage_args source context filters/);
+__PACKAGE__->mk_accessors(qw/storage_class storage_args source filters/);
 
 sub new {
     my $class = shift;
@@ -24,55 +32,125 @@ sub new {
     
     # XXX;
     $self->filters([
-                    sub { warn "Filtering ". $_[2]->id. "\n" },
-                    sub { $_[2]->metadata->{filtered} = 1; },
+                    #sub { warn "Filtering ". $_[2]->id. "\n" },
+                    #sub { $_[2]->metadata->{filtered} = 1; },
+                    Angerwhale::Content::Filter::Encoding::filter($self->context->config->{encoding}),
+                    Angerwhale::Content::Filter::Checksum::filter(),
+                    Angerwhale::Content::Filter::Format::filter(),
+                    Angerwhale::Content::Filter::Finalize::filter(),
+                    #sub { warn "Done filtering" },
                    ]);
     
     $self->source($s);
     return $self;
 }
 
+sub get_article {
+    my $self = shift;
+    my $article = shift;
+    return $self->_apply_filters($self->source->get_article($article));
+}
+
 sub get_articles {
     my $self  = shift;
-    return $self->_apply_filters($self->source->articles);
+    return $self->_apply_filters($self->source->get_articles);
 }
+
+sub get_by_tag {
+    my $self = shift;
+    return;
+}
+
+sub get_tags { $_[0]->source->get_tags };
+sub get_categories { $_[0]->source->get_categories };
+sub revision { $_[0]->source->revision };
+
 
 sub _apply_filters {
     my $self    = shift;
-    warn @_;
-   my @articles= @_;
+    my @articles= @_;
     
-    foreach my $article (@articles) {
-        foreach my $filter (@{$self->filters||[]}) {
-            # curry the filter
-            my $f = sub { my $item = shift; 
-                          my $r = $filter->($filter, $self->context, $item);
-                          if (blessed $r) {
-                              return $r;
+    # curry the filters
+    my @filters = map { my $filter = $_;
+                        sub { my $item = shift; 
+                              my $r = $filter->($filter, $self->context, $item);
+                              if (blessed $r) {
+                                  return $r;
+                              }
+                              else {
+                                  return $item;
+                              }
                           }
-                          else {
-                              return $item;
-                          }
-                      };
-            
+                    } @{$self->filters||[]};
+    
+    my @result;
+    foreach my $a (@articles) {
+        my $article = $a;
+        
+        # filter kids (lazy)
+        $article->children(
+                           lazy {
+                               # XXX: a bit messy due to Finalization
+                               my @kids = @{$article->children||[]};
+                               $article->{item}{children} 
+                                 = [$self->_apply_filters(@kids)]
+                             });
+        
+        # filter article
+        foreach my $f (@filters) {
             $article = $f->($article);
-            
-            #my @children = @{$article->children()||[]};
-            #foreach my $child (@children) {
-            #    $child = $f->($child);
-            #}
-            #$article->children([@children]);
         }
+
+        push @result, $article;
     }
     
-    return @articles;
+    return @result;
 }
 
-#sub ACCEPT_CONTEXT {
-#    my ($self, $c) = @_;
-#    $self->context($c);
-#    return $self;
-#}
+1;
+
+__END__
+
+=head1 NAME
+
+Angerwhale::Model::Articles - get blog articles
+
+=head1 METHODS
+
+=head2 preview
+
+Return a preview comment.
+
+=head1 PROXIED METHODS
+
+Methods below proxy the ContentProvider. See
+L<Angerwhale::Content::ContentProvider>.
+
+=head2 get_articles
+
+=head2 get_article
+
+=head2 get_categories
+
+=head2 get_tags
+
+=head2 get_by_tag
+
+=head2 get_by_category
+
+=head2 get_by_date
+
+=head2 revision
+
+=head1 CATALYST METHODS
+
+=head2 new
+
+Create an instance
+
+=head2 ACCEPT_CONTEXT
+
+Accept context
 
 1;
 

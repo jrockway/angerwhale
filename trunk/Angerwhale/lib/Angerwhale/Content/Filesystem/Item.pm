@@ -9,6 +9,7 @@ use File::Attributes qw(get_attributes set_attribute);
 use Path::Class ();
 use Data::UUID;
 use File::CreationTime qw(creation_time);
+use Scalar::Defer;
 use Class::C3;
 use base 'Angerwhale::Content::Item';
 
@@ -79,16 +80,16 @@ sub new {
     $self->data(read_file( $file )); 
     my %attributes = get_attributes ($file);
     
-    # filter out empty attributes (BUG IN FILE::EXTATTR)
+    # filter out empty attributes (BUG IN FILE::EXTATTR::listfattr)
     map { delete $attributes{$_} }
       grep { 1 if !defined $attributes{$_} }
         keys %attributes;
 
     $self->metadata ( { %attributes,
-                        creation_time => creation_time($file),
-                        name          => $self->file->basename
+                        creation_time     => creation_time($file),
+                        modification_time => (stat $file)[9],
+                        name              => $self->file->basename,
                       } );
-    $self->children ( [ $self->_children ] );
     return $self;
 }
 
@@ -117,11 +118,15 @@ sub store_data {
 
 [private] Get the children of this item.  See SUPER::children for public access.
 
+=head2 children
+
+Return (or set; INTERNAL USE ONLY) reference to the list of children.
+
 =cut
 
 sub _children {
     my $self = shift;
-
+    
     my $commentdir;
     my $container = $self->file->dir;
     if ($container eq $self->root) {
@@ -148,6 +153,21 @@ sub _children {
       } @kids;
 
     return @kids;
+}
+
+sub children {
+    my $self = shift;
+    my $kids = shift;
+    
+    if (defined $kids) {
+        return $self->{children} = $kids;
+    }
+    
+    if (!$self->{children}) {
+        $self->{children} = [$self->_children];
+    }
+    
+    return $self->{children};
 }
 
 1;

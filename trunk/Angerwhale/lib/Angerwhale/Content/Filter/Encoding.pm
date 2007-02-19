@@ -6,7 +6,7 @@ use warnings;
 use Encode;
 
 sub filter {
-    my $encoding = shift;
+    my $encoding = shift || 'utf-8';
     return
       sub {
           my $self    = shift;
@@ -16,6 +16,9 @@ sub filter {
           # see if the item knows its own encoding (XXX)
           if ($item->metadata->{encoding}) {
               $encoding = $item->metadata->{encoding};
+          }
+          else {
+              $item->metadata->{encoding} = $encoding;
           }
           
           # decode data

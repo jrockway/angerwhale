@@ -11,7 +11,7 @@ sub filter {
         my $context = shift;
         my $item    = shift;
 
-        my $type = $item->metadata->{type};
+        my $type = $item->metadata->{type} || 'text';
         my $hash = $item->metadata->{checksum};
         my $key = "$type|$hash";
 
@@ -23,8 +23,8 @@ sub filter {
         $context->log->debug("format cache miss on ". $item->id);
         # if not, we need to compute the HTML and plain text versions
         my $data = $item->data;
-        $item->metadata->{formatted}{plain} = format_text($data, $type);
-        $item->metadata->{formatted}{html}  = format_html($data, $type);
+        $item->metadata->{formatted}{text} = Angerwhale::Format::format_text($data, $type);
+        $item->metadata->{formatted}{html} = Angerwhale::Format::format_html($data, $type);
         
         # cache it
         $context->cache("formatted")->set($key, $item->metadata->{formatted});

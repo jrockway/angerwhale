@@ -13,8 +13,8 @@ Angerwhale::Content::ContentProvider - provides methods for getting content
 =head1 SYNOPSIS
 
    my $provider = Angerwhale::Content::ContentProvider::Subclass->new;
-   my @articles = $provider->articles();
-   my $article  = $procider->article('foo article');
+   my @articles = $provider->get_articles();
+   my $article  = $provider->get_article('foo article');
 
 =head1 METHODS
 
@@ -22,18 +22,44 @@ Angerwhale::Content::ContentProvider - provides methods for getting content
 
 Create an instance -- don't call this method.
 
-=head2 articles
+=head2 get_articles
 
 Returns all articles
 
-=head2 article
+=head2 get_article
 
 Returns a named article
 
-=cut
+=head2 get_categories
 
-sub articles {return }
-sub article  {return }
+Returns a sorted list of the names of all categories.
+
+=head2 get_tags
+
+Returns a sorted list of all tags that have been used
+
+=head2 get_by_tag
+
+Returns a sorted list of all articles that have been tagged with a
+certain tag.  Multiple tags are also OK.
+
+=head2 get_by_category
+
+Retruns an unsorted list of all articles in a category.
+
+=head2 get_by_date
+
+XXX: TODO
+
+=head2 revision
+
+This method returns a "revision number" for the entire blog.  It will
+increase over time, and will remain the same if nothing inside the
+blog directory changes.  The revision number will decrease if
+an article is removed, so don't remove them without restarting
+the application.  (Otherwise the cache will be stale.)
+
+=cut
 
 1;
 

@@ -32,16 +32,6 @@ sub _format {
     return $choice->$what( $text, $type );
 }
 
-sub format($){
-    my $item = shift;
-    my $raw  = $item->raw_text;
-    my $type = $item->type;
-    
-    $item->plain_text(format_text($raw, $type));
-    $item->text(format_html($raw, $type));
-    return $item;
-}
-
 sub format_html {
     return _format( @_, 'format' );
 }
@@ -82,12 +72,6 @@ This method will be called with the "type" to format.  Return 0 if you
 can't handle it, or a higher number based on how well you can format
 the "type".  1 is the lowest, 100 is the highest.
 
-=head2 format($item)
-
-Passed the ContentItem to format.  Returns the resulting formatted
-ContentItem.  Note that the passed item might be destroyed in this
-routine, so don't use it afterwards -- only use the returned item.
-
 =head2 format_html(text, type)
 
 This method will be called if your module returned the highest value
@@ -99,10 +83,6 @@ should return the text formatted as HTML.
 Like C<format>, but return plain text instead of HTML.  If format_html
 or format returns a VirtualComment, this method should return the same
 one.
-
-=head2 format_html
-
-Alias.
 
 =head2 types
 
