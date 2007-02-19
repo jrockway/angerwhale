@@ -50,6 +50,12 @@ sub new {
     return $self;
 }
 
+sub COMPONENT {
+    my ($class, $app, $args) = @_;
+    $args->{storage_args}{root} = $app->config->{base} if $app->config->{base};
+    return $class->NEXT::COMPONENT($app, $args);
+}
+
 sub preview {
     my $self = shift;
     my $args = shift;
