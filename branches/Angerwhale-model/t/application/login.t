@@ -8,7 +8,7 @@ use warnings;
 use Angerwhale::Challenge;
 use Test::More tests => 6;
 use YAML::Syck;
-use Angerwhale;
+use Angerwhale::Test;
 use URI::Escape;
 
 BEGIN {
@@ -49,8 +49,7 @@ BEGIN {
     }
 }
 
-use Test::WWW::Mechanize::Catalyst qw(Angerwhale);
-my $mech = Test::WWW::Mechanize::Catalyst->new( cookie_jar => {} );
+my $mech = Angerwhale::Test->new();
 $signed = uri_escape($signed);
 
 $mech->get_ok( 'http://localhost/login', 'can get login page' );
