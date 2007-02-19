@@ -13,10 +13,12 @@ use Scalar::Defer;
 use Angerwhale::Content::Filter::Encoding;
 use Angerwhale::Content::Filter::Checksum;
 use Angerwhale::Content::Filter::Title;
+use Angerwhale::Content::Filter::Author;
 use Angerwhale::Content::Filter::Format;
 use Angerwhale::Content::Filter::Summary;
 use Angerwhale::Content::Filter::URI;
 use Angerwhale::Content::Filter::Finalize;
+
 
 our @ISA;
 
@@ -37,6 +39,7 @@ sub new {
                     Angerwhale::Content::Filter::Encoding::filter($self->context->config->{encoding}),
                     Angerwhale::Content::Filter::Checksum::filter(),
                     Angerwhale::Content::Filter::Title::filter(),
+                    Angerwhale::Content::Filter::Author::filter(),
                     Angerwhale::Content::Filter::Format::filter(),
                     Angerwhale::Content::Filter::Summary::filter(),
                     Angerwhale::Content::Filter::URI::filter(),

@@ -8,7 +8,7 @@ use Crypt::OpenPGP;
 use YAML::Syck;
 
 # XXX: HACK, HACK, HACK ... !
-use Angerwhale::ContentItem::Components::Signature;
+use Angerwhale::Signature;
 
 =head1 NAME
 
@@ -52,7 +52,7 @@ sub process : Local {
 
     my $nonce_data = 
       eval {
-          Angerwhale::ContentItem::Components::Signature->_signed_text($input);
+          Angerwhale::Signature->_signed_text($input);
       };
     
     if ( !$nonce_data ) {

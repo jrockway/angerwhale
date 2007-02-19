@@ -50,7 +50,7 @@ sub prepare_items {
 
     # single item; one article with comments, or a comment with comments
     if ( blessed $item_ref
-         && $item_ref->isa('Angerwhale::ContentItem') )
+         && $item_ref->isa('Angerwhale::Content::Item') )
       {
           push @result, $self->serialize_item( $c, $item_ref, 'recursive' );
       }
@@ -92,7 +92,7 @@ sub serialize_item {
 
     my $data;
     Carp::confess "invalid item passed to serialize_item" . Dump($item)
-      if !blessed($item) || !$item->isa('Angerwhale::ContentItem');
+      if !blessed($item) || !$item->isa('Angerwhale::Content::Item');
     my $author = $item->author;
     my $key    = 'yaml|' . $item->checksum . '|' . $item->comment_count;
 

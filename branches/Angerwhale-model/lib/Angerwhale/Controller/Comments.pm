@@ -3,7 +3,6 @@ package Angerwhale::Controller::Comments;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use Angerwhale::ContentItem::PreviewComment;
 use Angerwhale::Format;
 use Scalar::Util qw(blessed);
 #use SpamMonkey;
