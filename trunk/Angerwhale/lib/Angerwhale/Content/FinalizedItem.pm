@@ -5,7 +5,6 @@ use strict;
 use warnings;
 use Carp;
 use Quantum::Superpositions;
-use Class::C3;
 use base 'Class::Accessor';
 use overload (
     q{<=>} => \&compare,
@@ -42,7 +41,7 @@ sub isa {
                          Angerwhale::Content::Article
                          Angerwhale::Content::Comment|);
     
-    return $self->next::method(@_);
+    return $self->SUPER::isa(@_);
 }
 
 sub new {

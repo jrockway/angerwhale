@@ -34,7 +34,7 @@ sub index : Private {
     $c->stash->{template} = 'search_results.tt';
     $c->stash->{title}    = 'Archives - ' . $c->config->{title};
 
-    my @articles = reverse sort $c->model('Filesystem')->get_articles();
+    my @articles = reverse sort $c->model('Articles')->get_articles();
 
     $c->stash->{articles}      = [@articles];
     $c->stash->{article_count} = scalar @articles;
@@ -58,7 +58,7 @@ sub single_article : Path {
     }
 
     $c->stash->{template} = 'article.tt';
-    eval { $c->stash->{article} = $c->model('Filesystem')->get_article($name); };
+    eval { $c->stash->{article} = $c->model('Articles')->get_article($name); };
     if ($@) {
 
         # not found!

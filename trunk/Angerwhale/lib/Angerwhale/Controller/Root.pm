@@ -31,7 +31,7 @@ Setup some global variables.
 
 sub auto : Private {
     my ( $self, $c ) = @_;
-    $c->stash->{root} = $c->model('Filesystem');
+    $c->stash->{root} = $c->model('Articles');
     $c->stash->{user} = $c->session->{user};
     return 1;
 }

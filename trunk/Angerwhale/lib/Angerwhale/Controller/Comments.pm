@@ -73,7 +73,7 @@ sub find_by_path : Private {
     my ( $self, $c, @path ) = @_;
     return unless @path;
 
-    my @articles = $c->model('Filesystem')->get_articles;
+    my @articles = $c->model('Articles')->get_articles;
     my $article = ( grep { $_->id eq $path[0]; } @articles )[0];
     $c->stash->{article} = $article;
     shift @path;

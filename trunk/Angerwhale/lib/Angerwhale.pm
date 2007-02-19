@@ -57,7 +57,7 @@ __PACKAGE__->config('revision_callback' =>
                         my $uri = shift;
                         
                         return 1 if $uri->path =~ m{/jemplate/}; # never expires
-                        return $c->model('Filesystem')->revision;
+                        return $c->model('Articles')->revision;
                     }
                    );
 

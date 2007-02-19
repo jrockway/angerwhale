@@ -32,8 +32,8 @@ sub index : Private {
     $c->stash->{template} = 'feeds.tt';
 
     # for the sidebar
-    $c->stash->{feed_categories} = [ $c->model('Filesystem')->get_categories ];
-    $c->stash->{feed_tags}       = [ $c->model('Filesystem')->get_tags ];
+    $c->stash->{feed_categories} = [ $c->model('Articles')->get_categories ];
+    $c->stash->{feed_tags}       = [ $c->model('Articles')->get_tags ];
 }
 
 =head2 article
@@ -53,7 +53,7 @@ sub article : Local {
     }
 
     my $article =
-      eval { return $c->model('Filesystem')->get_article($article_name) };
+      eval { return $c->model('Articles')->get_article($article_name) };
 
     $c->stash->{type} = $type;
 
@@ -87,7 +87,7 @@ sub comments : Local {
     my ( $self, $c, $type, $unlimited ) = @_;
     my $max_comments = $c->config->{max_feed_comments} || 30;
 
-    my @todo = $c->model('Filesystem')->get_articles;
+    my @todo = $c->model('Articles')->get_articles;
 
     # todo contains articles first, but comments are added inside the loop
 

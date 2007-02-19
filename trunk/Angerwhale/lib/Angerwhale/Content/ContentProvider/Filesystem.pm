@@ -45,7 +45,7 @@ sub get_categories {
     my $self = shift;
     return 
       sort
-        map { $_->basename }
+        map { $_->{dirs}[-1] }
           grep { eval {$_->isa('Path::Class::Dir')} && $_ !~ /^[.]/ } 
             $self->root->children;
 }

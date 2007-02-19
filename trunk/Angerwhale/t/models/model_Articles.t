@@ -1,33 +1,35 @@
-#!/usr/bin/perl
-# model_Filesystem.t
+#!perl
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
 use Test::More tests => 23;
 use Test::MockObject;
 use Test::Exception;
 use Directory::Scratch;
-use Angerwhale::Model::Filesystem;
+use Angerwhale::Model::Articles;
 use YAML::Syck;
 use strict;
 use warnings;
 
 my $c      = Test::MockObject->new;
 my $cache  = Test::MockObject->new;
+my $log   = Test::MockObject->new;
 my $config = {};
 $c->set_always( 'config',  $config );
 $c->set_always( 'uri',     'test' );
 $cache->set_always( 'get', undef );
 $cache->set_always( 'set', undef );
+$log->set_always('debug', undef);
 $c->set_always( 'cache',   $cache );
+$c->set_always( 'log', $log);
 
 my $tmp  = Directory::Scratch->new;
-my $base = $tmp->mkdir('articles');
-$config->{base} = $base;
+my $root = $tmp->mkdir('articles');
 
 $tmp->mkdir('articles/test category');
 
-my $fs = Angerwhale::Model::Filesystem->new($c);
-isa_ok( $fs, 'Angerwhale::Model::Filesystem' );
+my $fs = Angerwhale::Model::Articles->COMPONENT($c, {storage_args => 
+                                                     {root => $root}});
+isa_ok( $fs, 'Angerwhale::Model::Articles' );
 $c->set_always( 'model', $fs );
 
 $tmp->touch( 'articles/An Article', "This is a test article." );
@@ -51,9 +53,8 @@ foreach my $a (@articles) {
     $article = $a;
     last if $article->title =~ /Another/;
 }
-diag $config->{base};
 
-isa_ok( $article, 'Angerwhale::ContentItem::Article' );
+isa_ok( $article, 'Angerwhale::Content::Article' );
 is( $article->title, 'Another Article', 'title is correct' );
 is( $article->categories, (), 'not in any categories yet' );
 is( $article->uri, 'articles/Another Article.pod' );

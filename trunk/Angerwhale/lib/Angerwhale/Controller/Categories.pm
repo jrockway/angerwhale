@@ -86,14 +86,14 @@ sub show_category : Path('/categories') {
     my @articles;
 
     if ( $category eq '/' ) {    # redirected from Root.pm
-        @articles = reverse sort $c->model('Filesystem')->get_articles();
+        @articles = reverse sort $c->model('Articles')->get_articles();
     }
     else {
         $c->stash->{title} = "Entries in $category";
         
         eval {
             @articles =
-              reverse sort $c->model('Filesystem')->get_by_category($category);
+              reverse sort $c->model('Articles')->get_by_category($category);
         };
 
         if ($@) {

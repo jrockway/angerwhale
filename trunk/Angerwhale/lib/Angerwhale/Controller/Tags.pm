@@ -133,7 +133,7 @@ Renders a tag cloud.  Forwarded to by index (below).
 
 sub tag_list : Private {
     my ( $self, $c ) = @_;
-    my @articles = $c->model('Filesystem')->get_articles;
+    my @articles = $c->model('Articles')->get_articles;
     my $tags     = {};
 
     my $max_count = 1;
@@ -179,8 +179,8 @@ sub get_nav_box : Local {
         # (on the main page, it's not a link because you're already home)
         $c->stash->{page} = 'home';
     }
-    $c->stash->{categories} = [ $c->model('Filesystem')->get_categories ];
-    $c->stash->{tags}       = [ $c->model('Filesystem')->get_tags ];
+    $c->stash->{categories} = [ $c->model('Articles')->get_categories ];
+    $c->stash->{tags}       = [ $c->model('Articles')->get_tags ];
     $c->stash->{template}   = 'navbox.tt';
 }
 
