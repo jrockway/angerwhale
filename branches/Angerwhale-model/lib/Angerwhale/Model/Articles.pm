@@ -69,6 +69,7 @@ sub preview {
     my $metadata = {};
     $metadata->{title} = $args->{title};
     $metadata->{type}  = $args->{type};
+    $metadata->{name}  = $args->{title};
     $metadata->{creation_time} = time();
     $metadata->{modification_time} = $metadata->{creation_time};
     
