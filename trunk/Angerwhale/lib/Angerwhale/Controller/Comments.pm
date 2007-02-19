@@ -161,16 +161,15 @@ sub post : Local {
         my $uid  = $user->nice_id if ( $user && $user->can('nice_id') );
 
 
-        my $comment = Angerwhale::ContentItem::PreviewComment->
-          new({
-               context => $c,
-               title   => $title,
-               body    => $body,
-               type    => $type
-              }
-             );
-
-
+        my $comment = $c->model('Articles')->
+          preview(
+                  {
+                   title   => $title,
+                   body    => $body,
+                   type    => $type
+                  }
+                 );
+        
         my $errors = 0;
         # spam filter
        # my $text = $comment->plain_text();

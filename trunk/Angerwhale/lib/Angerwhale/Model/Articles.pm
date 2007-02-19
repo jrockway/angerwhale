@@ -51,6 +51,25 @@ sub new {
     return $self;
 }
 
+sub preview {
+    my $self = shift;
+    my $args = shift;
+
+    my $data = $args->{body};
+    my $metadata = {};
+    $metadata->{title} = $args->{title};
+    $metadata->{type}  = $args->{type};
+    $metadata->{creation_time} = time();
+    $metadata->{modification_time} = $metadata->{creation_time};
+    
+    my $article = Angerwhale::Content::Item->
+      new({ metadata => $metadata,
+            data     => $data });
+    
+    return ($self->_apply_filters($article))[0];
+}
+
+
 sub get_article {
     my $self = shift;
     my $article = shift;
