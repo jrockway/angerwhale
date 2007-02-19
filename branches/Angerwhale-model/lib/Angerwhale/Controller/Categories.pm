@@ -97,7 +97,6 @@ sub show_category : Path('/categories') {
         };
 
         if ($@) {
-            warn $@;
             $c->response->status(404);
             $c->stash( template => 'error.tt' );
             return;
