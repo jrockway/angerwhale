@@ -15,7 +15,7 @@ use overload (
     fallback => "TRUE"
 );
 
-__PACKAGE__->mk_ro_accessors(qw/title name type author signed
+__PACKAGE__->mk_ro_accessors(qw/title name type author signed comment_count
                                 summary text plain_text raw_text words
                                 creation_time modification_time encoding
                                /);

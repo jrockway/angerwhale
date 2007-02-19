@@ -90,6 +90,14 @@ sub new {
                         modification_time => (stat $file)[9],
                         name              => $self->file->basename,
                       } );
+    
+    # this needs the above metadata in order to work
+    $self->metadata->{comment_count} = $self->_child_count;
+    
+    # set type from filename
+    $self->{metadata}{type} ||= $self->{metadata}{name} =~ m{[.](\w+)$} ?
+      $1 : 'text';
+    
     return $self;
 }
 
@@ -124,37 +132,6 @@ Return (or set; INTERNAL USE ONLY) reference to the list of children.
 
 =cut
 
-sub _children {
-    my $self = shift;
-    
-    my $commentdir;
-    my $container = $self->file->dir;
-    if ($container eq $self->root) {
-        $commentdir = $container->subdir('.comments')->subdir($self->id);
-    }
-    else {
-        $commentdir = $container->subdir($self->id);
-    }    
-    
-    $commentdir->mkpath();
-    my @kids = $commentdir->children;
-    
-    @kids = 
-      map {
-          my $file = $_;
-          Angerwhale::Content::Filesystem::Item->
-              new({ root => $self->root,
-                    base => $commentdir,
-                    file => $file,
-                  });
-      } grep {
-          # skip directories
-          eval { $_->isa('Path::Class::File') }
-      } @kids;
-
-    return @kids;
-}
-
 sub children {
     my $self = shift;
     my $kids = shift;
@@ -168,6 +145,46 @@ sub children {
     }
     
     return $self->{children};
+}
+
+sub _get_commentdir {
+    my $self = shift;
+    
+    my $commentdir;
+    my $container = $self->file->dir;
+    if ($container eq $self->root) {
+        $commentdir = $container->subdir('.comments')->subdir($self->id);
+    }
+    else {
+        $commentdir = $container->subdir($self->id);
+    }    
+    
+    $commentdir->mkpath();    
+    return $commentdir;
+}
+
+sub _children {
+    my $self = shift;
+    my $commentdir = $self->_get_commentdir();
+    return 
+      map {
+          my $file = $_;
+          Angerwhale::Content::Filesystem::Item->
+              new({ root => $self->root,
+                    base => $commentdir,
+                    file => $file,
+                  });
+      } grep {
+          # skip directories
+          eval { $_->isa('Path::Class::File') }
+      } $commentdir->children;
+}
+
+sub _child_count {
+    my $self = shift;
+
+    return scalar grep { eval { $_->isa('Path::Class::File') } }
+      ($self->_get_commentdir->children);
 }
 
 1;

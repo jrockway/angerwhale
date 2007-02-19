@@ -12,6 +12,7 @@ use Scalar::Defer;
 # filters
 use Angerwhale::Content::Filter::Encoding;
 use Angerwhale::Content::Filter::Checksum;
+use Angerwhale::Content::Filter::Title;
 use Angerwhale::Content::Filter::Format;
 use Angerwhale::Content::Filter::Finalize;
 
@@ -36,6 +37,7 @@ sub new {
                     #sub { $_[2]->metadata->{filtered} = 1; },
                     Angerwhale::Content::Filter::Encoding::filter($self->context->config->{encoding}),
                     Angerwhale::Content::Filter::Checksum::filter(),
+                    Angerwhale::Content::Filter::Title::filter(),
                     Angerwhale::Content::Filter::Format::filter(),
                     Angerwhale::Content::Filter::Finalize::filter(),
                     #sub { warn "Done filtering" },
