@@ -33,10 +33,7 @@ sub new {
     
     my $s = $sclass->new($self->storage_args);
     
-    # XXX;
     $self->filters([
-                    #sub { warn "Filtering ". $_[2]->id. "\n" },
-                    #sub { $_[2]->metadata->{filtered} = 1; },
                     Angerwhale::Content::Filter::Encoding::filter($self->context->config->{encoding}),
                     Angerwhale::Content::Filter::Checksum::filter(),
                     Angerwhale::Content::Filter::Title::filter(),
@@ -44,7 +41,6 @@ sub new {
                     Angerwhale::Content::Filter::Summary::filter(),
                     Angerwhale::Content::Filter::URI::filter(),
                     Angerwhale::Content::Filter::Finalize::filter(),
-                    #sub { warn "Done filtering" },
                    ]);
     
     $self->source($s);

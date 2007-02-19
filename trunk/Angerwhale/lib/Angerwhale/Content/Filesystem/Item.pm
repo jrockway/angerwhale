@@ -181,7 +181,7 @@ sub _children {
                     base    => $commentdir,
                     file    => $file,
                     comment => 1,
-                    path    => $self->path. '/'. $self->id,
+                    path    => $self->metadata->{path}. '/'. $self->id,
                   });
       } grep {
           # skip directories
@@ -191,9 +191,13 @@ sub _children {
 
 sub _child_count {
     my $self = shift;
+    my $count = 0;
 
-    return scalar grep { eval { $_->isa('Path::Class::File') } }
-      ($self->_get_commentdir->children);
+    $self->_get_commentdir->
+      recurse( callback => 
+               sub { $count++ if eval { $_[0]->isa('Path::Class::File') }});
+    
+    return $count;
 }
 
 =head2 add_comment($title, $body, $userid, $file_format)

@@ -6,6 +6,7 @@ use warnings;
 use Angerwhale::Content::Filesystem::Item;
 use Carp;
 use Object::Deadly;
+use File::Find;
 
 use base 'Angerwhale::Content::ContentProvider';
 __PACKAGE__->mk_accessors(qw/root/);

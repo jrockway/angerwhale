@@ -15,7 +15,7 @@ use overload (
 );
 
 __PACKAGE__->mk_ro_accessors(qw/title name type author signed comment_count
-                                checksum post_uri uri path
+                                checksum post_uri uri path path
                                 summary text plain_text raw_text words
                                 creation_time modification_time encoding
                                /);
@@ -103,6 +103,11 @@ sub compare {
 sub children {
     my $self = shift;
     return $self->{item}->children;
+}
+
+sub comments {
+    my $self = shift;
+    return @{$self->children||[]};
 }
 
 sub categories {
