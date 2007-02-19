@@ -74,8 +74,7 @@ sub find_by_path : Private {
     return unless @path;
 
     my @articles = $c->model('Articles')->get_articles;
-    warn "path @path";
-    my $article = ( grep { warn "XXX: ". $_->id; $_->id eq $path[0] } @articles )[0];
+    my $article = ( grep { $_->id eq $path[0] } @articles )[0];
     $c->stash->{article} = $article;
     shift @path;
 
@@ -109,8 +108,9 @@ sub comment : Path {
         # handle cases where the find_by_uri_path item is the actual article
         if (!$c->stash->{comment}->isa('Angerwhale::Content::Comment')){
             # handle getting articles by their GUID (instead of name)
+            warn "and here we are *** ";
             $c->response->
-              redirect( $c->uri_for( '/', $c->stash->{article}->path ) );
+              redirect( $c->uri_for( '/', $c->stash->{article}->uri ) );
         }
         elsif ( $c->request->uri->as_string =~ m{/raw$} ) {
             $c->response->content_type('application/octet-stream');

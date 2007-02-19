@@ -22,8 +22,8 @@
   </div>
   [% IF readonly != 1 %]
   <div class="comment_footer"><p>
-    [ [% IF comment.parent.uri != article.uri %]
-      	 <a href="[% c.uri_for("/$comment.parent.uri") | html %]">Parent</a> | 
+    [ [% IF comment.parent_uri.match('comments/(.+)/(.+)').1 %]
+      	 <a href="[% c.uri_for("/$comment.parent_uri") | html %]">Parent</a> | 
       [% END %]
       <a href="[% c.uri_for("/$comment.uri") | html%]">Link</a> |
       <a href="[% base %]feeds/comment/xml/[% comment.path %]">XML</a> |
