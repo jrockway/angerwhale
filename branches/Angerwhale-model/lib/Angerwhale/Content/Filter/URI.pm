@@ -13,7 +13,7 @@ sub filter {
 
           my $path = $item->metadata->{path};
           my $name = $item->metadata->{name};
-
+          
           my $me;
           if ($item->metadata->{comment}) {
               $me = $item->metadata->{uri} = "comments/$path";
@@ -22,8 +22,9 @@ sub filter {
               $item->metadata->{uri} = "articles/$name";
           }
           
+          $path ||= $item->id;
           $item->metadata->{post_uri}   = "comments/post/$path";
-
+          
           if ($me) {
               $me =~ s{/[^/]+$}{};
               $item->metadata->{parent_uri} = $me;

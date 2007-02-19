@@ -122,8 +122,7 @@ sub add_comment {
 
 sub raw_text {
     my $self = shift;
-    warn "Ignoring arguments for now";
-
+    
     return $self->{item}->data;
 }
 
