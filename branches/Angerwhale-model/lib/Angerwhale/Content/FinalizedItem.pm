@@ -135,6 +135,7 @@ sub tags {
 
 sub tag_count {
     my $self = shift;
+    no warnings 'uninitialized';
     return $self->{item}{metadata}{tags}{$_[1]} || 0;
 }
 
