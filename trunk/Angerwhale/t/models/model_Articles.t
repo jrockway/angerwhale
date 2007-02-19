@@ -1,7 +1,7 @@
 #!perl
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 23;
+use Test::More tests => 24;
 use Test::MockObject;
 use Test::Exception;
 use Directory::Scratch;
@@ -16,6 +16,7 @@ my $log   = Test::MockObject->new;
 my $config = {};
 $c->set_always( 'config',  $config );
 $c->set_always( 'uri',     'test' );
+$c->mock( 'uri_for', sub { my $a = $_[1]; $a =~ s{^/}{}; $a} );
 $cache->set_always( 'get', undef );
 $cache->set_always( 'set', undef );
 $log->set_always('debug', undef);
@@ -56,16 +57,17 @@ foreach my $a (@articles) {
 
 isa_ok( $article, 'Angerwhale::Content::Article' );
 is( $article->title, 'Another Article', 'title is correct' );
-is( $article->categories, (), 'not in any categories yet' );
-is( $article->uri, 'articles/Another Article.pod' );
+is( scalar $article->categories, 0, 'not in any categories yet' );
+is( $article->uri, 'articles/Another Article.pod', 'uri is correct' );
 is(
-    $article->checksum,
-    '63b08321fa7c7daf4c01eb86e5fdd231',
-    "checksum is right"
-);
+   $article->checksum,
+   '63b08321fa7c7daf4c01eb86e5fdd231',
+   "checksum is right"
+  );
 is( $article->name, 'Another Article.pod', 'name is correct' );
 is( $article->type, 'pod', q{plain ol' documentation} );
-ok( $article->id, 'article has a GUID' );
+my $id;
+ok( $id = $article->id, 'article has a GUID' );
 ok( $article->creation_time == $article->modification_time, 'crtime = mtime' );
 is( $article->signed, undef, 'no digital signature' );
 ok( $article->summary =~ /This is a test/,          'summary exists' );
@@ -77,16 +79,19 @@ lives_ok (sub {
             0, 'text' );
 }, 'added a comment without triggering a FATAL ERROR!!!!!!! :)' );
 
+$article = $fs->get_article('Another Article.pod');
+is( $article->id, $id, 'copy of article has same GUID' );
+
 is( $article->comment_count, 1, 'comment stuck' );
 
 dies_ok (sub {
         $article->add_comment( 'Test comment', '', 0, 'text' );
 }, 'adding comment without body fails');
 
-is( $article->comment_count, 1, 'comment stuck' );
+is( $article->comment_count, 1, 'post failed' );
 
 dies_ok (sub {
         $article->add_comment( '', 'This comment is a test comment.', 0, 'text' );
 }, 'adding comment without title fails');
 
-is( $article->comment_count, 1, 'comment stuck' );
+is( $article->comment_count, 1, 'post failed' );

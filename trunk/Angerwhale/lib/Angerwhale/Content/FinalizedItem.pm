@@ -15,6 +15,7 @@ use overload (
 );
 
 __PACKAGE__->mk_ro_accessors(qw/title name type author signed comment_count
+                                checksum post_uri uri path
                                 summary text plain_text raw_text words
                                 creation_time modification_time encoding
                                /);
@@ -35,11 +36,13 @@ comment-posting, etc.; you can write that way).
 sub isa {
     my $self = shift;
     my $what = shift;
+
+    return $what if (defined $self->{item}{comment} &&
+                     $what eq 'Angerwhale::Content::Comment');
     
     return $what 
       if $what eq any(qw|Angerwhale::Content::Item
-                         Angerwhale::Content::Article
-                         Angerwhale::Content::Comment|);
+                         Angerwhale::Content::Article|);
     
     return $self->SUPER::isa(@_);
 }
@@ -87,7 +90,7 @@ sub mini {
 
 sub id {
     my $self = shift;
-    return $self->{item}{metadata}{guid};
+    return $self->{item}->id;
 }
 
 sub compare {
@@ -100,6 +103,16 @@ sub compare {
 sub children {
     my $self = shift;
     return $self->{item}->children;
+}
+
+sub categories {
+    my $self = shift;
+    return @{$self->{item}{metadata}{categories}||[]};
+}
+
+sub add_comment {
+    my $self = shift;
+    return $self->{item}->add_comment(@_);
 }
 
 1;

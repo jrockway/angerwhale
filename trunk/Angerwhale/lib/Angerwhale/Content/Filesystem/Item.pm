@@ -13,7 +13,7 @@ use Scalar::Defer;
 use Class::C3;
 use base 'Angerwhale::Content::Item';
 
-__PACKAGE__->mk_accessors(qw/root file/);
+__PACKAGE__->mk_accessors(qw/root file comment parent/);
 
 =head1 NAME
 
@@ -77,7 +77,8 @@ sub new {
     croak "need file" if !eval{ $self->file->isa( 'Path::Class::File') };
     
     my $file = q{}. $self->file; # stringify filename for IO()
-    $self->data(read_file( $file )); 
+    $self->data(scalar read_file( $file )); 
+    
     my %attributes = get_attributes ($file);
     
     # filter out empty attributes (BUG IN FILE::EXTATTR::listfattr)
@@ -93,6 +94,12 @@ sub new {
     
     # this needs the above metadata in order to work
     $self->metadata->{comment_count} = $self->_child_count;
+
+    # set the path to <parent path>/id
+    $self->metadata->{path} = $self->id;
+    if ($self->parent) {
+        $self->metadata->{path} = $self->parent . '/'. $self->id;
+    }
     
     # set type from filename
     $self->{metadata}{type} ||= $self->{metadata}{name} =~ m{[.](\w+)$} ?
@@ -170,9 +177,11 @@ sub _children {
       map {
           my $file = $_;
           Angerwhale::Content::Filesystem::Item->
-              new({ root => $self->root,
-                    base => $commentdir,
-                    file => $file,
+              new({ root    => $self->root,
+                    base    => $commentdir,
+                    file    => $file,
+                    comment => 1,
+                    path    => $self->path. '/'. $self->id,
                   });
       } grep {
           # skip directories
@@ -185,6 +194,112 @@ sub _child_count {
 
     return scalar grep { eval { $_->isa('Path::Class::File') } }
       ($self->_get_commentdir->children);
+}
+
+=head2 add_comment($title, $body, $userid, $file_format)
+
+Attaches a comment to this Item.
+
+Arguments are:
+
+=over 4
+
+=item title
+
+The title of this comment.  Any characters are allowed.
+
+=item body
+
+The main text of this comment, formatted in C<$file_format>.
+
+=item userid
+
+The (8-byte) "nice_id" of the comment poster.
+
+=item format
+
+The file format in which C<body> is encoded.  Examples: html, pod,
+text, wiki.  (See L<Angerwhale::TODO::Formatter>.)
+
+=back
+
+=cut
+
+sub add_comment {
+    my $self  = shift;
+    my $title = shift;
+    my $body  = shift;
+    my $user  = shift;
+    my $type  = shift;
+
+    croak "no data to post" if ( !$title || !$body );
+    
+    my $comment_dir = $self->_get_commentdir;
+    croak "no comment dir $comment_dir"
+      if !-d $comment_dir;
+    
+    my $safe_title = $title;
+    $safe_title =~ s{[^A-Za-z_]}{}g;    # kill anything unusual
+
+    my $filename = q{}. $comment_dir->file($safe_title);
+    while ( -e $filename ) {            # make names unique
+        $filename .= " [" . int( rand(10000) ) . "]";
+    }
+
+    ## write the comment atomically ##
+    my $tmpname = $filename;
+    $tmpname =~ s{/([^/]+)$}{._tmp_.$1};
+    
+    # /foo/bar/comment1337abc! -> /foo/bar/._tmp_.comment1337abc!
+    # maybe make a random filename instead?
+
+    open my $comment, '>:raw', $tmpname
+      or die "unable to open $filename: $!";
+    eval {
+        my $copy = "$body";
+        utf8::encode($copy) if utf8::is_utf8($body);
+        print {$comment} "$copy\n" or die "io error: $!";
+        close $comment;
+        rename( $tmpname => $filename )
+          or die "Couldn't rename $tmpname to $filename: $!";
+    };
+    if ($@) {
+        close $comment;
+        unlink $tmpname;
+        unlink $filename;    # partial rename !?
+        die $@;              # propagate the message up
+    }
+
+    # set attributes: (TODO: atomic also)
+    eval {
+        
+        my $comment = Angerwhale::Content::Filesystem::Item->
+          new({ root    => $self->root,
+                base    => $comment_dir,
+                file    => Path::Class::file($filename),
+                comment => 1,
+                parent  => $self->metadata->{path}. '/'. $self->id,
+              });
+
+        # attribute the comment to someone, if possible
+        if ($user) {
+            $comment->store_attribute( 'author', $user );
+        }
+        
+        # set title
+        $comment->store_attribute( 'title', $title );
+        
+        # finally, set the type
+        if ( defined $type ) {
+            $comment->store_attribute( 'type', $type );
+        }
+    };
+    if ($@) {
+        unlink $filename;
+        die "Problems seting attributes: $@";
+    }
+    
+    return $comment;
 }
 
 1;

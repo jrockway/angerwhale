@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use Angerwhale::Content::Filesystem::Item;
 use Carp;
+use Object::Deadly;
 
 use base 'Angerwhale::Content::ContentProvider';
 __PACKAGE__->mk_accessors(qw/root/);
@@ -17,14 +18,33 @@ sub new {
 }
 
 sub get_article {
-    my $self    = shift;
-    my $article = shift;
+    my $self = shift;
+    my $name = shift;
 
-    my $file = $self->root->file($article);
+    my $file = $self->root->file($name);
     
-    return Angerwhale::Content::Filesystem::Item->
+    my $article = Angerwhale::Content::Filesystem::Item->
       new({ file => $file,
             root => $self->root });
+    
+    # determine what categories this article is in
+    my $ino = $article->file->stat->ino;
+    my @in;
+  category:
+    foreach my $c ($self->get_categories) {
+        my @files = $self->root->subdir($c)->children;
+        
+      file:
+        foreach my $f (@files) {
+            if ($ino = $f->stat->ino) {
+                push @in, $c;
+                last file;
+            }
+            
+        }
+    }
+    $article->metadata->{categories} = [@in];
+    return $article;
 }
 
 sub get_articles {
@@ -46,7 +66,7 @@ sub get_categories {
     return 
       sort
         map { $_->{dirs}[-1] }
-          grep { eval {$_->isa('Path::Class::Dir')} && $_ !~ /^[.]/ } 
+          grep { eval {$_->isa('Path::Class::Dir')} && $_->{dirs}[-1] !~ /^[.]/ } 
             $self->root->children;
 }
 

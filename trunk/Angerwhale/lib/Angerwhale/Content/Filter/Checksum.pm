@@ -12,7 +12,7 @@ sub filter {
           my $context = shift;
           my $item    = shift;
           my $text    = $item->data;
-          utf8::encode($text);
+          utf8::encode($text) if utf8::is_utf8($text);
           $item->metadata->{checksum} = md5_hex($text);
           return $item;
       };

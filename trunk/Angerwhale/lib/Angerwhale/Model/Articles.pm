@@ -14,6 +14,8 @@ use Angerwhale::Content::Filter::Encoding;
 use Angerwhale::Content::Filter::Checksum;
 use Angerwhale::Content::Filter::Title;
 use Angerwhale::Content::Filter::Format;
+use Angerwhale::Content::Filter::Summary;
+use Angerwhale::Content::Filter::URI;
 use Angerwhale::Content::Filter::Finalize;
 
 our @ISA;
@@ -39,6 +41,8 @@ sub new {
                     Angerwhale::Content::Filter::Checksum::filter(),
                     Angerwhale::Content::Filter::Title::filter(),
                     Angerwhale::Content::Filter::Format::filter(),
+                    Angerwhale::Content::Filter::Summary::filter(),
+                    Angerwhale::Content::Filter::URI::filter(),
                     Angerwhale::Content::Filter::Finalize::filter(),
                     #sub { warn "Done filtering" },
                    ]);
@@ -50,7 +54,7 @@ sub new {
 sub get_article {
     my $self = shift;
     my $article = shift;
-    return $self->_apply_filters($self->source->get_article($article));
+    return ($self->_apply_filters($self->source->get_article($article)))[0];
 }
 
 sub get_articles {

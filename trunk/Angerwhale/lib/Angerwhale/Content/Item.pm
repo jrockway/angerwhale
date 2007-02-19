@@ -17,9 +17,9 @@ sub id {
     my $self = shift;
     my $id = $self->metadata->{guid};
     return $id if $id;
-    
+
     $id = Data::UUID->new->create_str();
-    $self->store_attribute($self->file, 'guid', $id);
+    $self->store_attribute('guid', $id);
     return $id;
 }
 
@@ -35,7 +35,7 @@ sub store_attribute {
     my $value= shift;
 
     $self->metadata->{$attr} = $value;
-    #$self->next::method($attr,$value);
+    $self->maybe::next::method($attr,$value);
     return;
 }
 
