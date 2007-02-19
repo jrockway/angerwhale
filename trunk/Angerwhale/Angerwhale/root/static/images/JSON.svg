@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg1905"
+   sodipodi:version="0.32"
+   inkscape:version="0.45"
+   sodipodi:docbase="/home/jon/projects/Angerwhale/root/static/images"
+   sodipodi:docname="JSON.svg"
+   inkscape:export-filename="/home/jon/projects/Angerwhale/root/static/images/json.png"
+   inkscape:export-xdpi="12.510246"
+   inkscape:export-ydpi="12.510246"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   sodipodi:modified="TRUE">
+  <defs
+     id="defs1907">
+    <linearGradient
+       id="linearGradient2936">
+      <stop
+         style="stop-color:#004980;stop-opacity:1;"
+         offset="0"
+         id="stop2938" />
+      <stop
+         style="stop-color:#000980;stop-opacity:0;"
+         offset="1"
+         id="stop2940" />
+    </linearGradient>
+    <linearGradient
+       x1="30.06"
+       y1="30.06"
+       x2="225.94001"
+       y2="225.94001"
+       id="RSSg"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.5,0,0,0.5,-678.2857,-37.3521)">
+      <stop
+         offset="0.0"
+         stop-color="#E3702D"
+         id="stop6" />
+      <stop
+         offset="0.1071"
+         stop-color="#EA7D31"
+         id="stop8" />
+      <stop
+         offset="0.3503"
+         stop-color="#F69537"
+         id="stop10" />
+      <stop
+         offset="0.5"
+         stop-color="#FB9E3A"
+         id="stop12" />
+      <stop
+         offset="0.7016"
+         stop-color="#EA7C31"
+         id="stop14" />
+      <stop
+         offset="0.8866"
+         stop-color="#DE642B"
+         id="stop16" />
+      <stop
+         offset="1.0"
+         stop-color="#D95B29"
+         id="stop18" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2936"
+       id="linearGradient3841"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.009185,0,0,1.022989,-31.078103,-67.846576)"
+       x1="-554.14252"
+       y1="190.64229"
+       x2="-245.93613"
+       y2="190.64229" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="3.1796875"
+     inkscape:cx="423.81347"
+     inkscape:cy="890.28816"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:window-width="1285"
+     inkscape:window-height="860"
+     inkscape:window-x="555"
+     inkscape:window-y="117" />
+  <metadata
+     id="metadata1910">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="opacity:1">
+    <rect
+       width="314.49631"
+       height="115.10565"
+       rx="12.089681"
+       ry="10.5172"
+       x="-591.72479"
+       y="71.290932"
+       id="rect1969"
+       style="font-size:47.70267868px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#0c2661;fill-opacity:1;font-family:Bitstream Vera Sans"
+       transform="scale(-1,1)"
+       inkscape:export-filename="/home/jon/Desktop/default/yaml.png"
+       inkscape:export-xdpi="17.201588"
+       inkscape:export-ydpi="17.201588" />
+    <text
+       xml:space="preserve"
+       style="font-size:47.70267868px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:black;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="306.94839"
+       y="121.45309"
+       id="text1983"
+       inkscape:export-filename="/home/jon/Desktop/default/yaml.png"
+       inkscape:export-xdpi="17.201588"
+       inkscape:export-ydpi="17.201588"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan1985"
+         x="306.94839"
+         y="121.45309" /></text>
+    <rect
+       width="311.03754"
+       height="111.9607"
+       rx="11.321894"
+       ry="12.563952"
+       x="-590.31104"
+       y="71.197929"
+       id="rect2021"
+       style="font-size:47.70267868px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:url(#linearGradient3841);fill-opacity:1;stroke:none;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       transform="matrix(-0.999998,-2.0222406e-3,0,1,0,0)"
+       inkscape:export-filename="/home/jon/Desktop/default/yaml.png"
+       inkscape:export-xdpi="17.201588"
+       inkscape:export-ydpi="17.201588" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Gradient">
+    <circle
+       transform="matrix(0.5,0,0,0.5,468.1277,62.48503)"
+       cx="68"
+       cy="189"
+       r="24"
+       id="circle1975"
+       sodipodi:cx="68"
+       sodipodi:cy="189"
+       sodipodi:rx="24"
+       sodipodi:ry="24"
+       style="font-size:95.40535736px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:white;font-family:Bitstream Vera Sans;opacity:1"
+       inkscape:export-filename="/home/jon/Desktop/default/yaml.png"
+       inkscape:export-xdpi="11.728355"
+       inkscape:export-ydpi="11.728355" />
+    <path
+       d="M 548.12776,168.98503 L 531.12776,168.98503 C 531.12776,146.34136 512.77143,127.98503 490.12776,127.98503 L 490.12776,110.98503 C 522.16027,110.98503 548.12776,136.95252 548.12776,168.98503 z "
+       id="path1977"
+       style="font-size:47.70267868px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:white;font-family:Bitstream Vera Sans;opacity:1"
+       inkscape:export-filename="/home/jon/Desktop/default/yaml.png"
+       inkscape:export-xdpi="11.728355"
+       inkscape:export-ydpi="11.728355" />
+    <path
+       d="M 560.12776,168.98503 C 560.12776,130.3251 528.78769,98.985031 490.12776,98.985031 L 490.12776,81.485033 C 538.45267,81.485033 577.62776,120.66012 577.62776,168.98503 L 560.12776,168.98503 z "
+       id="path1979"
+       style="font-size:47.70267868px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:white;font-family:Bitstream Vera Sans;opacity:1"
+       inkscape:export-filename="/home/jon/Desktop/default/yaml.png"
+       inkscape:export-xdpi="11.728355"
+       inkscape:export-ydpi="11.728355" />
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot1987"
+       style="font-size:6.86325407px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;opacity:1;fill:#ffffff;font-family:Bitstream Vera Sans"
+       transform="matrix(9.025375,0,0,12.94938,-2371.1371,-1300.6564)"
+       inkscape:export-filename="/home/jon/Desktop/default/yaml.png"
+       inkscape:export-xdpi="11.728355"
+       inkscape:export-ydpi="11.728355"><flowRegion
+         id="flowRegion1989"><rect
+           id="rect1991"
+           width="171.71498"
+           height="50.633907"
+           x="296.25552"
+           y="105.41378"
+           style="font-size:6.86325407px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;font-family:Bitstream Vera Sans" /></flowRegion><flowPara
+         id="flowPara1993">JSON</flowPara></flowRoot>  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Text" />
+</svg>
