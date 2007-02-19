@@ -1,0 +1,12 @@
+<div id="login_box" class="box">
+     <h3>Login</h3>
+      <p id="logged_in_as" class="logged_in_as">
+        Not logged in.  <a href="[% c.uri_for("/login") %]">Log in</a>.
+      </p>
+</div>
+
+<script type="text/javascript">
+// <![CDATA[
+  Jemplate.process('logged_in_as.tt', '[% c.uri_for('/users/current') %]', '#login_box');
+// ]]>
+</script>
