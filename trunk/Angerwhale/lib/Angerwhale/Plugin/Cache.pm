@@ -182,7 +182,7 @@ sub finalize {
             }
             else {
                 # cache and gzip generated body
-                $doc->{body} = $c->response->body();
+                $doc->{body} = q{}. $c->response->body(); # force stringify
                 $doc->{gzip} = Compress::Zlib::memGzip( $doc->{body} );
             }
             
