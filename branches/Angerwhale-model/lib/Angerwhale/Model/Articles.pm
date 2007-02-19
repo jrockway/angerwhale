@@ -27,7 +27,6 @@ __PACKAGE__->mk_accessors(qw/storage_class storage_args source filters/);
 sub new {
     my $class = shift;
     my $self  = $class->next::method(@_);
-    $self->storage_class('Filesystem') if !$self->storage_class;
     
     my $sclass = "Angerwhale::Content::ContentProvider::".$self->storage_class;
     eval "require $sclass";
@@ -52,8 +51,14 @@ sub new {
 
 sub COMPONENT {
     my ($class, $app, $args) = @_;
-    $args->{storage_args}{root} = $app->config->{base} if $app->config->{base};
-    return $class->NEXT::COMPONENT($app, $args);
+    
+    # use the Filesystem by default, for backcompat
+    if ($app->config->{base}) {
+        $args->{storage_class} = 'Filesystem';
+        $args->{storage_args}{root} = $app->config->{base};
+    }
+    
+    return $class->next::method($app, $args);
 }
 
 sub preview {
