@@ -13,7 +13,8 @@ use warnings;
 my $c      = Test::MockObject->new;
 my $cache  = Test::MockObject->new;
 my $log   = Test::MockObject->new;
-my $config = {};
+my $tmp  = Directory::Scratch->new;
+my $config = {base => $tmp->mkdir('articles')};
 $c->set_always( 'config',  $config );
 $c->set_always( 'uri',     'test' );
 $c->mock( 'uri_for', sub { my $a = $_[1]; $a =~ s{^/}{}; $a} );
@@ -23,13 +24,8 @@ $log->set_always('debug', undef);
 $c->set_always( 'cache',   $cache );
 $c->set_always( 'log', $log);
 
-my $tmp  = Directory::Scratch->new;
-my $root = $tmp->mkdir('articles');
-
 $tmp->mkdir('articles/test category');
-
-my $fs = Angerwhale::Model::Articles->COMPONENT($c, {storage_args => 
-                                                     {root => $root}});
+my $fs = Angerwhale::Model::Articles->COMPONENT($c, {});
 isa_ok( $fs, 'Angerwhale::Model::Articles' );
 $c->set_always( 'model', $fs );
 

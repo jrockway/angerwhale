@@ -65,6 +65,10 @@ sub preview {
     my $self = shift;
     my $args = shift;
 
+    if (!ref $args) {
+        $args = {$args, @_};
+    }
+    
     my $data = $args->{body};
     my $metadata = {};
     $metadata->{title} = $args->{title};
