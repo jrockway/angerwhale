@@ -10,15 +10,18 @@ use Scalar::Util qw(blessed);
 
 =head1 NAME
 
-Angerwhale::Controller::Categories - Catalyst Controller
+Angerwhale::Controller::Categories - Generate a blog listing of recent
+articles in a given category, optionally filtered by date
 
-=head1 SYNOPSIS
+=head1 LOCATIONS
 
-See L<Angerwhale>
+=head2 /
 
-=head1 DESCRIPTION
+Main page is category C</>.
 
-Catalyst Controller.
+=head2 /categories/$ARG
+
+Renders articles in category C<$ARG>.
 
 =head1 METHODS
 
