@@ -2,40 +2,34 @@
 # preview_comment.t
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
+use strict;
+use warnings;
 use Test::More tests => 16;
 use Test::MockObject;
 use Test::Exception;
-use Angerwhale::User;
-use strict;
-use warnings;
-use Angerwhale::Model::Articles;
 use Directory::Scratch;
+use Angerwhale::User;
+use Angerwhale::Model::Articles;
+use Angerwhale::Test::Application;
 
 my $tmp = Directory::Scratch->new;
 # setup
 my $JROCK_ID   = 'd0197853dd25e42f';            # author's key ID;
 my $id         = pack 'H*', $JROCK_ID;
 my $jrock      = Angerwhale::User->_new($id);
+
+
+my $c = context({config => {}});
+
 my $user_store = Test::MockObject->new;
 $user_store->set_always( 'keyserver', 'stinkfoot.org' );
-$user_store->set_always( 'get_user_by_real_id', $jrock );
-my $c   = Test::MockObject->new;
-my $log = Test::MockObject->new;
-$c->set_always( 'stash', {} );
-$c->set_always( 'config', { encoding => 'utf8' } );
-$c->set_always( 'model', $user_store );
-$c->set_always( 'log', $log);
-$log->set_always( 'debug', undef );
+$user_store->set_always( 'get_user_by_real_id', $jrock );    
+$c->set_always( 'model', $user_store ); # hack
 
-my $cache = Test::MockObject->new;
-$cache->set_always( 'get', undef );
-$cache->set_always( 'set', undef );
-my $config = {};
-$c->set_always( 'cache', $cache );    
-
-my $articles = Angerwhale::Model::Articles->
-  COMPONENT($c, { storage_class => 'Filesystem',
-                  storage_args  => { root => $tmp->base }});
+my $articles = model('Articles', 
+                     {context => $c,
+                      args => { storage_class => 'Filesystem',
+                                storage_args  => { root => $tmp->base }}});
 
 my $body = do { local $/; <DATA> };
 my $comment = $articles->preview(title => 'test', body => $body, type => 'text');
