@@ -88,7 +88,29 @@ sub get_by_category {
 }
 
 sub get_by_tag {
-    return; # todo
+    my $self = shift;
+    my @tags = map { lc } @_;
+    my @matching;
+    
+    my @articles = $self->get_articles();
+  article:
+    foreach my $article (@articles) {
+        warn "trying article $article";
+        my @atags = keys %{$article->metadata->{tags}||{}};
+        foreach my $tag (@atags) {
+            warn "trying tag $tag on $article";
+            foreach my $asked_for (@tags){
+                warn "  trying $asked_for against $tag";
+                if($tag eq $asked_for){ 
+                    push @matching, $article;
+                    next article;
+                }
+                warn "NO MATCH";
+            }
+        }
+    }
+    
+    return @matching;
 }
 
 sub revision {
