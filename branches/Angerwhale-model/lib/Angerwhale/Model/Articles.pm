@@ -70,10 +70,13 @@ sub preview {
     }
     
     my $data = $args->{body};
-    my $metadata = {};
-    $metadata->{title} = $args->{title};
-    $metadata->{type}  = $args->{type};
-    $metadata->{name}  = $args->{title};
+    my $metadata = $args;
+    delete $metadata->{body};
+    
+    croak "need title" unless $metadata->{title};
+    croak "need type"  unless $metadata->{type};
+    croak "need name"  unless $metadata->{name};
+    
     $metadata->{creation_time} = time();
     $metadata->{modification_time} = $metadata->{creation_time};
     
