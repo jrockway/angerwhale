@@ -6,6 +6,7 @@ use warnings;
 use Carp;
 use File::Slurp;
 use File::Attributes qw(get_attributes set_attribute);
+use File::Attributes::Recursive qw(get_attribute_recursively);
 use Path::Class ();
 use Data::UUID;
 use File::CreationTime qw(creation_time);
@@ -79,13 +80,17 @@ sub new {
     my $file = q{}. $self->file; # stringify filename for IO()
     $self->data(scalar read_file( $file )); 
     
+    # get parent attributes first (only encoding right now)
+    my $encoding = get_attribute_recursively($file, $self->root, 'encoding');
+    # now get the item-specific attributes
     my %attributes = get_attributes ($file);
+    $attributes{encoding} ||= $encoding;
     
     # filter out empty attributes (BUG IN FILE::EXTATTR::listfattr)
     map { delete $attributes{$_} }
       grep { 1 if !defined $attributes{$_} }
         keys %attributes;
-
+    
     $self->metadata ( { %attributes,
                         creation_time     => creation_time($file),
                         modification_time => (stat $file)[9],
