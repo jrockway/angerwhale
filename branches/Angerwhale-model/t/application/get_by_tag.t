@@ -2,7 +2,7 @@
 # get_by_tag.t 
 # Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 20;
+use Test::More tests => 26;
 use Angerwhale::Test;
 use Angerwhale::Test::Application;
 
@@ -50,3 +50,11 @@ $mech->content_contains('This is a test article');
 $mech->get_ok('http://localhost/tags/faketag');
 $mech->content_unlike(qr'This is a test article');
 
+# now try compound page
+$mech->get_ok('http://localhost/tags/footag/bartag');
+$mech->content_contains('footag and bartag');
+$mech->content_contains('This is a test article');
+
+$mech->get_ok('http://localhost/tags/footag/bartag/faketag');
+$mech->content_contains('footag, bartag, and faketag');
+$mech->content_unlike(qr'This is a test article');

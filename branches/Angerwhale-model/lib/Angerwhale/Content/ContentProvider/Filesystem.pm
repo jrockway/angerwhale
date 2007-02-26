@@ -7,6 +7,7 @@ use Angerwhale::Content::Filesystem::Item;
 use Carp;
 use File::Find;
 use Path::Class;
+use Quantum::Superpositions;
 
 use base 'Angerwhale::Content::ContentProvider';
 __PACKAGE__->mk_accessors(qw/root/);
@@ -89,25 +90,15 @@ sub get_by_category {
 
 sub get_by_tag {
     my $self = shift;
-    my @tags = map { lc } @_;
+    my @tags = sort map { lc } @_;
     my @matching;
     
     my @articles = $self->get_articles();
   article:
     foreach my $article (@articles) {
-        warn "trying article $article";
-        my @atags = keys %{$article->metadata->{tags}||{}};
-        foreach my $tag (@atags) {
-            warn "trying tag $tag on $article";
-            foreach my $asked_for (@tags){
-                warn "  trying $asked_for against $tag";
-                if($tag eq $asked_for){ 
-                    push @matching, $article;
-                    next article;
-                }
-                warn "NO MATCH";
-            }
-        }
+        my @atags = sort keys %{$article->metadata->{tags}||{}};
+        # (quantum computing)++
+        push @matching, $article if all(@tags) eq any(@atags);
     }
     
     return @matching;
