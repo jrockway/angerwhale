@@ -6,6 +6,9 @@ package Angerwhale::Test::Application;
 use strict;
 use warnings;
 use base 'Exporter';
+use Test::MockObject;
+use Carp;
+
 our @EXPORT = qw(context model);
 our @EXPORT_OK = @EXPORT;
 
@@ -41,10 +44,9 @@ sub context {
     my $c = Test::MockObject->new;
     $c->set_always( 'stash', {} );
     $c->set_always( 'config', { encoding => 'utf8' } );
-    $c->set_always( 'model', $user_store );
 
     # fake logging (doesn't do anything)
-    my $log = Test::MockObject->new
+    my $log = Test::MockObject->new;
     $log->set_always( 'debug', undef );
     $c->set_always( 'log', $log);
     
@@ -59,11 +61,11 @@ sub context {
     return $c;
 }
 
-=head2 model($model_name, { context_args => \%args, args => { args } } )
+=head2 model($model_name, { context=> $c, args => { args ... } } )
 
 Returns an instance of C<$model_name>, where C<$model_name> is an
-Angerwhale::Model.  Uses the application object created by C<context>
-(with optional C<context_args>).
+Angerwhale::Model.  Uses the application object created by C<context>,
+or context from the args if you provide one.
 
 =cut
 
@@ -71,7 +73,7 @@ sub model {
     my $name = shift;
     croak "need name" unless $name;
     my $args = shift;
-    my $context = context($args->{context_args});
+    my $context = $args->{context} || context();
     
     $name =~ s/\W//g;
     $name = "Angerwhale::Model::$name";
@@ -81,7 +83,7 @@ sub model {
 
     my $model;
     eval {
-        $model = $name->COMPONENT($c, $args->{args});
+        $model = $name->COMPONENT($context, $args->{args});
     };
     croak "didn't get a model: $@" if $@ || !$model;
 
