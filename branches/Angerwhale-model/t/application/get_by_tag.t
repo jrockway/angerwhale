@@ -11,13 +11,13 @@ local $SIG{__WARN__} = sub {}; # blah blah blah
 diag "This test will fail until TT is fixed.";
 
 my $mech = Angerwhale::Test->new;
-$mech->article('This is a test article.html');
+$mech->article('This is a test article');
 
 my $articles = model('Articles', 
                      {args => { storage_class => 'Filesystem',
                                 storage_args  => { root => $mech->tmp->base }}});
 
-my $article = $articles->get_article('This is a test article.html');
+my $article = $articles->get_article('This is a test article');
 
 ok($article, 'got article');
 is($article->title, 'This is a test article', 'title is test');
