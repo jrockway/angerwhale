@@ -63,7 +63,7 @@ requires
    'Quantum::Superpositions'                                => 0,
    'Scalar::Defer'                                          => 0,
    'Scalar::Util'                                           => 0,
-   'Syntax::Highlight::Engine::Kate'                        => 0,
+   'Syntax::Highlight::Engine::Kate'                        => '0.02',
    'TeX::Hyphen'                                            => 0,
    'Template::Plugin::Filter'                               => 0,
    'Template::Plugin::Lingua::EN::Inflect'                  => 0,
