@@ -2,8 +2,7 @@
 # encoding.t
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 15;
-use Test::MockObject::Extends;
+use Test::More tests => 12;
 use Directory::Scratch;
 use strict;
 use warnings;
@@ -11,51 +10,75 @@ use utf8;
 use Encode;
 use File::Attributes qw(set_attribute);
 use File::Attributes::Recursive qw(get_attribute_recursively);
+use Angerwhale::Test::Application;
 
-use ok 'Angerwhale::ContentItem::Components::Encoding';
+my $tmp  = Directory::Scratch->new;
+my $articles = model('Articles',
+                     { args => { storage_class => 'Filesystem',
+                                 storage_args  => { root => $tmp->base }}});
 
 my $wide = '日本語';
-my $tmp  = Directory::Scratch->new;
-my $test = bless {},
-  'Angerwhale::ContentItem::Components::Encoding';
-$test = Test::MockObject::Extends->new($test);
-$test->set_always( 'base', $tmp->base . q{} );
-$test->encoding('euc-jp');
 
-ok( utf8::is_utf8($wide), '[sanity] is test string utf8' );    #2
-
+# start by testing various non-unicode charsets
+# preview comment first
+ok( utf8::is_utf8($wide), '[sanity] is test string utf8' );
 my $octets = Encode::encode( 'euc-jp', $wide );
 my $octets_copy = "$octets";
 ok( !utf8::is_utf8($octets), 'euc-jp is not utf8' );
+my $test = $articles->preview(title    => 'test', 
+                              type     => 'text',
+                              body     => $octets, # use the euc-jp octets 
+                              encoding => 'euc-jp');
 
-$test->from_encoding($octets);
-isnt( $octets, $octets_copy, 'conversion changed something?' );
-ok( utf8::is_utf8($octets), 'got utf8 back' );
-is( $octets, $wide, 'got the right thing' );
+my $body = $test->plain_text;
+ok( utf8::is_utf8($body), 'processed body is utf8');
+isnt( $body, $octets_copy, 'conversion changed something?' );
 
-$test->to_encoding($octets);
-is( $octets, $octets_copy, 'conversion changed everything back' );
-ok( !utf8::is_utf8($octets), 'should not be unicode chars now' );
+## now try a file on the filesystem, with the encoding specified
+## in a parent directory
 
-my $foo = $tmp->mkdir('foo');
-set_attribute( $foo, 'encoding', 'iso-2022-jp' );
-$tmp->mkdir('foo/bar');
-my $file = $tmp->touch('foo/bar/baz');
-ok( -e $file, "foo/bar/baz exists as $file" );
-
-# foo has the encoding, but we're going to pass baz
-my $encoding = get_attribute_recursively( $file, "$tmp", 'encoding' );
-is( $encoding, 'iso-2022-jp', 'F::A::R works :)' );
+undef $octets;
+undef $octets_copy;
+undef $test;
+undef $body;
 
 $octets = Encode::encode( 'iso-2022-jp', $wide );
 $octets_copy = "$octets";
+set_attribute( $tmp->base, 'encoding', 'iso-2022-jp' );
+$tmp->touch('article', $octets);
 
-$test->from_encoding( $octets, $file );
-isnt( $octets, $octets_copy, 'conversion changed something?' );
-ok( utf8::is_utf8($octets), 'got utf8 back' );
-is( $octets, $wide, 'got the right thing' );
+my $encoding = get_attribute_recursively( $tmp->exists("article"), $tmp->base, 
+                                          'encoding' );
+is( $encoding, 'iso-2022-jp', 'F::A::R works' );
 
-$test->to_encoding( $octets, $file );
-is( $octets, $octets_copy, 'conversion changed everything back' );
-ok( !utf8::is_utf8($octets), 'should not be unicode chars now' );
+$test = $articles->get_article('article');
+$body = $test->plain_text;
+chomp($body);
+
+isnt( $body, $octets_copy, 'conversion changed something?' );
+ok( utf8::is_utf8($body), 'got utf8 back' );
+is( $body, $wide, 'got the right thing' );
+
+## finally, a utf8 preview comment
+undef $octets;
+undef $octets_copy;
+undef $test;
+undef $body;
+
+
+$test = $articles->preview(title    =>  $wide, 
+                           type     => 'text',
+                           body     =>  $wide,
+                           # LIE, this should be ignored!
+                           encoding => 'us-ascii', 
+                          );
+
+my $title = $test->title;
+$body = $test->plain_text;
+chomp $body;
+
+ok(utf8::is_utf8($title), 'title is utf8');
+ok(utf8::is_utf8($body), 'body is utf8');
+is($title, $wide, 'title is right');
+is($body, $wide, 'body is right');
 
