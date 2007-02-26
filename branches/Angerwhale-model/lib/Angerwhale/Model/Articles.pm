@@ -75,7 +75,7 @@ sub preview {
     
     croak "need title" unless $metadata->{title};
     croak "need type"  unless $metadata->{type};
-    croak "need name"  unless $metadata->{name};
+    $metadata->{name} ||= $metadata->{title};
     
     $metadata->{creation_time} = time();
     $metadata->{modification_time} = $metadata->{creation_time};
