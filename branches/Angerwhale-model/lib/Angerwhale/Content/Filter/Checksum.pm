@@ -5,6 +5,13 @@ use strict;
 use warnings;
 use Digest::MD5 qw(md5_hex);
 
+=head2 filter
+
+Caclulates the checksum of (hopefully) decoded text, and adds
+the checksum to the metadata section of the item.
+
+=cut
+
 sub filter {
     return 
       sub {

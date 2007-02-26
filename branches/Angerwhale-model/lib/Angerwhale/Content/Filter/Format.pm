@@ -5,6 +5,13 @@ use strict;
 use warnings;
 use Angerwhale::Format;
 
+=head2 filter
+
+Reads the body and adds a plain text and HTML formatted version to
+metadata->formatted->[text|html].
+
+=cut
+
 sub filter {
     return sub {
         my $self    = shift;

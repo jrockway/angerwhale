@@ -5,6 +5,15 @@ use strict;
 use warnings;
 use Encode;
 
+=head2 filter([$encoding])
+
+Reads the encoding from the metadata, and converts the encoded
+data to a perl character string.  Defaults to utf-8 if no 
+other encoding is specified (either in the metadata, or via
+the optional argument).
+
+=cut
+
 sub filter {
     my $encoding = shift || 'utf-8';
     return

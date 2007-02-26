@@ -6,6 +6,15 @@ use warnings;
 
 my $ELIPSIS = "\x{2026}";
 
+=head2 filter
+
+Reads the formatted plain text and extracts a 10 word summary, and
+adds the summary (summary) to the metadata.
+
+Also adds a word count (words) to the metadata.
+
+=cut
+
 sub filter {
     return
       sub {

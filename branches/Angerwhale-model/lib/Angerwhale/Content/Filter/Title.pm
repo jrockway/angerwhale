@@ -4,6 +4,13 @@ package Angerwhale::Content::Filter::Title;
 use strict;
 use warnings;
 
+=head2 filter
+
+Guesses a title from the name of the article if a title
+isn't already in the metadata.
+
+=cut
+
 sub filter {
     return 
       sub {

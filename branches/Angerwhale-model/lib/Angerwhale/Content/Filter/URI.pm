@@ -4,6 +4,12 @@ package Angerwhale::Content::Filter::URI;
 use strict;
 use warnings;
 
+=head2 filter
+
+Adds URLs for posting comments, viewing replies, etc. to the metadata.
+
+=cut
+
 sub filter {
     return 
       sub {

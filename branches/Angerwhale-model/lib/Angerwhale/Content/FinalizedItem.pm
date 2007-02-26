@@ -32,6 +32,14 @@ details of the article/comment from the rest of the program.  This
 class wraps the article in a clean read-only interface (except for
 comment-posting, etc.; you can write that way).
 
+=head1 METHODS
+
+=head2 isa
+
+Lies on ISA checks so that a Finalized item looks like a
+C<Angerwhale::Content::Article> if it's an article, or looks like a
+C<Angerwhale::Content::Comment> if it's a comment.
+
 =cut
 
 sub isa {
@@ -48,6 +56,12 @@ sub isa {
     return $self->SUPER::isa($what, @_);
 }
 
+=head2 new($item)
+
+Wraps $item (an C<Angerwhale::Content::Item>) to make it read-only.
+
+=cut
+
 sub new {
     my $class = shift;
     my $item  = shift;
@@ -57,12 +71,28 @@ sub new {
     bless $self => $class;
 }
 
+=head2 get_metadatum($name)
+
+Reads named metadatdum.
+
+=cut
+
 sub get_metadatum {
     my $self = shift;
     my $req  = shift;
     
     return $self->{item}{metadata}{$req};
 }
+
+=head2 get
+
+Overriding L<Class::Accessor|Class::Accessor>'s version for a few
+special cases.
+
+Normal case: get named data via C<get_metadatum>.  Special case:
+formatted body (html and text).
+
+=cut
 
 sub get {
     my $self = shift;
@@ -80,6 +110,13 @@ sub get {
     return $self->get_metadatum($what);
 }
 
+=head2 mini
+
+Returns true if the article is a mini article.  Allows
+you to set status also.
+
+=cut
+
 sub mini {
     my $self = shift;
     my $mini = shift;
@@ -89,10 +126,22 @@ sub mini {
     return $self->{item}{metadata}{mini} ? 1 : 0;
 }
 
+=head2 id
+
+Returns the UUID of the item.
+
+=cut
+
 sub id {
     my $self = shift;
     return $self->{item}->id;
 }
+
+=head2 compare
+
+Compares two items, based on creation_time.
+
+=cut
 
 sub compare {
     my $a = shift;
@@ -101,25 +150,58 @@ sub compare {
     return $a->creation_time <=> $b->creation_time;
 }
 
+=head2 children
+
+Returns arrayref comments attached to this Item.
+
+=cut
+
 sub children {
     my $self = shift;
     return $self->{item}->children;
 }
+
+=head2 comments
+
+(backcompat)
+
+Returns array of comments attached to this item, or false if there are
+no comments.
+
+=cut
 
 sub comments {
     my $self = shift;
     return @{$self->children||[]};
 }
 
+=head2 categories
+
+Returns the list of categories this item is in.
+
+=cut
+
 sub categories {
     my $self = shift;
     return @{$self->{item}{metadata}{categories}||[]};
 }
 
+=head2 add_comment
+
+Attach a comment to this item.
+
+=cut
+
 sub add_comment {
     my $self = shift;
     return $self->{item}->add_comment(@_);
 }
+
+=head2 raw_text
+
+Return raw unformatted data.
+
+=cut
 
 sub raw_text {
     my $self = shift;
@@ -127,11 +209,23 @@ sub raw_text {
     return $self->{item}->data;
 }
 
+=head2 tags
+
+Return list of tags.
+
+=cut
+
 sub tags {
     my $self = shift;
     my %tags = %{$self->{item}{metadata}{tags}||{}};
     return keys %tags;
 }
+
+=head2 tag_count
+
+Returns number of tags this article/comment has.
+
+=cut
 
 sub tag_count {
     my $self = shift;

@@ -5,6 +5,12 @@ use strict;
 use warnings;
 use Angerwhale::User::Anonymous;
 
+=head2 filter
+
+Adds author information.
+
+=cut
+
 # XXX: todo; real users :)
 sub filter {
     return

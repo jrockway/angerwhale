@@ -200,5 +200,10 @@ Create an instance
 
 Accept context
 
+=head2 COMPONENT
+
+Read some global config into local config if there isn't any local
+config.  For backcompat with older angerwhales.
+
 1;
 
