@@ -59,7 +59,7 @@ requires
    'Module::Pluggable'                                      => 0,
    'NEXT'                                                   => '0.60',
    'Pod::Simple::Text'                                      => 0,
-   'Pod::Xhtml'                                             => 0,
+   'Pod::Xhtml'                                             => '1.52_01',
    'Quantum::Superpositions'                                => 0,
    'Scalar::Defer'                                          => 0,
    'Scalar::Util'                                           => 0,
