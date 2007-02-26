@@ -6,6 +6,7 @@ use warnings;
 use Angerwhale::Content::Filesystem::Item;
 use Carp;
 use File::Find;
+use Path::Class;
 
 use base 'Angerwhale::Content::ContentProvider';
 __PACKAGE__->mk_accessors(qw/root/);
@@ -13,7 +14,8 @@ __PACKAGE__->mk_accessors(qw/root/);
 sub new {
     my $class = shift;
     my $self  = $class->next::method(@_);
-    croak "need root" if !eval{ $self->root->isa( 'Path::Class::Dir')  };
+    croak "need root" if !$self->root;
+    $self->root(dir($self->root));
     return $self;
 }
 

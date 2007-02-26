@@ -118,6 +118,7 @@ sub new {
         $t =~ /tags[.](\w+)/;
         my $tag = $1;
         $self->{metadata}{tags}{$tag} = $self->{metadata}{$t};
+        delete $self->{metadata}{$t}; # cleanup
     }
     
     return $self;
@@ -213,6 +214,25 @@ sub _child_count {
                sub { $count++ if eval { $_[0]->isa('Path::Class::File') }});
     
     return $count;
+}
+
+sub add_tag {
+    my $self = shift;
+    my @tags = @_;
+
+    foreach my $tag (@tags){
+        # get count
+        my $count = $self->metadata->{tags}{$tag} || 0;
+        
+        # store the new count to disk
+        $self->store_attribute("tags.$tag", ++$count);
+        
+        # fix in core copy
+        $self->metadata->{tags}{$tag} = $count;
+          
+        # delete extra metadat
+        delete $self->metadata->{"tags.$tag"};
+    }
 }
 
 =head2 add_comment($title, $body, $userid, $file_format)

@@ -233,5 +233,19 @@ sub tag_count {
     return $self->{item}{metadata}{tags}{$_[1]} || 0;
 }
 
+=head2 add_tag(@tags)
+
+Add a list of tags to the entry.
+
+=cut
+
+sub add_tag {
+    my $self = shift;
+    my @tags = @_;
+
+    $self->{item}->add_tag(@tags);
+    return;
+}
+
 1;
 

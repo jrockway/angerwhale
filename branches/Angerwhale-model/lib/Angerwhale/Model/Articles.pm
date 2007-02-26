@@ -57,7 +57,6 @@ sub COMPONENT {
         $args->{storage_class} = 'Filesystem';
         $args->{storage_args}{root} = $app->config->{base};
     }
-    
     return $class->next::method($app, $args);
 }
 
@@ -106,7 +105,7 @@ sub get_by_category {
 
 sub get_by_tag {
     my $self = shift;
-    return;
+    return $self->_apply_filters($self->source->get_by_tag(@_));
 }
 
 sub get_tags { $_[0]->source->get_tags };

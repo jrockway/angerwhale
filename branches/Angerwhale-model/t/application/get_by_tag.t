@@ -1,0 +1,52 @@
+#!/usr/bin/perl
+# get_by_tag.t 
+# Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
+
+use Test::More tests => 20;
+use Angerwhale::Test;
+use Angerwhale::Test::Application;
+
+local $SIG{__WARN__} = sub {}; # blah blah blah
+
+diag "This test will fail until TT is fixed.";
+
+my $mech = Angerwhale::Test->new;
+$mech->article('This is a test article.html');
+
+my $articles = model('Articles', 
+                     {args => { storage_class => 'Filesystem',
+                                storage_args  => { root => $mech->tmp->base }}});
+
+my $article = $articles->get_article('This is a test article.html');
+
+ok($article, 'got article');
+is($article->title, 'This is a test article', 'title is test');
+
+# singular and list
+$article->add_tag('footag');
+$article->add_tag('bartag', 'tagtag');
+
+# sidebar
+$mech->get_ok('http://localhost/tags');
+$mech->content_contains('footag');
+$mech->content_contains('bartag');
+$mech->content_contains('tagtag');
+$mech->content_unlike(qr/\bfaketag\b/);
+
+# tag cloud (XXX: has sidebar too!)
+$mech->get_ok('http://localhost/tags');
+$mech->content_contains('footag');
+$mech->content_contains('bartag');
+$mech->content_contains('tagtag');
+$mech->content_unlike(qr/\bfaketag\b/);
+
+# check for article on tag page
+$mech->get_ok('http://localhost/tags/footag');
+$mech->content_contains('This is a test article');
+$mech->get_ok('http://localhost/tags/bartag');
+$mech->content_contains('This is a test article');
+$mech->get_ok('http://localhost/tags/tagtag');
+$mech->content_contains('This is a test article');
+$mech->get_ok('http://localhost/tags/faketag');
+$mech->content_unlike(qr'This is a test article');
+
