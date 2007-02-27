@@ -3,6 +3,8 @@
 # Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
 
 use Test::More tests => 26;
+use strict;
+use warnings;
 use Angerwhale::Test;
 use Angerwhale::Test::Application;
 
