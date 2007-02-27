@@ -86,7 +86,7 @@ sub do_tag : Local {
 
         # actually do the tagging, and return HTML
         $c->stash->{template} = 'ajax_tags.tt';
-        $article->set_tag(@tags);
+        $article->add_tag(@tags);
         $c->stash->{article} = $article;
     }
 }

@@ -49,7 +49,7 @@ is( $comment->checksum, '25c5d6663226d4f18fa0c73c09758177',
 ok( $comment->id, 'has an id' );
 like( $comment->summary, qr/This is a test./, 'summary contains correct text' );
 dies_ok( sub {$comment->add_comment( 'foo', 'bar', 'baz' )}, 'add_comment fails' );
-dies_ok( sub {$comment->set_tag('foo')}, 'tagging fails' );
+dies_ok( sub {$comment->add_tag('foo')}, 'tagging fails' );
 ok( !$comment->tags, 'no tags' );
 is( $comment->tag_count, 0, 'tag count = 0' );
 
