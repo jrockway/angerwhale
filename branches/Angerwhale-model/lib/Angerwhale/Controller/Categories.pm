@@ -82,8 +82,8 @@ sub show_category : Path('/categories') {
       || 5;
 
     # how many words must an article contain to be non-mini?
-    my $MINI_CUTOFF = $c->config->{mini_cutoff} || 120;
-
+    my $MINI_CUTOFF = $c->config->{mini_cutoff} || 60;
+    
     # get the articles
     my $article;    # tmp counter variable in a few places
     my @articles;

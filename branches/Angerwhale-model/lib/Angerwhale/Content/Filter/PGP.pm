@@ -67,15 +67,15 @@ sub filter {
                   # good signature
                   # cache the signature so we don't have to verify again
                   $item->store_attribute('signed', 'yes');
-                  $item->store_attribute('author', $author);
-
-                  # set the author
+                  $item->store_attribute('author',  unpack( "H*", $author));
+                  $item->metadata->{raw_author} = $item->metadata->{author};
+                  
+                  # setup the "inflated" author
                   $item->metadata->{author} =
                     $context->model('UserStore')->
                       get_user_by_real_id($author);
 
                   $item->metadata->{signor} = $author;
-                  $item->metadata->{raw_author} = unpack( "H*", $author);
               }
           }
           

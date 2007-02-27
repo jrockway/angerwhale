@@ -39,11 +39,11 @@ sub get_article {
         
       file:
         foreach my $f (@files) {
-            if ($ino = $f->stat->ino) {
+            next unless -e $f;
+            if ($ino == $f->stat->ino) {
                 push @in, $c;
                 last file;
             }
-            
         }
     }
     $article->metadata->{categories} = [@in];
@@ -54,7 +54,9 @@ sub get_articles {
     my $self = shift;
     my $dir  = shift || $self->root;
     
-    my @files = grep { eval{$_->isa('Path::Class::File')} } $dir->children;
+    my @files = 
+      grep { $_->basename !~ /^[.]/ }
+        grep { eval{$_->isa('Path::Class::File')} } $dir->children;
     
     my @articles;
     foreach my $article (@files) {
@@ -108,10 +110,10 @@ sub revision {
     my $self = shift;
     my $revision;
     find(sub {
-             $revision += ( stat($File::Find::name) )[9]
-               if !-d $File::Find::name;
+             $revision += ( stat _ )[9]
+               if !-d $File::Find::name && -e _;
          },
-         ( $self->root ));
+         ( q{}. $self->root ));
     return $revision;
 }
 
