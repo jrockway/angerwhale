@@ -116,7 +116,7 @@ sub new {
     # setup tags
     foreach my $t (grep {/tags[.]\w+/} keys %{$self->{metadata}}) {
         $t =~ /tags[.](\w+)/;
-        my $tag = $1;
+        my $tag = lc $1;
         $self->{metadata}{tags}{$tag} = $self->{metadata}{$t};
         delete $self->{metadata}{$t}; # cleanup
     }
@@ -227,6 +227,8 @@ sub add_tag {
     my @tags = @_;
 
     foreach my $tag (@tags){
+        lc $tag;
+
         # get count
         my $count = $self->metadata->{tags}{$tag} || 0;
         
