@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use File::Spec;
 use File::Remove;
+use YAML::Syck qw(LoadFile);
 use Catalyst qw/Unicode ConfigLoader Static::Simple
                 Cache Cache::Store::FastMmap Setenv
                 Session::Store::FastMmap Session::State::Cookie Session
@@ -15,42 +16,11 @@ our $VERSION = '0.03';
 
 my $tmp = File::Spec->catdir(File::Spec->tmpdir, 'angerwhale');
 File::Remove::remove(\1, $tmp);
-
 binmode STDOUT, ':utf8';
-__PACKAGE__->config->{'Model::Articles'}{storage_class} = 'Filesystem';
-__PACKAGE__->config->{'Model::Articles'}{storage_args} = 
-  { 
-   root => __PACKAGE__->path_to("root/posts")
-  };
 
+# load defaults
+__PACKAGE__->config(LoadFile(__PACKAGE__->path_to('root', 'resources.yml')));
 
-__PACKAGE__->config->{session} = 
-  { 
-   flash_to_stash => 1,
-  };
-
-__PACKAGE__->config(name => __PACKAGE__);
-__PACKAGE__->config->{static}->{mime_types} = 
-  {
-   svg => 'image/svg+xml',
-   js  => 'text/javascript',
-  }; 
-
-__PACKAGE__->config->{cache}{backends} = 
-  {
-   jemplate => 
-   {
-    store => "FastMmap",
-   },
-   pages => 
-   {
-    store => "FastMmap",
-   },
-   formatted => 
-   {
-    store => "FastMmap",
-   },
-  };
 __PACKAGE__->config('revision_callback' => 
                     sub { 
                         my $c   = shift;
@@ -61,15 +31,6 @@ __PACKAGE__->config('revision_callback' =>
                     }
                    );
 
-__PACKAGE__->config('View::Jemplate'=> 
-                    {
-                     jemplate_dir => 
-                     __PACKAGE__->path_to('root','jemplate'),
-                     jemplate_ext => '.tt',
-                    },
-                   );
-
-__PACKAGE__->config->{cache}->{expires} = 43200;    # 12 hours
 __PACKAGE__->config( { VERSION => $VERSION } );
 __PACKAGE__->setup;
 __PACKAGE__->log->disable('debug') if !__PACKAGE__->debug;
