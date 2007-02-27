@@ -5,6 +5,7 @@
 package Angerwhale::Content::Filter::PGP;
 use Angerwhale::Signature;
 use Crypt::OpenPGP;
+use Encode;
 use strict;
 use warnings;
 
@@ -24,9 +25,15 @@ sub filter {
           my $self = shift;
           my $context = shift;
           my $item = shift;
-          
-          # first get real text
-          my $text = Angerwhale::Signature->_signed_text($item->data);
+
+          my $text;
+          eval {
+              # PGP wants octets, not characters
+              my $data = $item->data;
+              $data = Encode::encode('utf8', $data) if utf8::is_utf8($data);
+              $text = Angerwhale::Signature->_signed_text($data);
+              $text = Encode::decode('utf8', $text) if !utf8::is_utf8($text);
+          };
           
           if($text){
               $item->metadata->{raw_text} = $item->data;
@@ -75,6 +82,12 @@ sub filter {
           return $item;
       };
 }
+
+=head2 get_user_signature
+
+Returns keyid of signature, or false if the signature is invalid.
+
+=cut
 
 sub get_user_signature {
     my ($message, $userstore) = @_;

@@ -216,6 +216,12 @@ sub _child_count {
     return $count;
 }
 
+=head2 add_tag(@tags)
+
+Tag item with tags in C<@tags>.
+
+=cut
+
 sub add_tag {
     my $self = shift;
     my @tags = @_;

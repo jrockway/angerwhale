@@ -129,7 +129,7 @@ ora Crypt::OpenPGP::OnePassSig.
 sub _signed_text {
     my ( $self, $message ) = @_;
     my ( $data, $sig );
-
+    
     my $msg = Crypt::OpenPGP::Message->new( Data => $message )
       or croak "Reading message failed: " . Crypt::OpenPGP::Message->errstr;
 
