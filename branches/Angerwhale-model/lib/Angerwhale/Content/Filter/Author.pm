@@ -18,6 +18,7 @@ sub filter {
           my $self = shift;
           my $context = shift;
           my $item = shift;
+          $item->metadata->{raw_author} = $item->metadata->{author};
           $item->metadata->{author} = Angerwhale::User::Anonymous->new;
           return $item;
       };

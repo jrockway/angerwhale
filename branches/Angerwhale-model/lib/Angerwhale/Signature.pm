@@ -10,7 +10,6 @@ use Crypt::OpenPGP::Message;
 use Angerwhale::User::Anonymous;
 use File::Attributes qw(get_attribute set_attribute);
 use Carp;
-
 use YAML::Syck;
 
 =head1 METHODS

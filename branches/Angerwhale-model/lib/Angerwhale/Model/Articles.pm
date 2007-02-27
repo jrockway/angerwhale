@@ -14,6 +14,7 @@ use Angerwhale::Content::Filter::Encoding;
 use Angerwhale::Content::Filter::Checksum;
 use Angerwhale::Content::Filter::Title;
 use Angerwhale::Content::Filter::Author;
+use Angerwhale::Content::Filter::PGP;
 use Angerwhale::Content::Filter::Format;
 use Angerwhale::Content::Filter::Summary;
 use Angerwhale::Content::Filter::URI;
@@ -39,6 +40,7 @@ sub new {
                     Angerwhale::Content::Filter::Checksum::filter(),
                     Angerwhale::Content::Filter::Title::filter(),
                     Angerwhale::Content::Filter::Author::filter(),
+                    Angerwhale::Content::Filter::PGP::filter(),
                     Angerwhale::Content::Filter::Format::filter(),
                     Angerwhale::Content::Filter::Summary::filter(),
                     Angerwhale::Content::Filter::URI::filter(),

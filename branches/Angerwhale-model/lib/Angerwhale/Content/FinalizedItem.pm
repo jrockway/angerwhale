@@ -205,6 +205,9 @@ Return raw unformatted data.
 
 sub raw_text {
     my $self = shift;
+    my $mod  = shift;
+    return $self->{item}{metadata}{raw_text} || $self->{item}->data
+      if $mod;
     
     return $self->{item}->data;
 }
