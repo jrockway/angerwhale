@@ -227,7 +227,7 @@ sub add_tag {
     my @tags = @_;
 
     foreach my $tag (@tags){
-        lc $tag;
+        $tag = lc $tag;
 
         # get count
         my $count = $self->metadata->{tags}{$tag} || 0;
