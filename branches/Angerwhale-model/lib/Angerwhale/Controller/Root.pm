@@ -89,6 +89,23 @@ sub default : Private {
     $c->stash( template => 'error.tt' );
 }
 
+=head2 exit
+
+Exit for profiling tests
+
+=cut
+
+sub exit : Local {
+    my ($self, $c) = @_;
+    if ($ENV{ANGERWHALE_EXIT_OK}) {
+        exit(0);
+    }
+    else {
+        $c->stash( template => 'error.tt' );
+        $c->res->status (403); # forbidden
+    }
+}
+
 =head2 end
 
 Global end action (except for L<Angerwhale::Model::Feeds>).  Renders
