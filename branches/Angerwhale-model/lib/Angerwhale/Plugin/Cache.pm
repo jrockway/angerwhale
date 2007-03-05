@@ -183,6 +183,9 @@ sub finalize {
             else {
                 # cache and gzip generated body
                 $doc->{body} = q{}. $c->response->body(); # force stringify
+
+                # gzip works on octets, not characters
+                utf8::encode($doc->{body}) if utf8::is_utf8($doc->{body});
                 $doc->{gzip} = Compress::Zlib::memGzip( $doc->{body} );
             }
             
