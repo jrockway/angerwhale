@@ -1,4 +1,0 @@
-  Tags: 
-  [% FOREACH tag = article.tags %] 
-  <a href="[% base %]/tags/[% tag %]">[% tag %]</a>
-  [% END %]
