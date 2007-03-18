@@ -1,0 +1,467 @@
+/*
+Theme Name: SoSuechtig Black Edition
+Theme URI: http://www.sosuechtig.de/
+Description: SoSuechtig Wordpress Theme
+Version: 2.9 beta4
+Author: Patrick Queisler
+Author URI: http://www.sosuechtig.de/
+Modifications by Johannes Plunien
+*/
+html, body { 
+	margin: 0; 
+	padding: 0; 
+	text-align: center;
+	background-color: #222;
+	font: Verdana, Arial, Helvetica, sans-serif;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 13px;
+   	color: #333;
+    height: 101%;
+} 
+
+a:link, a:visited {
+	color: #f0670b;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+a:hover {
+	color: #f0670b;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+a:active, a:focus {
+	color: #f0670b;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+blockquote {
+	background-color: #FFF;
+	font-weight: normal;
+	color: #666;
+	border-top: 1px solid #f0670b;
+	border-bottom: 1px solid #f0670b;
+	margin: 0px 20px 0px 20px;
+	padding: 4px;
+}
+
+img {
+	border: none;
+}
+
+form {
+	background: #FFF;
+	margin: 0px;
+	padding: 4px;
+}
+
+input, textarea, select {
+	margin: 1px 0;
+	font-size: 100%;
+}
+input.text, textarea.text {
+	background: #FFF;
+	border: 1px solid #f0670b;
+	color: #666;
+}
+
+tr, td {
+	vertical-align: top;
+	font: normal 11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+#blog { 
+	width: 760px; 
+	text-align: left;  
+	margin-left: auto; 
+	margin-right: auto;
+	padding: 0px;
+}
+
+#header {
+	width: 760px;
+	height: 170px;
+	background: url(/static/images/header.jpg) no-repeat;
+	padding: 0;
+	margin: 0;
+}
+
+#header #sitetitle {
+	color: #fff;
+	padding-left: 15px;
+	padding-top: 22px;
+	font-size: 20px;
+	font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
+	font-weight: bolder;
+}
+
+#header #sitetitle h1 a {
+	color: #fff;
+}
+
+#header h2 {
+	color: #fff;
+	font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
+	font-weight: bolder;
+	font-size: 18px;
+}
+
+#header #sitedescription {
+	padding-left: 15px;
+	padding-top: 34px;
+	color: #FFFFFF;
+}
+
+#header #siteurl {
+    padding-right: 240px;
+    padding-top: 8px;
+    text-align: right;
+}
+
+code {
+    white-space: pre;
+    background: #c2e5ff;
+}
+
+pre {   
+    white-space: pre;
+    background: #fff;
+    color: #000;
+    font-family: monospace;
+    border: 1px solid #555555;
+    overflow: auto;
+    padding: 10px;
+    width: 479px;
+}
+
+#wrapper {
+	background-color: #FFFFFF;
+	background-image: url(/static/images/bg-wrapper.gif);
+	background-repeat: repeat-y;
+	padding: 0px;
+	margin: 0px;
+	height: 100%;
+}
+
+#wrapperleft {
+	width: 760px;
+	float: left;
+	position: relative;
+	padding: 0px;
+	margin: 0px;
+} 
+
+#main {
+	width: 550px;
+	float: left;
+	background-color: #FFFFFF;
+	padding: 0px;
+	margin: 0px;
+	line-height: 1.4em;
+}
+
+#main ul {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+#main li {
+	padding: 0px 0px 4px 12px;
+	background: url(images/bullet-doc.gif) no-repeat 0 3px;
+	font: normal 11px/16px Verdana, Arial, Helvetica, sans-serif;
+}
+
+/*	DATE */
+#main h1 {
+	font-weight: bold;
+	font-size: 100%;
+	color: #6699CC;
+	padding: 2px 4px 4px 27px;
+	background: url(images/bullet-splat.png) no-repeat 8px 4px;
+}
+
+/*	TOPIC */
+#main .entry h1, #main #comments h1, #main #commentform h1 {
+	font-weight: bold;
+	font-size: 120%;
+	background: none;
+	padding: 0px;
+	color: #f0670b;
+}
+
+#main .entry, #main #comments, #main #commentform {
+	padding: 0px 10px 30px 10px;
+	margin: 0px;
+}
+
+#main .entrycontent {
+	padding: 0px;
+	margin: 0px;
+}
+
+#main .entryfooter {
+	background-color: #FFF;
+	padding: 0px 0px 4px 0px;
+	margin: 0px;
+	border-top: 1px solid #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
+}
+
+#main .contentimage {
+	margin-top: 5px;
+}
+
+.contentimage {
+	padding-top: 0px;
+}
+
+#contentimage {
+	margin-top: 5px;
+}
+
+#main .asides {
+	padding: 0px 10px 10px 10px;
+}
+
+#comments {
+	background-color: #FFFFFF;
+	padding: 0px;
+	margin: 0px;
+	line-height: 1.4em;
+}
+
+#main #comments .comment {
+	background-color: #EFEFEF;
+	font-size: 100%;
+	font-weight: normal;
+	color: #444;
+	border-top: 1px solid #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
+	margin-bottom: 10px;
+	margin-right: 0px;
+	padding: 4px 20px 4px 20px;
+}
+
+#main #comments .officialuser {
+	background-color: #EFEFEF;
+	font-size: 100%;
+	font-weight: normal;
+	color: #444;
+	border-top: 1px solid #f0670b;
+	border-bottom: 1px solid #f0670b;
+	margin-bottom: 10px;
+	margin-right: 0px;
+	padding: 4px 20px 4px 20px;
+}
+
+#main #comments .comment h4, #main #comments .officialuser h4 {
+	font-size: 100%;
+	font-weight: normal;
+}
+
+#main #comments .comment .commentnumber, #main #comments .officialuser .commentnumber {
+	font-size: 140%;
+	font-weight: bold;
+	margin-right: 8px;
+}
+
+#main #commentform form {
+	background-color: #EFEFEF;
+	font-size: 100%;
+	font-weight: normal;
+	color: #444;
+	border-top: 1px solid #f0670b;
+	border-bottom: 1px solid #f0670b;
+	margin-bottom: 10px;
+	margin-right: 0px;
+	padding: 4px;
+}
+
+#main #commentform label {
+	font-size: 90%;
+}
+#main #commentform .commentforminfo {
+	font-size: 90%;
+}
+
+.sidebar {
+	width: 186px;
+	float: right;
+	position: relative;
+	padding-right: 10px;
+	margin: 0px;
+	color: #fff;
+	border-right: 4px solid #FFF;
+}
+
+.sidebar p {
+	text-align: left;
+}
+
+.sidebar #wp-calendar {
+	padding-left: 30px;
+}
+
+.sidebar a:link, .sidebar a:visited {
+	color: #fff;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+.sidebar a:hover {
+	color: #fff;
+	text-decoration: underline;
+	border-bottom: none;
+}
+
+.sidebar a:active, .sidebar a:focus {
+	color: #fff;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+.sidebar h2 {
+	padding-bottom: 10px;
+	margin: 0px;
+	font-size: 13px;
+	line-height: 1.4em;
+	color: #fff;
+}
+
+.sidebar li {
+	list-style-type: none;
+	background: none 0 0px;
+	margin: 0;
+	padding: 0;
+}
+
+.sidebar li h2 {
+	list-style-type: none;
+	background: none 0 0px;
+	padding-bottom: 10px;
+	margin: 0px;
+	font-size: 13px;
+	line-height: 1.4em;
+	color: #fff;
+}
+
+.sidebar ul {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	text-align: left;
+}
+
+.sidebar ul li {
+	padding: 0px 0px 4px 12px;
+	background: url(images/bullet-doc.gif) no-repeat 0 4px;
+	line-height: 17px;
+	text-align: left;
+}
+
+.sidebar #akismetwrap {
+	padding-left: 35px;
+}
+
+.sidebar .linkimages ul {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+.sidebar .linkimages li {
+	padding: 0px;
+	background-image: none;
+}
+
+.sidebar .linkimages a:link, .sidebar .linkimages a:visited, .sidebar .linkimages a:active, .sidebar .linkimages a:hover, .sidebar .linkimages a:focus {
+	text-decoration: none;
+	border: none;
+}
+
+#footer {
+	color: #666666;
+    text-align: center;
+    padding-bottom: 1em;
+}
+
+#footer a:link, #footer a:visited {
+	color: #ff7200;
+	text-decoration: none;
+}
+
+#footer a:hover {
+	color: #ff7200;
+	border-bottom: 1px solid #ff7200;
+}
+
+#footer a:active, #footer a:focus {
+	color: #ff7200;
+	text-decoration: none;
+	border-bottom: 1px solid #ff7200;
+}
+
+/* Float containers fix: http://www.csscreator.com/attributes/containedfloat.php */ 
+#wrapperleft:after, #wrapper:after {
+	content: "."; 
+	display: block; 
+	height: 0; 
+	clear: both; 
+	visibility: hidden;
+}
+ 
+#wrapperleft, #wrapper { display: inline-table; }
+
+/* Hides from IE-mac */
+* html #wrapperleft, * html #wrapper { height: 1%; }
+#wrapperleft, #wrapper { display: block; }
+/* End hide from IE-mac */ 
+
+#searchform {
+	background: none;
+	color: #FFF;
+	padding-left: 10;
+	padding-top: 0;
+}
+
+.searchforminput {
+	background-color: #fff;
+	font-size: 100%;
+	font-weight: normal;
+	color: #333;
+	border-top: 1px solid #FFF;
+	border-bottom: 1px solid #FFF;
+}
+
+/*last.fm Cover Widget */
+.lastfmcover {
+	padding: 0px;
+	border: 4px solid #FFF;
+	background: #FFF;
+	margin-left: 10px;
+	margin-bottom: 10px;
+	width: 47px;
+	height: 47px;
+}
+
+/*WP-PopIn Plugin Style */
+#wpPopin {
+   padding: 5px;
+   border: solid 2x #FFF;
+   background-color: #333;
+}
+
+
+#wpPopinLinks {
+    height: 12px;
+    padding: 4px;
+    padding-top: 0px;
+    padding-bottom: 7px;
+    text-align: center;
+    font-size: 10px;
+    color: #fff;
+    background: #333;
+}

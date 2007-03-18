@@ -5,7 +5,7 @@
       xml:lang="en">
   <head>
     <title>[% title | html %]</title>
-    <link rel="stylesheet" href="[% base %]static/phokus.css"
+    <link rel="stylesheet" href="[% base %]static/screen.css"
     type="text/css" />    
     <link rel="stylesheet" href="[% base %]static/syntax.css"
     type="text/css" />
