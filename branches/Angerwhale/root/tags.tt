@@ -1,0 +1,42 @@
+<div id="tagbox_[% article.id %]" class="taglist">
+ <p class="post_tags">
+  <span id="tags_[% article.id %]"> 
+    [% IF article.tags %]
+    Tags:
+    [% FOREACH tag = article.tags %] 
+      <a href="[% c.uri_for("/tags/$tag") | html %]">[% tag | html %]</a>
+    [% END %]
+    [% ELSE %]
+    No tags
+    [% END %]
+  </span>
+  <span id="plus_[% article.id %]" class="tag_plus">[+]</span>
+  </p>
+</div>
+[% SET url = base _ "tags/do_tag/" _ article.name %]
+[% SET control = "plus_" _ article.id %]
+[% SET id = "tags_" _ article.id %]
+[% SET complete = "function(transport, element){ alert(element); }" %]
+
+[% IF page == "home" %]
+[% SET home = "?_home=yes_indeed" %]
+[% END %]
+<script type="text/javascript">
+//<![CDATA[
+ new Ajax.InPlaceEditor( '[% id %]',
+    			'[% url %]',
+			{ 
+			  externalControl: '[% control %]',
+			  loadTextURL: '[% url %]',
+			  onFailure: 
+			     function(transport) {
+			        new Effect.Shake('tagbox_[% article.id %]');
+                             },
+			  onComplete: 
+                             function(transport, element) {
+ 			     	new Ajax.Updater('sidebar_box', 
+				    	         '/tags/get_nav_box[% home %]');
+			     }
+ 		         });
+//]]>
+</script>

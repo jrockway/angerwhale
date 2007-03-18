@@ -1,0 +1,5 @@
+[% IF number == 1 %]
+article
+[% ELSE %]
+articles
+[% END %]
