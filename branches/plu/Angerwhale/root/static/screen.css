@@ -1,11 +1,14 @@
 /*
-Theme Name: SoSuechtig Black Edition
-Theme URI: http://www.sosuechtig.de/
-Description: SoSuechtig Wordpress Theme
-Version: 2.9 beta4
-Author: Patrick Queisler
-Author URI: http://www.sosuechtig.de/
-Modifications by Johannes Plunien
+Original Theme Informations:
+  Theme Name: SoSuechtig Black Edition
+  Theme URI: http://www.sosuechtig.de/
+  Description: SoSuechtig Wordpress Theme
+  Version: 2.9 beta4
+  Author: Patrick Queisler
+  Author URI: http://www.sosuechtig.de/
+
+Modifications for Angerwhale made by
+Johannes Plunien <http://www.pqpq.de>
 */
 html, body { 
 	margin: 0; 
@@ -95,10 +98,8 @@ tr, td {
 	font-size: 20px;
 	font-family: "Arial Narrow", Arial, Helvetica, sans-serif;
 	font-weight: bolder;
-}
-
-#header #sitetitle h1 a {
-	color: #fff;
+	padding-left: 15px;
+	padding-top: 28px;
 }
 
 #header h2 {
@@ -108,16 +109,8 @@ tr, td {
 	font-size: 18px;
 }
 
-#header #sitedescription {
+#header #sitedesc {
 	padding-left: 15px;
-	padding-top: 34px;
-	color: #FFFFFF;
-}
-
-#header #siteurl {
-    padding-right: 240px;
-    padding-top: 8px;
-    text-align: right;
 }
 
 code {
@@ -197,42 +190,6 @@ pre {
 	margin: 0px;
 }
 
-#main .entrycontent {
-	padding: 0px;
-	margin: 0px;
-}
-
-#main .entryfooter {
-	background-color: #FFF;
-	padding: 0px 0px 4px 0px;
-	margin: 0px;
-	border-top: 1px solid #DDDDDD;
-	border-bottom: 1px solid #DDDDDD;
-}
-
-#main .contentimage {
-	margin-top: 5px;
-}
-
-.contentimage {
-	padding-top: 0px;
-}
-
-#contentimage {
-	margin-top: 5px;
-}
-
-#main .asides {
-	padding: 0px 10px 10px 10px;
-}
-
-#comments {
-	background-color: #FFFFFF;
-	padding: 0px;
-	margin: 0px;
-	line-height: 1.4em;
-}
-
 #main #comments .comment {
 	background-color: #EFEFEF;
 	font-size: 100%;
@@ -240,18 +197,6 @@ pre {
 	color: #444;
 	border-top: 1px solid #DDDDDD;
 	border-bottom: 1px solid #DDDDDD;
-	margin-bottom: 10px;
-	margin-right: 0px;
-	padding: 4px 20px 4px 20px;
-}
-
-#main #comments .officialuser {
-	background-color: #EFEFEF;
-	font-size: 100%;
-	font-weight: normal;
-	color: #444;
-	border-top: 1px solid #f0670b;
-	border-bottom: 1px solid #f0670b;
 	margin-bottom: 10px;
 	margin-right: 0px;
 	padding: 4px 20px 4px 20px;
@@ -299,10 +244,6 @@ pre {
 
 .sidebar p {
 	text-align: left;
-}
-
-.sidebar #wp-calendar {
-	padding-left: 30px;
 }
 
 .sidebar a:link, .sidebar a:visited {
@@ -362,30 +303,10 @@ pre {
 	text-align: left;
 }
 
-.sidebar #akismetwrap {
-	padding-left: 35px;
-}
-
-.sidebar .linkimages ul {
-	list-style-type: none;
-	padding: 0px;
-	margin: 0px;
-}
-
-.sidebar .linkimages li {
-	padding: 0px;
-	background-image: none;
-}
-
-.sidebar .linkimages a:link, .sidebar .linkimages a:visited, .sidebar .linkimages a:active, .sidebar .linkimages a:hover, .sidebar .linkimages a:focus {
-	text-decoration: none;
-	border: none;
-}
-
 #footer {
 	color: #666666;
     text-align: center;
-    padding-bottom: 1em;
+    padding-bottom: .6em;
 }
 
 #footer a:link, #footer a:visited {
@@ -420,48 +341,11 @@ pre {
 #wrapperleft, #wrapper { display: block; }
 /* End hide from IE-mac */ 
 
-#searchform {
-	background: none;
-	color: #FFF;
-	padding-left: 10;
-	padding-top: 0;
+#footer #logos {
+    padding-top: .8em;
 }
 
-.searchforminput {
-	background-color: #fff;
-	font-size: 100%;
-	font-weight: normal;
-	color: #333;
-	border-top: 1px solid #FFF;
-	border-bottom: 1px solid #FFF;
-}
-
-/*last.fm Cover Widget */
-.lastfmcover {
-	padding: 0px;
-	border: 4px solid #FFF;
-	background: #FFF;
-	margin-left: 10px;
-	margin-bottom: 10px;
-	width: 47px;
-	height: 47px;
-}
-
-/*WP-PopIn Plugin Style */
-#wpPopin {
-   padding: 5px;
-   border: solid 2x #FFF;
-   background-color: #333;
-}
-
-
-#wpPopinLinks {
-    height: 12px;
-    padding: 4px;
-    padding-top: 0px;
-    padding-bottom: 7px;
-    text-align: center;
-    font-size: 10px;
-    color: #fff;
-    background: #333;
+.post {
+    padding-top: .8em;
+    border-bottom: 4px dotted #ff7200;
 }
