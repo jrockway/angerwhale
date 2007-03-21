@@ -18,3 +18,18 @@ cache:
          store: FastMmap
 View::Jemplate:
    jemplate_dir: __path_to(root/jemplate)__
+page_includes:
+   javascript:
+      - prototype.js
+      - builder.js
+      - controls.js
+      - dragdrop.js
+      - effects.js
+      - slider.js
+      - Jemplate.js
+   jemplates:
+      - logged_in_as.tt
+      - sidebar_feed.tt
+   css:
+      - phokus.css
+      - syntax.css

@@ -5,27 +5,27 @@
       xml:lang="en">
   <head>
     <title>[% title | html %]</title>
-    <link rel="stylesheet" href="[% base %]static/phokus.css"
-    type="text/css" />    
-    <link rel="stylesheet" href="[% base %]static/syntax.css"
-    type="text/css" />
-
+    [% FOREACH style = config.page_includes.css 
+      <link rel="stylesheet" 
+            href="[% base %]static/[% style | html %]"
+            type="text/css" />    
+    [% END %]
+      
     <link rel="alternate" href="[% base %]feeds/articles/atom"
 	  type="application/atom+xml" title="RSS Feed" />
     <link rel="alternate" href="[% base %]feeds/comments/atom"
 	  type="application/atom+xml" title="RSS Comment Feed" />
+    <link rel="alternate" href="[% base %]feeds/articles/yaml" 
+          type="text/x-yaml" />
     
-    <link rel="alternate" href="[% base %]feeds/articles/yaml" type="text/x-yaml" />
-    
-    <script type="text/javascript" src="/static/prototype.js"></script>
-    <script type="text/javascript" src="/static/builder.js"></script>
-    <script type="text/javascript" src="/static/controls.js"></script>
-    <script type="text/javascript" src="/static/dragdrop.js"></script>
-    <script type="text/javascript" src="/static/effects.js"></script>
-    <script type="text/javascript" src="/static/slider.js"></script>
-    <script type="text/javascript" src="/static/Jemplate.js"></script>
-    <script type="text/javascript" src="/jemplate/logged_in_as.tt"></script>
-    <script type="text/javascript" src="/jemplate/sidebar_feed.tt"></script>
+    [% FOREACH script = config.page_includes.javascript %]
+       <script type="text/javascript" 
+               src="[% base %]static/[% script | html %]"></script>
+    [% END %]
+    [% FOREACH jemplate = config.page_includes.jemplates %]
+       <script type="text/javascript" 
+               src="[% base %]jemplate/[% jemplate | html %]"></script>
+    [% END %]
   </head>
   <body>
    <div id="page"> <!-- for typo themes -->
