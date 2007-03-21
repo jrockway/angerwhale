@@ -19,6 +19,7 @@ cache:
 View::Jemplate:
    jemplate_dir: __path_to(root/jemplate)__
 page_includes:
+# javascript is in base/static/*
    javascript:
       - prototype.js
       - builder.js
@@ -27,9 +28,11 @@ page_includes:
       - effects.js
       - slider.js
       - Jemplate.js
+# jemplates are in base/jemplate/*
    jemplates:
       - logged_in_as.tt
       - sidebar_feed.tt
+# css is in base/jemplate/*
    css:
       - phokus.css
       - syntax.css
