@@ -1,0 +1,16 @@
+[% WRAPPER page.tt %]
+  [% INCLUDE post.tt 
+     standalone = 1  %]
+
+    [% INCLUDE comments_header.tt %]  
+[% IF article.comments %]
+  <div id="comments">
+    <ul>
+      [% FOREACH comment = article.comments %]
+      <li>[% INCLUDE comment.tt %]</li>
+      [% END %]
+    </ul>
+  </div>
+  <div class="after"><br /></div>
+[% END %]
+[% END %]

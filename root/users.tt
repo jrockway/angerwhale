@@ -1,0 +1,16 @@
+[% WRAPPER page.tt %]
+<div id="users">
+<h2> Users that I know about </h2>
+[% IF users.size > 0 %]
+<ul>
+[% FOREACH auser = users %]
+<li>[% auser.fullname | html %] &lt;[% auser.email | html%]&gt;<br />
+    [% auser.nice_id | html %] - [% auser.key_fingerprint | html %]
+</li>
+[% END %]
+</ul>
+[% END %]
+
+</div>
+<div class="after"><br /></div>
+[% END %]
