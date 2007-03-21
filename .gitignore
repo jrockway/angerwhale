@@ -1,0 +1,9 @@
+META.yml
+MANIFEST
+cover_db
+Angerwhale-*
+Makefile.old
+Makefile
+blib
+inc
+pm_to_blib
