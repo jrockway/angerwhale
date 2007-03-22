@@ -118,7 +118,7 @@ L<irc://irc.perl.org/#catalyst>.
 
 =item *
 
-Wiki and source code browser is at L<http://trac.jrock.us/blog_software>.
+Git (revision control) at L<http://git.angerwhale.org>.
 
 =item *
 
@@ -131,8 +131,9 @@ course, it's running Angerwhale.)
 
 =head1 TODO
 
-Lots of things TODO.  Patches welcome; but ask on IRC before you get
-started.  I'll give you a commit bit so you can work at your leisure.
+Lots of things TODO.  Patches welcome; but it's best to ask on IRC
+before you get started.  I'll give you a commit bit so you can work at
+your leisure.
 
 =over 4
 
@@ -192,7 +193,7 @@ Bogdan Lucaciu - L<http://blog.wiz.ro/>
 
 =item *
 
-Florian Ragwitz L<http://perldition.org/>
+Florian Ragwitz - L<http://perldition.org/>
 
 =back
 
