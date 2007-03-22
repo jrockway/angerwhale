@@ -178,9 +178,10 @@ sub _get_commentdir {
     
     my $commentdir;
     my (undef, $container, undef) = File::Spec->splitpath($self->file);
+    
     # XXX: this is why i was using Path::Class before :)
-    $self->{root} =~ s{/$}{};
-    $container   =~ s{/$}{}; # strip slashes for eq
+    $self->{root} =~ s{/+$}{};
+    $container   =~ s{/+$}{}; # strip slashes for eq
     
     if ($container eq $self->root) {
         $commentdir = "$container/.comments/". $self->id;
