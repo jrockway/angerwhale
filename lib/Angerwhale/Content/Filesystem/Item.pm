@@ -7,7 +7,9 @@ use Carp;
 use File::Slurp;
 use File::Attributes qw(get_attributes set_attribute);
 use File::Attributes::Recursive qw(get_attribute_recursively);
-use Path::Class ();
+use File::Path qw(mkpath);
+use File::Spec;
+use File::Find;
 use Data::UUID;
 use File::CreationTime qw(creation_time);
 use Scalar::Defer;
@@ -23,9 +25,9 @@ disk representing an Angerwhale::Content::Item
 
 =head1 SYNOPSIS
 
-   my $base = dir(qw/path to some files/);
+   my $base = '/path/to/some/files';
    my $root = $base;
-   my $file = $base->file('an article');
+   my $file = '/path/to/some/files/an article';
 
    my $item = Angerwhale::Content::Filesystem::Item->new
                  ({ root => $root,
@@ -52,11 +54,11 @@ Create a new instance.  Hashref must contain:
 =item root
 
 The root directory, where the "articles" live.  Must be a
-L<Path::Class::Dir|Path::Class::Dir>.
+directory.
 
 =item file
 
-Path to this file.  Must be a L<Path::Class::File>.
+Path to this file.  Must be a file.
 
 =back
 
@@ -74,8 +76,8 @@ sub new {
     my $class = shift;
     my $self  = $class->next::method(@_);
 
-    croak "need root" if !eval{ $self->root->isa( 'Path::Class::Dir')  };
-    croak "need file" if !eval{ $self->file->isa( 'Path::Class::File') };
+    croak "need full path to root" if !-d $self->root; 
+    croak "need full path to file" if !-e $self->file;
     
     my $file = q{}. $self->file; # stringify filename for IO()
     $self->data(scalar read_file( $file )); 
@@ -91,10 +93,11 @@ sub new {
       grep { 1 if !defined $attributes{$_} }
         keys %attributes;
     
+    my (undef, undef, $basename) = File::Spec->splitpath($self->file);
     $self->metadata ( { %attributes,
                         creation_time     => creation_time($file),
                         modification_time => (stat $file)[9],
-                        name              => $self->file->basename,
+                        name              => $basename,
                       } );
     
     # this needs the above metadata in order to work
@@ -174,24 +177,29 @@ sub _get_commentdir {
     my $self = shift;
     
     my $commentdir;
-    my $container = $self->file->dir;
+    my (undef, $container, undef) = File::Spec->splitpath($self->file);
+    # XXX: this is why i was using Path::Class before :)
+    $self->{root} =~ s{/$}{};
+    $container   =~ s{/$}{}; # strip slashes for eq
+    
     if ($container eq $self->root) {
-        $commentdir = $container->subdir('.comments')->subdir($self->id);
+        $commentdir = "$container/.comments/". $self->id;
     }
     else {
-        $commentdir = $container->subdir($self->id);
+        $commentdir = "$container/". $self->id;
     }    
     
-    $commentdir->mkpath();    
+    mkpath($commentdir);
     return $commentdir;
 }
 
 sub _children {
     my $self = shift;
     my $commentdir = $self->_get_commentdir();
-    return 
+    opendir my $dir, $commentdir or die "failed to open $commentdir: $!";
+    my @result =
       map {
-          my $file = $_;
+          my $file = "$commentdir/$_";
           Angerwhale::Content::Filesystem::Item->
               new({ root    => $self->root,
                     base    => $commentdir,
@@ -200,19 +208,19 @@ sub _children {
                     parent  => $self->metadata->{path},
                   });
       } grep {
-          # skip directories
-          eval { $_->isa('Path::Class::File') }
-      } $commentdir->children;
+          !-d "$commentdir/$_"; # skip dirs
+      } 
+        readdir $dir;
+    
+    closedir $dir;
+    return @result;
 }
 
 sub _child_count {
     my $self = shift;
     my $count = 0;
 
-    $self->_get_commentdir->
-      recurse( callback => 
-               sub { $count++ if eval { $_[0]->isa('Path::Class::File') }});
-    
+    find( sub { $count++ if -f $File::Find::name }, $self->_get_commentdir);
     return $count;
 }
 
@@ -288,7 +296,7 @@ sub add_comment {
     my $safe_title = $title;
     $safe_title =~ s{[^A-Za-z_]}{}g;    # kill anything unusual
 
-    my $filename = q{}. $comment_dir->file($safe_title);
+    my $filename = $comment_dir. "/$safe_title";
     while ( -e $filename ) {            # make names unique
         $filename .= " [" . int( rand(10000) ) . "]";
     }
@@ -319,15 +327,14 @@ sub add_comment {
 
     # set attributes: (TODO: atomic also)
     eval {
-        
         my $comment = Angerwhale::Content::Filesystem::Item->
           new({ root    => $self->root,
                 base    => $comment_dir,
-                file    => Path::Class::file($filename),
+                file    => $filename,
                 comment => 1,
                 parent  => $self->metadata->{path},
               });
-
+        
         # attribute the comment to someone, if possible
         if ($user) {
             $comment->store_attribute( 'author', $user );

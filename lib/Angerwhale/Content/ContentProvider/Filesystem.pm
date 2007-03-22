@@ -6,7 +6,7 @@ use warnings;
 use Angerwhale::Content::Filesystem::Item;
 use Carp;
 use File::Find;
-use Path::Class;
+use File::Spec;
 use Quantum::Superpositions;
 
 use base 'Angerwhale::Content::ContentProvider';
@@ -16,7 +16,7 @@ sub new {
     my $class = shift;
     my $self  = $class->next::method(@_);
     croak "need root" if !$self->root;
-    $self->root(dir($self->root));
+    $self->root($self->root);
     return $self;
 }
 
@@ -24,43 +24,65 @@ sub get_article {
     my $self = shift;
     my $name = shift;
 
-    my $file = $self->root->file($name);
+    my $file = $self->root. "/$name";
     
     my $article = Angerwhale::Content::Filesystem::Item->
       new({ file => $file,
             root => $self->root });
     
     # determine what categories this article is in
-    my $ino = $article->file->stat->ino;
+    my $ino = (stat $article->file)[1]; # inode
     my @in;
   category:
     foreach my $c ($self->get_categories) {
-        my @files = $self->root->subdir($c)->children;
+        opendir my $dir, $self->root. "/$c"
+          or die "failed to open ". $self->root. "/$c: $!";
         
       file:
-        foreach my $f (@files) {
+        while( my $f = readdir $dir){
             next unless -e $f;
-            if ($ino == $f->stat->ino) {
+            my $_ino = (stat $f)[1]; # inode
+            if ($ino == $_ino) {
                 push @in, $c;
                 last file;
             }
         }
+        closedir $dir;
     }
+    
     $article->metadata->{categories} = [@in];
     return $article;
 }
+
+# returns ([files], [directories]) skipping .hidden_files
+sub _read_dir {
+    my $dir = shift;
+    my (@files, @dirs);
+
+    opendir my $dh, $dir or die "failed to open $dir: $!";
+    while (my $file = readdir $dh) {
+        next if $file =~ /^[._]/;
+        my $path = "$dir/$file";
+        if(!-d $path ){
+            push @files, $file;
+        }
+        else {
+            push @dirs, $file;
+        }
+    }
+    closedir $dh;
+    return (\@files, \@dirs);
+}
+
 
 sub get_articles {
     my $self = shift;
     my $dir  = shift || $self->root;
     
-    my @files = 
-      grep { $_->basename !~ /^[.]/ }
-        grep { eval{$_->isa('Path::Class::File')} } $dir->children;
-    
+    my @files = @{((_read_dir($dir))[0])||{}}; # the beauty of perl
     my @articles;
-    foreach my $article (@files) {
-        push @articles, $self->get_article($article->basename);
+    foreach my $file (@files) {
+        push @articles, $self->get_article($file);
     }
     
     return @articles;
@@ -68,11 +90,7 @@ sub get_articles {
 
 sub get_categories {
     my $self = shift;
-    return 
-      sort
-        map { $_->{dirs}[-1] }
-          grep { eval {$_->isa('Path::Class::Dir')} && $_->{dirs}[-1] !~ /^[.]/ } 
-            $self->root->children;
+    return @{((_read_dir($self->root))[1])||{}};
 }
 
 sub get_tags {
@@ -87,7 +105,7 @@ sub get_tags {
 sub get_by_category {
     my $self = shift;
     my $category = shift;
-    return $self->get_articles($self->root->subdir($category));
+    return $self->get_articles($self->root . "/$category");
 }
 
 sub get_by_tag {

@@ -50,6 +50,8 @@ requires
    'File::Remove'                                           => 0,
    'File::Slurp'                                            => '9999.12',
    'File::Temp'                                             => 0,
+   'File::Path'                                             => 0,
+   'File::Spec'                                             => 0,
    'GD::SecurityImage'                                      => 0,
    'HTML::SBC'                                              => 0,
    'HTML::TreeBuilder'                                      => 0,
@@ -96,6 +98,7 @@ build_requires
    'Test::YAML::Valid'                                      => '0.02',
    'Test::JSON'                                             => 0,
    'Test::WWW::Mechanize::Catalyst'                         => 0,
+   'Path::Class',                                           => 0,
   );
 
 feature('Speed up crypto', ['Math::BigInt::GMP' => 0]);

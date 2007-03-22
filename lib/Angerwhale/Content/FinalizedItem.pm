@@ -152,7 +152,7 @@ sub compare {
 
 =head2 children
 
-Returns arrayref comments attached to this Item.
+Returns arrayref of comments attached to this Item.
 
 =cut
 
