@@ -146,8 +146,11 @@ Compares two items, based on creation_time.
 sub compare {
     my $a = shift;
     my $b = shift;
+
+    # allow comparision against timestamps too
+    ($a,$b) = map { eval { $_->creation_time } || $_ } ($a,$b);
     
-    return $a->creation_time <=> $b->creation_time;
+    return $a <=> $b;
 }
 
 =head2 children
