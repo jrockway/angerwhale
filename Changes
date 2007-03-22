@@ -5,6 +5,8 @@ Angerwhale changes
        - support custom date formats
        - improve plaintext formatter
        - change JSON feed API (no items element; items are in an array)
+       - add resource file for easier hacking
+       - make css / jemplates / javascript included on each page configable
 
 0.03  14 Feb 2007
        - add JSON feeds (feeds/*/json instead of feeds/*/yaml, etc.)
