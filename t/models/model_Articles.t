@@ -1,7 +1,7 @@
 #!perl
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 24;
+use Test::More tests => 25;
 use Test::MockObject;
 use Test::Exception;
 use Directory::Scratch;
@@ -75,10 +75,12 @@ lives_ok (sub {
             0, 'text' );
 }, 'added a comment without triggering a FATAL ERROR!!!!!!! :)' );
 
+
 $article = $fs->get_article('Another Article.pod');
 is( $article->id, $id, 'copy of article has same GUID' );
 
-is( $article->comment_count, 1, 'comment stuck' );
+is( $article->comment_count, 1, 'comment number is correct' );
+is( scalar @{$article->children||[]}, 1, 'comment actually exists' );
 
 dies_ok (sub {
         $article->add_comment( 'Test comment', '', 0, 'text' );
