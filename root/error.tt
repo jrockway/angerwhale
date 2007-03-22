@@ -13,7 +13,7 @@
     
     <hr />
     <address>
-      Angerwhale version [% c.VERSION %] ([% INCLUDE revision.tt %]) 
+      Angerwhale version [% c.VERSION %]
     </address>
   </body>
 </html>
