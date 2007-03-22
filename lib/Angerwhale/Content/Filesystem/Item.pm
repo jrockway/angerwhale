@@ -229,12 +229,8 @@ sub _child_count {
 
     my $count = 0;
     find( sub { 
-	    if (-f $File::Find::name && 
-		$_ !~ /^[.]/){
-	      $count++;
-	      warn "found $File::Find::name";
-	    }
-	  }, $self->_get_commentdir);
+	    $count++ if -f $File::Find::name && $_ !~ /^[.]/;
+	  }, $self->_get_commentdir );
     return $count;
 }
 
