@@ -215,10 +215,10 @@ sub _children {
                     parent  => $self->metadata->{path},
                   });
       } grep {
-	  $_ !~ /^[.]/ &&           # skip hidden files
-	      !-d "$commentdir/$_"; # skip dirs
+          $_ !~ /^[.]/ &&           # skip hidden files
+            !-d "$commentdir/$_"; # skip dirs
       } 
-      readdir $dir;
+        readdir $dir;
     
     closedir $dir;
     return @result;
@@ -226,11 +226,11 @@ sub _children {
 
 sub _child_count {
     my $self = shift;
-
+    
     my $count = 0;
     find( sub { 
-	    $count++ if -f $File::Find::name && $_ !~ /^[.]/;
-	  }, $self->_get_commentdir );
+              $count++ if -f $File::Find::name && $_ !~ /^[.]/;
+          }, $self->_get_commentdir );
     return $count;
 }
 
