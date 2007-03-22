@@ -78,6 +78,12 @@ sub new {
 
     croak "need full path to root" if !-d $self->root; 
     croak "need full path to file" if !-e $self->file;
+
+    # fix up paths a bit
+    $self->{root} =~ s{/+$}{};
+    $self->{file} =~ s{/+$}{};
+    $self->{root} =~ s{/+}{/}g;
+    $self->{file} =~ s{/+}{/}g;
     
     my $file = q{}. $self->file; # stringify filename for IO()
     $self->data(scalar read_file( $file )); 
