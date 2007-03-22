@@ -109,7 +109,7 @@ install_script(glob('script/*.pl'));
 auto_install();
 license('GPL');
 tests('t/*/*.t');
-write_revision() if !-e 'root/revision.tt';
+
 WriteAll( sign => 1, meta => 1 );
 catalyst_par_core();
 catalyst_par();  
