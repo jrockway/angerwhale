@@ -13,7 +13,7 @@
 	[% IF article.signed %]
 	    <a href="[% c.uri_for("/articles/$article.name") %]/raw">
 	      <img style="border: none;"
-	      	   src="[% base %]static/lock.png" alt="[SIGNED]" />
+	      	   src="[% base %]static/common/lock.png" alt="[SIGNED]" />
 	    </a>	
      	[% END %]
      </p>    
