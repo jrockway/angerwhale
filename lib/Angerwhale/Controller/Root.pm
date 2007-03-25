@@ -82,8 +82,6 @@ wrong
 sub default : Private {
     my ( $self, $c, @args ) = @_;
 
-    warn @args;
-
     # XXX: blog archives
     $c->detach('blog', [@args])
       if(@args == 3 && eval { timelocal(0, 0, 0, reverse @args) } );
