@@ -91,6 +91,7 @@ isnt($new_content, $content, 'got new content');
 $mech->delete_header('If-Modified-Since');
 $mech->delete_header('If-None-Match');
 $mech->delete_header('Accept-Encoding');
+$mech->add_header( 'Accept-Encoding' => 'identity' );
 $mech->get_ok('http://localhost/');
 is($mech->content, $new_content, 'getting ungzipped content works');
 
