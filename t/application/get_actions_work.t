@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # 01_get_actions.t
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 

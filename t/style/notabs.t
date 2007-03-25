@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # notabs.t 
 # Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
 

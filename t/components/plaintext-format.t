@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # markdown-format.t
 
 use Test::More tests => 5;

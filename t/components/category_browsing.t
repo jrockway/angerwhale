@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # category_browsing.t
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 use strict;

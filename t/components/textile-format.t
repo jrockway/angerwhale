@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # textile-format.t
 # Copyright (c) 2007 Florian Ragwitz <rafl@debian.org>
 

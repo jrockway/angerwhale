@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # get_by_tag.t 
 # Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
 
