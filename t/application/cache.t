@@ -8,6 +8,7 @@ use Angerwhale::Test;
 use Compress::Zlib;
 
 my $mech = Angerwhale::Test->new;
+$mech->add_header( 'Accept-Encoding' => 'identity' );
 $mech->article({title => 'This is a test', 
                 body => 'Here is lots of content.'});
 
