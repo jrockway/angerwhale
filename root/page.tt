@@ -20,7 +20,7 @@
     
     [% FOREACH script = c.config.page_includes.javascript %]
        <script type="text/javascript" 
-               src="[% base %]static/[% script | html %]"></script>
+               src="[% base %]static/javascript/[% script | html %]"></script>
     [% END %]
     [% FOREACH jemplate = c.config.page_includes.jemplates %]
        <script type="text/javascript" 
