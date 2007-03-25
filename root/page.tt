@@ -50,15 +50,15 @@
       version [% c.config.VERSION %] on [% generated_at | time | html %].
       </p>
       <div id="logos">
-	  <object data="[% base %]static/images/valid-xhtml11-blue-v.svg"
+	  <object data="[% base %]static/images/svg_source/valid-xhtml11-blue-v.svg"
 		  type="image/svg+xml" height="30" width="100">
 	    Valid XHTML.
 	  </object>
-	  <object data="[% base %]static/images/valid-css-blue-v.svg"
+	  <object data="[% base %]static/images/svg_source/valid-css-blue-v.svg"
 		  type="image/svg+xml" height="30" width="100">
 	    Valid CSS.
 	  </object>
-	  <object data="[% base %]static/images/valid-svg11-blue-v.svg"
+	  <object data="[% base %]static/images/svg_source/valid-svg11-blue-v.svg"
 		  type="image/svg+xml" height="30" width="100">
 	    Valid SVG.  (If you're seeing this, though, you need a
 	    better browser so you can actually see them!)
