@@ -34,5 +34,5 @@ page_includes:
       - sidebar_feed.tt
 # css is in base/jemplate/*
    css:
-      - phokus.css
-      - syntax.css
+      - phokus/phokus.css
+      - common/syntax-dark.css
