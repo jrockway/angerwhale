@@ -85,7 +85,7 @@ $mech->add_header('Accept-Encoding' => 'gzip' );
 $mech->add_header('If-None-Match' => $et);
 $mech->add_header('If-Modified-Since' => $lm);
 $mech->get_ok('http://localhost/');
-my $new_content = Compress::Zlib::memGunzip($mech->content);
+my $new_content = Compress::Zlib::memGunzip($mech->response->content);
 isnt($new_content, $content, 'got new content');
 
 $mech->delete_header('If-Modified-Since');
