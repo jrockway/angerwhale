@@ -1,6 +1,5 @@
 # User.pm
 # Copyright (c) 2006 Jonathan T. Rockway
-# $Id: $
 
 package Angerwhale::User;
 use strict;
