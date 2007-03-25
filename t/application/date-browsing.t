@@ -1,4 +1,4 @@
-#!perl
+#!/usr/bin/env perl
 # Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
 
 use strict;
