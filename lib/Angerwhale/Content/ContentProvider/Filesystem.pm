@@ -130,8 +130,7 @@ sub revision {
     find(sub {
              $revision += ( stat _ )[9]
                if !-d $File::Find::name && -e _;
-         },
-         ( q{}. $self->root ));
+         }, $self->root );
     return $revision;
 }
 

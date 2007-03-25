@@ -85,7 +85,7 @@ sub new {
     $self->{root} =~ s{/+}{/}g;
     $self->{file} =~ s{/+}{/}g;
     
-    my $file = q{}. $self->file; # stringify filename for IO()
+    my $file = $self->file;
     $self->data(scalar read_file( $file )); 
     
     # get parent attributes first (only encoding right now)
@@ -138,7 +138,7 @@ sub store_attribute {
     my $attr  = shift;
     my $value = shift;
 
-    set_attribute(q{}.$self->file, $attr, $value); # store to disk
+    set_attribute($self->file, $attr, $value); # store to disk
     $self->next::method($attr, $value);
     
     return;
@@ -148,7 +148,7 @@ sub store_data {
     my $self = shift;
     my $data = shift;
 
-    File::Slurp::write_file(q{}.$self->file, $data);
+    File::Slurp::write_file($self->file, $data);
     $self->next::method($data);
     
     return;
