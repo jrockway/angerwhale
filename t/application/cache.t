@@ -70,7 +70,6 @@ $mech->delete_header('If-None-Match');
 $mech->get_ok('http://localhost/articles/');
 isnt($mech->content, $content, "new page doesn't have old content");
 
-use Data::Dump qw/dump/;
 # test gzip
 $mech->delete_header('Accept-Encoding');
 $mech->add_header( 'Accept-Encoding' => 'gzip' );
