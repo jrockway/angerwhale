@@ -19,7 +19,7 @@ cache:
 View::Jemplate:
    jemplate_dir: __path_to(root/jemplate)__
 page_includes:
-# javascript is in base/static/*
+# javascript is in base/static/javascript
    javascript:
       - prototype.js
       - builder.js
@@ -32,7 +32,13 @@ page_includes:
    jemplates:
       - logged_in_as.tt
       - sidebar_feed.tt
-# css is in base/jemplate/*
-   css:
-      - phokus/phokus.css
-      - common/syntax-dark.css
+theme: phokus
+themes:
+   phokus:
+      css:
+         - phokus/phokus.css
+         - common/syntax-dark.css
+   legacy:
+      css:
+         - legacy/style.css
+         - common/syntax-dark.css

@@ -12,3 +12,6 @@ feeds: ~
 # - title: "delicious"
 #   location: "http://del.icio.us/rss"
 #max_feed_entries: 5
+
+# pick your theme, currently "legacy" or "phokus"
+theme: phokus

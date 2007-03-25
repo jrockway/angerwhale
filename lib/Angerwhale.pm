@@ -33,6 +33,14 @@ __PACKAGE__->config('revision_callback' =>
 
 __PACKAGE__->config( { VERSION => $VERSION } );
 __PACKAGE__->setup;
+
+# setup theme; CSS only for now
+my $theme = __PACKAGE__->config->{theme} || 'phokus';
+my $css =   __PACKAGE__->config->{themes}{$theme}{css};
+die "Your theme is screwed up" if !ref $css;
+__PACKAGE__->config->{page_includes}{css} = $css;
+
+# kill debugging message
 __PACKAGE__->log->disable('debug') if !__PACKAGE__->debug;
 
 1;
