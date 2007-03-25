@@ -3,6 +3,7 @@ package Angerwhale::Controller::Root;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
+use Time::Local;
 
 # this was auto-generated and is apparently essential
 __PACKAGE__->config->{namespace} = q{};
@@ -73,19 +74,21 @@ sub jemplate : Global {
 
 =head2 default
 
-global 404 page
+dispatch to a date-based archive page, or show 404 if the format is
+wrong
 
 =cut
 
 sub default : Private {
     my ( $self, $c, @args ) = @_;
-    $c->res->status(404);
-    
+
+    warn @args;
+
     # XXX: blog archives
     $c->detach('blog', [@args])
-      if(@args == 3 && 3 == scalar grep { /^\d+$/ } @args
-         && eval { timelocal(0, 0, 0, reverse @args) } );
+      if(@args == 3 && eval { timelocal(0, 0, 0, reverse @args) } );
     
+    $c->res->status(404);    
     $c->stash( template => 'error.tt' );
 }
 
