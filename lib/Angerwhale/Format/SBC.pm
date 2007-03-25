@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 # SBC.pm
 # Copyright (c) 2006 Florian Ragwitz <rafl@debian.org>
 

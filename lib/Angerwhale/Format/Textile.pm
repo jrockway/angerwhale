@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 # Textile.pm
 # Copyright (c) 2007 Florian Ragwitz <rafl@debian.org>
 

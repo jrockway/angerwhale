@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 # Format.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 

@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 # JSON.pm 
 # Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
 package Angerwhale::View::Feed::JSON;

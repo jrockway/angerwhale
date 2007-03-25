@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 # Atom.pm
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 package Angerwhale::View::Feed::Atom;

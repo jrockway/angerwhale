@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 # SidebarFeeds.pm 
 # Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
 

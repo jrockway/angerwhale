@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 # Markdown.pm
 # Copyright (c) 2006 Florian Ragwitz <rafl@debian.org>
 

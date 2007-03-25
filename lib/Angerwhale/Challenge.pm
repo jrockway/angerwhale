@@ -1,4 +1,3 @@
-#!/usr/bin/perl
 # Challenge.pm
 # Copyright (c) 2006 Jonathan T. Rockway
 
