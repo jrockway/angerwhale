@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use base 'Class::Accessor::Fast';
 use Class::C3;
+use Data::UUID;
 __PACKAGE__->mk_accessors(qw/data metadata children/);
 
 =head2 id
