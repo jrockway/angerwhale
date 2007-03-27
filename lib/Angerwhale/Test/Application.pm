@@ -7,6 +7,7 @@ use warnings;
 use base 'Exporter';
 use Test::MockObject;
 use Carp;
+use YAML::Syck qw(LoadFile);
 
 our @EXPORT = qw(context model);
 our @EXPORT_OK = @EXPORT;
@@ -42,7 +43,12 @@ sub context {
     
     my $c = Test::MockObject->new;
     $c->set_always( 'stash', {} );
-    $c->set_always( 'config', { encoding => 'utf8' } );
+    
+    $config = { %{$config||{}},
+                %{LoadFile('root/resources.yml')||{}}
+              };
+    
+    $c->set_always( 'config', $config );
 
     # fake logging (doesn't do anything)
     my $log = Test::MockObject->new;

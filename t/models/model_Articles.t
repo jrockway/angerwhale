@@ -6,15 +6,18 @@ use Test::MockObject;
 use Test::Exception;
 use Directory::Scratch;
 use Angerwhale::Model::Articles;
-use YAML::Syck;
+use Angerwhale::Test::Application;
+use YAML::Syck qw(LoadFile);
 use strict;
 use warnings;
 
-my $c      = Test::MockObject->new;
-my $cache  = Test::MockObject->new;
+my $cache = Test::MockObject->new;
 my $log   = Test::MockObject->new;
-my $tmp  = Directory::Scratch->new;
-my $config = {base => $tmp->mkdir('articles')};
+my $tmp   = Directory::Scratch->new;
+my $c     = Angerwhale::Test::Application::context();
+my $config    = { base => $tmp->mkdir('articles'),
+                  %{$c->config||{}} # resource file, etc.
+                };
 $c->set_always( 'config',  $config );
 $c->set_always( 'uri',     'test' );
 $c->mock( 'uri_for', sub { my $a = $_[1]; $a =~ s{^/}{}; $a} );
