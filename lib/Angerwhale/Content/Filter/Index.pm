@@ -16,12 +16,12 @@ my $writer;
 Return a filter that will index the article.
 
 =cut
-
+  
 sub filter {
     my $class = shift;
     my $app = shift;
     
-    my $index_dir = $app->config->{plucene_index};
+    my $index_dir = dir($app->config->{plucene_index});
     $index_dir->rmtree;
     
     my $analyzer = Plucene::Analysis::SimpleAnalyzer->new;
@@ -32,7 +32,7 @@ sub filter {
             1,
     );
 
-    return bless sub {
+    return sub {
         my $self    = shift;
         my $context = shift;
         my $item    = shift;
