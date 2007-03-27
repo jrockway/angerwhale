@@ -52,9 +52,4 @@ sub filter {
     };
 }
 
-sub DESTROY {
-    undef $writer;
-    $index_dir->rmtree;
-}
-
 1;
