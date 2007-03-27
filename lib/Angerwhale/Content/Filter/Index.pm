@@ -11,6 +11,7 @@ use Plucene::Index::Writer;
 use Plucene::Analysis::SimpleAnalyzer;
 
 my $writer;
+
 =head2 filter
 
 Return a filter that will index the article.
