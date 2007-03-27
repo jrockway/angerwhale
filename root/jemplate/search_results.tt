@@ -1,0 +1,7 @@
+[% IF results %]
+<ul>
+[% FOREACH result = results %]
+<li><a title="[% result.author | html %]: [% result.summary | html %]" href="[% result.uri %]">[% result.title | html %]</a></li>
+[% END %]
+</ul>
+[% END %]

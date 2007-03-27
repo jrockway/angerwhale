@@ -406,6 +406,22 @@ h2 {
     margin: -6px -15px;
 }
 
+#sidebar > #search_box > div > div {
+	position: relative;
+}
+
+#sidebar #search_input {
+	width: 163px;
+	margin: 6px 15px 5px 15px;
+}
+
+#search_indicator {
+	position: absolute;
+	right: 16px;
+	top: 6px;
+	padding: 6px 6px 6px 6px;
+}
+
 /* Footer */
 
 #footer p {

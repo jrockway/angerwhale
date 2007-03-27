@@ -1,0 +1,62 @@
+<div id="search_box">
+  <div class="box">
+    <h3>Search</h3>
+
+	<div>
+    <input type="text" id="search_input" name="query" />
+    <img id="search_indicator" src="[% c.uri_for('/static/common/images/spinner.gif') %]" alt="Searching..." />
+    <div id="search_results" />
+	</div>
+  </div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+
+Element.setOpacity($('search_indicator'), 0.0);
+
+var results = $('search_results');
+results = Object.extend(results, {expanded: false});
+
+Event.observe($('search_input'), 'keypress', function (event) {
+    if (event.keyCode != Event.KEY_RETURN) {
+      return;
+    }
+
+	Effect.Appear($('search_indicator'));
+
+    new Ajax.Request('[% c.uri_for('/search') %]', {
+      asynchronous: true,
+      method: 'post',
+      postBody: 'query=' + $('search_input').value, //TODO: escape
+      onSuccess: function (t) {
+        try {
+          eval('var response = ' + t.responseText);
+        } catch (e) {
+          return;
+        }
+
+        var expand_func = function () {
+          results.style.display = 'none';
+          results.expanded = true;
+          results.innerHTML = Jemplate.process('search_results.tt', response);
+
+          Effect.SlideDown(results);
+		  Effect.Fade($('search_indicator'));
+        };
+
+        if (results.expanded) {
+          Effect.SlideUp(results, {
+            afterFinish: expand_func
+          });
+        } else {
+          expand_func();
+        }
+      },
+      onFailure: function (t) {
+        alert('error');
+      }
+    });
+}.bindAsEventListener());
+//]]>
+</script>

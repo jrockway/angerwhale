@@ -32,6 +32,7 @@ page_includes:
    jemplates:
       - logged_in_as.tt
       - sidebar_feed.tt
+      - search_results.tt
 theme: phokus
 themes:
    phokus:

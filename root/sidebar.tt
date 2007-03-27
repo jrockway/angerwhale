@@ -15,6 +15,9 @@
   <!-- navigation box -->
   [% INCLUDE navbox.tt %]		
 
+  <!-- search box -->
+  [% INCLUDE searchbox.tt %]
+
   <!-- login box -->
   [% INCLUDE login_box.tt %]
 
