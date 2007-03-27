@@ -13,6 +13,12 @@ use Plucene::Analysis::SimpleAnalyzer;
 my $writer;
 my $index_dir = dir('', 'tmp', 'angerwhale', 'search_index');
 
+=head2 filter
+
+Return a filter that will index the article.
+
+=cut
+
 sub filter {
     $index_dir->rmtree;
     
