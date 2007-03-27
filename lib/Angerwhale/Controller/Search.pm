@@ -41,8 +41,8 @@ sub index : Local {
     $c->detach( $c->view('JSON') ) unless defined $query_string;
 
     my $searcher = Plucene::Search::IndexSearcher->
-      new($PLUCENE_INDEX->stringify);
-
+      new($c->config->{plucene_index});
+    
     my @docs;
     my $hc = Plucene::Search::HitCollector->new(collect => sub {
             my ($self, $doc, $score) = @_;

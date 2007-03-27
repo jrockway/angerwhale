@@ -11,8 +11,6 @@ use Plucene::Index::Writer;
 use Plucene::Analysis::SimpleAnalyzer;
 
 my $writer;
-my $index_dir = dir('', 'tmp', 'angerwhale', 'search_index');
-
 =head2 filter
 
 Return a filter that will index the article.
@@ -20,6 +18,10 @@ Return a filter that will index the article.
 =cut
 
 sub filter {
+    my $class = shift;
+    my $app = shift;
+    
+    my $index_dir = $app->config->{plucene_index};
     $index_dir->rmtree;
     
     my $analyzer = Plucene::Analysis::SimpleAnalyzer->new;

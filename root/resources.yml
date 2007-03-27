@@ -1,6 +1,7 @@
 ---
 # no user servicable parts inside!
 name: Angerwhale
+encoding: utf-8
 Model::Articles:
    storage_class: Filesystem
    storage_args:
@@ -43,3 +44,15 @@ themes:
       css:
          - legacy/style.css
          - common/syntax-dark.css
+filters:
+   - Encoding 
+   - Checksum 
+   - Title
+   - Author
+   - PGP 
+   - Format
+   - Summary 
+   - URI
+   - Index 
+   - Finalize
+plucene_index: /tmp/angerwhale/plucene_index
