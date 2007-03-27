@@ -8,20 +8,7 @@ use Carp;
 use base qw(Catalyst::Component::ACCEPT_CONTEXT Catalyst::Model);
 use Scalar::Util qw(blessed);
 use Scalar::Defer;
-
-# filters
-use Angerwhale::Content::Filter::Encoding;
-use Angerwhale::Content::Filter::Checksum;
-use Angerwhale::Content::Filter::Title;
-use Angerwhale::Content::Filter::Author;
-use Angerwhale::Content::Filter::PGP;
-use Angerwhale::Content::Filter::Format;
-use Angerwhale::Content::Filter::Summary;
-use Angerwhale::Content::Filter::URI;
-use Angerwhale::Content::Filter::Finalize;
-
-
-our @ISA;
+use Angerwhale::Content::FilterFactory;
 
 __PACKAGE__->mk_accessors(qw/storage_class storage_args source filters/);
 
@@ -32,22 +19,16 @@ sub new {
     my $sclass = "Angerwhale::Content::ContentProvider::".$self->storage_class;
     eval "require $sclass";
     croak "can't load $sclass" if $@;
-    
     my $s = $sclass->new($self->storage_args);
-    
-    $self->filters([
-                    Angerwhale::Content::Filter::Encoding::filter($self->context->config->{encoding}),
-                    Angerwhale::Content::Filter::Checksum::filter(),
-                    Angerwhale::Content::Filter::Title::filter(),
-                    Angerwhale::Content::Filter::Author::filter(),
-                    Angerwhale::Content::Filter::PGP::filter(),
-                    Angerwhale::Content::Filter::Format::filter(),
-                    Angerwhale::Content::Filter::Summary::filter(),
-                    Angerwhale::Content::Filter::URI::filter(),
-                    Angerwhale::Content::Filter::Finalize::filter(),
-                   ]);
-    
     $self->source($s);
+    
+    # load article/comment content filters
+    my $filtergen = Angerwhale::Content::FilterFactory->new($self->context);
+    my @filters   = $filtergen->get_filters(qw|Encoding Checksum Title 
+                                               Author PGP Format 
+                                               Summary URI Finalize|);
+    $self->filters([@filters]);
+    
     return $self;
 }
 
