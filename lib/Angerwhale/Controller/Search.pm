@@ -9,6 +9,10 @@ use Plucene::QueryParser;
 use Plucene::Analysis::SimpleAnalyzer;
 use Plucene::Search::HitCollector;
 
+use Path::Class;
+my $PLUCENE_INDEX = dir('', 'tmp', 'angerwhale', 'search_index');
+
+
 =head1 NAME
 
 Angerwhale::Controller::Search - Catalyst Controller
@@ -36,9 +40,8 @@ sub index : Local {
     my $query_string = $c->request->param('query');
     $c->detach( $c->view('JSON') ) unless defined $query_string;
 
-    my $searcher = Plucene::Search::IndexSearcher->new(
-            $c->path_to(qw/root search_index/)->stringify,
-    );
+    my $searcher = Plucene::Search::IndexSearcher->
+      new($PLUCENE_INDEX->stringify);
 
     my @docs;
     my $hc = Plucene::Search::HitCollector->new(collect => sub {
