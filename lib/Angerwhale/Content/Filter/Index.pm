@@ -11,13 +11,13 @@ use Plucene::Index::Writer;
 use Plucene::Analysis::SimpleAnalyzer;
 
 my $writer;
-my $index_dir = dir(Angerwhale->path_to(qw/root search_index/));
+my $index_dir = dir('', 'tmp', 'angerwhale', 'search_index');
 
 sub filter {
     $index_dir->rmtree;
-
+    
     my $analyzer = Plucene::Analysis::SimpleAnalyzer->new;
-
+    
     $writer = Plucene::Index::Writer->new(
             $index_dir->stringify,
             $analyzer,
