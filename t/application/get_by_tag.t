@@ -2,7 +2,7 @@
 # get_by_tag.t 
 # Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 26;
+use Test::More;
 use strict;
 use warnings;
 use Angerwhale::Test;
@@ -10,10 +10,14 @@ use Angerwhale::Test::Application;
 
 local $SIG{__WARN__} = sub {}; # blah blah blah
 
-diag "This test will fail until TT is fixed.";
-
 my $mech = Angerwhale::Test->new;
 $mech->article('This is a test article');
+
+my $ok = eval {
+    $mech->get('http://localhost/');
+};
+plan 'skip_all' => 'TT is broken' if !$ok;
+plan tests => 26;
 
 my $articles = model('Articles', 
                      {args => { storage_class => 'Filesystem',
