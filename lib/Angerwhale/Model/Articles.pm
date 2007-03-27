@@ -18,6 +18,7 @@ use Angerwhale::Content::Filter::PGP;
 use Angerwhale::Content::Filter::Format;
 use Angerwhale::Content::Filter::Summary;
 use Angerwhale::Content::Filter::URI;
+use Angerwhale::Content::Filter::Index;
 use Angerwhale::Content::Filter::Finalize;
 
 
@@ -44,6 +45,7 @@ sub new {
                     Angerwhale::Content::Filter::Format::filter(),
                     Angerwhale::Content::Filter::Summary::filter(),
                     Angerwhale::Content::Filter::URI::filter(),
+                    Angerwhale::Content::Filter::Index::filter(),
                     Angerwhale::Content::Filter::Finalize::filter(),
                    ]);
     
