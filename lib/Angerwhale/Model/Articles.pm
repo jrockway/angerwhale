@@ -24,9 +24,8 @@ sub new {
     
     # load article/comment content filters
     my $filtergen = Angerwhale::Content::FilterFactory->new($self->context);
-    my @filters   = $filtergen->get_filters(qw|Encoding Checksum Title 
-                                               Author PGP Format 
-                                               Summary URI Finalize|);
+    my @requested = @{$self->context->config->{filters}||[]};
+    my @filters   = $filtergen->get_filters(@requested);
     $self->filters([@filters]);
     
     return $self;
