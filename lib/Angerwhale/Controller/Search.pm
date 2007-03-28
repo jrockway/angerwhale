@@ -3,15 +3,8 @@ package Angerwhale::Controller::Search;
 use strict;
 use warnings;
 use base 'Catalyst::Controller';
-use Plucene::Index::Reader;
-use Plucene::Search::IndexSearcher;
-use Plucene::QueryParser;
-use Plucene::Analysis::SimpleAnalyzer;
-use Plucene::Search::HitCollector;
-
-use Path::Class;
-my $PLUCENE_INDEX = dir('', 'tmp', 'angerwhale', 'search_index');
-
+use KinoSearch::Searcher;
+use KinoSearch::Analysis::PolyAnalyzer;
 
 =head1 NAME
 
@@ -27,10 +20,7 @@ Catalyst Controller.
 
 =cut
 
-my $parser   = Plucene::QueryParser->new({
-        analyzer => Plucene::Analysis::SimpleAnalyzer->new,
-        default  => 'content',
-});
+my $analyzer = KinoSearch::Analysis::PolyAnalyzer->new(language => 'en');
 
 sub index : Local {
     my ($self, $c) = @_;
@@ -40,38 +30,32 @@ sub index : Local {
     my $query_string = $c->request->param('query');
     $c->detach( $c->view('JSON') ) unless defined $query_string;
 
-    my $searcher = Plucene::Search::IndexSearcher->
-      new($c->config->{plucene_index});
+    my $searcher = KinoSearch::Searcher->new(
+            invindex => $c->config->{plucene_index},
+            analyzer => $analyzer,
+    );
     
-    my @docs;
-    my $hc = Plucene::Search::HitCollector->new(collect => sub {
-            my ($self, $doc, $score) = @_;
-            push @docs, [$doc, $score];
-    });
+    my $query = KinoSearch::QueryParser::QueryParser->new(
+            analyzer => $analyzer,
+            fields   => [qw/title author content/],
+    );
 
-    my $query = $parser->parse($query_string);
+    my $hits = $searcher->search(query => $query);
+    $hits->seek(0, 10);
 
-    eval {
-        $searcher->search_hc($query => $hc);
-    };
+    my @results;
+    while (my $hit = $hits->fetch_hit) {
+        my $doc = $hit->get_doc;
 
-    if (my $error = $@) {
-        die $@ unless $error =~ /Can't take log of 0/; #no documents indexed yet
+        push @results, {
+            map { ($_ => $doc->get_value($_)) } qw/title author uri summary/
+        };
     }
 
-    @docs = map { $searcher->doc($_->[0]) } sort { $a->[1] <=> $b->[1] } @docs;
+    $c->log->_dump(\@results);
 
     $c->{stash} = {
-        results => [map {
-            my $doc = $_;
-            
-            +{
-                map {
-                    my $field = $doc->get($_);
-                    $field ? ($field->name => $field->string) : ()
-                } qw/title author uri summary/
-            }
-        } @docs],
+        results => \@results,
     };
 
     $c->detach( $c->view('JSON') );

@@ -55,4 +55,4 @@ filters:
    - URI
    - Index 
    - Finalize
-plucene_index: /tmp/angerwhale/plucene_index
+plucene_index: /tmp/angerwhale/search_index
