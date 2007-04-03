@@ -4,7 +4,8 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use KinoSearch::Searcher;
-use KinoSearch::Analysis::PolyAnalyzer;
+use KinoSearch::QueryParser::QueryParser;
+use Angerwhale::Content::Filter::Index::Schema;
 
 =head1 NAME
 
@@ -20,7 +21,9 @@ Catalyst Controller.
 
 =cut
 
-my $analyzer = KinoSearch::Analysis::PolyAnalyzer->new(language => 'en');
+my $query_parser = KinoSearch::QueryParser::QueryParser->new(
+        schema => Angerwhale::Content::Filter::Index::Schema->new,
+);
 
 sub index : Local {
     my ($self, $c) = @_;
@@ -30,27 +33,26 @@ sub index : Local {
     my $query_string = $c->request->param('query');
     $c->detach( $c->view('JSON') ) unless defined $query_string;
 
-    my $searcher = KinoSearch::Searcher->new(
-            invindex => $c->config->{plucene_index},
-            analyzer => $analyzer,
-    );
-    
-    my $query = KinoSearch::QueryParser::QueryParser->new(
-            analyzer => $analyzer,
-            fields   => [qw/title author content/],
-    );
+    my $searcher;
+    eval {
+        $searcher = KinoSearch::Searcher->new(
+                invindex => Angerwhale::Content::Filter::Index::Schema->open( $c->config->{plucene_index} ),
+        );
+    };
+
+    $c->detach( $c->view('JSON') ) if $@;
+
+    my $query = $query_parser->parse( $query_string );
 
     my $hits = $searcher->search(query => $query);
     $hits->seek(0, 10);
 
     my @results;
-    while (my $hit = $hits->fetch_hit) {
-        my $doc = $hit->get_doc;
-
-        push @results, {
-            map { ($_ => $doc->get_value($_)) } qw/title author uri summary/
-        };
+    while (my $hit = $hits->fetch_hit_hashref) {
+        push @results, $hit;
     }
+
+    my @results = sort { $a->{score} <=> $b->{score} } @results;
 
     $c->log->_dump(\@results);
 

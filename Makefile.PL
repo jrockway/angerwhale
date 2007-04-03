@@ -58,7 +58,7 @@ requires
    'HTTP::Date'                                             => 0,
    'IO::String'                                             => 0,
    'JSON'                                                   => 0,
-   'KinoSearch'                                             => 0,
+   'KinoSearch'                                             => '0.20_2',
    'Module::Pluggable'                                      => 0,
    'NEXT'                                                   => '0.60',
    'Pod::Simple::Text'                                      => 0,
