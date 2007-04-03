@@ -52,9 +52,7 @@ sub index : Local {
         push @results, $hit;
     }
 
-    my @results = sort { $a->{score} <=> $b->{score} } @results;
-
-    $c->log->_dump(\@results);
+    @results = sort { $a->{score} <=> $b->{score} } @results;
 
     $c->{stash} = {
         results => \@results,
