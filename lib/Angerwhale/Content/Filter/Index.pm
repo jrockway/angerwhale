@@ -26,7 +26,12 @@ sub filter {
         my $context = shift;
         my $item    = shift;
 
-        my $writer = KinoSearch::InvIndexer->new(
+        my $writer;
+        eval { 
+            $writer = KinoSearch::InvIndexer->new(
+                    invindex => Angerwhale::Content::Filter::Index::Schema->open( $index_dir->stringify ),
+            );
+        } or $writer = KinoSearch::InvIndexer->new(
                 invindex => Angerwhale::Content::Filter::Index::Schema->clobber( $index_dir->stringify ),
         );
     
