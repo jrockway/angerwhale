@@ -23,11 +23,19 @@
 [% END %]
 <script type="text/javascript">
 //<![CDATA[
-new Angerwhale.TagEditor(
-		'[% id %]',
-		'[% control %]',
-		'[% url %]'
-);
+new Angerwhale.TagEditor({
+		element:  '[% id %]',
+		control:  '[% control %]',
+		url:      '[% url %]',
+		onUpdate: function () {
+			doXHR('/tags/get_nav_box[% home %]').addCallback(
+				function (response) {
+					alert(response.responseText);
+					$('sidebar_box').innerHTML = response.responseText;
+				}
+			);
+		}
+});
 
 /*
  new Ajax.InPlaceEditor( '[% id %]',
