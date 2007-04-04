@@ -16,7 +16,6 @@
 [% SET url = base _ "tags/do_tag/" _ article.name %]
 [% SET control = "plus_" _ article.id %]
 [% SET id = "tags_" _ article.id %]
-[% SET complete = "function(transport, element){ alert(element); }" %]
 
 [% IF page == "home" %]
 [% SET home = "?_home=yes_indeed" %]
@@ -30,7 +29,6 @@ new Angerwhale.TagEditor({
 		onUpdate: function () {
 			doXHR('/tags/get_nav_box[% home %]').addCallback(
 				function (response) {
-					alert(response.responseText);
 					$('sidebar_box').innerHTML = response.responseText;
 				}
 			);
