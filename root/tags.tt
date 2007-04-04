@@ -36,23 +36,5 @@ new Angerwhale.TagEditor({
 			);
 		}
 });
-
-/*
- new Ajax.InPlaceEditor( '[% id %]',
-    			'[% url %]',
-			{ 
-			  externalControl: '[% control %]',
-			  loadTextURL: '[% url %]',
-			  onFailure: 
-			     function(transport) {
-			        new Effect.Shake('tagbox_[% article.id %]');
-                             },
-			  onComplete: 
-                             function(transport, element) {
- 			     	new Ajax.Updater('sidebar_box', 
-				    	         '/tags/get_nav_box[% home %]');
-			     }
- 		         });
-*/
 //]]>
 </script>
