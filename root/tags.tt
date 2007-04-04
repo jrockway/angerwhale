@@ -23,6 +23,13 @@
 [% END %]
 <script type="text/javascript">
 //<![CDATA[
+new Angerwhale.TagEditor(
+		'[% id %]',
+		'[% control %]',
+		'[% url %]'
+);
+
+/*
  new Ajax.InPlaceEditor( '[% id %]',
     			'[% url %]',
 			{ 
@@ -38,5 +45,6 @@
 				    	         '/tags/get_nav_box[% home %]');
 			     }
  		         });
+*/
 //]]>
 </script>
