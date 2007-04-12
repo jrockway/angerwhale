@@ -54,7 +54,8 @@ sub single_article : Path {
     my $type = shift @args;
 
     if ( !$name ) {
-        $c->detach('article_list');
+        $c->res->redirect($c->uri_for('/articles'));
+        $c->detach;
     }
 
     $c->stash->{template} = 'article.tt';
