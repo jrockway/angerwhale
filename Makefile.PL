@@ -110,7 +110,7 @@ auto_install();
 license('GPL');
 tests('t/*/*.t');
 
-WriteAll( sign => 1, meta => 1 );
+WriteAll( meta => 1 );
 catalyst_par_core();
 catalyst_par();  
 
