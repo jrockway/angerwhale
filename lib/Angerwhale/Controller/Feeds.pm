@@ -119,8 +119,8 @@ Generates a feed of a single comment (and its children).
 sub comment : Local {
     my ( $self, $c, $type, @path ) = @_;
     my $comment = $c->forward( '/comments/find_by_path', [@path] );
-    return if !$comment;    # XXX: test
-
+    $c->detach('/not_found') if !$comment;
+    
     $c->stash->{type}       = $type;
     $c->stash->{items}      = $comment;
     $c->stash->{feed_title} = 'Replies to ' . $comment->title;
