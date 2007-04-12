@@ -8,3 +8,5 @@
 ^cover_db$
 ^MANIFEST.bak$
 #[.]pm$
+.git/
+Angerwhale-*
