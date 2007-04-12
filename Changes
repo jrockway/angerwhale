@@ -1,12 +1,19 @@
 Angerwhale changes
 
-0.04  XXX
+0.04  11 Apr 2007
        - Expose JSON feeds in the UI
-       - support custom date formats
-       - improve plaintext formatter
        - change JSON feed API (no items element; items are in an array)
        - add resource file for easier hacking
        - make css / jemplates / javascript included on each page configable
+       - make links clickable in plaintext formatter
+       - add config option for date format (date_format)
+       - cleanup caching code
+       - add ability to gzip cached response (autodetected)
+       - add generic backend to support database storage, etc.
+       - add configurable filters to be run on each comment
+       - fix 404s when clicking date links (i.e. http://blog/2007/01/01)
+       - make styles configurable
+       - add many tests and improve developer documentation
 
 0.03  14 Feb 2007
        - add JSON feeds (feeds/*/json instead of feeds/*/yaml, etc.)
