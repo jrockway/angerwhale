@@ -98,13 +98,9 @@ sub show_category : Path('/categories') {
             @articles =
               reverse sort $c->model('Articles')->get_by_category($category);
         };
-
-        if ($@) {
-            $c->response->status(404);
-            $c->stash( template => 'error.tt' );
-            return;
-        }
-
+        
+        # no category, show 404
+        $c->detach('/not_found') if $@;
     }
     
     # mini-ize small articles

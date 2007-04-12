@@ -99,8 +99,7 @@ sub comment : Path {
     if (!defined $c->stash->{comment} || !blessed $c->stash->{comment}
         || !$c->stash->{comment}->isa('Angerwhale::Content::Item') )
       {
-          $c->stash->{template} = "error.tt";
-          $c->response->status(404);
+          $c->detach('/not_found');
       }
     else {
         

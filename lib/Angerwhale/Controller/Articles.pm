@@ -53,7 +53,7 @@ sub single_article : Path {
     my $name = shift @args;
     my $type = shift @args;
 
-    if ( !$name ) {
+    if ( !defined $name ) {
         $c->res->redirect($c->uri_for('/articles'));
         $c->detach;
     }
@@ -61,11 +61,8 @@ sub single_article : Path {
     $c->stash->{template} = 'article.tt';
     eval { $c->stash->{article} = $c->model('Articles')->get_article($name); };
     if ($@) {
-
-        # not found!
-        $c->stash->{template} = 'error.tt';
-        $c->response->status(404);
-        return;
+        # no article by this name, show 404
+        $c->detach('/not_found');
     }
     $c->stash->{title} = $c->stash->{article}->title;
 
