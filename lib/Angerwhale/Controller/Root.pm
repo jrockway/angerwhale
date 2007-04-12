@@ -81,10 +81,11 @@ wrong
 
 sub default : Private {
     my ( $self, $c, @args ) = @_;
-
+    
     # XXX: blog archives
     $c->detach('blog', [@args])
-      if(@args == 3 && eval { timelocal(0, 0, 0, reverse @args) } );
+      if(@args == 3 && 
+         eval { timelocal(0, 0, 0, $args[2], $args[1]-1, $args[0]) } );
     
     $c->res->status(404);    
     $c->stash( template => 'error.tt' );
