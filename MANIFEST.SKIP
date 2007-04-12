@@ -9,4 +9,5 @@
 ^MANIFEST.bak$
 #[.]pm$
 .git/
-Angerwhale-*
+^Angerwhale*.tar.gz$
+^Angerwhale-*/
