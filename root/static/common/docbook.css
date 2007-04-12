@@ -1,0 +1,143 @@
+/* DocBook */
+#docbook div{
+        background-color: #FEFEFE;
+        padding: 0px 15px 0px 4px;
+        font: 100% 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+        white-space: normal;
+}
+
+#docbook DL {
+        margin: .8em 0;
+        line-height: 1.2;
+}
+
+#docbook body form {
+        margin: .6em 0;
+}
+
+#docbook p{
+        color: #222222;
+        text-indent: 1.2em;
+}
+
+#docbook a{
+        color: #45508b;
+}
+
+
+#docbook h1, #docbook h2, #docbook h3, #docbook h4, #docbook h5, #docbook h6 {
+        color: #990000;
+        font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+}
+
+#docbook h1{
+        font-size:3em;
+}
+
+#docbook h2{
+        font-size:1.5em;
+}
+#docbook h3{
+        font-size:1.3em;
+}
+
+#docbook h4{
+        font-size:1.1em;
+}
+
+#docbook h1, h2, h3, h4, h5, h6 {
+        margin: 1.2em 0;
+        font-family: "Lucida Grande", Tahoma, Arial, sans-serif;
+        color: #9BBB38;
+}
+
+
+
+
+#docbook .toc{
+         padding: 10px 10px 10px 10px;font-size:13em;
+         border: 1px solid gray;
+         font-size:1.1em;
+}
+
+#docbook ol {
+        margin: 0 0 0 2px;
+        line-height: 1.2;
+}
+
+#docbook body pre {
+        margin: .75em 0;
+        line-height: 1.0;
+        color: #461b7e;
+}
+
+#docbook body td, body th {
+        line-height: 1.2;
+}
+
+#docbook body dir,#docbook body menu {
+        margin: 0 0 0 5%;
+        line-height: 1.2;
+}
+
+#docbook ul, #docbook li {
+        line-height: 1.2;
+}
+
+
+#docbook code.filename{
+        color: #007a00;
+        font-size: 120%;
+}
+
+#docbook .GUIMENU, #docbook .GUIMENUITEM,#docbook .GUISUBMENU,
+#docbook .GUILABEL,#docbook .INTERFACE,#docbook .GUIBUTTON,
+#docbook .SHORTCUT,#docbook .SHORTCUT, #docbook .KEYCAP {
+        background-color: #F0F0F0;
+}
+#docbook .accel {
+        background-color: #F0F0F0;
+        text-decoration: underline;
+}
+
+#docbook .programlisting{
+    background: #EEEEEE;
+    color: #745718;
+    /* border: 1px solid gray; */
+    padding: 10px;
+    font-size: 10pt;
+    white-space: pre;
+    margin-left: 3ex;
+}
+
+#docbook .screen, #docbook pre{
+    background: #AAAAAA;
+    color: #745718;
+    /* border: 1px solid gray; */
+    padding: 10px;
+    font-size: 10pt;
+    white-space: pre;
+    margin-left: 3ex;
+}
+
+#docbook .caution{
+    background: #AAAAAA;
+    border: 1px solid #EE0000;
+    padding: 0px 0px 10px 10px;
+}
+
+#docbook .caution h3{
+    color: #BB0000;
+    background: #AAAAAA;
+}
+
+#docbook .warning{
+    background: #AAAAAA;
+    border: 1px solid #EE0000;
+    padding: 0px 0px 10px 0px;
+}
+
+#docbook .warning h3{
+    color: #DDBB00;
+    background: #AAAAAA;
+}
