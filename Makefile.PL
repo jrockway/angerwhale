@@ -78,6 +78,8 @@ requires
    'URI'                                         => 0,
    'URI::Escape'                                 => '3.28',
    'URI::Find'                                   => 0,
+   'XML::LibXSLT'                                => 0,
+   'XML::SAX'                                    => 0,
    'XML::Atom::SimpleFeed'                       => '0.8',
    'XML::Feed'                                   => '0.11',
    'YAML'                                        => '0.60', 
