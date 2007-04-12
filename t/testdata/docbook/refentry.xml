@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<refentry>
+<refentryinfo>
+	<date>2001-01-01</date>
+</refentryinfo>
+<refmeta>
+	<refentrytitle>
+		<application>foo</application>
+	</refentrytitle>
+	<manvolnum>1</manvolnum>
+	<refmiscinfo>foo 1.0</refmiscinfo>
+</refmeta>
+<refnamediv>
+	<refname>
+		<application>foo</application>
+	</refname>
+	<refpurpose>
+	Ne fait rien d'utile. 
+	</refpurpose>
+</refnamediv>
+<refsynopsisdiv>
+	<refsynopsisdivinfo>
+		<date>2001-01-01</date>
+	</refsynopsisdivinfo>
+	<cmdsynopsis>
+	<command>foo</command>
+<arg><option>-f </option><replaceable class="parameter">bar</replaceable></arg>
+<arg><option>-d<replaceable class="parameter">n</replaceable></option></arg>
+<arg rep="repeat"><replaceable class="parameter">fichier</replaceable></arg>
+	</cmdsynopsis>
+</refsynopsisdiv>
+<refsect1>
+	<refsect1info>
+		<date>2001-01-01</date>
+	</refsect1info>
+	<title>DESCRIPTION</title>
+	<para>
+	<command>foo</command> ne fait rien d'utile.
+	</para>
+</refsect1>
+<refsect1>
+	<title>OPTIONS</title>
+	<variablelist>
+	<varlistentry>
+		<term>-f <replaceable class="parameter">bar</replaceable></term>
+		<listitem>
+			<para>
+			Prend <filename>bar</filename> comme
+			fichier de controle a l'execution. S'il s'agissait
+			d'un veritable programme, il y aurait plus a dire ici
+			sur ce qu'est le fichier bar et comment il serait utilise.
+			</para>
+		</listitem>
+	</varlistentry>
+	<varlistentry>
+		<term>-d<replaceable class="parameter">n</replaceable></term>
+		<listitem>
+			<para>
+			Fait quelque chose, ou le nombre entier
+			<replaceable class="parameter">n</replaceable>
+			specifie combien de fois.
+			</para>
+		</listitem>
+	</varlistentry>
+	<varlistentry>
+		<term><replaceable class="parameter">fichier...</replaceable></term>
+		<listitem>
+			<para>
+			Traite les fichiers dans l'ordre de leur apparition
+			et envoie le resultat sur stdout.
+			</para>
+		</listitem>
+	</varlistentry>
+	</variablelist>
+</refsect1>
+<refsect1>
+	<title>UTILISATION</title>
+	<para>
+	<command>foo</command> -f foo.conf -d2 foodata.foo
+	</para>
+</refsect1>
+<refsect1>
+	<title>MISE EN GARDE</title>
+	<para>
+	D'autres programmes appeles <command>foo</command> peuvent exister
+	et faire reellement quelque chose !
+	</para>
+</refsect1>
+<refsect1>
+	<title>BUGS</title>
+	<para>
+	Aucun. Le programme ne fait rien.
+	</para>
+</refsect1>
+<refsect1>
+	<title>AUTEUR</title>
+	<para>
+	<author>
+		<firstname>Foo</firstname>
+		<othername role="mi">E</othername>
+		<surname>Bar</surname>
+		<contrib>Auteur original</contrib>
+	</author>
+	</para>
+</refsect1>
+</refentry>

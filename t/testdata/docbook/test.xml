@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<article lang="fr">
+  <title>Test Docbook</title>
+
+  <section>
+    <title>Programlisting / Screen</title>
+
+    <section>
+      <title>programlisting lang="perl"</title>
+
+      <para><programlisting lang="perl">#!/usr/bin/perl
+
+use strict;
+
+my $a = "1.23";
+my $b = 123;
+
+print $a . $b . "\n";
+exit 0;</programlisting></para>
+    </section>
+
+    <section>
+      <title>screen lang="HTML"</title>
+
+      <para><screen lang="HTML">&lt;html&gt;&lt;body&gt;
+
+&lt;h1&gt;Test HTML&lt;/h1&gt;
+
+&lt;/body&gt;&lt;/html&gt;</screen></para>
+    </section>
+
+    <section>
+      <title>programlisting lang="XML"</title>
+
+      <para><programlisting lang="XML">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"&gt;
+&lt;article lang="fr"&gt;
+  &lt;title&gt;Test Screen XML&lt;/title&gt;
+
+  &lt;section&gt;
+    &lt;title&gt;Screen XML&lt;/title&gt;
+
+    &lt;para&gt;Screen XML&lt;/para&gt;
+
+ &lt;/section&gt;
+&lt;/article&gt;</programlisting></para>
+    </section>
+
+    <section>
+      <title>screen lang="java"</title>
+
+      <para><screen lang="java">/*
+  This is a classical Hello program
+  to test source-highlight with Java programs.
+  
+  to have an html translation type
+
+   source-highlight -s java -f html --input Hello.java --output Hello.html
+   source-highlight -s java -f html &lt; Hello.java &gt; Hello.html
+
+  or type source-highlight --help for the list of options
+
+  written by
+  Lorenzo Bettini
+  http://www.lorenzobettini.it
+  http://www.gnu.org/software/src-highlite
+*/
+
+package hello;
+
+import java.io.* ;
+
+/**
+ * &lt;p&gt;
+ * A simple Hello World class, used to demonstrate some
+ * features of Java source highlighting.
+ * &lt;/p&gt;
+ * TODO: nothing, just to show an highlighted TODO or FIXME
+ *
+ * @author Lorenzo Bettini
+ * @version 2.0
+ */
+public class Hello {
+    int foo = 1998 ;
+    int hex_foo = 0xCAFEBABE;
+    boolean b = false;
+    Integer i = null ;
+    char c = '\'', d = 'n', e = '\\' ;
+    String xml = "&lt;tag attr=\"value\"&gt;&lt;/tag&gt;", foo2 = "\\" ;
+    
+    public static void main( String args[] ) {
+   // just some greetings ;-)  /*
+   System.out.println( "Hello from java2html :-)" ) ;
+   System.out.println( "\tby Lorenzo Bettini" ) ;
+   System.out.println( "\thttp://www.lorenzobettini.it" ) ;
+        if (argc &gt; 0)
+            String param = argc[0];
+        //System.out.println( "bye bye... :-D" ) ; // see you soon
+    }
+}</screen></para>
+    </section>
+  </section>
+
+  <section>
+    <title>Divers</title>
+
+    <section>
+      <title>Footnote</title>
+
+      <para>Voici une note de bas de page<footnote>
+          <para>Ceci est une note de bas de page. En cliquant sur le lien vous
+          serez dirige vers le paragraphe y faisant reference.</para>
+        </footnote>. En cliquannt sur le lien vous serez dirige vers la
+      note.</para>
+    </section>
+
+    <section>
+      <title>Caution / warning</title>
+
+      <para><caution>La balise caution permet d'alerte</caution></para>
+
+      <screen lang="XML">&lt;para&gt;&lt;caution&gt;La balise 'caution' permet d'alerter&lt;/caution&gt;&lt;/para&gt;</screen>
+
+      <para></para>
+
+      <para><warning>La balise caution permet de mettre en garde</warning></para>
+
+      <para><screen lang="XML">&lt;para&gt;&lt;warning&gt;La balise 'varning' permet de mettre en garde&lt;/warning&gt;&lt;/para&gt;</screen></para>
+    </section>
+
+    <section>
+      <title>Mise en evidence</title>
+
+      <para><emphasis>emphasis</emphasis></para>
+
+      <para><screen lang="XML">&lt;emphasis&gt;emphasis&lt;/emphasis&gt;</screen></para>
+
+      <para><emphasis role="bold">Caractère gras</emphasis></para>
+
+      <para><screen lang="XML">&lt;bold&gt;caratère gras&lt;/bold&gt;</screen><filename>filename</filename></para>
+
+      <para><screen lang="XML">&lt;filename&gt;filename&lt;/filename&gt;</screen><parameter></parameter></para>
+
+      <para><firstterm><parameter>firstterm</parameter><parameter></parameter></firstterm></para>
+
+      <screen lang="XML">&lt;firstterm&gt;firstterm&lt;/firstterm&gt;</screen>
+    </section>
+
+    <section>
+      <title>Paragraphe</title>
+
+      <para>Un simple texte sur plusieurs ligne mais dans un seul
+      paragraphe.Un simple texte sur plusieurs ligne mais dans un seul
+      paragraphe.Un simple texte sur plusieurs ligne mais dans un seul
+      paragraphe.Un simple texte sur plusieurs ligne mais dans un seul
+      paragraphe.Un simple texte sur plusieurs ligne mais dans un seul
+      paragraphe.Un simple texte sur plusieurs ligne mais dans un seul
+      paragraphe.Un simple texte sur plusieurs ligne mais dans un seul
+      paragraphe.Un simple texte sur plusieurs ligne mais dans un seul
+      paragraphe.Un simple texte sur plusieurs ligne mais dans un seul
+      paragraphe.Un simple texte sur plusieurs ligne mais dans un seul
+      paragraphe.Un simple texte sur plusieurs ligne mais dans un seul
+      paragraphe.Un simple texte sur plusieurs ligne mais dans un seul
+      paragraphe.</para>
+
+      <para></para>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Glossaire</title>
+
+      <para>Le debut d'un paragraphe</para>
+
+      <para><glosslist>
+          <glossentry>
+            <glossterm>premier_mot</glossterm>
+
+            <glossdef>
+              <para>simplement le preimer mot</para>
+            </glossdef>
+          </glossentry>
+        </glosslist>un autre paragraphe ...</para>
+
+      <para></para>
+    </section>
+  </section>
+</article>
