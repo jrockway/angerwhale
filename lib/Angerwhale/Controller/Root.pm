@@ -86,7 +86,7 @@ sub default : Private {
       if(@args == 3 && 
          eval { timelocal(0, 0, 0, $args[2], $args[1]-1, $args[0]) } );
     
-    $c->deatch('/not_found'); # invalid date, 404
+    $c->detach('/not_found'); # invalid date, 404
 }
 
 =head2 not_found
@@ -99,7 +99,8 @@ sub not_found : Local {
     my ($self, $c, @args) = @_;
     $c->stash(template => 'error.tt');
     $c->response->status(404);
-    $c->detach('/end');
+    $c->forward('/end');
+    $c->detach; # skip other end action
 }
 
 =head2 exit

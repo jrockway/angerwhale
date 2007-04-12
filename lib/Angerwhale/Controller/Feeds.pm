@@ -225,10 +225,18 @@ Requires that stash->{type} and stash->{items} are set.
 
 sub end : Private {
     my ( $self, $c ) = @_;
-    my $type = $c->stash->{type} || q{ };
+    my $type = $c->stash->{type};
 
+    # don't do anything if there's a body already
+    return if $c->response->body; 
+    
     undef $c->stash->{categories};
 
+    if (!defined $type) {
+        $c->detach('/end'); # delegate to TT
+    }
+
+    # they actually want a feed of some sort
     if ( $type eq any(qw|xml atom rss|) ) {
         $c->forward( 'View::Feed::Atom', 'process' );
     }
@@ -239,7 +247,8 @@ sub end : Private {
         $c->forward( 'View::Feed::JSON', 'process' );
     }
     else {
-        $c->detach('/end');    # back to the main end
+        # can't find invalid types
+        $c->detach('/not_found'); 
     }
 }
 
