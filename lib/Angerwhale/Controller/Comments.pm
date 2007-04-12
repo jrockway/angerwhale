@@ -107,7 +107,6 @@ sub comment : Path {
         # handle cases where the find_by_uri_path item is the actual article
         if (!$c->stash->{comment}->isa('Angerwhale::Content::Comment')){
             # handle getting articles by their GUID (instead of name)
-            warn "and here we are *** ";
             $c->response->
               redirect( $c->uri_for( '/', $c->stash->{article}->uri ) );
         }
