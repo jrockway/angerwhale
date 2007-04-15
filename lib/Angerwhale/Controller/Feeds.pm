@@ -134,8 +134,8 @@ Feed of one category.
 
 sub category : Local {
     my ( $self, $c, $category, $type ) = @_;
-    $c->stash->{category} = $category || q{/};
-    $c->forward( '/categories/show_category', [] );
+    
+    $c->forward( '/categories/show_category', [$category||'/'] );
 
     if ( $c->config->{title} ) {
         $c->stash->{feed_title} = $c->config->{title};
