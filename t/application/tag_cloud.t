@@ -2,7 +2,7 @@
 # tag_cloud.t
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 23;
+use Test::More tests => 34;
 use strict;
 use warnings;
 use URI;
@@ -27,7 +27,7 @@ foreach my $word (@words){
 # right page.  test all links to make sure they don't go here.
 $mech->get_ok('http://localhost/tags');
 my @links = $mech->followable_links();
-
+my %seen; # each link should be seen 2x
 foreach my $link (@links) {
     my $url  = $link->url;
     my $text = $link->text;
@@ -35,5 +35,10 @@ foreach my $link (@links) {
     if ( $url =~ m{/tags/.*} ) {
         my $should = URI->new(qq{http://localhost/tags/$text});
         is( $url, $should->as_string, "$text link is $should" );
+        $seen{$text}++;
     }
+}
+
+foreach my $word (@words) {
+    is($seen{$word}, 2, "$word seen twice");
 }
