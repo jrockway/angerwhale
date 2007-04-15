@@ -120,6 +120,8 @@ run:
 	$(PERL) script/angerwhale_server.pl -r -d
 profile:
 	$(PERL) -d:DProf script/angerwhale_server.pl -d
+angerwhale.par: catalyst_par
+angerwhale_par: catalyst_par
 POSTAMBLE
 
 }
