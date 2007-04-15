@@ -93,7 +93,7 @@ build_requires
    'Test::Strict'                                           => 0,
    'Test::NoTabs'                                           => 0,
    'Test::Exception'                                        => 0,
-   'HTML::Tidy'                                             => 0,
+   'HTML::Tidy'                                             => '1.08',
    'Test::XML::Valid'                                       => 0,
    'Test::YAML::Valid'                                      => '0.02',
    'Test::JSON'                                             => 0,
