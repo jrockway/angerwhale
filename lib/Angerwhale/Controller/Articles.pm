@@ -52,12 +52,7 @@ sub single_article : Path {
     my ( $self, $c, @args ) = @_;
     my $name = shift @args;
     my $type = shift @args;
-
-    if ( !defined $name ) {
-        $c->res->redirect($c->uri_for('/articles'));
-        $c->detach;
-    }
-
+    
     $c->stash->{template} = 'article.tt';
     eval { $c->stash->{article} = $c->model('Articles')->get_article($name); };
     if ($@) {
@@ -65,13 +60,13 @@ sub single_article : Path {
         $c->detach('/not_found');
     }
     $c->stash->{title} = $c->stash->{article}->title;
-
+    
     # if the user wants the raw message (to verify the signature),
     # return that instead of rendering the template
     if ( defined $type && $type eq 'raw' ) {
         $c->response->content_type('application/octet-stream');
         $c->response->body( $c->stash->{article}->raw_text(1) );
-        return;
+        $c->detach;
     }
 }
 
