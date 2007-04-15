@@ -148,7 +148,7 @@ sub compare {
     my $b = shift;
 
     # allow comparision against timestamps too
-    ($a,$b) = map { eval { $_->creation_time } || $_ } ($a,$b);
+    ($a,$b) = map { eval { $_->creation_time } || 0 } ($a,$b);
     
     return $a <=> $b;
 }
