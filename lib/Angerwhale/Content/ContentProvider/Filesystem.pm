@@ -37,11 +37,14 @@ sub get_article {
     foreach my $c ($self->get_categories) {
         opendir my $dir, $self->root. "/$c"
           or die "failed to open ". $self->root. "/$c: $!";
-        
+
       file:
-        while( my $f = readdir $dir){
-            next unless -e $f;
-            my $_ino = (stat $f)[1]; # inode
+        while( my $f = readdir $dir ){
+            next if $f =~ /^[.][.]?$/;
+            $f = $self->root. "/$f";
+            next if !-e $f;
+            
+            my $_ino = (lstat $f)[1]; # inode
             if ($ino == $_ino) {
                 push @in, $c;
                 last file;
