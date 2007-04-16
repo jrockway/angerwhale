@@ -98,30 +98,25 @@ sub comment : Path {
     my ( $self, $c ) = @_;
     $c->forward('find_by_uri_path');
 
-    if (!defined $c->stash->{comment} || !blessed $c->stash->{comment}
-        || !$c->stash->{comment}->isa('Angerwhale::Content::Item') )
-      {
-          $c->detach('/not_found');
-      }
-    else {
+    $c->detach('/not_found')
+      if !defined $c->stash->{comment}  || 
+         !blessed $c->stash->{comment}  ||
+         !$c->stash->{comment}->isa('Angerwhale::Content::Item');
         
-        # handle cases where the find_by_uri_path item is the actual article
-        if (!$c->stash->{comment}->isa('Angerwhale::Content::Comment')){
-            # handle getting articles by their GUID (instead of name)
-            $c->response->
-              redirect( $c->uri_for( '/', $c->stash->{article}->uri ) );
-        }
-        elsif ( $c->request->uri->as_string =~ m{/raw$} ) {
-            $c->response->content_type('application/octet-stream');
-            $c->response->body( $c->stash->{comment}->raw_text(1) );
-        }
-
-        else {
-            $c->stash->{template} = "comments.tt";
-        }
+    # handle cases where the find_by_uri_path item is the actual article
+    if (!$c->stash->{comment}->isa('Angerwhale::Content::Comment')){
+        # handle getting articles by their GUID (instead of name)
+        $c->response->
+          redirect( $c->uri_for( '/', $c->stash->{article}->uri ) );
+        $c->detach;
     }
-
-    return;
+    elsif ( $c->request->uri->as_string =~ m{/raw$} ) {
+        $c->response->content_type('application/octet-stream');
+        $c->response->body( $c->stash->{comment}->raw_text(1) );
+        $c->detach;
+    }
+    
+    $c->stash(template => 'comments.tt');
 }
 
 =head2 post
