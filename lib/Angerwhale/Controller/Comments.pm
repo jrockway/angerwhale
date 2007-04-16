@@ -57,7 +57,7 @@ sub find_by_uri_path : Private {
     my @path = grep { /[-]/ } ( split m{/}, $path );
     return unless @path;
     
-    return $c->forward( 'find_by_path', [@path] );
+    return $self->find_by_path($c, @path);
 }
 
 =head2 find_by_path(@path)
@@ -76,13 +76,15 @@ sub find_by_path : Private {
     my $article = ( grep { $_->id eq $path[0] } @articles )[0];
     $c->stash->{article} = $article;
     shift @path;
-
-    while ( my $path = shift @path ) {
+    
+    while ( $article && (my $path = shift @path) ) {
         my @comments = $article->comments;
         $article = ( grep { $_->id eq $path } @comments )[0];
     }
+    
 
-    return if @path > 0; # some garbage was on the end of the path
+    die "too many args" if @path > 0; # some garbage was on the end of the path
+    die "no comment"    if !$article; # we didn't get an actual comment/article
     
     $c->stash->{comment} = $article;
     return $article;
@@ -96,18 +98,22 @@ Display a comment based on the current URL
 
 sub comment : Path {
     my ( $self, $c ) = @_;
-    $c->forward('find_by_uri_path');
 
+    eval { 
+        $self->find_by_uri_path($c);
+    };
+    
     $c->detach('/not_found')
-      if !defined $c->stash->{comment}  || 
+      if $@                             || 
+         !defined $c->stash->{comment}  || 
          !blessed $c->stash->{comment}  ||
          !$c->stash->{comment}->isa('Angerwhale::Content::Item');
-        
+    
     # handle cases where the find_by_uri_path item is the actual article
     if (!$c->stash->{comment}->isa('Angerwhale::Content::Comment')){
         # handle getting articles by their GUID (instead of name)
         $c->response->
-          redirect( $c->uri_for( '/', $c->stash->{article}->uri ) );
+          redirect( $c->uri_for( '/'. $c->stash->{article}->uri ) );
         $c->detach;
     }
     elsif ( $c->request->uri->as_string =~ m{/raw$} ) {
@@ -136,7 +142,13 @@ sub post : Local {
     $c->stash->{captcha}  = $c->forward('/captcha/captcha_uri');
     
     # find what we're replying to
-    $c->forward( 'find_by_path', [@path] );
+    eval {
+        $self->find_by_path($c, @path);
+    };
+    if ($@) {
+        $c->detach('/not_found');
+    }
+    
     my $article = $c->stash->{article};
     my $comment = $c->stash->{comment};
     
@@ -202,8 +214,7 @@ sub post : Local {
         }
         else {
             $object->add_comment( $title, $body, $uid, $type );
-            $c->response->redirect(
-                                   $c->uri_for( q\/\ . $c->stash->{article}->uri ) );
+            $c->response->redirect($c->uri_for('/'.$c->stash->{article}->uri));
         }
     }
 
