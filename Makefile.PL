@@ -104,6 +104,19 @@ build_requires
 feature('Speed up crypto', ['Math::BigInt::GMP' => 0]);
 feature('Custom date formats', ['POSIX' => 0]);
 
+catalyst_par_classes(qw/
+    HTML::SBC
+    Pod::Xhtml
+    Syntax::Highlight::Engine::Kate
+    Syntax::Highlight::Engine::Kate::All
+    TeX::Hyphen
+    TeX::Hyphen::czech
+    Text::Markdown
+    Text::Textile
+    Text::WikiFormat
+    URI::Find
+/);
+
 catalyst();
 install_script(glob('script/*.pl'));
 auto_install();
@@ -111,8 +124,6 @@ license('GPL');
 tests('t/*/*.t');
 
 WriteAll( sign => 1, meta => 1 );
-catalyst_par_core();
-catalyst_par();  
 
 sub MY::postamble {
     return <<'POSTAMBLE';
