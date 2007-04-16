@@ -22,13 +22,9 @@ View::Jemplate:
 page_includes:
 # javascript is in base/static/javascript
    javascript:
-      - prototype.js
-      - builder.js
-      - controls.js
-      - dragdrop.js
-      - effects.js
-      - slider.js
+      - MochiKit.js
       - Jemplate.js
+      - Angerwhale.js
 # jemplates are in base/jemplate/*
    jemplates:
       - logged_in_as.tt

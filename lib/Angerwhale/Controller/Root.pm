@@ -68,8 +68,7 @@ sub jemplate : Global {
 
     # no template, 404'd.
     $c->clear_errors;
-    $c->res->status('404');
-    $c->stash->{template} = 'error.tt';
+    $c->detach('/not_found');
 }
 
 =head2 default
@@ -87,8 +86,21 @@ sub default : Private {
       if(@args == 3 && 
          eval { timelocal(0, 0, 0, $args[2], $args[1]-1, $args[0]) } );
     
-    $c->res->status(404);    
-    $c->stash( template => 'error.tt' );
+    $c->detach('/not_found'); # invalid date, 404
+}
+
+=head2 not_found
+
+Generic 404 not found page
+
+=cut
+
+sub not_found : Local {
+    my ($self, $c, @args) = @_;
+    $c->stash(template => 'error.tt');
+    $c->response->status(404);
+    $c->forward('/end');
+    $c->detach; # skip other end action
 }
 
 =head2 exit

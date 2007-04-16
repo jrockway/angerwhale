@@ -1,5 +1,8 @@
 Angerwhale changes
 
+0.05  XXX
+       - Eliminate prototype in favor of mochikit
+
 0.04  11 Apr 2007
        - Expose JSON feeds in the UI
        - change JSON feed API (no items element; items are in an array)

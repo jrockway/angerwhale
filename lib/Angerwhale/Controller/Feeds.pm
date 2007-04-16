@@ -119,8 +119,8 @@ Generates a feed of a single comment (and its children).
 sub comment : Local {
     my ( $self, $c, $type, @path ) = @_;
     my $comment = $c->forward( '/comments/find_by_path', [@path] );
-    return if !$comment;    # XXX: test
-
+    $c->detach('/not_found') if !$comment;
+    
     $c->stash->{type}       = $type;
     $c->stash->{items}      = $comment;
     $c->stash->{feed_title} = 'Replies to ' . $comment->title;
@@ -134,8 +134,8 @@ Feed of one category.
 
 sub category : Local {
     my ( $self, $c, $category, $type ) = @_;
-    $c->stash->{category} = $category || q{/};
-    $c->forward( '/categories/show_category', [] );
+    
+    $c->forward( '/categories/show_category', [$category||'/'] );
 
     if ( $c->config->{title} ) {
         $c->stash->{feed_title} = $c->config->{title};
@@ -225,10 +225,18 @@ Requires that stash->{type} and stash->{items} are set.
 
 sub end : Private {
     my ( $self, $c ) = @_;
-    my $type = $c->stash->{type} || q{ };
+    my $type = $c->stash->{type};
 
+    # don't do anything if there's a body already
+    return if $c->response->body; 
+    
     undef $c->stash->{categories};
 
+    if (!defined $type) {
+        $c->detach('/end'); # delegate to TT
+    }
+
+    # they actually want a feed of some sort
     if ( $type eq any(qw|xml atom rss|) ) {
         $c->forward( 'View::Feed::Atom', 'process' );
     }
@@ -239,7 +247,8 @@ sub end : Private {
         $c->forward( 'View::Feed::JSON', 'process' );
     }
     else {
-        $c->detach('/end');    # back to the main end
+        # can't find invalid types
+        $c->detach('/not_found'); 
     }
 }
 

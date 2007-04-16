@@ -34,6 +34,13 @@ comment-posting, etc.; you can write that way).
 
 =head1 METHODS
 
+=cut
+
+sub _item {
+    my $self = shift;
+    return $self->{item};
+}
+
 =head2 isa
 
 Lies on ISA checks so that a Finalized item looks like a
@@ -46,7 +53,7 @@ sub isa {
     my $self = shift;
     my $what = shift;
 
-    return $what if (defined $self->{item}{comment} &&
+    return $what if (defined $self->_item->{comment} &&
                      $what eq 'Angerwhale::Content::Comment');
     
     return $what 
@@ -81,7 +88,7 @@ sub get_metadatum {
     my $self = shift;
     my $req  = shift;
     
-    return $self->{item}{metadata}{$req};
+    return $self->_item->{metadata}{$req};
 }
 
 =head2 get
@@ -100,10 +107,10 @@ sub get {
     
     # special cases
     if ($what eq 'text') {
-        return $self->{item}{metadata}{formatted}{html};
+        return $self->_item->{metadata}{formatted}{html};
     }
     elsif ($what eq 'plain_text'){
-        return $self->{item}{metadata}{formatted}{text};
+        return $self->_item->{metadata}{formatted}{text};
     }
     
     # general case
@@ -121,9 +128,9 @@ sub mini {
     my $self = shift;
     my $mini = shift;
     if (defined $mini) {
-        $self->{item}{metadata}{mini} = $mini;
+        $self->_item->{metadata}{mini} = $mini;
     }
-    return $self->{item}{metadata}{mini} ? 1 : 0;
+    return $self->_item->{metadata}{mini} ? 1 : 0;
 }
 
 =head2 id
@@ -134,7 +141,7 @@ Returns the UUID of the item.
 
 sub id {
     my $self = shift;
-    return $self->{item}->id;
+    return $self->_item->id;
 }
 
 =head2 compare
@@ -148,7 +155,7 @@ sub compare {
     my $b = shift;
 
     # allow comparision against timestamps too
-    ($a,$b) = map { eval { $_->creation_time } || $_ } ($a,$b);
+    ($a,$b) = map { eval { $_->creation_time } || 0 } ($a,$b);
     
     return $a <=> $b;
 }
@@ -161,7 +168,7 @@ Returns arrayref of comments attached to this Item.
 
 sub children {
     my $self = shift;
-    return $self->{item}->children;
+    return $self->_item->children;
 }
 
 =head2 comments
@@ -186,7 +193,7 @@ Returns the list of categories this item is in.
 
 sub categories {
     my $self = shift;
-    return @{$self->{item}{metadata}{categories}||[]};
+    return @{$self->_item->{metadata}{categories}||[]};
 }
 
 =head2 add_comment
@@ -197,7 +204,7 @@ Attach a comment to this item.
 
 sub add_comment {
     my $self = shift;
-    return $self->{item}->add_comment(@_);
+    return $self->_item->add_comment(@_);
 }
 
 =head2 raw_text
@@ -209,10 +216,10 @@ Return raw unformatted data.
 sub raw_text {
     my $self = shift;
     my $mod  = shift;
-    return $self->{item}{metadata}{raw_text} || $self->{item}->data
+    return $self->_item->{metadata}{raw_text} || $self->_item->data
       if $mod;
     
-    return $self->{item}->data;
+    return $self->_item->data;
 }
 
 =head2 tags
@@ -223,7 +230,7 @@ Return list of tags.
 
 sub tags {
     my $self = shift;
-    my %tags = %{$self->{item}{metadata}{tags}||{}};
+    my %tags = %{$self->_item->{metadata}{tags}||{}};
     return keys %tags;
 }
 
@@ -236,7 +243,7 @@ Returns number of tags this article/comment has.
 sub tag_count {
     my $self = shift;
     no warnings 'uninitialized';
-    return $self->{item}{metadata}{tags}{$_[1]} || 0;
+    return $self->_item->{metadata}{tags}{$_[1]} || 0;
 }
 
 =head2 add_tag(@tags)
@@ -249,7 +256,7 @@ sub add_tag {
     my $self = shift;
     my @tags = @_;
 
-    $self->{item}->add_tag(@tags);
+    $self->_item->add_tag(@tags);
     return;
 }
 
