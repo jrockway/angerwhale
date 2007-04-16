@@ -98,7 +98,8 @@ update(Angerwhale.TagEditor.prototype, {
 				}, this),
 				bind(function (error) {
 					this.input.value = error.req.responseText; /* FIXME: empty with opera? */
-					setStyle(this.input, {'background-color': '#ff3333'});
+					setStyle(this.input, 
+                                                 { 'background-color': '#ff3333', 'color': '#ffffff'});
 					shake(this.input);
 				}, this)
 			);
