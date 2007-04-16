@@ -4,6 +4,7 @@
 
 use Test::More tests => 15;
 use ok 'Angerwhale::Format::HTML';
+use Angerwhale::Test::Tidy;
 use Test::HTML::Tidy;
 use Test::XML::Valid;
 use strict;
@@ -57,7 +58,7 @@ if (0) {
     print @pretty;
 }
 
-my $tidy = HTML::Tidy->new( { config_file => 'tidy_config' } );
+my $tidy = Angerwhale::Test::Tidy->tidy();
 html_tidy_ok( $tidy, $output, 'html is tidy' );
 xml_string_ok( $output, 'html is valid xml' );
 

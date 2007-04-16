@@ -11,10 +11,11 @@ use Test::XML::Valid;
 use YAML::Syck qw(Load);
 use Test::YAML::Valid qw(-Syck);
 use Angerwhale::Test;
+use Angerwhale::Test::Tidy;
 
 local $SIG{__WARN__} = sub { };
 
-my $tidy = HTML::Tidy->new( { config_file => 'tidy_config' } );
+my $tidy = Angerwhale::Test::Tidy->tidy();
 
 #$tidy->ignore( type => TIDY_WARNING );
 
