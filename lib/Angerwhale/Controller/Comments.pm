@@ -81,6 +81,8 @@ sub find_by_path : Private {
         my @comments = $article->comments;
         $article = ( grep { $_->id eq $path } @comments )[0];
     }
+
+    return if @path > 0; # some garbage was on the end of the path
     
     $c->stash->{comment} = $article;
     return $article;
