@@ -41,6 +41,7 @@ update(Angerwhale.TagEditor.prototype, {
 			this.editing = true;
 
 			blindUp(this.element.parentNode, {
+                                duration: 0.1,
 				afterFinish: bind(function () {
 					hideElement(this.control);
 
@@ -55,6 +56,7 @@ update(Angerwhale.TagEditor.prototype, {
 
 					/* FIXME: request current tags while blinding down? */
 					blindDown(this.form.parentNode, {
+                                                duration: 0.1,
 						afterFinish: bind(function () {
 							this.doRequest();
 						}, this)
@@ -64,6 +66,7 @@ update(Angerwhale.TagEditor.prototype, {
 		},
 		closeEditor: function () {
 			blindUp(this.form.parentNode, {
+                                duration: 0.1,
 				afterFinish: bind(function () {
 					removeElement(this.form);
 
@@ -74,7 +77,7 @@ update(Angerwhale.TagEditor.prototype, {
 
 					this.editing = false;
 
-					blindDown(this.element.parentNode);
+					blindDown(this.element.parentNode, {duration: 0.1});
 				}, this)
 			});
 		},
