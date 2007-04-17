@@ -105,6 +105,21 @@ feature('Speed up crypto', ['Math::BigInt::GMP' => 0]);
 feature('Custom date formats', ['POSIX' => 0]);
 
 catalyst_par_classes(qw/
+    Crypt::Blowfish
+    Crypt::CAST5_PP
+    Crypt::DES_EDE3
+    Crypt::IDEA
+    Crypt::OpenPGP
+    Crypt::OpenPGP::Key::Public::DSA
+    Crypt::OpenPGP::Key::Public::ElGamal
+    Crypt::OpenPGP::Key::Public::RSA
+    Crypt::OpenPGP::Marker
+    Crypt::OpenPGP::OnePassSig
+    Crypt::OpenPGP::Trust
+    Crypt::RIPEMD160
+    Crypt::Random
+    Crypt::Rijndael
+    Crypt::Twofish
     HTML::SBC
     Pod::Xhtml
     Syntax::Highlight::Engine::Kate
