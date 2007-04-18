@@ -27,6 +27,7 @@ requires
    'Catalyst::Plugin::Setenv'                    => 0,
    'Catalyst::Plugin::Static::Simple'            => 0,
    'Catalyst::Plugin::Unicode'                   => '0.2',
+   'Catalyst::View::TT'                          => 0,
    'Catalyst::View::JSON'                        => 0,
    'Catalyst::View::Jemplate'                    => 0,
    'Class::C3'                                   => 0,
