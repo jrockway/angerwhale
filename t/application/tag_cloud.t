@@ -2,23 +2,23 @@
 # tag_cloud.t
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 34;
+use Test::More tests => 37;
 use strict;
 use warnings;
 use URI;
 use Angerwhale::Test;
-use File::Attributes;
+use File::Attributes qw(set_attribute);
 
 my $mech = Angerwhale::Test->new;
 my @words = qw|foo bar baz quux red orange yellow 
-                     green blue indigo violet|;
+                     green blue indigo violet things-i-like|;
 
 foreach my $word (@words){
     $mech->article($word);
     my $file = $mech->tmp->exists($word);
     my $i = 1;
     foreach my $tag (@words) {
-        File::Attributes::set_attribute($file, "tags.$tag", int rand 10);
+        set_attribute($file, "tags.$tag", int rand 10);
         last if rand() < 1/(15-$i++)
     }
 }

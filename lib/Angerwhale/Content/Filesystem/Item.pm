@@ -124,7 +124,7 @@ sub new {
 
     # setup tags
     foreach my $t (grep {/tags[.]\w+/} keys %{$self->{metadata}}) {
-        $t =~ /tags[.](\w+)/;
+        $t =~ /tags[.](.+)/;
         my $tag = lc $1;
         $self->{metadata}{tags}{$tag} = $self->{metadata}{$t};
         delete $self->{metadata}{$t}; # cleanup
