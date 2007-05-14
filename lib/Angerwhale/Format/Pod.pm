@@ -124,8 +124,6 @@ sub verbatim {
     my $pod_para  = shift;
     my $text      = $pod_para->text;
 
-    # strip unnecessary leading spaces
-    my $spaces = -1;                 # count of leading spaces
     my @lines = split /\n/, $text;
 
     if ( $lines[0] && $lines[0] =~ m{\s*lang:([^.]+)\s*$} ) {
@@ -139,31 +137,10 @@ sub verbatim {
 
         shift @lines;
     }
-
-    # figure out how many that is
-    for my $line (@lines) {
-        next if $line =~ /^\s*$/;    # skip lines that are all spaces
-        $line =~ /^(\s+)/;
-        if ( $spaces == -1 ) {
-            $spaces = length $1;
-        }
-        else {
-            $spaces = min( $spaces, length $1 );
-        }
-    }
-
-    # strip 'em
-    $text = "";
-    for my $line (@lines) {
-        $text .= $line and next
-          if ( $line =~ /^\s*$/ );
-
-        $text .= substr $line, $spaces;
-        $text .= "\n";
-    }
-    $text =~ s/^\n+//;    # strip unnecessary newlines
-    $text =~ s/\n+$//;    # strip unnecessary newlines
-
+    # strip unnecessary leading spaces
+    $text = join "\n", _strip_leading_spaces(@lines);
+    
+    # syntax highlight if necessary
     if ( $parser->lang ) {
         eval {
             my $hl = Syntax::Highlight::Engine::Kate->new(
@@ -205,13 +182,41 @@ sub verbatim {
             $text = \$html;
         };
         if ($@) {
-            warn $@;
+            warn "Error syntax highlighting: $@";
         }
     }
 
-    # if vimcolor didn't work, just show the regular text
+    # if highlighting didn't work, just show the regular text
     $pod_para->text($text);
     $parser->parse_tree->append($pod_para);
+}
+
+sub _strip_leading_spaces {
+    my @lines = @_;
+    my $spaces = -1;
+    
+    # figure out how many that is
+    for my $line (@lines) {
+        next if $line =~ /^\s*$/;    # skip lines that are all spaces
+        if ($line =~ /^(\s+)/){
+            if ( $spaces == -1 ) {
+                $spaces = length $1;
+            }
+            else {
+                $spaces = min( $spaces, length $1 );
+            }
+        }
+        else {
+            $spaces = 0;
+        }
+    }
+    
+    for my $line (@lines) {
+        next if $line =~ /^\s*$/;
+        $line =  substr $line, $spaces;
+    }
+    
+    return @lines;
 }
 
 1;
