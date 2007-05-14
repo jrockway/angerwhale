@@ -16,7 +16,6 @@ our $VERSION = '0.04';
 
 my $tmp = File::Spec->catdir(File::Spec->tmpdir, 'angerwhale');
 File::Remove::remove(\1, $tmp);
-binmode STDOUT, ':utf8';
 
 # load defaults
 __PACKAGE__->config(LoadFile(__PACKAGE__->path_to('root', 'resources.yml')));
