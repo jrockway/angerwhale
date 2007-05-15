@@ -2,19 +2,21 @@
 # tag_cloud.t
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 37;
+use Test::More tests => 40;
 use strict;
 use warnings;
 use URI;
 use Angerwhale::Test;
 use File::Attributes qw(set_attribute);
+use utf8;
+use Encode;
 
 my $mech = Angerwhale::Test->new;
-my @words = qw|foo bar baz quux red orange yellow 
+my @words = qw|foo bar baz quux red orange yellow 日本語
                      green blue indigo violet things-i-like|;
 
 foreach my $word (@words){
-    $mech->article($word);
+    $mech->article(Encode::encode('utf-8', $word));
     my $file = $mech->tmp->exists($word);
     my $i = 1;
     foreach my $tag (@words) {
@@ -34,11 +36,13 @@ foreach my $link (@links) {
     
     if ( $url =~ m{/tags/.*} ) {
         my $should = URI->new(qq{http://localhost/tags/$text});
-        is( $url, $should->as_string, "$text link is $should" );
+        is( $url, $should->as_string, 
+            Encode::encode('utf-8',"$text link is $should" ));
         $seen{$text}++;
     }
 }
 
 foreach my $word (@words) {
-    is($seen{$word}, 2, "$word seen twice");
+    is($seen{$word}, 2, 
+       Encode::encode('utf-8', "$word seen twice"));
 }
