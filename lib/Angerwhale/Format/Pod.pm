@@ -11,7 +11,9 @@ use List::Util qw(min);
 use Syntax::Highlight::Engine::Kate;
 use Syntax::Highlight::Engine::Kate::All;
 
-__PACKAGE__->mk_accessors('lang');    # what lang highlighter should use
+# lang = language code is in
+# spaces = spaces that the textblock is indented by
+__PACKAGE__->mk_accessors(qw/lang spaces/);
 
 =head1 Angerwhale::Format::Pod
 
@@ -44,6 +46,10 @@ make the first line C<lang:LanguageName>, like C<lang:Perl> or
 C<lang:Haskell>.  To turn off syntax highlighting until
 the next C<lang:> directive, do C<lang:0> or C<lang:undef>.
 
+=head2 textblock
+
+C<pod--> (long story)
+
 =cut
 
 sub new {
@@ -53,7 +59,9 @@ sub new {
         MakeIndex    => 0,
         FragmentOnly => 1,
         TopHeading   => 3,
-    );
+                                  );
+    $self->spaces(-1);
+    return $self;
 }
 
 sub can_format {
@@ -117,6 +125,12 @@ sub _handleSequence {
     }
 }
 
+sub textblock {
+    my $parser = shift;
+    $parser->spaces(-1);
+    $parser->SUPER::textblock(@_);
+}
+
 sub verbatim {
     my $parser    = shift;
     my $paragraph = shift;
@@ -138,7 +152,9 @@ sub verbatim {
         shift @lines;
     }
     # strip unnecessary leading spaces
-    $text = join "\n", _strip_leading_spaces(@lines);
+    my ($res, $spaces) = _strip_leading_spaces([@lines],$parser->spaces);
+    $text = join "\n", @{$res};
+    $parser->spaces($spaces);
     
     # syntax highlight if necessary
     if ( $parser->lang ) {
@@ -192,8 +208,8 @@ sub verbatim {
 }
 
 sub _strip_leading_spaces {
-    my @lines = @_;
-    my $spaces = -1;
+    my @lines = @{shift()};
+    my $spaces = shift || -1;
     
     # figure out how many that is
     for my $line (@lines) {
@@ -216,7 +232,7 @@ sub _strip_leading_spaces {
         $line =  substr $line, $spaces;
     }
     
-    return @lines;
+    return ([@lines],$spaces);
 }
 
 1;

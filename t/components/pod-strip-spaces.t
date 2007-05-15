@@ -24,9 +24,9 @@ foreach my $case (@cases) {
 plan tests => scalar @tests;
 foreach my $pair (@tests) {
     my $input = $pair->[0];
-    my $got   = [Angerwhale::Format::Pod::_strip_leading_spaces(@$input)];
+    my ($got) = Angerwhale::Format::Pod::_strip_leading_spaces($input);
     my $exp   = $pair->[1];
-
+    
     is_deeply($got, $exp);
 }
 
