@@ -30,7 +30,8 @@
   <body>
    <div id="page"> <!-- for typo themes -->
     <div id="header" class="header">
-      <h1>[% c.config.title | html %]</h1>
+      <h1><a href="[% base %]">[% c.config.title | html %]</a></h1>
+
     </div>
 
     [% INCLUDE sidebar.tt %]
