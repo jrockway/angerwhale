@@ -49,8 +49,9 @@ sub can_format {
     my $self    = shift;
     my $request = shift;
 
-    return 100 if ( $request =~ /dbk|xml/ );
-    return 1;         # everything is text, so let this match a little
+    return 100 if ($request =~ /dbk/);
+    return 10  if ($request =~ /xml/);
+    return 1;
 }
 
 sub types {
