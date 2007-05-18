@@ -219,4 +219,36 @@ sub ColorizeCode{
 
 
 1;
-\
+
+__END__
+
+=head1 NAME
+
+ColorizeDbk - syntax-highlight docbook
+
+=head1 FUNCTIONS
+
+I think these are all internal.
+
+=head2 new
+
+=head2 start_tag
+
+=head2 end_tag
+
+=head2 ColorizeCode
+
+=head2 characters
+
+=head2 end_document
+
+=head2 end_element
+
+=head2 start_document
+
+=head2 start_element
+
+=head2 step
+
+=cut
+

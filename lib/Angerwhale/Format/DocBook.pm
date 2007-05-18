@@ -32,6 +32,8 @@ Handles 'dbk' which is xml document
 
 =head2 format
 
+=head2 format_html
+
 Returns the DocBook as XHTML 1.0
 
 =cut
