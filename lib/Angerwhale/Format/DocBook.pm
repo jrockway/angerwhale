@@ -48,17 +48,17 @@ sub can_format {
     my $request = shift;
 
     return 100 if ( $request =~ /dbk|xml/ );
-    return 1;    # everything is text, so let this match a little
+    return 1;         # everything is text, so let this match a little
 }
 
 sub types {
     my $self = shift;
     return (
-        {
-            type        => 'xml',
-            description => 'DocBook XML'
-        }
-    );
+            {
+             type        => 'xml',
+             description => 'DocBook XML'
+            }
+           );
 }
 
 sub format {
@@ -75,11 +75,14 @@ sub format {
     $my_Handler->step('marklang');
 
     my $parsersax = XML::SAX::ParserFactory->parser(
-	        Handler => $my_Handler,				 
-	        );
+                                                    Handler => $my_Handler,                 
+                                                   );
 
     my @markedtext = eval{ $parsersax->parse_string($text)};
-    if ($@) { die "\nDocument malformed : $@\n" ; } ;
+    if ($@) {
+        die "\nDocument malformed : $@\n" ;
+    }
+    ;
 
 
     # 2 - Transform with xslt
@@ -89,12 +92,15 @@ sub format {
     my $source = eval {$parser->parse_string("@markedtext")};
 
 
-    if ($@) { die "\nDocument malformed : $@\n" ; } ;
+    if ($@) {
+        die "\nDocument malformed : $@\n" ;
+    }
+    ;
 
     my $style_doc = $parser->parse_file($xsltfile);
     my $stylesheet = 
       eval {
-	$xslt->parse_stylesheet($style_doc);
+          $xslt->parse_stylesheet($style_doc);
       };
 
     warn "@_" if @_;
