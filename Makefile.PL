@@ -149,6 +149,8 @@ profile:
 	$(PERL) -d:DProf script/angerwhale_server.pl -d
 angerwhale.par: catalyst_par
 angerwhale_par: catalyst_par
+TAGS: $(MAN3PODS) $(TEST_FILES)
+	find lib t | egrep '[.](t|pm)$\' | etags --lang=perl -
 POSTAMBLE
 
 }
