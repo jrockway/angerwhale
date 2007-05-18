@@ -69,9 +69,6 @@ sub format {
     my $text = shift;
     my $type = shift;
 
-    # Compatible with Formater 'Encoding'
-    $text = Encode::encode("utf-8", $text, 1);
-
     # 1 - Mark lang 
     # <programlisting lang="..."> to <programlisting lang="...">[lang=...] code [/lang]
     my $my_Handler = Angerwhale::Filter::ColorizeDbk->new($debug);
@@ -133,9 +130,6 @@ sub format {
     $string =~ s/^.*<body>//s;
     $string =~ s/<\/body>.*<\/html>//s;
 
-
-    # Compatible with Formater 'Encoding'
-    $string = Encode::decode("utf-8", $string, 1);
 
     return "<div class=\"docbook\">" . $string . "</div>";
 }
