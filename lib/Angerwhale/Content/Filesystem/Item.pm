@@ -14,6 +14,7 @@ use Data::UUID;
 use File::CreationTime qw(creation_time);
 use Scalar::Defer;
 use Class::C3;
+use Encode;
 use base 'Angerwhale::Content::Item';
 
 __PACKAGE__->mk_accessors(qw/root file comment parent/);
@@ -92,12 +93,17 @@ sub new {
     my $encoding = get_attribute_recursively($file, $self->root, 'encoding');
     # now get the item-specific attributes
     my %attributes = get_attributes ($file);
-    $attributes{encoding} ||= $encoding;
-    
-    # filter out empty attributes (BUG IN FILE::EXTATTR::listfattr)
-    map { delete $attributes{$_} }
-      grep { 1 if !defined $attributes{$_} }
-        keys %attributes;
+    $encoding = $attributes{encoding} || $encoding || 'utf-8';
+    $attributes{encoding} = $encoding;
+
+    my %_attributes;
+    # decode metadata now
+    while (my ($key, $value) = each %attributes) {
+        $key   = Encode::decode($encoding, $key, 1);
+        $value = Encode::decode($encoding, $value, 1);
+        $_attributes{$key} = $value;
+    }
+    %attributes = %_attributes;
     
     my (undef, undef, $basename) = File::Spec->splitpath($self->file);
     $self->metadata ( { %attributes,
@@ -123,10 +129,14 @@ sub new {
     $self->{metadata}->{comment} = defined $self->{comment} ? 1 : 0;
 
     # setup tags
-    foreach my $t (grep {/tags[.]\w+/} keys %{$self->{metadata}}) {
+    foreach my $t (grep {/tags[.]/} keys %{$self->{metadata}}) {
+        warn "$t is NOT utf8" if !utf8::is_utf8($t);
+        warn "$t is utf8" if utf8::is_utf8($t);
+        
         $t =~ /tags[.](.+)/;
-        my $tag = lc $1;
-        $self->{metadata}{tags}{$tag} = $self->{metadata}{$t};
+        warn "$1 is NOT utf8" if !utf8::is_utf8($1);
+        warn "$1 is utf8" if utf8::is_utf8($1);
+        $self->{metadata}{tags}{$1} = $self->{metadata}{$t};
         delete $self->{metadata}{$t}; # cleanup
     }
     
