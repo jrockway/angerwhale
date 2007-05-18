@@ -1,14 +1,15 @@
 # DocBook.pm
+# Copyright (c) 2007 Daniel Brosseau <dab@free.fr>
 
 package Angerwhale::Format::DocBook;
 
 use strict;
 use warnings;
 use XML::LibXSLT;
-use XML::SAX;
+use XML::SAX::ParserFactory (); # loaded for simplicity;
 use Angerwhale::Filter::ColorizeDbk;
 
-my $xsltfile="/usr/share/sgml/docbook/stylesheet/xsl/nwalsh/html/docbook.xsl";
+my $xsltfile="/usr/share/sgml/docbook/stylesheet/xsl/nwalsh/xhtml/docbook.xsl";
 my $debug=0;
 
 =head1 Angerwhale::Format::DocBook
@@ -27,13 +28,11 @@ Can format *.dbk|xml
 
 =head2 types
 
-Handles 'dbk' which is plain text
+Handles 'dbk' which is xml document
 
 =head2 format
 
-Returns the DocBook as XHTML
-
-=head2 format_text
+Returns the DocBook as XHTML 1.0
 
 =cut
 
@@ -67,6 +66,8 @@ sub format {
     my $text = shift;
     my $type = shift;
 
+    # Compatible with Formater 'Encoding'
+    $text = Encode::encode("utf-8", $text, 1);
 
     # 1 - Mark lang 
     # <programlisting lang="..."> to <programlisting lang="...">[lang=...] code [/lang]
@@ -78,17 +79,18 @@ sub format {
 	        );
 
     my @markedtext = eval{ $parsersax->parse_string($text)};
-    warn "@_" if @_;
-
+    if ($@) { die "\nDocument malformed : $@\n" ; } ;
 
 
     # 2 - Transform with xslt
     my $parser = XML::LibXML->new();
     my $xslt = XML::LibXSLT->new();
 
-
     my $source = eval {$parser->parse_string("@markedtext")};
-    warn "@_" if @_;
+
+
+    if ($@) { die "\nDocument malformed : $@\n" ; } ;
+
     my $style_doc = $parser->parse_file($xsltfile);
     my $stylesheet = 
       eval {
@@ -96,45 +98,53 @@ sub format {
       };
 
     warn "@_" if @_;
-	
+
+
 
     # C'est ici que l'on peut ajouter le css, LANG ...
     # voir http://docbook.sourceforge.net/release/xsl/current/doc/html/index.html
     # et   http://www.sagehill.net/docbookxsl
     my $results = $stylesheet->transform($source, XML::LibXSLT::xpath_to_string('section.autolabel' => '1', 'chapter.autolabel' => '1', 'suppress.navigation' => '1'));
 
+
     my $format=2;
+
     my $string=$results->toString($format);
-
-
 
     # 3 - Colorize Code [lang=...] ... code ... [/lang]
     $my_Handler->step('colorize');
+
     my @colorized=$parsersax->parse_string($string);
 
     $string="@colorized";
 
-
     # 4 - filter
-    # Pour adaptation a angerwhale
+    # To adapt to angerwhale
     # delete <?xml version ...>, <html>,</html>,<head>,</head>,<body>,</body>
-    #$string =~ s/<\?xml version.*\?>//;
-    #$string =~ s/<\/?meta.*?>//g;
-    #$string =~ s/<\/?html>//g;
-    #$string =~ s/<\/?head>//g;
-    #$string =~ s/<body .*?>//g;
-    #$string =~ s/<\/body>//g;
+    $string =~ s/^.*<body>//s;
+    $string =~ s/<\/body>.*<\/html>//s;
 
-    return "<div id=\"docbook\">" . $string . "</div>";
+
+    # Compatible with Formater 'Encoding'
+    $string = Encode::decode("utf-8", $string, 1);
+
+    return "<div class=\"docbook\">" . $string . "</div>";
 }
-
 
 sub format_html {
-    return $_[0]->format( @_, 'format' );
+    return _format( @_, 'format' );
 }
-
 
 1;
 
 __END__
 
+=head1 AUTHOR
+
+Daniel Brosseau, dab@free.fr. Copyright 2007.
+
+=head1 LICENSE
+
+This is free software. You may use it or redistribute it under the same terms as Perl itself.
+
+=cut

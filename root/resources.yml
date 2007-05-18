@@ -35,12 +35,14 @@ themes:
       css:
          - phokus/phokus.css
          - common/syntax-dark.css
-         - common/docbook.css
    legacy:
       css:
          - legacy/style.css
          - common/syntax-dark.css
-         - common/docbook.css
+   docbook:
+      css:
+         - docbook/docbook.css
+
 filters:
    - Encoding 
    - Checksum 

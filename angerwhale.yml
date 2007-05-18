@@ -1,12 +1,12 @@
 ---
-title: Angerwhale
-description: Welcome to Angerwhale.  You should change this.
+title: Boite a outils
+description:  
 author: Your Name
 contact: nobody@example.com
 base: __path_to(root/posts)__
 sidebar_picture: ~
-#date_format: %c
-language: en-us
+date_format: %c
+language: fr-FR
 feeds: ~
 #feeds:
 # - title: "delicious"
@@ -14,4 +14,5 @@ feeds: ~
 #max_feed_entries: 5
 
 # pick your theme, currently "legacy" or "phokus"
-theme: phokus
+theme: docbook
+ 

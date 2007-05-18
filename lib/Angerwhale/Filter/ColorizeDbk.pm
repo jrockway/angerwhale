@@ -16,9 +16,6 @@ use Syntax::Highlight::Engine::Kate::All;
 
 my $hl_node="programlisting|screen";
 my $hl_attrib="lang";
-my $indent="    ";
-my $nindent=0;
-my $marge;
 my $marklang=0;
 my $colorize=0;
 my $tomark;
@@ -64,13 +61,12 @@ sub start_element{
         my $self = shift;
         my $el = shift;
 
-	$marge = ${indent}x${nindent};
         my @Attributes = keys %{$el->{Attributes}};
         my $name = $el->{Name};
 
 	print STDERR "[$step]start_element: $name\n" if $debug;
 
-        $doc .= "$marge<$name";
+        $doc .= "<$name";
         foreach my $att (@Attributes){
 	  my $val = $el->{Attributes}->{$att}->{Value};
 
@@ -78,6 +74,19 @@ sub start_element{
 
 	  # Uppercase fisrt letter of lang
 	  $val =~ s/\b(\w)/\U$1/g if (( $att eq "lang" )&&($el->{Name} =~ /$hl_node/));
+
+          # Bug  XML::SAX::ParserFactory (???)
+          # It add {http://www.w3.org/XML/1998/namespace} before lang="fr"
+          #  if attrib class=article|section
+	  if ( $att eq "{http://www.w3.org/XML/1998/namespace}lang"){
+	    next;
+	  }
+
+	  # to be conform to xhtml 1.1
+	  if (( $name eq "div" ) && ( $att eq "lang" )){
+	    $att = "xml:lang";
+	  }
+
 	  $doc .= " $att=\"$val\"";
 
 	  print STDERR "  $att=\"$val\"\n" if $debug;
@@ -92,7 +101,6 @@ sub start_element{
         }
 
         $doc .= ">";
-        $nindent++;
 }
 
 
@@ -100,7 +108,6 @@ sub end_element{
         my $self = shift;
         my $el = shift;
 
-        $nindent--;
 	my $name = $el->{Name};
 
 	print STDERR "[$step]end_element: $name\n" if $debug;
@@ -110,8 +117,6 @@ sub end_element{
 
 	  $tomark =~ s/</&lt;/g;
 	  $tomark =~ s/>/&gt;/g;
-
-	  #$doc .= "[lang=$lang\]\n<![CDATA[${tomark}]]>\n\[\/lang\]";
 
 	  $doc .= "[lang=$lang\]\n${tomark}\n\[\/lang\]";
 
@@ -138,8 +143,7 @@ sub characters{
         my $self = shift;
         my $el = shift;
 
-        my @keysel=keys %$el;
-
+	print STDERR "[$step]characters: " . $el->{Data} . "\n" if $debug;
 
 	if( $marklang ){
 	  $tomark .= $el->{Data};

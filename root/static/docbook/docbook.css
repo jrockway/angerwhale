@@ -1,0 +1,407 @@
+/* docbook.css
+
+   This style sheet is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License as
+   published by the Free Software Foundation; either version 2, or (at
+   your option) any later version.
+
+   This style sheet is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this style sheet; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
+   USA.
+*/
+
+
+
+******************************************************************************/
+* {
+        margin: 0;
+        padding: 0;
+}
+html, body {
+       background-color: #4f4f4f;
+       color: #000;
+}
+
+/* Layout
+*******************************************************************************/
+#page {
+        background-color: #ffffff;
+        font-size: 1em;
+        margin: 0 auto;
+}
+#header {
+        background: #aaaaaa;
+        height: 70px;
+}
+#content {
+        background: #eeeeee;
+	float: left;
+	padding: 1%;
+	margin: 1%;
+	border: 1px solid #ccc;
+	width: 70%;
+	}
+
+#sidebar {
+	background: #eeeeee;
+	float: right;
+	padding: 1%;
+	margin: 1%;
+	border: 1px solid #ccc;
+	voice-family: "\"}\"";
+	voice-family:inherit;
+	width: 20%;
+	}
+
+#footer {
+        background: #aaaaaa;
+        color: #aaa;
+        font-size: .8em;
+        text-align: center;
+        clear: left;
+}
+#error { background: #fdd; color: #f00; font-weight: bold; padding: .5em 0 .5em 2em;}
+
+
+
+/* General
+ * ***************************************************************************/
+
+h1, h2, h3, h4, h5, h6 {
+        font-family: "Lucida Grande", Tahoma, Arial, sans-serif;
+        color: #9BBB38;
+}
+
+a {
+        text-decoration: none;
+}
+
+
+
+/* Header
+*******************************************************************************/
+h1 {
+        font-size: 2.3em;
+        margin: 0 0 5px 4px;
+        position: absolute;
+	color: #6066b4;
+}
+#header small {
+        color: #c2e5ff;
+        font-size: .9em;
+        margin: 5px 0 0 40px;
+        position: absolute;
+        top: 50%;
+}
+
+/* Content
+*******************************************************************************/
+#content textarea, #content input[type=text] {
+  width: 95%;
+  }
+
+
+/* Sidebar
+*******************************************************************************/
+#sidebar h3 {
+        font-weight: bold;
+        font-size: 1em;
+        text-transform: uppercase;
+}
+
+#sidebar ul,
+#sidebar li {
+	list-style-image: url(images/folder.png);
+}
+
+#sidebar a, #sidebar b {
+        border: none;
+        color: #aaa;
+}
+
+#sidebar a:hover {
+        color: #2392e4;
+}
+
+#sidebar .sidebar_navigation p {
+        font-weight: bold;
+        color: #6066b4;
+}
+#sidebar .selected b {
+        font-weight: bold;
+        color: #6066b4;
+}
+
+
+/* Footer
+*******************************************************************************/
+#footer p {
+	color: #000;
+        font: bold .9em/1em Arial, Helvetica, sans-serif;
+        letter-spacing: 1px;
+        padding-top: 1em;
+        text-transform: uppercase;
+}
+#footer a {
+        border-color: #888;
+        color: #ccc;
+}
+
+/* Comment
+*******************************************************************************/
+.comment_header p.title { 
+	margin: 0; 
+	padding-left: 3px; 
+	color: #5b9b58; 
+	font-weight: bold; 
+	border: 1px solid #000;
+	background-color: #e3e494; 
+}
+.comment_header p.info { 
+	margin: 0; 
+	padding-left: 2px; 
+	color: #5b9b58; 
+	font-size: 80%; 
+	background-color: #efefd6;
+ }
+.comment {
+        background-color: #efefd6;
+	padding: 5px;   
+ }
+.comment a{
+   color: #5b9b58;
+ }
+
+.comment_footer{  
+	margin: 0; 
+	padding-left: 3px; 
+	font-size: 80%; 
+	font-weight: bold;
+}
+
+
+
+/* Posts
+*******************************************************************************/
+.post_info
+ {
+	background-color: #ede9a9;
+        color: #0a78cb;
+        font-size: .9em;
+	border: 1px solid #000;
+        padding: 10px 25px 10px 25px;
+        position: relative;
+}
+.post_info p {
+        margin: 0; 
+	padding: 2px; 
+	text-decoration: none;
+ }
+
+.post_links {
+        float: right;
+        text-align: right;
+	font-weight: bold;
+        padding-bottom: 0;
+        margin-top: -.3em;
+}
+
+
+
+
+
+/* DocBook
+ * ***************************************************************************/
+.docbook div{
+        padding: 0px 15px 0px 4px;
+        font: 100% 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+        white-space: normal;
+}
+
+.docbook DL {
+        margin: .8em 0;
+        line-height: 1.2;
+}
+
+.docbook body form {
+        margin: .6em 0;
+}
+
+.docbook p{
+        color: #222222;
+        text-indent: 1.2em;
+}
+
+.docbook a{
+        color: #45508b;
+}
+
+
+.docbook h1, .docbook h2, .docbook h3, .docbook h4, .docbook h5, .docbook h6 {
+        color: #990000;
+        font-family: 'Lucida Grande', 'Lucida Sans Unicode', Verdana, sans-serif;
+}
+
+.docbook h1{
+        font-size:3em;
+}
+
+.docbook h2{
+        font-size:1.5em;
+}
+.docbook h3{
+        font-size:1.3em;
+}
+
+.docbook h4{
+        font-size:1.1em;
+}
+
+
+
+.docbook .toc{
+         padding: 10px 10px 10px 10px;font-size:13em;
+         border: 1px solid gray;
+         font-size:1.1em;
+}
+
+.docbook ol {
+        margin: 0 0 0 2px;
+        line-height: 1.2;
+}
+
+.docbook body pre {
+        margin: .75em 0;
+        line-height: 1.0;
+        color: #461b7e;
+}
+
+.docbook body td, body th {
+        line-height: 1.2;
+}
+
+.docbook body dir,.docbook body menu {
+        margin: 0 0 0 5%;
+        line-height: 1.2;
+}
+
+.docbook ul, .docbook li {
+        line-height: 1.2;
+}
+
+
+.docbook code.filename{
+        color: #007a00;
+        font-size: 120%;
+}
+
+.docbook .GUIMENU, .docbook .GUIMENUITEM,.docbook .GUISUBMENU,
+.docbook .GUILABEL,.docbook .INTERFACE,.docbook .GUIBUTTON,
+.docbook .SHORTCUT,.docbook .SHORTCUT, .docbook .KEYCAP {
+        background-color: #F0F0F0;
+}
+.docbook .accel {
+        background-color: #F0F0F0;
+        text-decoration: underline;
+}
+
+.docbook .caution{
+    background: #AAAAAA;
+    border: 1px solid #EE0000;
+    padding: 0px 0px 10px 10px;
+}
+
+.docbook .caution h3{
+    color: #BB0000;
+    background: #AAAAAA;
+}
+
+.docbook .warning{
+    background: #AAAAAA;
+    border: 1px solid #EE0000;
+    padding: 0px 0px 10px 0px;
+}
+
+.docbook .warning h3{
+    color: #DDBB00;
+    background: #AAAAAA;
+}
+
+pre{
+    background: #cccccc;
+    color: #745718;
+    border: 1px solid gray;
+    padding: 10px;
+    font-size: 10pt;
+    white-space: pre;
+    margin-left: 3ex;
+    overflow: auto;
+}
+
+/* Highlight code
+ * ***************************************************************************/
+
+span.Alert {
+ color: #0000ff;
+}
+span.BaseN {
+ color: #007f00;
+}
+span.BString {
+ color: #000000;
+}
+span.Char {
+ color: #ff00ff;
+}
+span.Comment {
+ color: #5552ce;
+}
+span.DataType {
+ color: #000000;
+}
+span.DecVal {
+ color: #00ffff;
+}
+span.Error {
+ color: #ff0000;
+}
+span.Float {
+ color: #5599ff;
+}
+span.Function {
+ color: #5599ff;
+}
+span.IString {
+ color: #ff0000;
+}
+span.Keyword {
+ color: #cb5c4d;
+ font-weight: bold;
+}
+span.Operator {
+ color: #000000;
+}
+span.Others {
+ color: #b03060;
+}
+span.RegionMarker {
+ color: #96b9ff;
+}
+span.Reserved {
+ color: #000000;
+}
+span.String {
+ color: #058508;
+}
+span.Variable {
+ color: #ffff00;
+}
+span.Warning {
+ color: #0000ff;
+}
