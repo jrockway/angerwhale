@@ -2,19 +2,21 @@
   <div class="sidebar_navigation">
    <div class="box">
    <h3>Navigation</h3>
-    <p>
-      [% IF page != "home" %]
-      <a href="[% base %]">Home</a>
+    <ul>
+      [% FOREACH navlink=[
+      	   {page=>'home',      url=>base,              label=>'Home'     },
+	   {page=>'article_list',  url=>base _ 'articles', label=>'Articles' }
+	 ]
+      %]
+      <li>
+      [% IF page != navlink.page %]
+      <a href="[% navlink.url %]">[% navlink.label | ucfirst %]</a>
       [% ELSE %]
-      Home
+      [% navlink.label | ucfirst %]
       [% END %]
-      |
-      [% IF page != "article_list" %]
-      <a href="[% base %]articles/">Articles</a>
-      [% ELSE %]
-      Articles
+      </li>
       [% END %]
-    </p>
+    </ul>
    </div>
   </div>
   [% IF root.get_categories %]
