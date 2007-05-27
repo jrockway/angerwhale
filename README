@@ -1,1 +1,8 @@
-Run script/blog_server.pl to test the application.
+This is Angerwhale, a Catalyst-based blogging package.  Run
+Makefile.PL and make test to get all the dependencies (and make sure
+they work), and then run script/angerwhale_server.pl and visit
+localhost:3000 to try it out.  If you want to "productionize" Angerwhale,
+running "make install" is probably not what you want to do.  Please
+refer to the Catalyst manual, and deploy Angerwhale as you see fit.
+
+* AGAIN: RUNNING "MAKE INSTALL" IS PROBABLY NOT WHAT YOU WANT TO DO
