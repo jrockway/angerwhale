@@ -5,7 +5,7 @@
 use Test::More tests => 40;
 use strict;
 use warnings;
-use URI;
+use URI::Escape qw(uri_escape_utf8);
 use Angerwhale::Test;
 use File::Attributes qw(set_attribute);
 use utf8;
@@ -34,9 +34,13 @@ foreach my $link (@links) {
     my $url  = $link->url;
     my $text = $link->text;
     
-    if ( $url =~ m{/tags/.*} ) {
-        my $should = URI->new(qq{http://localhost/tags/$text});
-        is( $url, $should->as_string, 
+    if ( $url =~ m{/tags/} ) {
+        utf8::decode($url);
+        utf8::decode($text);
+
+        my $should = uri_escape_utf8($text);
+        $should = "http://localhost/tags/$should";
+        is( $url, $should,
             Encode::encode('utf-8',"$text link is $should" ));
         $seen{$text}++;
     }
