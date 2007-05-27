@@ -180,10 +180,10 @@ sub refresh {
 sub _new {
     my ( $class, $id ) = @_;
     my $user = {};
-    die "specify id" if !$id;
+    die 'specify id' if !$id;
     $user->{nice_id} = unpack( 'H*', $id );
     $user = bless $user, $class;
-    $user->_keyserver("stinkfoot.org");
+    $user->_keyserver('subkeys.pgp.net');
     $user->refresh;
     return $user;
 }
