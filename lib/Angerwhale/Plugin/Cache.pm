@@ -91,7 +91,6 @@ Get the cache ID during prepare step.
 
 =cut
 
-my $shut_up_about_cache_being_disabled = 0;
 sub prepare {
     my ($class, @args) = @_;
     
