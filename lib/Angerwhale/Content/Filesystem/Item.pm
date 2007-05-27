@@ -130,14 +130,9 @@ sub new {
 
     # setup tags
     foreach my $t (grep {/tags[.]/} keys %{$self->{metadata}}) {
-        warn "$t is NOT utf8" if !utf8::is_utf8($t);
-        warn "$t is utf8" if utf8::is_utf8($t);
-        
+        my $count = delete $self->{metadata}{$t}; # cleanup
         $t =~ /tags[.](.+)/;
-        warn "$1 is NOT utf8" if !utf8::is_utf8($1);
-        warn "$1 is utf8" if utf8::is_utf8($1);
-        $self->{metadata}{tags}{$1} = $self->{metadata}{$t};
-        delete $self->{metadata}{$t}; # cleanup
+        $self->{metadata}{tags}{$1} = $count;
     }
     
     return $self;
