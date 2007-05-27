@@ -38,17 +38,6 @@ sub filter {
           $text = Encode::decode($encoding, $text, 1) 
             unless utf8::is_utf8($text);
           $item->data($text);
-                       
-          # decode metadata
-          my %metadata = %{$item->metadata||{}};
-          foreach (keys %metadata) {
-              my $data = $metadata{$_};
-              next if ref $data; # XXX descend into refs?
-              $data = Encode::decode($encoding, $data, 1)
-                unless utf8::is_utf8($data);
-              $metadata{$_} = $data;
-          }
-          $item->metadata(\%metadata);
 
           return $item;
       };
