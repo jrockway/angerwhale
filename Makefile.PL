@@ -62,6 +62,7 @@ requires
    'Module::Pluggable'                           => 0,
    'NEXT'                                        => '0.60',
    'Pod::Simple::Text'                           => 0,
+   'POSIX'                                       => 0,
    'Pod::Xhtml'                                  => '1.52_01',
    'Quantum::Superpositions'                     => 0,
    'Scalar::Defer'                               => 0,
@@ -103,7 +104,6 @@ build_requires
   );
 
 feature('Speed up crypto', ['Math::BigInt::GMP' => 0]);
-feature('Custom date formats', ['POSIX' => 0]);
 
 catalyst_par_classes(qw/
     Crypt::Blowfish
