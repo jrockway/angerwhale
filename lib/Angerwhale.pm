@@ -12,7 +12,7 @@ use Catalyst qw/Unicode ConfigLoader Static::Simple
 
 #XXX: add C3 and LogWarnings back
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 my $tmp = File::Spec->catdir(File::Spec->tmpdir, 'angerwhale');
 File::Remove::remove(\1, $tmp);

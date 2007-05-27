@@ -1,6 +1,6 @@
 Angerwhale changes
 
-0.05  XXX
+0.05  27 May 2007
        - Eliminate prototype in favor of mochikit
        - fix bug in POD formatter that messed up indentation between
          paragraphs in the same block of code (zamolxes++)
