@@ -4,7 +4,7 @@
     [% IF article.tags %]
     Tags:
     [% FOREACH tag = article.tags %] 
-      <a href="[% c.uri_for("/tags/$tag") | html %]">[% tag | html %]</a>
+      <a href="[% c.uri_for("/tags", tag) | html %]">[% tag | html %]</a>
     [% END %]
     [% ELSE %]
     No tags
