@@ -68,7 +68,7 @@ sub do_tag : Local {
     @tags = split /\s+/, $tags if defined $tags;
 
     my $article;
-    eval { $article = $c->stash->{root}->get_article($article_name); };
+    eval { $article = $c->stash->{root}->get_article($article_name) };
     if ($@) {
         $c->response->status(404);
         $c->response->body("Tagging error: $@");

@@ -22,7 +22,7 @@ my $jrock      = Angerwhale::User->_new($id);
 my $c = context({config => {}});
 
 my $user_store = Test::MockObject->new;
-$user_store->set_always( 'keyserver', 'stinkfoot.org' );
+$user_store->set_always( 'keyserver', 'subkeys.pgp.net' );
 $user_store->set_always( 'get_user_by_real_id', $jrock );    
 $c->set_always( 'model', $user_store ); # hack
 

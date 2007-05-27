@@ -27,6 +27,7 @@ requires
    'Catalyst::Plugin::Setenv'                    => 0,
    'Catalyst::Plugin::Static::Simple'            => 0,
    'Catalyst::Plugin::Unicode'                   => '0.2',
+   'Catalyst::View::TT'                          => 0,
    'Catalyst::View::JSON'                        => 0,
    'Catalyst::View::Jemplate'                    => 0,
    'Class::C3'                                   => 0,
@@ -61,6 +62,7 @@ requires
    'Module::Pluggable'                           => 0,
    'NEXT'                                        => '0.60',
    'Pod::Simple::Text'                           => 0,
+   'POSIX'                                       => 0,
    'Pod::Xhtml'                                  => '1.52_01',
    'Quantum::Superpositions'                     => 0,
    'Scalar::Defer'                               => 0,
@@ -102,8 +104,35 @@ build_requires
   );
 
 feature('Speed up crypto', ['Math::BigInt::GMP' => 0]);
-feature('Custom date formats', ['POSIX' => 0]);
 feature('Searching', [KinoSearch => '0.20_02']);
+
+catalyst_par_classes(qw/
+    Crypt::Blowfish
+    Crypt::CAST5_PP
+    Crypt::DES_EDE3
+    Crypt::IDEA
+    Crypt::OpenPGP
+    Crypt::OpenPGP::Key::Public::DSA
+    Crypt::OpenPGP::Key::Public::ElGamal
+    Crypt::OpenPGP::Key::Public::RSA
+    Crypt::OpenPGP::Marker
+    Crypt::OpenPGP::OnePassSig
+    Crypt::OpenPGP::Trust
+    Crypt::RIPEMD160
+    Crypt::Random
+    Crypt::Rijndael
+    Crypt::Twofish
+    HTML::SBC
+    Pod::Xhtml
+    Syntax::Highlight::Engine::Kate
+    Syntax::Highlight::Engine::Kate::All
+    TeX::Hyphen
+    TeX::Hyphen::czech
+    Text::Markdown
+    Text::Textile
+    Text::WikiFormat
+    URI::Find
+/);
 
 catalyst();
 install_script(glob('script/*.pl'));
@@ -112,8 +141,6 @@ license('GPL');
 tests('t/*/*.t');
 
 WriteAll( sign => 1, meta => 1 );
-catalyst_par_core();
-catalyst_par();  
 
 sub MY::postamble {
     return <<'POSTAMBLE';
@@ -123,6 +150,8 @@ profile:
 	$(PERL) -d:DProf script/angerwhale_server.pl -d
 angerwhale.par: catalyst_par
 angerwhale_par: catalyst_par
+TAGS: $(MAN3PODS) $(TEST_FILES)
+	find lib t | egrep '[.](t|pm)$$' | etags --lang=perl -
 POSTAMBLE
 
 }

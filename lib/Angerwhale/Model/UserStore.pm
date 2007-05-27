@@ -34,7 +34,7 @@ will still be used.
 
 =head2 keyserver
 
-The keyserver to fetch PGP keys from.  Defaults to C<stinkfoot.org>,
+The keyserver to fetch PGP keys from.  Defaults to C<subkeys.pgp.net>,
 since other keyservers can't manage to properly store and retieve the
 author's key.
 
@@ -68,7 +68,7 @@ sub new {
     # clever defaults
     $self->update_interval( $c->config->{update_interval} || 3600 )
       if !$self->update_interval;
-    $self->keyserver( $c->config->{keyserver} || "stinkfoot.org" )
+    $self->keyserver( $c->config->{keyserver} || "subkeys.pgp.net" )
       if !$self->keyserver;
 
     mkdir $dir;

@@ -15,7 +15,7 @@ my $JROCK_ID = 'd0197853dd25e42f';    # author's key ID;
 # setup
 my $id = pack 'H*', $JROCK_ID;
 my $us = Test::MockObject->new;       # fake UserStore
-$us->set_always( 'keyserver', 'stinkfoot.org' );
+$us->set_always( 'keyserver', 'subkeys.pgp.net' );
 
 my $data = do { local $/; <DATA> };
 my $sig = bless {},

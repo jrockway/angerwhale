@@ -11,7 +11,9 @@ use List::Util qw(min);
 use Syntax::Highlight::Engine::Kate;
 use Syntax::Highlight::Engine::Kate::All;
 
-__PACKAGE__->mk_accessors('lang');    # what lang highlighter should use
+# lang = language code is in
+# spaces = spaces that the textblock is indented by
+__PACKAGE__->mk_accessors(qw/lang spaces/);
 
 =head1 Angerwhale::Format::Pod
 
@@ -44,6 +46,10 @@ make the first line C<lang:LanguageName>, like C<lang:Perl> or
 C<lang:Haskell>.  To turn off syntax highlighting until
 the next C<lang:> directive, do C<lang:0> or C<lang:undef>.
 
+=head2 textblock
+
+C<pod--> (long story)
+
 =cut
 
 sub new {
@@ -53,7 +59,9 @@ sub new {
         MakeIndex    => 0,
         FragmentOnly => 1,
         TopHeading   => 3,
-    );
+                                  );
+    $self->spaces(-1);
+    return $self;
 }
 
 sub can_format {
@@ -117,6 +125,12 @@ sub _handleSequence {
     }
 }
 
+sub textblock {
+    my $parser = shift;
+    $parser->spaces(-1);
+    $parser->SUPER::textblock(@_);
+}
+
 sub verbatim {
     my $parser    = shift;
     my $paragraph = shift;
@@ -124,8 +138,6 @@ sub verbatim {
     my $pod_para  = shift;
     my $text      = $pod_para->text;
 
-    # strip unnecessary leading spaces
-    my $spaces = -1;                 # count of leading spaces
     my @lines = split /\n/, $text;
 
     if ( $lines[0] && $lines[0] =~ m{\s*lang:([^.]+)\s*$} ) {
@@ -139,31 +151,12 @@ sub verbatim {
 
         shift @lines;
     }
-
-    # figure out how many that is
-    for my $line (@lines) {
-        next if $line =~ /^\s*$/;    # skip lines that are all spaces
-        $line =~ /^(\s+)/;
-        if ( $spaces == -1 ) {
-            $spaces = length $1;
-        }
-        else {
-            $spaces = min( $spaces, length $1 );
-        }
-    }
-
-    # strip 'em
-    $text = "";
-    for my $line (@lines) {
-        $text .= $line and next
-          if ( $line =~ /^\s*$/ );
-
-        $text .= substr $line, $spaces;
-        $text .= "\n";
-    }
-    $text =~ s/^\n+//;    # strip unnecessary newlines
-    $text =~ s/\n+$//;    # strip unnecessary newlines
-
+    # strip unnecessary leading spaces
+    my ($res, $spaces) = _strip_leading_spaces([@lines],$parser->spaces);
+    $text = join "\n", @{$res};
+    $parser->spaces($spaces);
+    
+    # syntax highlight if necessary
     if ( $parser->lang ) {
         eval {
             my $hl = Syntax::Highlight::Engine::Kate->new(
@@ -205,13 +198,41 @@ sub verbatim {
             $text = \$html;
         };
         if ($@) {
-            warn $@;
+            warn "Error syntax highlighting: $@";
         }
     }
 
-    # if vimcolor didn't work, just show the regular text
+    # if highlighting didn't work, just show the regular text
     $pod_para->text($text);
     $parser->parse_tree->append($pod_para);
+}
+
+sub _strip_leading_spaces {
+    my @lines = @{shift()};
+    my $spaces = shift || -1;
+    
+    # figure out how many that is
+    for my $line (@lines) {
+        next if $line =~ /^\s*$/;    # skip lines that are all spaces
+        if ($line =~ /^(\s+)/){
+            if ( $spaces == -1 ) {
+                $spaces = length $1;
+            }
+            else {
+                $spaces = min( $spaces, length $1 );
+            }
+        }
+        else {
+            $spaces = 0;
+        }
+    }
+    
+    for my $line (@lines) {
+        next if $line =~ /^\s*$/;
+        $line =  substr $line, $spaces;
+    }
+    
+    return ([@lines],$spaces);
 }
 
 1;
