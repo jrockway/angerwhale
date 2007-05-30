@@ -81,10 +81,10 @@ sub new {
     croak "need full path to file" if !-e $self->file;
 
     # fix up paths a bit
-    $self->{root} =~ s{/+$}{};
-    $self->{file} =~ s{/+$}{};
     $self->{root} =~ s{/+}{/}g;
     $self->{file} =~ s{/+}{/}g;
+    $self->{root} =~ s{/+$}{};
+    $self->{file} =~ s{/+$}{};
     
     my $file = $self->file;
     $self->data(scalar read_file( $file )); 
@@ -109,7 +109,8 @@ sub new {
     $self->metadata ( { %attributes,
                         creation_time     => creation_time($file),
                         modification_time => (stat $file)[9],
-                        name              => $basename,
+                        name              => Encode::decode($encoding, 
+                                                            $basename, 1),
                       } );
     
     # this needs the above metadata in order to work
