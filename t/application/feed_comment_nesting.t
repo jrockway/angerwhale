@@ -6,7 +6,7 @@ use YAML::Syck;
 use JSON;
 use Angerwhale::Test (ignore_captcha => 1);
 use File::Attributes qw(get_attribute);
-use Test::More tests => 52;
+use Test::More tests => 54;
 
 my $mech = Angerwhale::Test->new;
 $mech->article('Test Article 1');
@@ -94,6 +94,15 @@ for my $a (1..2){
 }
 is_deeply([sort @found_paths], [sort @paths], 'found paths match (json)');
 
+## Now test the top-level comment feed, for YAML.
+## We don't check the paths because they're not supposed to nest like in the per-article data; just check they're there.
+{
+    @found_paths = ();
+    $mech->get_ok('http://localhost/feeds/comments/yaml');
+    my $yaml = $mech->content;
+    my @comments = Load($yaml);
+    is(+@comments, 14, 'correct number of comments in feed');
+}
 
 =head2 $new_path = post_comment_to($mech, $path)
 
