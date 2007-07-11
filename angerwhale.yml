@@ -13,5 +13,5 @@ feeds: ~
 #   location: "http://del.icio.us/rss"
 #max_feed_entries: 5
 
-# pick your theme, currently "legacy" or "phokus"
-theme: phokus
+# pick your theme, currently "legacy", "phokus", or "web10"
+theme: web10

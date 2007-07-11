@@ -39,6 +39,10 @@ themes:
       css:
          - legacy/style.css
          - common/syntax-dark.css
+   web10:
+      css:
+         - web10/style.css
+         - common/syntax-dark.css
 filters:
    - Encoding 
    - Checksum 

@@ -1,0 +1,32 @@
+* { 
+    background-color: #ffffff;
+}
+#sidebar {
+    width: 12em;
+    float: left;
+}
+
+#content {
+    margin-left: 14em;
+}
+
+#footer {
+    font-size: 80%;
+    padding: 0;
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+.mini_post_title {
+    font-weight: bold;
+}
+
+.post_info {
+    margin: 0;
+    padding: 0;
+}
+
+.post_extrainfo {
+    margin: 0;
+    padding: 0;
+}
