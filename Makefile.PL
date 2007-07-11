@@ -70,6 +70,7 @@ requires
    'Syntax::Highlight::Engine::Kate'             => '0.02',
    'TeX::Hyphen'                                 => 0,
    'Template::Plugin::Filter'                    => 0,
+   'Template::Plugin::JavaScript'                => 0,
    'Template::Plugin::Lingua::EN::Inflect'       => 0,
    'Text::Autoformat'                            => 0,
    'Text::Markdown'                              => 0,

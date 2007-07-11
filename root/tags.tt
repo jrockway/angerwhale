@@ -1,3 +1,4 @@
+[% USE JavaScript -%]
 <div id="tagbox_[% article.id %]" class="taglist">
  <p class="post_tags">
   <span id="tags_[% article.id %]"> 
@@ -23,16 +24,16 @@
 <script type="text/javascript">
 //<![CDATA[
 new Angerwhale.TagEditor({
-		element:  '[% id %]',
-		control:  '[% control %]',
-		url:      '[% url %]',
-		onUpdate: function () {
-			doXHR('/tags/get_nav_box[% home %]').addCallback(
-				function (response) {
-					$('sidebar_box').innerHTML = response.responseText;
-				}
-			);
-		}
+        element:  '[% id | js %]',
+        control:  '[% control | js %]',
+        url:      '[% url | js %]',
+        onUpdate: function () {
+            doXHR('/tags/get_nav_box[% home | js %]').addCallback(
+                function (response) {
+                    $('sidebar_box').innerHTML = response.responseText;
+                }
+            );
+        }
 });
 //]]>
 </script>
