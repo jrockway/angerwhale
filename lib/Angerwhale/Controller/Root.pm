@@ -95,7 +95,7 @@ Generic 404 not found page
 
 =cut
 
-sub not_found : Local {
+sub not_found : Private {
     my ($self, $c, @args) = @_;
     $c->stash(template => 'error.tt');
     $c->response->status(404);
