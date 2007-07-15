@@ -184,14 +184,14 @@ sub get_nav_box : Local {
     $c->stash->{template}   = 'navbox.tt';
 }
 
-=head2 index
+=head2 all_tags
 
 Show all tags.  Currently dispatches to C<tag_list> to render
 a Web 2.0 compliant Tag Cloud.  Yay.
 
 =cut
 
-sub index : Private {
+sub all_tags : Path Args(0) {
     my ( $self, $c ) = @_;
     $c->detach('tag_list');
 }
