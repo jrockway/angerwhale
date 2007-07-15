@@ -19,13 +19,13 @@ Provides a listing of users and information about those users.
 
 =head1 METHODS
 
-=head2 index
+=head2 users
 
 Shows a list of all users that have logged in or posted a comment.
 
 =cut
 
-sub index : Private {
+sub users : Path {
     my ( $self, $c ) = @_;
 
     my @users = $c->model('UserStore')->users;
