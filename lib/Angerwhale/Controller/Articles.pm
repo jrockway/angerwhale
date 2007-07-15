@@ -40,34 +40,47 @@ sub index : Private {
     $c->stash->{article_count} = scalar @articles;
 }
 
-=head2 single_article(['raw'])
+=head2 article_setup($article)
 
-Displays a single article (with comments, etc.).  If 'raw' is passed
-as the argument, then the raw unformatted text is returned as an octet
-stream.
+Start of a chain that gets an article and stashes it.
 
 =cut
 
-sub single_article : Path {
-    my ( $self, $c, @args ) = @_;
-    my $name = shift @args;
-    my $type = shift @args;
-    
-    $c->stash->{template} = 'article.tt';
-    eval { $c->stash->{article} = $c->model('Articles')->get_article($name); };
+sub article_setup :Chained('/') PathPart('articles') CaptureArgs(1) Args(1) {
+    my ($self, $c, $article) = @_;
+        eval { $c->stash->{article} = 
+                 $c->model('Articles')->get_article($article); };
     if ($@) {
         # no article by this name, show 404
         $c->detach('/not_found');
     }
     $c->stash->{title} = $c->stash->{article}->title;
-    
-    # if the user wants the raw message (to verify the signature),
-    # return that instead of rendering the template
-    if ( defined $type && $type eq 'raw' ) {
-        $c->response->content_type('application/octet-stream');
-        $c->response->body( $c->stash->{article}->raw_text(1) );
-        $c->detach;
-    }
+}
+
+=head2 single_article 
+
+When the chain has no args after the article, just display
+the article as HTML.
+
+=cut
+
+sub single_article :Chained('article_setup') :PathPart('') Args(0) {
+    my ($self, $c) = @_;
+    $c->stash(template => 'article.tt');
+}
+
+=head2 raw
+
+If "raw" shows up as the argument after the article name,
+then return the raw text of the article
+
+=cut
+
+sub raw :Chained('article_setup') Args(0) {
+    my ($self, $c) = @_;
+    $c->response->content_type('application/octet-stream');
+    $c->response->body( $c->stash->{article}->raw_text(1) );
+    $c->detach;
 }
 
 =head1 AUTHOR
