@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xml:lang="en">
   <head>
-    <title>[% title | html %]</title>
+    <title>[% (title || c.config.title || c.config.name) | html %]</title>
     [% FOREACH style = c.config.page_includes.css %]
       <link rel="stylesheet" 
             href="[% base %]static/[% style | html %]"
