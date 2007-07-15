@@ -21,13 +21,13 @@ Catalyst Controller.
 
 =head1 METHODS
 
-=head2 index
+=head2 all_articles
 
 Shows every article.
 
 =cut
 
-sub index : Private {
+sub all_articles : Path Args(0) {
     my ( $self, $c ) = @_;
     
     $c->stash->{page}     = 'article_list';
