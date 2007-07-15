@@ -21,13 +21,13 @@ Catalyst Controller.
 
 =cut
 
-=head2 index
+=head2 feeds
 
 The main index of all available feeds
 
 =cut
 
-sub index : Private {
+sub feeds : Path {
     my ( $self, $c ) = @_;
     $c->stash->{template} = 'feeds.tt';
 
