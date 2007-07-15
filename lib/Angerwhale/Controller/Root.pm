@@ -39,19 +39,32 @@ sub auto : Private {
 
 =head2 blog
 
-Render the main blog page, and blog archives at
-L<http://blog/yyyy/mm/dd>.
+Render the main blog page (category '/').
 
 =cut
 
-sub blog : Path  {
+sub blog : Path Args(0)  {
     my ( $self, $c, @date ) = @_;
-    $c->stash->{page}     = 'home';
-    $c->stash->{title}    = $c->config->{title} || 'Blog';
+    $c->stash->{page} = 'home';
     
     $c->forward( '/categories/show_category', ['/', @date] );
 }
 
+=head2 archives
+
+dispatch to a date-based archive page for the main category, or show
+404 if the format is wrong
+
+=cut
+
+sub archives : Local Args(3) {
+    my ( $self, $c, $y, $m, $d ) = @_;
+    
+    $c->detach( '/categories/show_category', ['/', $y, $m, $d] )
+      if(eval { timelocal(0, 0, 0, $d, $m-1, $y) });
+    
+    $c->detach('/not_found'); # invalid date, 404
+}
 
 =head2 jemplate
 
@@ -71,24 +84,6 @@ sub jemplate : Global {
     $c->detach('/not_found');
 }
 
-=head2 default
-
-dispatch to a date-based archive page, or show 404 if the format is
-wrong
-
-=cut
-
-sub default : Private {
-    my ( $self, $c, @args ) = @_;
-    
-    # XXX: blog archives
-    $c->detach('blog', [@args])
-      if(@args == 3 && 
-         eval { timelocal(0, 0, 0, $args[2], $args[1]-1, $args[0]) } );
-    
-    $c->detach('/not_found'); # invalid date, 404
-}
-
 =head2 not_found
 
 Generic 404 not found page
@@ -96,11 +91,20 @@ Generic 404 not found page
 =cut
 
 sub not_found : Private {
-    my ($self, $c, @args) = @_;
+    my ($self, $c) = @_;
     $c->stash(template => 'error.tt');
     $c->response->status(404);
-    $c->forward('/end');
-    $c->detach; # skip other end action
+    $c->detach('/end');
+}
+
+=head2 default
+
+404
+
+=cut
+
+sub default : Private {
+    $_[1]->detach('/not_found');
 }
 
 =head2 exit

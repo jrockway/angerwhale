@@ -9,12 +9,15 @@
    [% END %]
   [% END %]
 
+[% orig_category = category %]
+[% category = category.replace('^/$', '/archives') %]
+
 [% IF newer_articles.defined || older_articles.defined %]
 <div id="nav_footer">
 <p>
  [% IF newer_articles %]
    [% IF newest_is_newest %] 
-     <a href="[% c.uri_for("$category") %]">
+     <a href="[% c.uri_for("$orig_category") %]">
    [% ELSE %]
      <a href="[% c.uri_for("$category/$newer_articles") | html %]">
    [% END %]

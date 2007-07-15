@@ -1,5 +1,12 @@
 Angerwhale changes
 
+0.06  
+       - Use "default" *only* for 404 page
+       - Change archives location from /Year/Month/Date to
+         /archives/Year/Month/Date (category archive location,
+         i.e. /categories/Angerwhale/2007/01/01, is unchanged)
+       -
+
 0.05  27 May 2007
        - Eliminate prototype in favor of mochikit
        - fix bug in POD formatter that messed up indentation between

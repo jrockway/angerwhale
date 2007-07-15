@@ -66,8 +66,10 @@ to the dates of newer and older articles.
 =cut
 
 # this is a little messy.  i should probably clean this up.
+
 sub show_category : Path('/categories') {
     my ( $self, $c, $category, @start_date ) = @_;
+
     $c->stash->{template} = q{blog_listing.tt};
     if ( @start_date == 3 ) {
         $c->stash->{page} = "home, but with date";    # for navbar
@@ -115,7 +117,7 @@ sub show_category : Path('/categories') {
     my $config;
     $config->{articles_per_page} = $ARTICLES_PER_PAGE;
     $config->{date} = [@start_date] if @start_date;
-
+    
     my ( $too_new, $current, $too_old ) =
       $self->_split_articles( [@articles], $config );
 
@@ -229,7 +231,7 @@ sub _split_articles {
     my ( $self, $articles, $config ) = @_;
     my $ARTICLES_PER_PAGE = $config->{articles_per_page} || die;
     my @articles          = @{$articles};
-    my @date              = @{ $config->{date} } if ref $config->{date};
+    my @date              = @{ $config->{date} || [] };
 
     my @before;     # articles *newer* than current ($before[0] is newest)
     my @current;    # current articles (to display)
