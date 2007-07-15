@@ -66,24 +66,6 @@ sub archives : Local Args(3) {
     $c->detach('/not_found'); # invalid date, 404
 }
 
-=head2 jemplate
-
-Compile and serve jemplate templates.
-
-=cut
-
-sub jemplate : Global {
-    my($self, $c, $file) = @_;
-    $c->stash->{jemplate} = { key   =>  $file,
-                              files => [$file]};
-    $c->forward('View::Jemplate');
-    $c->detach if $c->res->body;
-
-    # no template, 404'd.
-    $c->clear_errors;
-    $c->detach('/not_found');
-}
-
 =head2 not_found
 
 Generic 404 not found page
