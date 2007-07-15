@@ -117,7 +117,7 @@ sub process : Local {
     $c->response->redirect( $c->uri_for('/') );
 }
 
-=head2 index
+=head2 login
 
 Render the login page
 
