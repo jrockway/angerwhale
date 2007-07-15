@@ -123,7 +123,7 @@ Render the login page
 
 =cut
 
-sub index : Private {
+sub login :Path {
     my ( $self, $c ) = @_;
     $c->stash->{template} = 'login.tt';
     $c->forward('nonce');
