@@ -100,7 +100,6 @@ Renders a page showing all article tagged with all of C<@tags>.
 sub show_tagged_articles : Path('/tags') {
     my ( $self, $c, @tags ) = @_;
 
-    map { Encode::_utf8_on($_) unless Encode::is_utf8($_) } @tags;
     $c->stash->{template} = 'search_results.tt';
     $c->stash->{title} =
       'Articles tagged with ' . join( ', ', @tags[ 0 .. $#tags - 1 ] );
@@ -120,7 +119,7 @@ sub show_tagged_articles : Path('/tags') {
     $c->stash->{tags}      = any(@tags);      # for the navbar
     $c->stash->{tag_count} = scalar @tags;    # easier to deal with in TT
     $c->stash->{articles} =
-      [ reverse sort $c->stash->{root}->get_by_tag(@tags) ];
+      [ reverse sort $c->model('Articles')->get_by_tag(@tags) ];
     $c->stash->{article_count} = scalar @{ $c->stash->{articles} };
 
 }
