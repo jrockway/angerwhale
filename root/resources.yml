@@ -9,14 +9,16 @@ Model::Articles:
 session:
    flash_to_stash: 1
 cache:
-   expires: 43200
    backends:
       jemplate:
          store: FastMmap
+         size: 1m
       pages:
          store: FastMmap
+         size: 10m
       formatted:
          store: FastMmap
+         size: 10m
 View::Jemplate:
    jemplate_dir: __path_to(root/jemplate)__
 page_includes:
