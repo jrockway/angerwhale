@@ -6,7 +6,7 @@ Angerwhale changes
          /archives/Year/Month/Date (category archive location,
          i.e. /categories/Angerwhale/2007/01/01, is unchanged)
        - cleanup lots of controller code (use Chained)
-       - 
+       - fix cache memory leak
 
 0.05  27 May 2007
        - Eliminate prototype in favor of mochikit
