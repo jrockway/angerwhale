@@ -96,14 +96,15 @@ sub new {
     $encoding = $attributes{encoding} || $encoding || 'utf-8';
     $attributes{encoding} = $encoding;
 
-    my %_attributes;
-    # decode metadata now
-    while (my ($key, $value) = each %attributes) {
-        $key   = Encode::decode($encoding, $key, 1);
-        $value = Encode::decode($encoding, $value, 1);
-        $_attributes{$key} = $value;
+    { # decode metadata now
+        my %_attributes;
+        while (my ($key, $value) = each %attributes) {
+            $key   = Encode::decode($encoding, $key, 1);
+            $value = Encode::decode($encoding, $value, 1);
+            $_attributes{$key} = $value;
+        }
+        %attributes = %_attributes;
     }
-    %attributes = %_attributes;
     
     my (undef, undef, $basename) = File::Spec->splitpath($self->file);
     $self->metadata ( { %attributes,
