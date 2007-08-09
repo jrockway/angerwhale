@@ -160,9 +160,9 @@ sub get_user_by_nice_id {
         _user_ok($user);
     };
 
-    confess "Could not refresh or retrieve user 0x$nice_id!" if $@;
-    confess "user isnta a user" if !$user->isa('Angerwhale::User');
-
+    warn "could not refresh or retrieve user 0x$nice_id: $@" if $@;
+    die "user isnta a user" if !$user->isa('Angerwhale::User');
+    
     return $user;
 }
 
