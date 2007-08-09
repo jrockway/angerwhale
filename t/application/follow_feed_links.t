@@ -10,7 +10,7 @@ use Angerwhale::Test;
 
 my $mech = Angerwhale::Test->new;
 $mech->article("Article $_") for (1..20);
-$mech->tmp->mkdir("category $_") for (1..3);
+$mech->tmp->mkdir("category $_") for (1..2);
 $mech->tmp->link("Article 1", "category 1/Article 1");
 $mech->tmp->link("Article $_", "category 2/Article $_") for (1..15);
 
@@ -18,35 +18,25 @@ $mech->get('http://localhost/feeds');
 # how many tests?
 my @links = $mech->followable_links();
 @links = grep { $_->url =~ m{/feeds/} } @links;
-plan tests => 3 * scalar @links;
+plan tests => 4 * scalar @links;
 
 while ( my $link = shift @links ) {
     my $url = $link->url;
     $mech->get_ok( $link, "get $url" );
     my $content = $mech->content;
 
+    $mech->content_like(qr/^.+$/s, 'feed is non-empty');
+    
     if ( $url =~ /yaml$/ ) {
-
         # YAML feed
         is( $mech->ct, 'text/x-yaml', 'content type is YAML' );
-
-      SKIP:
-        {
-            skip "No content returned", 1 if !$content;
-            yaml_string_ok( $content, "no YAML errors on feed $url" );
-        }
+        yaml_string_ok( $content, "no YAML errors on feed $url" );
     } 
     
     elsif ($url =~ /json$/ ) {
-        
         # JSON feed
         is( $mech->ct, 'application/json', 'content type is JSON' );
-        
-      SKIP:
-        {
-            skip "No content returned", 1 if !$content;
-            is_valid_json ( $content, "no JSON errors on feed $url" );
-        }
+        is_valid_json ( $content, "no JSON errors on feed $url" );
     } 
     else {
         # must be XML
