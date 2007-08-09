@@ -99,7 +99,9 @@ Renders a page showing all article tagged with all of C<@tags>.
 
 sub show_tagged_articles : Path('/tags') {
     my ( $self, $c, @tags ) = @_;
-
+    
+    utf8::decode($_) for @tags;
+    
     $c->stash->{template} = 'search_results.tt';
     $c->stash->{title} =
       'Articles tagged with ' . join( ', ', @tags[ 0 .. $#tags - 1 ] );
