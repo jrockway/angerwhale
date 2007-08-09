@@ -208,7 +208,7 @@ sub store_user {
 
     my $base = "$dir/$uid";
     mkdir $base                                      if !-d $base;
-    confess "couldn't create userdir $base for $uid" if !-d $base;
+    die "couldn't create userdir $base for $uid" if !-d $base;
     eval {
         write_file( "$base/key",          $user->public_key );
         write_file( "$base/fullname",     $user->fullname );
@@ -217,7 +217,7 @@ sub store_user {
         write_file( "$base/last_updated", time() );
     };
     if ($@) {
-        confess "Error writing user: $!";
+        die "Error writing user: $!";
     }
 
     return 1;
