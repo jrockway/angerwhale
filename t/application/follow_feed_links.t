@@ -18,7 +18,7 @@ $mech->get('http://localhost/feeds');
 # how many tests?
 my @links = $mech->followable_links();
 @links = grep { $_->url =~ m{/feeds/} } @links;
-plan tests => 4 * scalar @links;
+plan tests => 4 * @links + 1;
 
 while ( my $link = shift @links ) {
     my $url = $link->url;
@@ -49,4 +49,4 @@ while ( my $link = shift @links ) {
     }
 }
 
-END { die "TESTS DID NOT COMPLETE!!!!" if @links }
+END { is(scalar @links, 0, 'no more links left') }
