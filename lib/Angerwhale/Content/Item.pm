@@ -40,6 +40,34 @@ sub store_attribute {
     return;
 }
 
+=head2 _add_tag(tag,count)
+
+Internal method for adding a (tag,count) pair to
+the metadata area.  Needed so that:
+
+  FOO => 2
+  fOo => 3
+
+Results in:
+  
+   foo => 5
+
+Make sure you call this method with character data, not bytes
+
+XXX: people are calling this with count=undef.  Why?
+
+=cut
+
+sub _add_tag {
+    my ($self, $tag, $count) = @_;
+    $tag = lc $tag; # canonicalize
+    
+    my $cur_count = $self->{metadata}{tags}{$tag}||0;
+    $self->{metadata}{tags}{$tag} = $cur_count + ($count||0);
+    
+    return;
+}
+
 =head2 store_data
 
 Rewrite the data section of this item

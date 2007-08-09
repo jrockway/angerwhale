@@ -133,7 +133,7 @@ sub new {
     foreach my $t (grep {/tags[.]/} keys %{$self->{metadata}}) {
         my $count = delete $self->{metadata}{$t}; # cleanup
         $t =~ /tags[.](.+)/;
-        $self->{metadata}{tags}{$1} = $count;
+        $self->_add_tag($1, $count);
     }
     
     return $self;
