@@ -31,7 +31,7 @@ requires
    'Catalyst::View::JSON'                        => 0,
    'Catalyst::View::Jemplate'                    => 0,
    'Class::C3'                                   => 0,
-   'Compress::Zlib'                              => 0,
+   'Compress::Zlib'                              => '2.005',
    'Crypt::Blowfish'                             => 0,
    'Crypt::CAST5_PP'                             => 0,
    'Crypt::DES_EDE3'                             => 0,
