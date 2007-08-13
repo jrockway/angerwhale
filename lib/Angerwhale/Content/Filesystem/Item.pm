@@ -325,32 +325,33 @@ sub add_comment {
     # /foo/bar/comment1337abc! -> /foo/bar/._tmp_.comment1337abc!
     # maybe make a random filename instead?
 
-    open my $comment, '>:raw', $tmpname
+    open my $comment_fh, '>:raw', $tmpname
       or die "unable to open $filename: $!";
     eval {
         my $copy = "$body";
         utf8::encode($copy) if utf8::is_utf8($body);
-        print {$comment} "$copy\n" or die "io error: $!";
-        close $comment;
+        print {$comment_fh} "$copy\n" or die "io error: $!";
+        close $comment_fh;
         rename( $tmpname => $filename )
           or die "Couldn't rename $tmpname to $filename: $!";
     };
     if ($@) {
-        close $comment;
+        close $comment_fh;
         unlink $tmpname;
         unlink $filename;    # partial rename !?
         die $@;              # propagate the message up
     }
 
     # set attributes: (TODO: atomic also)
+    my $comment;
     eval {
-        my $comment = Angerwhale::Content::Filesystem::Item->
-          new({ root    => $self->root,
-                base    => $comment_dir,
-                file    => $filename,
-                comment => 1,
-                parent  => $self->metadata->{path},
-              });
+        $comment = Angerwhale::Content::Filesystem::Item->
+            new({ root    => $self->root,
+                  base    => $comment_dir,
+                  file    => $filename,
+                  comment => 1,
+                  parent  => $self->metadata->{path},
+                });
         
         # attribute the comment to someone, if possible
         if ($user) {
