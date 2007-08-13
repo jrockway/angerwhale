@@ -1,4 +1,12 @@
 [% WRAPPER page.tt %]
+[% IF tracking_url %]
+ <div id="tracking_url" class="message">
+   Your comment was posted successfully.  You can subscribe to
+   <a href="[% tracking_url | html %]">this Atom feed</a> to track
+   any replies.
+ </div>
+[% END %]
+
   [% INCLUDE post.tt 
      standalone = 1  %]
 

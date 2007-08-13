@@ -181,7 +181,9 @@ sub post : Local {
             $c->stash->{body}            = $body;
         }
         else {
-            $item->add_comment( $title, $body, $uid, $type );
+            my $comment = $item->add_comment( $title, $body, $uid, $type );
+            $c->flash->{tracking_url} = 
+              $c->req->base. "feeds/comment/xml/". $comment->metadata->{path};
             $c->response->redirect($c->uri_for('/'.$c->stash->{article}->uri));
         }
     }
