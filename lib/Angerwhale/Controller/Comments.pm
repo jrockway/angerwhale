@@ -5,9 +5,9 @@ use warnings;
 use base 'Catalyst::Controller';
 use Angerwhale::Format;
 use Scalar::Util qw(blessed);
-#use SpamMonkey;
+use SpamMonkey;
 
-#__PACKAGE__->mk_ro_accessors(qw/monkey/);
+__PACKAGE__->mk_ro_accessors(qw/monkey/);
 
 =head1 NAME
 
@@ -29,18 +29,18 @@ Setup spam filtering
 
 =cut
 
-#sub COMPONENT {
-#    my $class = shift;
-#    my $app   = shift;
-#    my $args  = shift;
-#    
-#    # setup spammonkey
-#    my $rules = $app->path_to($app->config->{base}, '.spamrules!!!');
-#    my $monkey = SpamMonkey->new(rule_dir => "/usr/share/spamassassin");
-#    $monkey->ready;
-#    $args->{monkey} = $monkey;
-#    $class->NEXT::COMPONENT($app, $args, @_);
-#}
+sub COMPONENT {
+    my $class = shift;
+    my $app   = shift;
+    my $args  = shift;
+    
+    # setup spammonkey
+    my $rules = $app->path_to($app->config->{base}, '.spamrules!!!');
+    my $monkey = SpamMonkey->new(rule_dir => "/usr/share/spamassassin");
+    $monkey->ready;
+    $args->{monkey} = $monkey;
+    $class->NEXT::COMPONENT($app, $args, @_);
+}
 
 =head2 find_by_uri_path(@path)
 
@@ -180,16 +180,16 @@ sub post : Local {
         
         my $errors = 0;
         # spam filter
-       # my $text = $comment->plain_text();
-       # my $spam_result = $self->monkey->test($body);
-       # warn "hits: ". $spam_result->hits;
-       # warn "details". $spam_result->describe_hits;
+        my $text = $comment->plain_text();
+        my $spam_result = $self->monkey->test($body);
+        #warn "hits: ". $spam_result->hits;
+        #warn "details". $spam_result->describe_hits;
         
-       # if($spam_result->is_spam()){
-       #     $c->stash->{error} = 'This comment looks like SPAM!  Posting aborted.';
-       #     $errors++;
-       # }
-
+       if($spam_result->is_spam()){
+           $c->stash->{error} = 'This comment looks like SPAM!  Posting aborted.';
+           $errors++;
+       }
+        
         if($c->stash->{captcha} && !$c->config->{ignore_captcha}){ # captcha required
             my $ok = $c->forward('/captcha/check_captcha', [$captcha]);
             if(!$ok){
@@ -199,7 +199,7 @@ sub post : Local {
             # get rid of captcha if it validated
             $c->stash->{captcha}  = $c->forward('/captcha/captcha_uri');
         }
-
+        
         if($body =~ /^\s*$/){
             $c->stash->{error} = 'The comment must not be empty.  Say something!';
             $errors++;
