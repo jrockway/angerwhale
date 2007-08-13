@@ -10,6 +10,7 @@ Angerwhale changes
        - fix the last unicode problem (tag args not decoded)
        - canonicalize tags properly; tags display as lowercase only 
        - make UserStore more tolerant of transient keyserver errors
+       - add a pretty post confirmation message linking to the comment's feed
 
 0.05  27 May 2007
        - Eliminate prototype in favor of mochikit
