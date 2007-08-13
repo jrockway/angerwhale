@@ -172,8 +172,8 @@ the URI.
 
 sub tags : Local {
     my ( $self, $c, $tag, $type ) = @_;
-    $c->forward( '/tags/show_tagged_articles', $tag );
-
+    $c->forward( '/tags/show_tagged_articles', [split /\s+/,$tag] );
+    
     if ( $c->config->{title} ) {
         $c->stash->{feed_title} = $c->config->{title};
         $c->stash->{feed_title} .= " - Articles tagged with $tag"
