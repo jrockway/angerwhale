@@ -146,3 +146,9 @@ TAGS: $(MAN3PODS) $(TEST_FILES)
 POSTAMBLE
 
 }
+
+=for the maintainer
+
+(for i in `cat META.yml | perl -MYAML -e 'print "$_\n"for(keys %{Load(join"",<>)->{requires}})'`; do echo $i; fgrep $i lib -R | wc -l; done) | egrep -B1 '^0$' | grep ::|less
+
+=cut
