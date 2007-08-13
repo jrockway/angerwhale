@@ -84,7 +84,26 @@ html, body {
         clear: left;
 }
 
-#error { background: #fdd; color: #f00; font-weight: bold; padding: .5em 0 .5em 2em;}
+#error { 
+    background: #fdd; 
+    color: #f00; 
+    font-weight: bold; 
+    padding: .5em 1em .5em 1em;
+}
+
+.warning { 
+    background: #ffb; 
+    color: #330; 
+    font-weight: bold; 
+    padding: .5em 1em .5em 1em;
+}
+
+.message { 
+    background: #dfd; 
+    color: #080; 
+    font-weight: bold; 
+    padding: .5em 1em .5em 1em; 
+}
 
 /* General
 *******************************************************************************/
