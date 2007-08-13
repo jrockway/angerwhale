@@ -8,6 +8,12 @@ use Class::C3;
 use Data::UUID;
 __PACKAGE__->mk_accessors(qw/data metadata children/);
 
+=head1 NAME
+
+Angerwhale::Content::Item - abstract base class for Content Items
+
+=head1 METHODS
+
 =head2 id
 
 return the UUID of this item
@@ -83,6 +89,14 @@ sub store_data {
 
     return;
 }
+
+=head1 METHODS YOU SHOULD IMPLEMENT
+
+=head2 add_comment
+
+See Angerwhale::Content::Filesytem::Item for now
+
+=cut
 
 1;
 
