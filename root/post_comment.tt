@@ -16,7 +16,7 @@
 [% END %]
 
 [% IF !user && !comment.signed %]
-<p class="message">
+<p class="warning">
 
 Note: you're not logged in.  To identify yourself, please <a
 href="/login">login</a> or PGP sign your message (either clearsign or
