@@ -130,12 +130,12 @@ sub post : Local {
     my $article = $c->stash->{article};
     my $comment = $c->stash->{comment};
     
-    my $object  = $comment;
-    $object = $article if !defined $comment;
+    my $item  = $comment;
+    $item = $article if !defined $comment;
 
     # object is the object we're replying to
 
-    $c->stash->{post_title} = "Re: " . $object->title;
+    $c->stash->{post_title} = "Re: " . $item->title;
 
     my $title;
     if ( $method eq 'POST' ) {
@@ -181,7 +181,7 @@ sub post : Local {
             $c->stash->{body}            = $body;
         }
         else {
-            $object->add_comment( $title, $body, $uid, $type );
+            $item->add_comment( $title, $body, $uid, $type );
             $c->response->redirect($c->uri_for('/'.$c->stash->{article}->uri));
         }
     }
