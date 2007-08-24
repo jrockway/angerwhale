@@ -159,6 +159,9 @@ sub verbatim {
     # syntax highlight if necessary
     if ( $parser->lang ) {
         eval {
+            no warnings 'redefine';
+            local *Syntax::Highlight::Engine::Kate::Template::logwarning
+              = sub { die @_ }; # i really don't care
             my $hl = Syntax::Highlight::Engine::Kate->new(
                 language      => $parser->lang,
                 substitutions => {
@@ -197,9 +200,10 @@ sub verbatim {
             my $html = $hl->highlightText($text);
             $text = \$html;
         };
-        if ($@) {
-            warn "Error syntax highlighting: $@";
-        }
+        # too verbose and too irrelevant
+        # if ($@) {
+        #    warn "Error syntax highlighting: $@";
+        #}
     }
 
     # if highlighting didn't work, just show the regular text
