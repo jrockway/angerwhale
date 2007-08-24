@@ -30,6 +30,7 @@ __PACKAGE__->config('revision_callback' =>
                     }
                    );
 
+__PACKAGE__->config( { html => 1 }); # XXX: bug in C::P::Unicode
 __PACKAGE__->config( { VERSION => $VERSION } );
 __PACKAGE__->setup;
 
