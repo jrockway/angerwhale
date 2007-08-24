@@ -108,10 +108,10 @@ sub show_tagged_articles : Path('/tags') {
 
     # make a nice-looking comma-separated list ("foo, bar, and baz"
     # or "foo and bar")
-    if ( $#tags == 0 ) {
+    if ( @tags == 1 ) {
         $c->stash->{title} .= $tags[-1];
     }    # nop
-    elsif ( $#tags == 1 ) {
+    elsif ( @tags == 2 ) {
         $c->stash->{title} .= ' and ' . $tags[-1];
     }
     else {
