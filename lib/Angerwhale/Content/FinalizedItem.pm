@@ -168,7 +168,7 @@ Returns arrayref of comments attached to this Item.
 
 sub children {
     my $self = shift;
-    return $self->_item->children;
+    return $self->_item->children(@_);
 }
 
 =head2 comments

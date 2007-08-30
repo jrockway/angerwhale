@@ -12,7 +12,6 @@ use File::Spec;
 use File::Find;
 use Data::UUID;
 use File::CreationTime qw(creation_time);
-use Scalar::Defer;
 use Class::C3;
 use Encode;
 use base 'Angerwhale::Content::Item';
@@ -161,31 +160,6 @@ sub store_data {
     return;
 }
 
-=head2 _children
-
-[private] Get the children of this item.  See SUPER::children for public access.
-
-=head2 children
-
-Return (or set; INTERNAL USE ONLY) reference to the list of children.
-
-=cut
-
-sub children {
-    my $self = shift;
-    my $kids = shift;
-    
-    if (defined $kids) {
-        return $self->{children} = $kids;
-    }
-    
-    if (!$self->{children}) {
-        $self->{children} = [$self->_children];
-    }
-    
-    return $self->{children};
-}
-
 sub _get_commentdir {
     my $self = shift;
     
@@ -206,6 +180,12 @@ sub _get_commentdir {
     mkpath($commentdir);
     return $commentdir;
 }
+
+=head2 _children
+
+[private] Get the children of this item.  See SUPER::children for public access.
+
+=cut
 
 sub _children {
     my $self = shift;

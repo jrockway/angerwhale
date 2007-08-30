@@ -17,7 +17,7 @@ sub filter {
           my $self   = shift;
           my $context= shift;
           my $item   = shift;
-
+          
           return Angerwhale::Content::FinalizedItem->new($item);
       };
 }

@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use base 'Class::Accessor::Fast';
 use Class::C3;
+use Carp;
 use Data::UUID;
 __PACKAGE__->mk_accessors(qw/data metadata children/);
 
@@ -88,6 +89,52 @@ sub store_data {
     #$self->next::method($data);
 
     return;
+}
+
+=head2 children
+
+Return (or set; INTERNAL USE ONLY) reference to the list of children.
+When setting, returns nothing.
+
+You can set children to a coderef that is passed C<$self> and returns
+an arrayref of children.  This will be cached.  (This is to replace
+Scalar::Defer for lazily-filtering children, BTW.)
+
+Note: your subclass needs to implement _children, which returns a raw
+array of Items.
+
+This is messy.  Ugh.
+
+=cut
+
+sub children {
+    my $self = shift;
+    my $kids = shift;
+
+    if ($kids) {
+        if (ref $kids eq 'CODE') {
+            $self->{_defer_children} = $kids;
+        }
+        elsif(ref $kids eq 'ARRAY'){
+            $self->{children} = $kids;
+        }
+        else {
+            croak "bad data passed to Item::children";
+        }
+        return;
+    }
+
+    # if children is an arrayref, return them directly
+    return $self->{children} if ref $self->{children};
+    
+    if(ref $self->{_defer_children} eq 'CODE'){
+        my $code = delete $self->{_defer_children};
+        $self->{children} = [$self->_children] if $self->can('_children');
+        $self->{children} = $code->($self);
+        return $self->{children};
+    }
+
+    return [];
 }
 
 =head1 METHODS YOU SHOULD IMPLEMENT

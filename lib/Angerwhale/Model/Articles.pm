@@ -6,8 +6,7 @@ use warnings;
 use Class::C3; 
 use Carp;
 use base qw(Catalyst::Component::ACCEPT_CONTEXT Catalyst::Model);
-use Scalar::Util qw(blessed);
-use Scalar::Defer;
+use Scalar::Util qw(blessed weaken);
 use Angerwhale::Content::FilterFactory;
 
 __PACKAGE__->mk_accessors(qw/storage_class storage_args source filters/);
@@ -15,7 +14,6 @@ __PACKAGE__->mk_accessors(qw/storage_class storage_args source filters/);
 sub new {
     my $class = shift;
     my $self  = $class->next::method(@_);
-    
     my $sclass = "Angerwhale::Content::ContentProvider::".$self->storage_class;
     eval "require $sclass";
     croak "can't load $sclass" if $@;
@@ -115,21 +113,18 @@ sub _apply_filters {
     my @result;
     foreach my $a (@articles) {
         my $article = $a;
-        
-        # filter kids (lazy)
-        $article->children(
-                           lazy {
-                               # XXX: a bit messy due to Finalization
-                               my @kids = @{$article->children||[]};
-                               $article->{item}{children} 
-                                 = [$self->_apply_filters(@kids)]
-                             });
-        
+
         # filter article
         foreach my $f (@filters) {
             $article = $f->($article);
         }
-
+        
+        my $format_kids_later = sub {
+            my @kids = @{$_[0]->children||[]};
+            return [$self->_apply_filters(@kids)];
+        };
+        $article->children($format_kids_later);
+        
         push @result, $article;
     }
     
