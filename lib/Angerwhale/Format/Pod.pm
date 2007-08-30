@@ -93,8 +93,10 @@ sub format {
     my $result = IO::String->new;
 
     $self->parse_from_filehandle( $input, $result );
-
-    return ${ $result->string_ref };
+    
+    my $output = ${ $result->string_ref };
+    $output =~ s{\n</pre>}{</pre>}g; # fixup some weird formatting
+    return $output;
 }
 
 sub format_text {
