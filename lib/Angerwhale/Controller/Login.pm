@@ -114,6 +114,7 @@ sub process : Local {
     $c->session->{user} = $user;
     $c->log->debug(
         "successful login for " . $user->fullname . "($nice_key_id)" );
+    $c->flash( message => "You are now logged in as ". $user->fullname );
     $c->response->redirect( $c->uri_for('/') );
 }
 

@@ -38,11 +38,15 @@
     
     <div id="content">
       [% IF error %]
-      <div id="error">
-	[% error %]
-      </div>
+        <div id="error" class="error">
+	  [% error %]
+        </div>
       [% END %]
-
+      [% IF message %]
+        <div id="message" class="message">
+          [% message %]
+        </div>
+      [% END %]
       [% content %]
     </div>
     <div id="footer">

@@ -1,6 +1,4 @@
 [% WRAPPER page.tt %]
-  [% IF message %]<div id="message"><p>[% message %]</p></div>[% END %]
-
   [% FOREACH article = articles %]
    [% IF article.mini %]
      [% INCLUDE mini_post.tt %]
