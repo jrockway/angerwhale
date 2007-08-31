@@ -23,7 +23,7 @@
   <div id="sidebar_feeds" />
   <script type="text/javascript">
   // <![CDATA[
-  Jemplate.process('sidebar_feed.tt', '[% c.uri_for('/sidebarfeeds/all') %]',
+  Jemplate.process('sidebar_feed.tt', '[% c.uri_for('/sidebarfeeds/all') | html %]',
                    '#sidebar_feeds');
   // ]]>
   </script>
