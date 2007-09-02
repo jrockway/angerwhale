@@ -54,7 +54,7 @@ requires
    'NEXT'                                        => '0.60',
    'Pod::Simple::Text'                           => 0,
    'POSIX'                                       => 0,
-   'Pod::Xhtml'                                  => '1.52_01',
+   'Pod::Xhtml'                                  => '1.57',
    'Quantum::Superpositions'                     => 0,
    'Scalar::Util'                                => 0,
    'Syntax::Highlight::Engine::Kate'             => '0.02',
