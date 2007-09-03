@@ -5,7 +5,7 @@ use warnings;
 use File::Spec;
 use File::Remove;
 use YAML::Syck qw(LoadFile);
-use Catalyst qw/Unicode ConfigLoader Static::Simple
+use Catalyst qw/ConfigClass Unicode Static::Simple
                 Cache Cache::Store::FastMmap Setenv
                 Session::Store::FastMmap Session::State::Cookie Session
                 ConfigLoader::Environment +Angerwhale::Plugin::Cache/;
@@ -14,11 +14,10 @@ use Catalyst qw/Unicode ConfigLoader Static::Simple
 
 our $VERSION = '0.05';
 
+__PACKAGE__->config('Plugin::ConfigClass' => 'Angerwhale::Config');
+
 my $tmp = File::Spec->catdir(File::Spec->tmpdir, 'angerwhale');
 File::Remove::remove(\1, $tmp);
-
-# load defaults
-__PACKAGE__->config(LoadFile(__PACKAGE__->path_to('root', 'resources.yml')));
 
 __PACKAGE__->config('revision_callback' => 
                     sub { 
