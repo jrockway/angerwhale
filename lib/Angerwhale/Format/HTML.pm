@@ -180,6 +180,9 @@ sub _parse_text {
             elsif ( $type eq 'p' ) {
                 $result .= "\n" . $self->_parse_text(@kids) . "\n";
             }
+            elsif ($type eq 'code' && $element->parent->tag eq 'pre') {
+              $self->_hilight_codeblock($element);
+            }
             else {
                 $result .= $self->_parse_text(@kids);
             }
@@ -277,6 +280,9 @@ sub _parse {
                 $result .= "</$type>";
             }
 
+            elsif ($type eq 'code' && $element->parent->tag eq 'pre') {
+              $result .= "<code>" . $self->_hilight_codeblock($element) . "</code>";
+            }
             # one of these tags
             elsif (
                 $type eq any(
@@ -345,6 +351,77 @@ sub _escape {
     return $text;
 }
 
+sub _hilight_codeblock {
+    my ($self, $html_ele) = @_;
+
+    my @content = $html_ele->content_refs_list;
+    return $html_ele->as_text
+      if $html_ele->tag ne 'code' 
+      or @content > 1;
+
+    my $lang;
+
+    $DB::single = 1;
+
+    if ( ${ $content[0] }  =~ s{\s*lang:([^.]*?)\s*([\n\r]{1,2})}{}ms ) {
+
+        if ( !defined $1 || !$1 || $1 eq 'undef' ) {
+            return;
+        }
+        else {
+            $lang = ucfirst $1;
+        }
+    }
+
+    # syntax highlight if necessary
+    if ( $lang ) {
+        my $html = eval {
+            no warnings 'redefine';
+            local *Syntax::Highlight::Engine::Kate::Template::logwarning
+              = sub { die @_ }; # i really don't care
+            my $hl = Syntax::Highlight::Engine::Kate->new(
+                language      => $lang,
+                substitutions => {
+                    "<"  => "&lt;",
+                    ">"  => "&gt;",
+                    "&"  => "&amp;",
+                    q{'} => "&apos;",
+                    q{"} => "&quot;",
+                },
+                format_table => {
+                    Alert    => [ '<span class="Alert">',    '</span>' ],
+                    BaseN    => [ '<span class="BaseN">',    '</span>' ],
+                    BString  => [ '<span class="BString">',  '</span>' ],
+                    Char     => [ '<span class="Char">',     '</span>' ],
+                    Comment  => [ '<span class="Comment">',  '</span>' ],
+                    DataType => [ '<span class="DataType">', '</span>' ],
+                    DecVal   => [ '<span class="DecVal">',   '</span>' ],
+                    Error    => [ '<span class="Error">',    '</span>' ],
+                    Float    => [ '<span class="Float">',    '</span>' ],
+                    Function => [ '<span class="Function">', '</span>' ],
+                    IString  => [ '<span class="IString">',  '</span>' ],
+                    Keyword  => [ '<span class="Keyword">',  '</span>' ],
+                    Normal   => [ '<span class="Normal">',   '</span>' ],
+                    Operator => [ '<span class="Operator">', '</span>' ],
+                    Others   => [ '<span class="Others">',   '</span>' ],
+                    RegionMarker =>
+                      [ '<span class="RegionMarker">', '</span>' ],
+                    Reserved => [ '<span class="Reserved">', '</span>' ],
+                    String   => [ '<span class="String">',   '</span>' ],
+                    Variable => [ '<span class="Variable">', '</span>' ],
+                    Warning  => [ '<span class="Warning">',  '</span>' ],
+
+                },
+            );
+
+            return $hl->highlightText(${ $content[0] });
+        };
+        return $html unless $@;
+    }
+
+    # If it failed, just return the text
+    return $html_ele->as_text;
+}
 1;
 
 __END__

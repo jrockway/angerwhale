@@ -2,7 +2,7 @@
 # markdown-format.t
 # Copyright (c) 2007 Florian Ragwitz <rafl@debian.org>
 
-use Test::More tests => 4;
+use Test::More tests => 5;
 use ok 'Angerwhale::Format::Markdown';
 use Test::HTML::Tidy;
 use Test::XML::Valid;
@@ -30,6 +30,16 @@ my $tidy = Angerwhale::Test::Tidy->tidy();
 html_tidy_ok( $tidy, $output, 'html is tidy' );
 xml_string_ok( $output, 'html is valid xml' );
 
+is($output, <<'END', 'formatted okay');
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en">
+<head><title>test</title></head><body><h3>A First Level Header</h3><h4>A Second Level Header</h4><p>Now is the time for all good men to come to the aid of their country. This is just a regular paragraph.</p><p>The quick brown fox jumped over the lazy dog&apos;s back.</p><h5>Header 3</h5><p>#</p><h3>&gt; This is a blockquote.</h3><h3>&gt;</h3><h3>&gt; This is the second paragraph in the blockquote.</h3><h3>&gt;</h3><h3>&gt; ## This is an H2 in a blockquote</h3><p>Below is a code block</p><pre><code><span class="Keyword">my</span><span class="Normal"> </span><span class="DataType">$foo</span><span class="Normal"> = </span><span class="Operator">&apos;</span><span class="String">bar</span><span class="Operator">&apos;</span><span class="Normal">;</span><span class="Normal">
+</span></code></pre></body></html>
+END
+
 __DATA__
 A First Level Header
 ====================
@@ -51,3 +61,8 @@ dog's back.
 #> This is the second paragraph in the blockquote.
 #>
 #> ## This is an H2 in a blockquote
+
+Below is a code block
+
+    lang:perl
+    my $foo = 'bar';
