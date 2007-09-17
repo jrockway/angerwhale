@@ -26,7 +26,7 @@ requires
    'Catalyst::Plugin::Session::Store::FastMmap'  => 0,
    'Catalyst::Plugin::Setenv'                    => 0,
    'Catalyst::Plugin::Static::Simple'            => 0,
-   'Catalyst::Plugin::Unicode'                   => '0.2',
+   'Catalyst::Plugin::Unicode'                   => '0.7',
    'Catalyst::View::TT'                          => 0,
    'Catalyst::View::JSON'                        => 0,
    'Catalyst::View::Jemplate'                    => 0,
