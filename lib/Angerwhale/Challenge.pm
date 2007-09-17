@@ -4,7 +4,7 @@
 package Angerwhale::Challenge;
 use strict;
 use warnings;
-use Crypt::Random qw(makerandom);
+use Math::BigInt::Random qw/random_bigint/;
 use YAML::Syck;
 
 use overload ( q{==} => "equals", q{""} => "raw_text" );
@@ -25,8 +25,7 @@ random number are used for the time and the nonce, respectively.
 sub new {
     my ( $class, $args ) = @_;
     my $self = {};
-
-    my $random = makerandom( Size => 128, Strength => 0 );
+    my $random = random_bigint( length_hex => 1, length => 20)->as_hex;
     my $now = time();
 
     $self->{nonce} = "$random";

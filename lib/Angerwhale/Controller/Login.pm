@@ -4,11 +4,7 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Angerwhale::Challenge;
-use Crypt::OpenPGP;
 use YAML::Syck;
-
-# XXX: HACK, HACK, HACK ... !
-use Angerwhale::Signature;
 
 =head1 NAME
 
