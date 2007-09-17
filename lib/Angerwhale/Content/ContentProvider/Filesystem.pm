@@ -23,7 +23,10 @@ sub new {
 sub get_article {
     my $self = shift;
     my $name = shift;
-
+    
+    croak 'article name contains illegal characters'
+      if $name =~ m{(?:[\\]|/[.][.]?|[.][.]?/)}; # \anything, foo/.., ../foo
+    
     my $file = $self->root. "/$name";
     
     my $article = Angerwhale::Content::Filesystem::Item->
