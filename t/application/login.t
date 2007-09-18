@@ -9,7 +9,7 @@ use Angerwhale::Challenge;
 use Test::More tests => 6;
 use YAML::Syck;
 use Angerwhale::Test;
-use URI::Escape;
+use Test::LongString;
 
 BEGIN {
 
@@ -50,11 +50,18 @@ BEGIN {
 }
 
 my $mech = Angerwhale::Test->new();
-$signed = uri_escape($signed);
 
 $mech->get_ok( 'http://localhost/login', 'can get login page' );
-$mech->get_ok("/login/process?login=$signed");
-$mech->content_unlike( qr/scum|forgot|couldn't read/, 'login successful' );
-$mech->get_ok("/login/process?login=$signed");
-$mech->content_like( qr/scum/, 'login UNsuccessful' );
-
+{
+    my $res = $mech->post('http://localhost/login/process', 
+                          { login => $signed });
+    ok($res->is_success, 'got process ok');
+    unlike_string($res->content, qr/scum|forgot|couldn't read/, 
+                  'login successful');
+}
+{
+    my $res = $mech->post('http://localhost/login/process', 
+                          { login => $signed });
+    ok($res->is_success, 'got process ok');
+    like_string($res->content, qr/scum/, 'login UNsuccessful' );
+}
