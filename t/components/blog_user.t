@@ -2,8 +2,8 @@
 # blog_user.t
 # Copyright (c) 2006 Jonathan Rockway <jrockway@cpan.org>
 
-use Test::More tests => 8;
-use ok qw(Angerwhale::User);    # 1
+use Test::More;
+use Angerwhale::User;
 use strict;
 use warnings;
 
@@ -13,9 +13,14 @@ my $key_fingerprint = '95ff88c5277c2282973fb90ad0197853dd25e42f';
 
 my $realid = pack 'H*', $keyid;
 
-my $jrock = Angerwhale::User->_new($realid);
-isa_ok( $jrock, 'Angerwhale::User' );    # 2
-
+my $jrock = eval { Angerwhale::User->_new($realid) };
+if($@){
+    plan skip_all => 'keyserver went bad';
+}
+else {
+    plan tests => 7; 
+}
+isa_ok( $jrock, 'Angerwhale::User' );
 is( $jrock->id,              $realid,          "keyids match" );
 is( $jrock->nice_id,         $keyid,           "nice keyid matches" );
 is( $jrock->key_fingerprint, $key_fingerprint, "fingerprint is correct" );

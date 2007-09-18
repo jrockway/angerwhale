@@ -4,7 +4,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 16;
+use Test::More;
 use Test::MockObject;
 use Test::Exception;
 use Directory::Scratch;
@@ -16,7 +16,14 @@ my $tmp = Directory::Scratch->new;
 # setup
 my $JROCK_ID   = 'd0197853dd25e42f';            # author's key ID;
 my $id         = pack 'H*', $JROCK_ID;
-my $jrock      = Angerwhale::User->_new($id);
+
+my $jrock = eval { Angerwhale::User->_new($id) };
+if($@){
+    plan skip_all => 'keyserver lost my key again, grr';
+}
+else {
+    plan tests => 16;
+}
 
 
 my $c = context({config => {}});
