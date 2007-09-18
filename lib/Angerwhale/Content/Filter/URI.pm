@@ -3,7 +3,7 @@
 package Angerwhale::Content::Filter::URI;
 use strict;
 use warnings;
-use URI::Escape;
+use URI::Escape qw(uri_escape_utf8);
 
 =head2 filter
 
@@ -26,7 +26,7 @@ sub filter {
               $me = $item->metadata->{uri} = "comments/$path";
           }
           else {
-              $name = uri_escape($name);
+              $name = uri_escape_utf8($name);
               $item->metadata->{uri} = "articles/$name";
           }
           
