@@ -68,7 +68,7 @@ sub new {
     # clever defaults
     $self->update_interval( $c->config->{update_interval} || 3600 )
       if !$self->update_interval;
-    $self->keyserver( $c->config->{keyserver} || "subkeys.pgp.net" )
+    $self->keyserver( $c->config->{keyserver} || 'stinkfoot.org' )
       if !$self->keyserver;
 
     mkdir $dir;

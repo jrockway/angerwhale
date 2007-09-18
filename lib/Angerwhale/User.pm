@@ -183,7 +183,7 @@ sub _new {
     die 'specify id' if !$id;
     $user->{nice_id} = unpack( 'H*', $id );
     $user = bless $user, $class;
-    $user->_keyserver('subkeys.pgp.net');
+    $user->_keyserver('stinkfoot.org');
     $user->refresh;
     return $user;
 }
