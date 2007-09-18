@@ -52,7 +52,7 @@ Angerwhale - filesystem-based blog with integrated cryptography
 
 =head1 SYNOPSIS
 
-Angerwhale is bloging software that reads posts from the filesystem,
+Angerwhale is blogging software that reads posts from the filesystem,
 and determines authorship based on the post's PGP digital signature.
 These posts can be in a variety of formats (text, wiki, HTML, POD),
 and new formats can be added dynamically at runtime.  Posting comments
