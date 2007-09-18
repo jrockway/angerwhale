@@ -3,6 +3,7 @@
 package Angerwhale::Content::Filter::URI;
 use strict;
 use warnings;
+use URI::Escape;
 
 =head2 filter
 
@@ -25,6 +26,7 @@ sub filter {
               $me = $item->metadata->{uri} = "comments/$path";
           }
           else {
+              $name = uri_escape($name);
               $item->metadata->{uri} = "articles/$name";
           }
           
