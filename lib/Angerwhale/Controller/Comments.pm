@@ -140,25 +140,20 @@ sub post : Local {
     my $title;
     if ( $method eq 'POST' ) {
         $title = $c->request->param('title');
-        my $body = $c->request->param('body') || ' ';
-        my $type = $c->request->param('type');
+        my $body    = $c->request->param('body') || ' ';
+        my $type    = $c->request->param('type');
         my $captcha = $c->request->param('captcha');
+
         my $user = $c->stash->{user};
         my $uid  = $user->nice_id if ( $user && $user->can('nice_id') );
-
-
-        my $comment = $c->model('Articles')->
-          preview(
-                  {
-                   title   => $title,
-                   body    => $body,
-                   type    => $type
-                  }
-                 );
-        
+        my $comment = $c->model('Articles')->preview({ title  => $title,
+                                                       body   => $body,
+                                                       type   => $type,
+                                                       author => $uid,
+                                                     });
         my $errors = 0;
-        
-        if($c->stash->{captcha} && !$c->config->{ignore_captcha}){ # captcha required
+        if($c->stash->{captcha} && !$c->config->{ignore_captcha}){ 
+            # captcha required
             my $ok = $c->forward('/captcha/check_captcha', [$captcha]);
             if(!$ok){
                 $c->stash->{error} = 'Please enter the text in the security image.';
