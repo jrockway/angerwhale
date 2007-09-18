@@ -130,7 +130,7 @@ auto_install();
 license('GPL');
 tests('t/*/*.t');
 
-WriteAll( sign => 1, meta => 1 );
+WriteAll( meta => 1 );
 
 sub MY::postamble {
     return <<'POSTAMBLE';
