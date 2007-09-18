@@ -29,7 +29,6 @@ ok($et, 'got an entitiy tag');
 my $content = $initial_response->content;
 like($content, qr/Here is lots of content/, 'content is sane');
 
-sleep 1;
 $mech->get_ok('http://localhost/');
 my $response = $mech->response;
 
