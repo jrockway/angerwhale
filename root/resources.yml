@@ -2,6 +2,7 @@
 # no user servicable parts inside!
 name: Angerwhale
 encoding: utf-8
+keyserver: stinkfoot.org
 Model::Articles:
    storage_class: Filesystem
    storage_args:
