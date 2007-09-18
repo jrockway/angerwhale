@@ -111,7 +111,7 @@ channel!  Enjoy!
 
 Angerwhale is a L<Catalyst|Catalyst> application, so if you'd like to
 run it in a production environment, check out the
-L<Catalyst deployment manual|http://search.cpan.org/~jrockway/Catalyst-Manual-5.700501/lib/Catalyst/Manual/Cookbook.pod#Deployment>.
+L<Catalyst deployment manual|http://search.cpan.org/~jrockway/Catalyst-Manual-5.701002/lib/Catalyst/Manual/Cookbook.pod#Deployment>.
 Basically, you can run it as a FastCGI, mod_perl, or plain CGI.
 
 =head1 RESOURCES
@@ -160,6 +160,10 @@ More tests.  Test coverage is pretty good (85% or so), but 100% is the goal.
 
 =item *
 
+Let users use their OpenID instead of PGP key.
+
+=item *
+
 More docs.  Angerwhale has a lot of nice features, but you'll only
 know about them if you're me, or you hang out on IRC when I'm
 implementing them.  If you're reading the code and see something you
@@ -170,8 +174,10 @@ forever if you do!
 
 =head1 BUGS
 
-Although Angerwhale's not yet feature complete, the code that exists
-is pretty solid (it's been in use for almost a year).  
+Although Angerwhale doesn't do everything I want it to, the code that
+exists is pretty solid (it's been in use for almost a year).  Most of
+the lingering corner cases (mostly unicode and memory leak) were fixed
+in 0.06.
 
 If you'd like to request a feature or report a bug, either open an RT
 ticket, or join C<#angerwhale> on C<irc.perl.org>.  Thanks in advance
@@ -200,6 +206,10 @@ Bogdan Lucaciu - L<http://blog.wiz.ro/>
 
 =item *
 
+Johannes Plunien - L<http://www.pqpq.de/>
+
+=item *
+
 Florian Ragwitz - L<http://perldition.org/>
 
 =back
@@ -211,18 +221,6 @@ Thanks!
 Copyright (C) 2007 Jonathan Rockway and Contributors
 
 This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
-
-This program is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-USA.
+it under the same terms as Perl itself.
 
 =cut
