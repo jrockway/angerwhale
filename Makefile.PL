@@ -91,6 +91,7 @@ build_requires
    'Test::JSON'                                  => 0,
    'Test::WWW::Mechanize::Catalyst'              => '0.41',
    'Path::Class',                                => 0,
+   'Test::LongString'                            => 0,
   );
 
 feature('Speed up crypto', ['Math::BigInt::GMP' => 0]);
