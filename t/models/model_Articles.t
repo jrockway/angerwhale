@@ -57,7 +57,7 @@ foreach my $a (@articles) {
 isa_ok( $article, 'Angerwhale::Content::Article' );
 is( $article->title, 'Another Article', 'title is correct' );
 is( scalar $article->categories, 0, 'not in any categories yet' );
-is( $article->uri, 'articles/Another Article.pod', 'uri is correct' );
+is( $article->uri, 'articles/Another%20Article.pod', 'uri is correct' );
 is(
    $article->checksum,
    '63b08321fa7c7daf4c01eb86e5fdd231',
