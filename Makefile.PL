@@ -100,6 +100,8 @@ catalyst_par_classes(qw/
     Crypt::Blowfish
     Crypt::CAST5_PP
     Crypt::DES_EDE3
+    Crypt::DSA
+    Crypt::RSA
     Crypt::IDEA
     Crypt::OpenPGP
     Crypt::OpenPGP::Key::Public::DSA
