@@ -1,5 +1,11 @@
 Angerwhale changes
 
+0.061 19 September 2007
+       - make tests skip_all if a keyserver isn't available
+       - use a more reliable keyserver for testing against
+       - don't use cpansign; too many test failures
+       - properly escape article URIs in XML feeds
+
 0.06  18 September 2007
        - ** fixed the big memory leak ** (article at http://xrl.us/5gxh)
        - Change archives location from /Year/Month/Date to
