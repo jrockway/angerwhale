@@ -14,7 +14,7 @@ __PACKAGE__->mk_accessors(qw/storage_class storage_args source filters/);
 sub new {
     my $class = shift;
     my $self  = $class->next::method(@_);
-    my $sclass = "Angerwhale::Content::ContentProvider::".$self->storage_class;
+    my $sclass = "Angerwhale::Content::Provider::".$self->storage_class;
     eval "require $sclass";
     croak "can't load $sclass" if $@;
     my $s = $sclass->new($self->storage_args);
@@ -147,8 +147,8 @@ Return a preview comment.
 
 =head1 PROXIED METHODS
 
-Methods below proxy the ContentProvider. See
-L<Angerwhale::Content::ContentProvider>.
+Methods below proxy the Content Provider. See
+L<Angerwhale::Content::Provider>.
 
 =head2 get_articles
 

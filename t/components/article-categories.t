@@ -6,13 +6,13 @@ use warnings;
 use Test::More tests => 7;
 
 use Directory::Scratch;
-use Angerwhale::Content::ContentProvider::Filesystem;
+use Angerwhale::Content::Provider::Filesystem;
 
 my $tmp = Directory::Scratch->new;
-my $articles = Angerwhale::Content::ContentProvider::Filesystem->
+my $articles = Angerwhale::Content::Provider::Filesystem->
   new({root => "$tmp"});
 
-isa_ok($articles, 'Angerwhale::Content::ContentProvider::Filesystem');
+isa_ok($articles, 'Angerwhale::Content::Provider::Filesystem');
 
 $tmp->mkdir('category1');
 $tmp->mkdir('category2');

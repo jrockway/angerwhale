@@ -1,6 +1,6 @@
 # Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
 
-package Angerwhale::Content::ContentProvider::Filesystem;
+package Angerwhale::Content::Provider::Filesystem;
 use strict;
 use warnings;
 use Angerwhale::Content::Filesystem::Item;
@@ -9,7 +9,8 @@ use File::Find;
 use File::Spec;
 use Quantum::Superpositions;
 
-use base 'Angerwhale::Content::ContentProvider';
+use base 'Angerwhale::Content::Provider';
+
 __PACKAGE__->mk_accessors(qw/root/);
 
 sub new {
@@ -146,11 +147,11 @@ __END__
 
 =head1 NAME
 
-Angerwhale::Content::ContentProvider::Filesystem - get content from a directory of articles
+Angerwhale::Content::Provider::Filesystem - get content from a directory of articles
 
 =head1 METHODS
 
-See L<Angerwhale::Content::ContentProvider>.
+See L<Angerwhale::Content::Provider>.
 
 =head2 new
 

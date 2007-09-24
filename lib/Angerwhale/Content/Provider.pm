@@ -1,6 +1,6 @@
 # Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
 
-package Angerwhale::Content::ContentProvider;
+package Angerwhale::Content::Provider;
 use strict;
 use warnings;
 use base 'Class::Accessor::Fast';
@@ -8,11 +8,11 @@ use base 'Class::Accessor::Fast';
 
 =head1 NAME
 
-Angerwhale::Content::ContentProvider - provides methods for getting content
+Angerwhale::Content::Provider - provides methods for getting content
 
 =head1 SYNOPSIS
 
-   my $provider = Angerwhale::Content::ContentProvider::Subclass->new;
+   my $provider = Angerwhale::Content::Provider::Subclass->new;
    my @articles = $provider->get_articles();
    my $article  = $provider->get_article('foo article');
 
