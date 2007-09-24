@@ -15,13 +15,14 @@ my $mech = Angerwhale::Test->new;
 my @words = qw|foo bar baz quux red orange yellow 日本語
                      green blue indigo violet things-i-like|;
 
+word:
 foreach my $word (@words){
     $mech->article(Encode::encode('utf-8', $word));
     my $file = $mech->tmp->exists($word);
     my $i = 1;
+    
     foreach my $tag (@words) {
-        set_attribute($file, "tags.$tag", int rand 10);
-        last if rand() < 1/(15-$i++)
+        set_attribute($file, "tags.$tag", 1);
     }
 }
 
