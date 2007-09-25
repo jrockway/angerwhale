@@ -12,8 +12,9 @@ my @credentials = Angerwhale::Authentication->credentials;
 is_deeply [sort @credentials], [sort qw/htpasswd/], 'got all credentials';
 
 my $htpasswd;
+my $config = { passwdFile => 'foo' };
 lives_ok 
-  { $htpasswd = Angerwhale::Authentication->credential('htpasswd') }
+  { $htpasswd = Angerwhale::Authentication->credential('htpasswd', $config) }
   'getting htpasswd lives';
 isa_ok $htpasswd, 'Angerwhale::Authentication::Credential::Htpasswd', 
   '$htpasswd';
@@ -21,4 +22,3 @@ isa_ok $htpasswd, 'Angerwhale::Authentication::Credential::Htpasswd',
 dies_ok 
   { Angerwhale::Authentication->credential('foobarbaz no') }
   q"can't get the 'foobarbaz no' credential";
-

@@ -12,6 +12,7 @@ licence('gpl');
 
 requires 
   (
+   'Apache::Htpasswd'                            => 0,
    'Algorithm::IncludeExclude'                   => '0.01',
    'Catalyst'                                    => '5.7',          
    'Catalyst::Model::XML::Feed'                  => '0.01',
