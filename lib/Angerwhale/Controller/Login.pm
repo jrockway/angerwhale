@@ -111,6 +111,10 @@ sub process : Local {
         $c->res->redirect( $c->uri_for('/login') );
         $c->detach();
     }
+
+    # the session store refuses to store things if they get to big
+    delete $user->{public_key};
+
     $c->session->{user} = $user;
     $c->log->debug(
         "successful login for " . $user->fullname . "($nice_key_id)" );
