@@ -1,0 +1,23 @@
+To install Angerwhale, you'll need a few C libraries available.  It's
+best to install these from your OS's package repository, but not a
+requirement:
+
+   libxml2  (libxml2-dev on debian)
+   expat    (libexpat-dev)
+   gd       (libgd2-xpm-dev)
+   htmltidy (libtidy-dev)
+
+Optionally:
+
+   gpm3     (libgpm3-dev)
+
+Once you've installed that, run:
+
+   perl Makefile.PL
+   make installdeps
+   make
+   make test
+
+Then you can run Angerwhale via the scripts in the scripts/ directory.
+Installing it to your system will work, but is not recommended.  (Too
+much clutter for my liking, anyway.)
