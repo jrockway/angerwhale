@@ -1,5 +1,10 @@
 Angerwhale changes
 
+0.062 25 November 2007
+       - increase reliability of test suite by not using rand() :)
+       - don't store PGP key in the session; causes breakage when key is too big
+       - [internal] rename Content::ContentProvider class to Content::Provider
+
 0.061 19 September 2007
        - make tests skip_all if a keyserver isn't available
        - use a more reliable keyserver for testing against
