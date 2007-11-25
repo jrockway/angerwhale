@@ -174,28 +174,15 @@ sub verbatim {
                     q{"} => "&quot;",
                 },
                 format_table => {
-                    Alert    => [ '<span class="Alert">',    '</span>' ],
-                    BaseN    => [ '<span class="BaseN">',    '</span>' ],
-                    BString  => [ '<span class="BString">',  '</span>' ],
-                    Char     => [ '<span class="Char">',     '</span>' ],
-                    Comment  => [ '<span class="Comment">',  '</span>' ],
-                    DataType => [ '<span class="DataType">', '</span>' ],
-                    DecVal   => [ '<span class="DecVal">',   '</span>' ],
-                    Error    => [ '<span class="Error">',    '</span>' ],
-                    Float    => [ '<span class="Float">',    '</span>' ],
-                    Function => [ '<span class="Function">', '</span>' ],
-                    IString  => [ '<span class="IString">',  '</span>' ],
-                    Keyword  => [ '<span class="Keyword">',  '</span>' ],
-                    Normal   => [ '<span class="Normal">',   '</span>' ],
-                    Operator => [ '<span class="Operator">', '</span>' ],
-                    Others   => [ '<span class="Others">',   '</span>' ],
-                    RegionMarker =>
-                      [ '<span class="RegionMarker">', '</span>' ],
-                    Reserved => [ '<span class="Reserved">', '</span>' ],
-                    String   => [ '<span class="String">',   '</span>' ],
-                    Variable => [ '<span class="Variable">', '</span>' ],
-                    Warning  => [ '<span class="Warning">',  '</span>' ],
-
+                    # convert Kate's internal representation into
+                    # <span class="<internal name>"> value </span>
+                    map {
+                        $_ => [ qq{<span class="$_">}, '</span>' ]
+                    }
+                      qw/Alert BaseN BString Char Comment DataType
+                         DecVal Error Float Function IString Keyword
+                         Normal Operator Others RegionMarker Reserved
+                         String Variable Warning/,
                 },
             );
 
