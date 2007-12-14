@@ -139,9 +139,10 @@ sub verbatim {
     my $line_num  = shift;
     my $pod_para  = shift;
     my $text      = $pod_para->text;
+    return if $text =~ /^\n$/s;
 
     my @lines = split /\n/, $text;
-
+    
     if ( $lines[0] && $lines[0] =~ m{\s*lang:([^.]+)\s*$} ) {
 
         if ( !defined $1 || !$1 || $1 eq 'undef' ) {
@@ -187,6 +188,8 @@ sub verbatim {
             );
 
             my $html = $hl->highlightText($text);
+            $html =~ s{<span class="Normal">\n</span><span class="Normal">\s+</span>}{}g;
+            warn $html;
             $text = \$html;
         };
         # too verbose and too irrelevant
