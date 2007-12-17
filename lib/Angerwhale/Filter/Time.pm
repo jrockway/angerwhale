@@ -53,7 +53,7 @@ sub filter {
 
     $minute = "0$minute" if $minute < 10;
 
-    my $ampm = ( $hour < 11 ) ? "am" : "pm";
+    my $ampm = ( $hour < 12 ) ? "am" : "pm";
     $hour %= 12;
     $hour =~ s/^0+$/12/;
 
