@@ -1,6 +1,7 @@
 package Angerwhale::UserStore;
 use Moose;
 use Angerwhale::User;
+use Angerwhale::User::Anonymous;
 
 extends 'MooseX::Storage::Directory';
 
@@ -11,13 +12,24 @@ sub get_user_by_id {
 
 sub get_pgp_user {
     my ($self, $fpr) = @_;
-    my $user = Angerwhale::User->new(
-        type => 'pgp',
-        id   => $fpr,
-    );
-
+    my $user = $self->get_user_by_id("pgp:$fpr") ||
+      Angerwhale::User->new(
+          type => 'pgp',
+          id   => $fpr,
+      );
+    
     $self->store($user);
-    return $self->get_user_by_id($user->get_id);
+    return $user;
+}
+
+sub create_anon_user {
+    my ($self, $fullname) = @_;
+    my $user = Angerwhale::User::Anonymous->new(
+        type     => 'anonymous',
+        fullname => $fullname,
+    );
+    $self->store($user);
+    return $user;
 }
 
 1;

@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use base 'Catalyst::Controller';
 use Angerwhale::Format;
+use Angerwhale::User::Anonymous;
 use Scalar::Util qw(blessed);
 
 =head1 NAME
@@ -144,13 +145,14 @@ sub post : Local {
         my $type    = $c->request->param('type');
         my $captcha = $c->request->param('captcha');
 
-        my $user = $c->stash->{user};
-        my $uid  = $user->get_id if ( $user && $user->can('get_id') );
-        my $comment = $c->model('Articles')->preview({ title  => $title,
-                                                       body   => $body,
-                                                       type   => $type,
-                                                       author => $uid,
-                                                     });
+        my $user = $c->stash->{user} || $self->_anon_user($c);
+        my $uid  = eval { $user->get_id };
+        my $comment = $c->model('Articles')->preview({ 
+            title  => $title,
+            body   => $body,
+            type   => $type,
+            author => $uid,
+        });
         my $errors = 0;
         if($c->stash->{captcha} && !$c->config->{ignore_captcha}){ 
             # captcha required
@@ -184,6 +186,19 @@ sub post : Local {
     }
 
     return;
+}
+
+sub _anon_user {
+    my ($self, $c) = @_;
+
+    my $fullname = $c->req->params->{fullname};
+    my $anon     = $c->session->{anon_user};
+    return unless $fullname || $anon;
+
+    $anon ||= $c->model('UserStore')->create_anon_user($fullname);
+    $c->session->{anon_user} = $anon;
+    $c->stash->{fullname} = $fullname; # for preview
+    return $anon;
 }
 
 =head1 AUTHOR
