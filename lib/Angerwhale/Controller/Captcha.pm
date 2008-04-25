@@ -33,6 +33,7 @@ sub gen_captcha : Private {
                                type  => $type,
                                rnd   => $rnd,
                              };
+    $self->_log($c, "Generated $rnd");
 }
 
 =head2 captcha
@@ -55,7 +56,7 @@ sub captcha : Path {
     $c->res->headers->header( 'Cache-Control' => 'no-cache' );
     $c->detach();
 }
-  
+
 =head2 captcha_uri
 
 Return the URI for the captcha, or nothing if the user has 
@@ -69,7 +70,7 @@ sub captcha_uri : Private {
     return if $c->session->{got_captcha};
     return $c->uri_for('/captcha/captcha');
 }
-  
+
 =head2 check_captcha($guess)
 
 Returns true if the guess is the text in the captcha.
@@ -80,12 +81,20 @@ sub check_captcha : Private {
     my ($self, $c, $guess) = @_;
 
     return unless ref $c->session->{captcha};
-    
-    if($c->session->{got_captcha} || $c->session->{captcha}->{rnd} eq $guess){
+
+    my $rnd = $c->session->{captcha}{rnd};
+    if($c->session->{got_captcha} || $rnd eq $guess){
         $c->session->{got_captcha} = 1; # only need to guess one per session
+        $self->_log($c, "Success with '$rnd'");
         return 1;
     }
+    $self->_log($c, "Failed with '$rnd'");
     return;
+}
+
+sub _log {
+    my ($self, $c, $msg) = @_;
+    $c->log->debug(sprintf("Captcha(%d): $msg", $c->sessionid));
 }
   
 1;
