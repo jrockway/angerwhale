@@ -24,7 +24,7 @@ sub get_id {
 has fullname => (
     is       => 'rw',
     isa      => 'Str',
-    required => 1,
+    required => 0,
 );
 
 subtype EmailAddress => as 'Str' => where { /^[^@]+[@][^@]+$/ };
@@ -32,7 +32,7 @@ subtype EmailAddress => as 'Str' => where { /^[^@]+[@][^@]+$/ };
 has email => (
     is       => 'rw',
     isa      => 'Maybe[EmailAddress]',
-    required => 1,
+    required => 0,
 );
 
 has traits => (

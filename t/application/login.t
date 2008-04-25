@@ -56,12 +56,11 @@ $mech->get_ok( 'http://localhost/login', 'can get login page' );
     my $res = $mech->post('http://localhost/login/process', 
                           { login => $signed });
     ok($res->is_success, 'got process ok');
-    unlike_string($res->content, qr/scum|forgot|couldn't read/, 
-                  'login successful');
+    unlike_string($res->content, qr/could not be/i,'login successful');
 }
 {
     my $res = $mech->post('http://localhost/login/process', 
                           { login => $signed });
     ok($res->is_success, 'got process ok');
-    like_string($res->content, qr/scum/, 'login UNsuccessful' );
+    like_string($res->content, qr/could not be/i, 'login UNsuccessful' );
 }
