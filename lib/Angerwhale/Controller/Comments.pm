@@ -145,7 +145,7 @@ sub post : Local {
         my $captcha = $c->request->param('captcha');
 
         my $user = $c->stash->{user};
-        my $uid  = $user->nice_id if ( $user && $user->can('nice_id') );
+        my $uid  = $user->get_id if ( $user && $user->can('get_id') );
         my $comment = $c->model('Articles')->preview({ title  => $title,
                                                        body   => $body,
                                                        type   => $type,

@@ -25,10 +25,6 @@ User that is un authenticated, like slashdot's Anonymous Coward.
 
 Create a new user
 
-=head2 nice_id
-
-0
-
 =head2 id
 
 0

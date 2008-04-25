@@ -266,7 +266,7 @@ The main text of this comment, formatted in C<$file_format>.
 
 =item userid
 
-The (8-byte) "nice_id" of the comment poster.
+The full id of the user.
 
 =item format
 

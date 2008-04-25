@@ -101,7 +101,7 @@ sub serialize_item {
     $data->{author} = {
         name  => $author->fullname,
         email => $author->email,
-        keyid => $author->nice_id,
+        keyid => $author->get_id,
     };
 
     $data->{title}    = $item->title;

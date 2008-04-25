@@ -50,7 +50,7 @@ sub current : Local {
     $user = Angerwhale::User::Anonymous->new if !$user;
 
     $c->{stash} = {};
-    $c->stash->{user_id}  = $user->nice_id;
+    $c->stash->{user_id}  = $user->get_id;
     $c->stash->{fullname} = $user->fullname;
     $c->stash->{email}    = $user->email;
     $c->stash->{login_uri}= q{}.$c->uri_for('/login');
