@@ -2,6 +2,7 @@ package Angerwhale::User::Anonymous;
 use Moose;
 extends 'Angerwhale::User';
 
+has '+type'     => ( default => sub { 'anonymous' } );
 has '+id'       => ( default => sub { 0 } );
 has '+fullname' => ( default => sub { 'Anonymous Coward' } );
 has '+email'    => ( default => sub { undef } );

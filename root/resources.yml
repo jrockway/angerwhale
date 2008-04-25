@@ -47,6 +47,7 @@ filters:
    - Checksum
    - Title
    - Author
+   - PGP
    - Format
    - Summary
    - URI
