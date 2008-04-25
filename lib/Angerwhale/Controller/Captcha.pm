@@ -94,7 +94,7 @@ sub check_captcha : Private {
 
 sub _log {
     my ($self, $c, $msg) = @_;
-    $c->log->debug(sprintf("Captcha(%d): $msg", $c->sessionid));
+    $c->log->debug(sprintf("Captcha(%s): $msg", $c->sessionid));
 }
   
 1;
