@@ -14,8 +14,8 @@ requires
   (
    'Algorithm::IncludeExclude'                   => '0.01',
    'Catalyst'                                    => '5.7',          
-   'Catalyst::Model::XML::Feed'                  => '0.01',
    'Catalyst::Component::ACCEPT_CONTEXT'         => '0.02',
+   'Catalyst::Model::XML::Feed'                  => '0.01',
    'Catalyst::Plugin::Cache'                     => '0.02',
    'Catalyst::Plugin::Cache::Store::FastMmap'    => '0.01',
    'Catalyst::Plugin::ConfigLoader'              => 0,
@@ -26,22 +26,21 @@ requires
    'Catalyst::Plugin::Session::Store::FastMmap'  => 0,
    'Catalyst::Plugin::Static::Simple'            => 0,
    'Catalyst::Plugin::Unicode'                   => '0.7',
-   'Catalyst::View::TT'                          => 0,
    'Catalyst::View::JSON'                        => 0,
    'Catalyst::View::Jemplate'                    => 0,
+   'Catalyst::View::TT'                          => 0,
    'Class::C3'                                   => 0,
    'Compress::Zlib'                              => '2.005',
-   'Crypt::OpenPGP'                              => '1.03',
-   'Crypt::Random'                               => 0,
+   'Crypt::GpgME'                                => '0.02',
    'Data::UUID'                                  => 0,
    'Digest::MD5'                                 => 0,
    'File::Attributes'                            => 0,
    'File::Attributes::Recursive'                 => 0,
    'File::CreationTime'                          => '2.03',
    'File::Find'                                  => 0,
+   'File::Path'                                  => 0,
    'File::Remove'                                => 0,
    'File::Slurp'                                 => '9999.12',
-   'File::Path'                                  => 0,
    'File::Spec'                                  => 0,
    'GD::SecurityImage'                           => 0,
    'HTML::SBC'                                   => 0,
@@ -49,10 +48,11 @@ requires
    'HTTP::Date'                                  => 0,
    'IO::String'                                  => 0,
    'JSON'                                        => 0,
+   'Math::BigInt::Random'                        => 0,
    'Module::Pluggable'                           => 0,
    'NEXT'                                        => '0.60',
-   'Pod::Simple::Text'                           => 0,
    'POSIX'                                       => 0,
+   'Pod::Simple::Text'                           => 0,
    'Pod::Xhtml'                                  => '1.57',
    'Quantum::Superpositions'                     => 0,
    'Scalar::Util'                                => 0,
@@ -94,26 +94,7 @@ build_requires
    'Test::LongString'                            => 0,
   );
 
-feature('Speed up crypto', ['Math::BigInt::GMP' => 0]);
-
 catalyst_par_classes(qw/
-    Crypt::Blowfish
-    Crypt::CAST5_PP
-    Crypt::DES_EDE3
-    Crypt::DSA
-    Crypt::RSA
-    Crypt::IDEA
-    Crypt::OpenPGP
-    Crypt::OpenPGP::Key::Public::DSA
-    Crypt::OpenPGP::Key::Public::ElGamal
-    Crypt::OpenPGP::Key::Public::RSA
-    Crypt::OpenPGP::Marker
-    Crypt::OpenPGP::OnePassSig
-    Crypt::OpenPGP::Trust
-    Crypt::RIPEMD160
-    Crypt::Random
-    Crypt::Rijndael
-    Crypt::Twofish
     HTML::SBC
     Pod::Xhtml
     Syntax::Highlight::Engine::Kate
