@@ -1,9 +1,10 @@
 package Angerwhale::User::Anonymous;
 use Moose;
+use Data::UUID;
 extends 'Angerwhale::User';
 
 has '+type'     => ( default => sub { 'anonymous' } );
-has '+id'       => ( default => sub { 0 } );
+has '+id'       => ( default => sub { Data::UUID->new->create_str } );
 has '+fullname' => ( default => sub { 'Anonymous Coward' } );
 has '+email'    => ( default => sub { undef } );
 

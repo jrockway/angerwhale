@@ -46,15 +46,16 @@ Return information about the current user
 sub current : Local {
     my ( $self, $c ) = @_;
     my $user = $c->stash->{user}; # XXX: user
-
-    $user = Angerwhale::User::Anonymous->new if !$user;
-
-    $c->{stash} = {};
-    $c->stash->{user_id}  = $user->get_id;
-    $c->stash->{fullname} = $user->fullname;
-    $c->stash->{email}    = $user->email;
-    $c->stash->{login_uri}= q{}.$c->uri_for('/login');
     
+    $c->{stash} = {};
+
+    if($user){
+        $c->stash->{user_id}  = $user->get_id;
+        $c->stash->{fullname} = $user->fullname;
+        $c->stash->{email}    = $user->email;
+    }
+
+    $c->stash->{login_uri}= q{}.$c->uri_for('/login');
     $c->detach('View::JSON');
 }
 
