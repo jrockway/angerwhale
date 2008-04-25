@@ -12,6 +12,7 @@ __PACKAGE__->config ( class => 'Angerwhale::UserStore' );
 sub prepare_arguments {
     my ($self, $app, $args) = @_;
     my $user_dir = dir($app->config->{base})->subdir('.users');
+    $user_dir->mkpath;
     return { 
         directory => $user_dir,
         class     => Angerwhale::User->meta,
