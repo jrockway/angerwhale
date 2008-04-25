@@ -20,8 +20,7 @@ sub filter {
 
           my $id = $item->metadata->{raw_author} = $item->metadata->{author};
           my $author = eval {
-              $context->model('UserStore')->get_user_by_nice_id($id)
-                if $id;
+              $context->model('UserStore')->get_user_by_id($id) if $id;
           };
           $author ||= Angerwhale::User::Anonymous->new;
           $item->metadata->{author} = $author;
@@ -29,6 +28,4 @@ sub filter {
       };
 }
 
-
 1;
-

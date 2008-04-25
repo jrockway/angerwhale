@@ -1,19 +1,28 @@
 package Angerwhale::User;
 use Moose;
-use Moose::Util::TypeConstraints;
+use Moose::Util::TypeConstraints qw/subtype as where/;
 use MooseX::Storage;
 with 'MooseX::Storage::Directory::Id';
 
-has id => (
-    is      => 'ro',
-    isa     => 'Str',
-    requied => 1,
+has type => (
+    is       => 'ro',
+    isa      => 'Str',
+    required => 1,
 );
 
-sub get_id { shift->id };
+has id => (
+    is       => 'ro',
+    isa      => 'Str',
+    required => 1,
+);
+
+sub get_id {
+    my $self = shift;
+    return $self->type . ':'. $self->id;
+}
 
 has fullname => (
-    is       => 'ro',
+    is       => 'rw',
     isa      => 'Str',
     required => 1,
 );
@@ -21,7 +30,7 @@ has fullname => (
 subtype EmailAddress => as 'Str' => where { /^[^@]+[@][^@]+$/ };
 
 has email => (
-    is       => 'ro',
+    is       => 'rw',
     isa      => 'Maybe[EmailAddress]',
     required => 1,
 );
