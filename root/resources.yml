@@ -9,6 +9,7 @@ Model::Articles:
       root: __path_to(root/posts)__
 session:
    flash_to_stash: 1
+   cache_size: 32m
 cache:
    backends:
       jemplate:
