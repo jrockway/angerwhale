@@ -9,7 +9,7 @@ use Pod::Simple::Text;
 use Angerwhale::Format::HTML;
 use List::Util qw(min);
 use Syntax::Highlight::Engine::Kate;
-use Syntax::Highlight::Engine::Kate::All;
+#use Syntax::Highlight::Engine::Kate::All;
 
 # lang = language code is in
 # spaces = spaces that the textblock is indented by

@@ -35,9 +35,9 @@
   <div class="post_extrainfo">
    [% IF !standalone %]
     <p class="post_links">
-     <a href="[% c.uri_for("/articles/$article.name") %]#comments">
+     <a href="[% c.uri_for("/articles/$article.name") | html %]#comments">
       [% infl.NO("comment", article.comment_count) %]</a> |
-     <a href="[% c.uri_for("/articles/$article.name") %]">Read more...</a>
+     <a href="[% c.uri_for("/articles/$article.name") | html %]">Read more...</a>
     </p>
    [% ELSE %]
    <br />
